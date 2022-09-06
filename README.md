@@ -1,5 +1,5 @@
-# Final_Project
+# 사용 기술 및 환경
+백엔드  
+ㅇ
 
-# Base Setting
-Apache Tomcat 9.0
 
