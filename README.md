@@ -7,6 +7,9 @@ https://docs.google.com/presentation/d/1Yu6qa5IAfydQhnR4F4kFFt1j9fTW4HZJJMx1hZ_g
 # 요구사항정의서  
 https://docs.google.com/spreadsheets/d/113-HtDSg9QooIWaHjruNyyOV9z1O1ZvApJw-sj3b6H4/edit?usp=sharing  
 
+# 테이블 정의서
+https://docs.google.com/spreadsheets/d/1Dgy1ie2vi4LHliRJ_MQx_uz7ZZ42Dy5D_6YSyNvyuZw/edit#gid=0
+
 # ERD
 https://www.erdcloud.com/d/vjyPoLgH2hkADoCQo
 
