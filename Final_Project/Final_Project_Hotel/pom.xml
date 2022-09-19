@@ -52,12 +52,6 @@
 			<scope>test</scope>
 		</dependency>
 	
-		<!--  JUNIT4 -->
-		<dependency>
-			<groupId>org.junit.vintage</groupId>
-			<artifactId>junit-vintage-engine</artifactId>
-			<scope>test</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>commons-dbcp</groupId>
