@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+	서버 연결 성공!
 </body>
 </html>
