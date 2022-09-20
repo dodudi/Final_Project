@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class TestController {
 	
 	private static final Logger log = LoggerFactory.getLogger(TestController.class);
-	@GetMapping("/hotel")
+	@GetMapping("/hello")
 	public String main() {
 		log.info("ggggggggggggggggggg");
 		return "home";
