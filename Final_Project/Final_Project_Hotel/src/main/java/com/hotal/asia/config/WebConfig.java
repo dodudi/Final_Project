@@ -9,9 +9,4 @@ public class WebConfig implements WebMvcConfigurer {
 		registry.addViewController("/").setViewName("home");
 	}
 	
-	@Bean
-	public SpringSecurityDialect securityDialect(){
-		return new SpringSecurityDialect();
-	}
-출처: https://zeroco.tistory.com/101 [zeroco:티스토리]
 }
