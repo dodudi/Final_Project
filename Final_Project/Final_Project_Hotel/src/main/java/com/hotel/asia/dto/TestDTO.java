@@ -1,4 +1,4 @@
-package com.hotel.dto;
+package com.hotel.asia.dto;
 
 //DB의 데이터를 가져오기 위한 클래스
 
