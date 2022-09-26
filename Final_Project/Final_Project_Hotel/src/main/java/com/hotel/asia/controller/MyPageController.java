@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class MyPageController {
-	private static final Logger log = LoggerFactory.getLogger(TestController.class);
+	private static final Logger log = LoggerFactory.getLogger(MyPageController.class);
 	@GetMapping("/mypage")
 	public String main() {
 		log.info("ggggggggggggggggggg");

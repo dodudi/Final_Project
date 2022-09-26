@@ -6,19 +6,19 @@
 <title>Hotel Asia</title>
  <!-- Required meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" href="image/favicon.png" type="image/png">
+    <link rel="icon" href="static/image/favicon.png" type="image/png">
     <title>Royal Hotel</title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="vendors/linericon/style.css">
-    <link rel="stylesheet" href="css/font-awesome.min.css">
-    <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css">
-    <link rel="stylesheet" href="vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
-    <link rel="stylesheet" href="vendors/nice-select/css/nice-select.css">
-    <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap.css">
+    <link rel="stylesheet" href="static/vendors/linericon/style.css">
+    <link rel="stylesheet" href="static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="static/vendors/owl-carousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="static/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="static/vendors/nice-select/css/nice-select.css">
+    <link rel="stylesheet" href="static/vendors/owl-carousel/owl.carousel.min.css">
     <!-- main css -->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="static/css/responsive.css">
     
 </head>
 <body>
@@ -111,7 +111,7 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="accomodation_item text-center">
                             <div class="hotel_img">
-                                <img src="image/room1.jpg" alt="">
+                                <img src="static/image/room1.jpg" alt="">
                                 <a href="#" class="btn theme_btn button_hover">Book Now</a>
                             </div>
                             <a href="#"><h4 class="sec_h4">Double Deluxe Room</h4></a>
@@ -121,7 +121,7 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="accomodation_item text-center">
                             <div class="hotel_img">
-                                <img src="image/room2.jpg" alt="">
+                                <img src="static/image/room2.jpg" alt="">
                                 <a href="#" class="btn theme_btn button_hover">Book Now</a>
                             </div>
                             <a href="#"><h4 class="sec_h4">Single Deluxe Room</h4></a>
@@ -131,7 +131,7 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="accomodation_item text-center">
                             <div class="hotel_img">
-                                <img src="image/room3.jpg" alt="">
+                                <img src="static/image/room3.jpg" alt="">
                                 <a href="#" class="btn theme_btn button_hover">Book Now</a>
                             </div>
                             <a href="#"><h4 class="sec_h4">Honeymoon Suit</h4></a>
@@ -141,7 +141,7 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="accomodation_item text-center">
                             <div class="hotel_img">
-                                <img src="image/room4.jpg" alt="">
+                                <img src="static/image/room4.jpg" alt="">
                                 <a href="#" class="btn theme_btn button_hover">Book Now</a>
                             </div>
                             <a href="#"><h4 class="sec_h4">Economy Double</h4></a>
@@ -159,17 +159,17 @@
 
   <!-- Optional JavaScript -->
      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-     <script src="js/jquery-3.2.1.min.js"></script>
-     <script src="js/popper.js"></script>
-     <script src="js/bootstrap.min.js"></script>
-     <script src="vendors/owl-carousel/owl.carousel.min.js"></script>
-     <script src="js/jquery.ajaxchimp.min.js"></script>
-     <script src="js/mail-script.js"></script>
-     <script src="vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
-     <script src="vendors/nice-select/js/jquery.nice-select.js"></script>
-     <script src="js/mail-script.js"></script>
-     <script src="js/stellar.js"></script>
-     <script src="vendors/lightbox/simpleLightbox.min.js"></script>
-     <script src="js/custom.js"></script>
+     <script src="static/js/jquery-3.2.1.min.js"></script>
+     <script src="static/js/popper.js"></script>
+     <script src="static/js/bootstrap.min.js"></script>
+     <script src="static/vendors/owl-carousel/owl.carousel.min.js"></script>
+     <script src="static/js/jquery.ajaxchimp.min.js"></script>
+     <script src="static/js/mail-script.js"></script>
+     <script src="static/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
+     <script src="static/vendors/nice-select/js/jquery.nice-select.js"></script>
+     <script src="static/js/mail-script.js"></script>
+     <script src="static/js/stellar.js"></script>
+     <script src="static/vendors/lightbox/simpleLightbox.min.js"></script>
+     <script src="static/js/custom.js"></script>
 </body>
 </html>
