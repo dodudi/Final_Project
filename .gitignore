@@ -80,6 +80,9 @@ local.properties
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+# Mac
+.DS_Store
+
 # Package Files #
 *.jar
 *.war
