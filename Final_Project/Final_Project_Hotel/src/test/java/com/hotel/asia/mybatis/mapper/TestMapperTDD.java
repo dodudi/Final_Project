@@ -1,4 +1,4 @@
-package com.hotel.mapper;
+package com.hotel.asia.mybatis.mapper;
 
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
