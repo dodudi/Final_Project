@@ -26,8 +26,8 @@
 			<div class="row">
 				<!--My Page Select Nav-->
 				<div class="col-3 nav-background">
-					<div class="nav-title">마이페이지</div>
 					<div class="list-group">
+						<div class="nav-title">My Page</div>
 						<!--reserve-->
 						<a href="/hotel/mypage/reserve" class="list-group-item list-group-item-action active">
 							<img src="/hotel/static/project_image/mypage_icon/ReservationCheckIcon.png" width="25px"
@@ -57,7 +57,8 @@
 				<!--My Page Select Nav End-->
 
 				<div class="col-9 content-background ">
-					<div class="content-title">객실예약정보</div>
+					<div class="content-title">
+						Reservation information</div>
 					<div class="content-table mb-5">
 						<table class="table">
 							<tbody>
@@ -102,7 +103,7 @@
 						</div>
 					</div>
 
-					<div class="content-title">조식|디너 예약 정보</div>
+					<div class="content-title">Breakfast | Dinner Information</div>
 					<div class="content-table">
 						<table class="table">
 							<tbody>
@@ -172,5 +173,18 @@
 		</div>
 		<jsp:include page="../main/footer.jsp" />
 	</body>
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="/hotel/static/js/jquery-3.2.1.min.js"></script>
+	<script src="/hotel/static/js/popper.js"></script>
+	<script src="/hotel/static/js/bootstrap.min.js"></script>
+	<script src="/hotel/static/vendors/owl-carousel/owl.carousel.min.js"></script>
+	<script src="/hotel/static/js/jquery.ajaxchimp.min.js"></script>
+	<script src="/hotel/static/js/mail-script.js"></script>
+	<script src="/hotel/static/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
+	<script src="/hotel/static/vendors/nice-select/js/jquery.nice-select.js"></script>
+	<script src="/hotel/static/js/mail-script.js"></script>
+	<script src="/hotel/static/js/stellar.js"></script>
+	<script src="/hotel/static/vendors/lightbox/simpleLightbox.min.js"></script>
+	<script src="/hotel/static/js/custom.js"></script>
 
 	</html>
