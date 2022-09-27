@@ -4,7 +4,17 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <meta name="_csrf" content="${_csrf.token }">
 <meta name="_csrf_header" content="${_csrf.headerName }">
-
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="static/css/bootstrap.css">
+    <link rel="stylesheet" href="static/vendors/linericon/style.css">
+    <link rel="stylesheet" href="static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="static/vendors/owl-carousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="static/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="static/vendors/nice-select/css/nice-select.css">
+    <link rel="stylesheet" href="static/vendors/owl-carousel/owl.carousel.min.css">
+     <!-- main css -->
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="static/css/responsive.css">
 <!--================Header Area =================-->
  <header class="header_area">
      <div class="container">
