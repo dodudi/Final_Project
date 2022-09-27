@@ -10,4 +10,4 @@ create table notice_board (
 )
 
 select * from notice_board;
-create sequence notice_seq start with 1 increment by 1;
+create sequence NOTICE_SEQ start with 1 increment by 1;
