@@ -41,3 +41,7 @@
 .mypage_background{
     background-color: beige;
 }
+
+.header_area{
+    position: relative;
+}

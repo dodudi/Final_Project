@@ -3,13 +3,24 @@
     <html lang="en">
 
     <head>
-        <title>Document</title>
-        <link rel="stylesheet" href="static/css/bootstrap.min.css">
+        <title>회원정보</title>
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="static/css/bootstrap.css">
+        <link rel="stylesheet" href="static/vendors/linericon/style.css">
+        <link rel="stylesheet" href="static/css/font-awesome.min.css">
+        <link rel="stylesheet" href="static/vendors/owl-carousel/owl.carousel.min.css">
+        <link rel="stylesheet" href="static/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" href="static/vendors/nice-select/css/nice-select.css">
+        <link rel="stylesheet" href="static/vendors/owl-carousel/owl.carousel.min.css">
+        <!-- main css -->
+        <link rel="stylesheet" href="static/css/style.css">
+        <link rel="stylesheet" href="static/css/responsive.css">
         <link rel="stylesheet" href="static/project_css/mypage/mypage_r.css">
     </head>
 
     <body>
-
+        <jsp:include page="../main/header.jsp" />
 
         <div class="container mypage_background">
             <div class="row">
@@ -19,22 +30,14 @@
                         <a href="#" class="list-group-item list-group-item-action active">
                             <img src="static/project_image/mypage_icon/ReservationCheckIcon.png" width="25px" alt="" />
                             객실예약확인
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <img src="static/project_image/mypage_icon/QuestionCheck.png" width="25px" alt="" />
-                            문의내역확인
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <img src="static/project_image/mypage_icon/Coupon.png" width="25px" alt="" />
-                            마일리지 | 쿠폰
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <img src="static/project_image/mypage_icon/MemberCheck2.png" width="25px" alt="" />
-                            회원정보
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <img src="static/project_image/mypage_icon/CheckList.png" width="25px" alt="" />
-                            즐겨찾기 게시물 확인
+                        </a> <a href="#" class="list-group-item list-group-item-action"> <img
+                                src="static/project_image/mypage_icon/QuestionCheck.png" width="25px" alt="" /> 문의내역확인
+                        </a> <a href="#" class="list-group-item list-group-item-action"> <img
+                                src="static/project_image/mypage_icon/Coupon.png" width="25px" alt="" /> 마일리지 | 쿠폰
+                        </a> <a href="#" class="list-group-item list-group-item-action"> <img
+                                src="static/project_image/mypage_icon/MemberCheck2.png" width="25px" alt="" /> 회원정보
+                        </a> <a href="#" class="list-group-item list-group-item-action"> <img
+                                src="static/project_image/mypage_icon/CheckList.png" width="25px" alt="" /> 즐겨찾기 게시물 확인
                         </a>
                     </div>
 
@@ -154,9 +157,7 @@
             </div>
 
         </div>
+        <jsp:include page="../main/footer.jsp" />
     </body>
-
-    <script src="static/js/bootstrap.bundle.min.js"></script>
-
 
     </html>
