@@ -5,22 +5,22 @@
 <meta name="_csrf" content="${_csrf.token }">
 <meta name="_csrf_header" content="${_csrf.headerName }">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="static/css/bootstrap.css">
-    <link rel="stylesheet" href="static/vendors/linericon/style.css">
-    <link rel="stylesheet" href="static/css/font-awesome.min.css">
-    <link rel="stylesheet" href="static/vendors/owl-carousel/owl.carousel.min.css">
-    <link rel="stylesheet" href="static/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
-    <link rel="stylesheet" href="static/vendors/nice-select/css/nice-select.css">
-    <link rel="stylesheet" href="static/vendors/owl-carousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/vendors/linericon/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/vendors/owl-carousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/vendors/nice-select/css/nice-select.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/vendors/owl-carousel/owl.carousel.min.css">
      <!-- main css -->
-    <link rel="stylesheet" href="static/css/style.css">
-    <link rel="stylesheet" href="static/css/responsive.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/responsive.css">
 <!--================Header Area =================-->
  <header class="header_area">
      <div class="container">
          <nav class="navbar navbar-expand-lg navbar-light">
              <!-- Brand and toggle get grouped for better mobile display -->
-             <a class="navbar-brand logo_h" href="#"><img src="static/image/logo.png" alt=""></a>
+             <a class="navbar-brand logo_h" href="#"><img src="${pageContext.request.contextPath}/resources/image/logo.png" alt=""></a>
              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                  <span class="icon-bar"></span>
                  <span class="icon-bar"></span>
@@ -37,7 +37,7 @@
                          <ul class="dropdown-menu">
                              <li class="nav-item"><a class="nav-link" href="info">공지사항</a></li>
                              <li class="nav-item"><a class="nav-link" href="qna">문의사항</a></li>
-                             <li class="nav-item"><a class="nav-link" href="review">리뷰</a></li>
+                             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/review/reviewList">리뷰보드</a></li> <!-- 현능: 리뷰게시판 경로 수정 -->
                          </ul>
                      </li> 
                  </ul>
