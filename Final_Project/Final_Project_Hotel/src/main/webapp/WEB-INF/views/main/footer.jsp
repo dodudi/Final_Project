@@ -55,15 +55,15 @@
 <!--================ End footer Area  =================-->
  <!-- Optional JavaScript -->
      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-     <script src="static/js/jquery-3.2.1.min.js"></script>
-     <script src="static/js/popper.js"></script>
-     <script src="static/js/bootstrap.min.js"></script>
-     <script src="static/vendors/owl-carousel/owl.carousel.min.js"></script>
-     <script src="static/js/jquery.ajaxchimp.min.js"></script>
-     <script src="static/js/mail-script.js"></script>
-     <script src="static/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
-     <script src="static/vendors/nice-select/js/jquery.nice-select.js"></script>
-     <script src="static/js/mail-script.js"></script>
-     <script src="static/js/stellar.js"></script>
-     <script src="static/vendors/lightbox/simpleLightbox.min.js"></script>
-     <script src="static/js/custom.js"></script>
+     <script src="${pageContext.request.contextPath}/resources/js/jquery-3.2.1.min.js"></script>
+     <script src="${pageContext.request.contextPath}/resources/js/popper.js"></script>
+     <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+     <script src="${pageContext.request.contextPath}/resources/vendors/owl-carousel/owl.carousel.min.js"></script>
+     <script src="${pageContext.request.contextPath}/resources/js/jquery.ajaxchimp.min.js"></script>
+     <script src="${pageContext.request.contextPath}/resources/js/mail-script.js"></script>
+     <script src="${pageContext.request.contextPath}/resources/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
+     <script src="${pageContext.request.contextPath}/resources/vendors/nice-select/js/jquery.nice-select.js"></script>
+     <script src="${pageContext.request.contextPath}/resources/js/mail-script.js"></script>
+     <script src="${pageContext.request.contextPath}/resources/js/stellar.js"></script>
+     <script src="${pageContext.request.contextPath}/resources/vendors/lightbox/simpleLightbox.min.js"></script>
+     <script src="${pageContext.request.contextPath}/resources/js/custom.js"></script>
