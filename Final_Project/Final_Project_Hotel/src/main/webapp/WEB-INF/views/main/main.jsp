@@ -2,25 +2,10 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head>
-<title>Hotel Asia</title>
  <!-- Required meta tags -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" href="static/image/favicon.png" type="image/png">
-    <title>Royal Hotel</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="static/css/bootstrap.css">
-    <link rel="stylesheet" href="static/vendors/linericon/style.css">
-    <link rel="stylesheet" href="static/css/font-awesome.min.css">
-    <link rel="stylesheet" href="static/vendors/owl-carousel/owl.carousel.min.css">
-    <link rel="stylesheet" href="static/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
-    <link rel="stylesheet" href="static/vendors/nice-select/css/nice-select.css">
-    <link rel="stylesheet" href="static/vendors/owl-carousel/owl.carousel.min.css">
-    <!-- main css -->
-    <link rel="stylesheet" href="static/css/style.css">
-    <link rel="stylesheet" href="static/css/responsive.css">
-    
-</head>
+ <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+ <link rel="icon" href="static/image/favicon.png" type="image/png">
+ <title>Hotel Asia</title>
 <body>
 <!-- Header/Nav -->
 <jsp:include page="header.jsp" />
@@ -156,20 +141,5 @@
 
 	<!-- Footer -->
 	<jsp:include page="footer.jsp"></jsp:include>
-
-  <!-- Optional JavaScript -->
-     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-     <script src="static/js/jquery-3.2.1.min.js"></script>
-     <script src="static/js/popper.js"></script>
-     <script src="static/js/bootstrap.min.js"></script>
-     <script src="static/vendors/owl-carousel/owl.carousel.min.js"></script>
-     <script src="static/js/jquery.ajaxchimp.min.js"></script>
-     <script src="static/js/mail-script.js"></script>
-     <script src="static/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
-     <script src="static/vendors/nice-select/js/jquery.nice-select.js"></script>
-     <script src="static/js/mail-script.js"></script>
-     <script src="static/js/stellar.js"></script>
-     <script src="static/vendors/lightbox/simpleLightbox.min.js"></script>
-     <script src="static/js/custom.js"></script>
 </body>
 </html>
