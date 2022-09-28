@@ -16,7 +16,6 @@
 <title> 리뷰 게시글 작성 </title>
 <script>
 $(function(){
-	// 메인화면 페이지 로드 함수
     $(document).ready(function () {
         $('#summernote').summernote({
         	placeholder: '내용을 작성하세요',
@@ -26,7 +25,6 @@ $(function(){
             toolbar: [
                 ['fontname', ['fontname']], // 글꼴 설정
                 ['fontsize', ['fontsize']], // 글자 크기 설정
-                //['style', ['bold', 'italic', 'underline','strikethrough', 'clear']], // 굵기, 기울임꼴, 밑줄,취소 선, 서식지우기
                 ['color', ['forecolor','color']], // 글자색
                 ['para', ['ul', 'ol', 'paragraph']], // 글머리 기호, 번호매기기, 문단정렬
     		    ['table', ['table']], // 표만들기
@@ -70,10 +68,9 @@ $(function(){
 		});
 	}
     	
-    	
-   
+	
+    // 수정완료 버튼 클릭
     $("form").submit(function(){
-    	//var content = $('#summernote').summernote('code').replaceAll('<p>', '<br>').replaceAll('</p>', '');
     	var content = $('#summernote').summernote('code');
     	$('input[name="REVIEW_CONTENT"]').val(content);
     	
@@ -82,11 +79,14 @@ $(function(){
     		return false;
     	}
     })
+    
+    
+    // 글 수정 시 비밀번호가 다른 경우
+    if('${state}' == 'passFail'){
+		alert("비밀번호가 다릅니다.");
+	}
 
 }) // ready end
-
-
-
 </script>
 </head>
 <body>
@@ -106,16 +106,18 @@ $(function(){
 	<div class="container">
 		<h3 class="text-heading title_color">커뮤니티 > 후기게시판 > 글 수정하기</h3> 
 		
-		<form action="reviewModify" method="post">          
+		<form action="reviewModify" method="post">
+			<input type="hidden" name="REVIEW_NUM" value="${review.REVIEW_NUM}">
+			       
 		    <h4><label for="REVIEW_SUBJECT">제목</label></h4>
-			<input type="text" class="form-control" name="REVIEW_SUBJECT" id="REVIEW_SUBJECT" value="${review.REVIEW_SUBJECT}" placeholder="Enter title" required>     
+			<input type="text" class="form-control" name="REVIEW_SUBJECT" value="${review.REVIEW_SUBJECT}" placeholder="Enter title" required>     
 		     
 			<h4><label for="summernote">내용</label></h4>   
 			<textarea id="summernote" name="content" required>${review.REVIEW_CONTENT}</textarea>
 			<input type="hidden" name="REVIEW_CONTENT">
 			
 			<h4><label for="REVIEW_PASS">Password</label></h4>
-			<input type="password" class="form-control" name="REVIEW_PASS" id="REVIEW_PASS" placeholder="Enter password" required>        
+			<input type="password" class="form-control" name="REVIEW_PASS" placeholder="Enter password" required>        
 			
 			
 			<div class="col-sm-12">

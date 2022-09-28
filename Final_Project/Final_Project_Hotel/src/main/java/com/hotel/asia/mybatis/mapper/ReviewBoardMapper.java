@@ -22,6 +22,12 @@ public interface ReviewBoardMapper {
 	// 글 상세보기
 	public ReviewBoard getDetail(int num);
 	
+	// 글 수정
+	public int modify(ReviewBoard rb);
+	
+	// 글 수정 시 비밀번호 맞는지 확인
+	public ReviewBoard isReviewWriter(HashMap<String, Object> map);
+	
 	
 
 }

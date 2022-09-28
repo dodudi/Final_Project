@@ -2,10 +2,15 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script src="http://code.jquery.com/jquery-latest.js"></script>	
 <jsp:include page="../main/header.jsp"/> <!-- 헤더 -->
 <title>후기 게시글 상세보기</title>
 <script>
 $(function(){
+	// 글 수정 성공 후 상세보기 페이지로 온 경우
+    if('${state}' == 'modifySuccess'){
+		alert("글이 수정되었습니다.");
+	}
 	
 }) // ready end
 </script>

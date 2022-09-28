@@ -41,4 +41,19 @@
 		from   REVIEW_BOARD
 		where  REVIEW_NUM = #{num}
 	</select>
+	
+	<update id="modify" parameterType="reviewBoard">
+		update REVIEW_BOARD
+	    set    REVIEW_SUBJECT = #{REVIEW_SUBJECT},
+		       REVIEW_CONTENT = #{REVIEW_CONTENT}
+	    where  REVIEW_NUM = #{REVIEW_NUM}
+	</update>
+	
+	<select id="isReviewWriter" parameterType="map" resultType="reviewBoard">
+	    select * from REVIEW_BOARD
+	    where    REVIEW_NUM = #{REVIEW_NUM} 
+	    and      REVIEW_PASS = #{REVIEW_PASS}
+	</select>
+	
+	
 </mapper>

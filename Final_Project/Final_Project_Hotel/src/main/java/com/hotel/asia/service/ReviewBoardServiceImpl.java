@@ -2,13 +2,19 @@ package com.hotel.asia.service;
 
 import java.util.HashMap;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.hotel.asia.controller.ReviewController;
 import com.hotel.asia.dto.ReviewBoard;
 import com.hotel.asia.mybatis.mapper.ReviewBoardMapper;
 
 @Service
 public class ReviewBoardServiceImpl implements ReviewBoardService{
+	private static final Logger logger = LoggerFactory.getLogger(ReviewBoardServiceImpl.class);
 	
 	@Autowired
 	private ReviewBoardMapper mapper;
@@ -46,6 +52,28 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
 	@Override
 	public ReviewBoard getDetail(int num) {
 		return mapper.getDetail(num);
+	}
+	
+	// 글 수정
+	@Override
+	public int modify(ReviewBoard rb) {
+		return mapper.modify(rb);
+	}
+	
+	// 글 수정 시 비밀번호 맞는지 확인
+	@Override
+	public boolean isReviewWriter(int review_NUM, String review_PASS) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("REVIEW_NUM", review_NUM);
+		map.put("REVIEW_PASS", review_PASS);
+
+		ReviewBoard review = mapper.isReviewWriter(map);
+		
+		if(review == null) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
 	

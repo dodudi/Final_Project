@@ -124,7 +124,7 @@ public class ReviewController {
 	
 	// 리뷰글 보기
 	@GetMapping(value="/reviewDetail")
-	public ModelAndView reviewDetail(int num, ModelAndView mv,  HttpServletRequest request,
+	public ModelAndView reviewDetail(int num, ModelAndView mv, HttpServletRequest request,
 							         @RequestHeader(value="referer") String beforeURL) {
 		logger.info("referer:" + beforeURL);
 		if(beforeURL.endsWith("reviewList")) { // hotel/review/reviewList 에서 제목을 클릭한 경우 조회수 증가
@@ -147,75 +147,61 @@ public class ReviewController {
 		return mv;
 	}
 	
+	
 	// 리뷰글 수정 폼 이동
 	@GetMapping(value="/reviewModifyForm")
 	public ModelAndView reviewModifyForm(int num, ModelAndView mv, HttpServletRequest request) {
 		ReviewBoard rb = reviewBoardService.getDetail(num);
 		// 글 내용 불러오기 실패한 경우
 		if(rb == null) {
-			logger.info("수정보기 실패");
+			logger.info("수정 페이지 이동 실패");
 			mv.setViewName("error/error");
 			mv.addObject("url", request.getRequestURL());
 			mv.addObject("message", "수정보기 실패입니다.");
 			return mv;
 		}
-		logger.info("(수정)상세보기 성공");
+		logger.info("수정 페이지 이동 성공");
 		mv.addObject("review", rb);
 		mv.setViewName("review/reviewModifyForm"); // 글 수정 폼 페이지로 이동하기 위해 경로 설정
 		return mv;
 	}
 	
-	/*
+	
 	// 리뷰글 수정
 	@RequestMapping(value="/reviewModify")
 	public String reviewModify(ReviewBoard rb, ModelAndView mv, HttpSession session, RedirectAttributes rattr) {
 		logger.info("=====[reviewModify]=====");
+		logger.info("*번호: " + rb.getREVIEW_NUM());
 		logger.info("*제목: " + rb.getREVIEW_SUBJECT());
 		logger.info("*비번: " + rb.getREVIEW_PASS());
 		logger.info("*내용: " + rb.getREVIEW_CONTENT());
 		logger.info("*작성자: " + (String)session.getAttribute("id"));
 		
-		rb.setMEM_ID((String)session.getAttribute("id"));
+		// 글 수정 시 비밀번호 맞는지 확인
+		boolean usercheck = reviewBoardService.isReviewWriter(rb.getREVIEW_NUM(), rb.getREVIEW_PASS());
+
+		// 비밀번호가 다른 경우
+		if(usercheck == false) {
+			rattr.addFlashAttribute("state", "passFail"); // 수정페이지에 보낼 state
+			rattr.addAttribute("num", rb.getREVIEW_NUM());
+			return "redirect:reviewModifyForm"; // 비밀번호 다른 경우 수정 폼으로 다시 돌아가서 alert("비밀번호가 다릅니다.");
+		}
 		
-		int result = reviewBoardService.modify(rb);
+		rb.setMEM_ID((String)session.getAttribute("id"));
+		int result = reviewBoardService.modify(rb); // 리뷰 수정
 		
 		if(result == 0) {
 			logger.info("[글 수정 실패] result = " + result);
 			rattr.addFlashAttribute("state","emptyId"); // 로그인페이지에 추가해달라고 하기 "로그인이 만료되었습니다. 본 서비스는 회원만 이용할 수 있습니다."
-			return "로그인페이지";
+			return "로그인페이지"; // 로그인페이지 경로 넣기~~
 		} else {
-			logger.info("[글 작성 성공] result = " + result);
+			logger.info("[글 수정 성공] result = " + result);
+			rattr.addFlashAttribute("state", "modifySuccess");
+			rattr.addAttribute("num", rb.getREVIEW_NUM());
+			return "redirect:reviewDetail"; // 수정성공 시 상세보기 페이지이로 이동
 		}
-		return "redirect:reviewList";
 	}
-	// 이미지 처리 - c드라이브에 hotelAsiaReviewImage 폴더 만들기 (C:\hotelAsiaReviewImage)
-	@RequestMapping(value="/uploadImage", produces="application/json")
-	@ResponseBody
-	public JsonObject uploadImage(@RequestParam("file") MultipartFile multipartFile) {
-		JsonObject jsonObject = new JsonObject();
-		
-		String fileRoot = "C:\\hotelAsiaReviewImage\\";	//저장될 외부 파일 경로
-		String originalFileName = multipartFile.getOriginalFilename(); //오리지날 파일명
-		String extension = originalFileName.substring(originalFileName.lastIndexOf(".")); //파일 확장자
-				
-		String savedFileName = UUID.randomUUID() + extension; // 랜덤 UUID+확장자로 저장될 파일명
-		
-		File targetFile = new File(fileRoot + savedFileName);	
-		
-		try {
-			InputStream fileStream = multipartFile.getInputStream();
-			FileUtils.copyInputStreamToFile(fileStream, targetFile); //파일 저장
-			jsonObject.addProperty("url", "/hotel/reviewImage/"+savedFileName);
-			jsonObject.addProperty("responseCode", "success");
-			logger.info("*****파일 업로드 성공 => " + savedFileName);	
-		} catch (IOException e) {
-			FileUtils.deleteQuietly(targetFile); //저장된 파일 삭제
-			jsonObject.addProperty("responseCode", "error");
-			e.printStackTrace();
-			logger.info("*****파일 업로드 실패 => " + savedFileName);
-		}
-		return jsonObject;
-	}
-	*/
+	
+	
    
 }
