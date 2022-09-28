@@ -14,7 +14,7 @@ public interface ReviewBoardMapper {
 	public int getListCount();
 	
 	// 글 리스트
-	public List<ReviewBoard> getReviewList(HashMap<String, Integer> map);
+	public List<ReviewBoard> getReviewList(HashMap<String, Object> map);
 	
 	// 조회수 증가
 	public int setReadCountUpdate(int num);

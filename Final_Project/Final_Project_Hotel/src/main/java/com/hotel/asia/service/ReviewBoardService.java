@@ -12,7 +12,7 @@ public interface ReviewBoardService {
 	public int getListCount();
 	
 	// 글 리스트
-	public List<ReviewBoard> getReviewList(int page, int limit);
+	public List<ReviewBoard> getReviewList(int page, int limit, String sortBy);
 	
 	// 조회수
 	public int setReadCountUpdate(int num);

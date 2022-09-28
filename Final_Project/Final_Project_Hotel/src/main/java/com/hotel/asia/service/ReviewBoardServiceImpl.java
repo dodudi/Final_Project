@@ -33,12 +33,14 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
 	
 	// 글 리스트
 	@Override
-	public List<ReviewBoard> getReviewList(int page, int limit) {
-		HashMap<String, Integer> map = new HashMap<String, Integer>();		
+	public List<ReviewBoard> getReviewList(int page, int limit, String sortBy) {
+		HashMap<String, Object> map = new HashMap<String, Object>();		
 		int startrow = (page-1) * limit + 1; 
 		int endrow = startrow + limit - 1; 		
+		
 		map.put("startrow", startrow);
 		map.put("endrow", endrow);
+		map.put("sortBy", sortBy);
 		return mapper.getReviewList(map);
 	}
 	

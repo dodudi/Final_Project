@@ -23,11 +23,11 @@
              		 from REVIEW_BOARD left outer join (select REVIEW_NUM, count(*) cnt
                                                  		from REVIEW_COMMENT
                                                 		group by REVIEW_NUM) c
-             		 on REVIEW_BOARD.REVIEW_NUM = c.REVIEW_NUM                                   
-             	 	 where rownum &lt;= #{endrow}) d
+             		 on REVIEW_BOARD.REVIEW_NUM = c.REVIEW_NUM
+             		 order by ${sortBy} desc ) d <!-- orderby는 출력변수이므로 ${} -->
+               where rownum &lt;= #{endrow}
      		  ) 
 		where rnum &gt;= #{startrow} and rnum &lt;= #{endrow}
-		order by REVIEW_DATE desc	
 	</select>
 	
 	<update id="setReadCountUpdate" parameterType="int">

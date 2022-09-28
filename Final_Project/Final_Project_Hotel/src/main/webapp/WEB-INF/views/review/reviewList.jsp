@@ -7,11 +7,106 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script> <!-- 제이쿼리 -->
 <title>후기 게시판</title>
 <script>
+//1. 페이지 이동
+function go(page) {
+	var sortBy= $('#sort').val(); // page는 1
+	var data = "sortBy=" + sortBy + "&page=" + page;
+	sortList(data);
+} // function go end
+
+// 2. 페이징처리 함수 - setPaging
+function setPaging(href, digit) {
+	active = "";
+	gray = "";
+	if (href == "") { // href가 빈문자열인 경우
+		if (isNaN(digit)) { // 이전&nbsp; 또는 다음&nbsp; - digit이 숫자가 아닌 경우
+			gray = " gray"; // 앞에 공백 주기
+		} else {
+			active = " active"; // 앞에 공백 주기
+		}
+	} // if-else end
+	var output = "<li class='page-item" + active + "'>";
+	var anchor = "<a class='page-link" + gray + "'" + href + ">" + digit + "</a></li>";
+	output += anchor;
+	return output;
+} // function setPaging end
+
+// 3. 
+function sortList(sdata) {
+	var token  = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	
+	$.ajax({
+		type: "POST",
+		data: sdata,
+		url: "reviewListSort",
+		dataType: "json",
+		cache: false,
+		beforeSend : function(xhr) {
+			xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리(Spring Security CSRF)
+		},
+		success: function(data){
+			if (data.listcount > 0) { // 총갯수가 0보다 큰 경우
+				$("tbody").remove();
+				var num = data.listcount - (data.page - 1) * data.limit;
+				console.log(num);
+				var output = "<tbody>";
+				console.log("*받아온 리뷰리스트=>" + data.reviewList);
+				$(data.reviewList).each(function(index, item) {
+					output += '<tr><td>' + (num--) + '</td>'
+					output += '	   <td>'
+					output += '        <div><a href="reviewDetail?num=' + item.REVIEW_NUM  + '">' + item.REVIEW_SUBJECT + '</a></div>'
+					output += '	   </td>'		
+					output += '    <td><div>' + item.REVIEW_DATE+'</div></td>'
+					output += '    <td><div>' + item.MEM_ID+'</div></td>'
+					output += '    <td><div>' + item.REVIEW_READCOUNT+'</div></td>'
+				}) // each end
+				output += "</tbody>"
+				$('table').append(output)//table 완성
+				
+				// 페이징 처리
+				$(".pagination").empty(); // 기존 페이징 처리 영역 내용 제거
+				output = "";
+				digit = '이전&nbsp;'
+				href="";	
+				if (data.page > 1) {
+					href = 'href=javascript:go(' + (data.page - 1) + ')';
+				}
+				output += setPaging(href, digit);
+				
+				for (var i = data.startpage; i <= data.endpage; i++) {
+					digit = i;
+					href="";
+					if (i != data.page) {
+						href = 'href=javascript:go(' + i + ')';
+					} 
+					output += setPaging( href, digit);
+				}
+				digit = '&nbsp;다음&nbsp;';
+				href="";
+				if (data.page < data.maxpage) {
+					href = 'href=javascript:go(' + (data.page + 1) + ')';
+				} 
+				output += setPaging( href, digit);
+
+				$('.pagination').append(output)
+			}
+		} // success end
+	}) // ajax end
+} // sortBy end
+
+// ready
 $(function(){
 	// 글 삭제 성공 후 리뷰리스트 페이지로 온 경우
     if('${state}' == 'deleteSuccess'){
 		alert("글이 삭제되었습니다.");
 	}
+	
+    // 정렬 기준 바꿈
+    $("#sort").change(function(){
+		go(1); // 보여줄 페이지(go)를 1페이지로 설정합니다. - 선언적 함수 go는 ready 안에 작성하면 안 됨!!
+	}); // change end
+	
 }) // ready end
 </script>
 </head>
@@ -38,7 +133,7 @@ $(function(){
 		<!-- 검색 -->
 		<form action="" method="post" style="float:right">
 			<div class="input-group">
-				<select name="search_field">
+				<select class="form-control" name="search_field">
 					<option value="subjectNcontent" selected>제목+내용</option>
 					<option value="subject">제목</option>
 					<option value="content">내용</option>
@@ -49,11 +144,11 @@ $(function(){
 		</form><br><br>
 		
 		<!-- 정렬 -->
-		<div class="rows" style="float:right; margin-bottom:10px;">
-			<select class="form-control">
-				<option value="reg" selected>등록순</option>
-				<option value="view">조회순</option>
-				<option value="recomm">추천순</option>
+		<div class="rows float-right" style="margin-bottom:10px;">
+			<select class="form-control" id="sort">
+				<option value="REVIEW_DATE" selected>등록순</option>
+				<option value="REVIEW_READCOUNT">조회순</option>
+				<option value="REVIEW_RECOMM">추천순</option>
 			</select>
 		</div>	
           
@@ -72,7 +167,7 @@ $(function(){
 					</tr>
 				</thead>
 				<tbody>
-					<c:set var="num" value="${listcount - (page - 1)*limit }"/>
+					<c:set var="num" value="${listcount - (page - 1)*limit}"/>
 					<c:forEach var="reviewList" items="${reviewList}">
 						<tr>
 							<td>

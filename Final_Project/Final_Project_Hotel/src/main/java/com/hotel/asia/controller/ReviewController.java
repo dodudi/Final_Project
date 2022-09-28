@@ -3,7 +3,9 @@ package com.hotel.asia.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,9 +40,11 @@ public class ReviewController {
 	private ReviewBoardService reviewBoardService; 
 	
 	// 리뷰 게시판 이동
-	@GetMapping(value="/reviewList")
-	public ModelAndView reviewList(@RequestParam(value="page", defaultValue="1", required=false) int page, ModelAndView mv) {
-		logger.info("리뷰게시판 이동");
+	@RequestMapping(value="/reviewList")
+	public ModelAndView reviewList(@RequestParam(value="page", defaultValue="1", required=false) int page,
+								   @RequestParam(value="sortBy", defaultValue="REVIEW_DATE", required=false) String sortBy,
+			                       ModelAndView mv) {
+		logger.info("=====[reviewList] 리뷰게시판 이동=====");
 		
 		int limit = 10; // 한 페이지에 보여줄 게시판 목록의 수 (한 화면에 출력할 로우 갯수)
 		int listcount = reviewBoardService.getListCount(); // 총 리스트 수를 받아온다
@@ -50,7 +54,7 @@ public class ReviewController {
 		if(endpage > maxpage) {
 			endpage = maxpage; 
 		}
-		List<ReviewBoard> reviewList = reviewBoardService.getReviewList(page, limit);
+		List<ReviewBoard> reviewList = reviewBoardService.getReviewList(page, limit, sortBy);
 		 
 		logger.info("* 총 리뷰 수:" + listcount);
 		
@@ -64,6 +68,38 @@ public class ReviewController {
 		mv.addObject("reviewList", reviewList);
 		return mv;
 	}
+	
+	
+	// 리뷰 게시판 정렬
+	@ResponseBody // 각 메서드의 실행 결과를 JSON으로 변환되어 HTTP ResponseBODY에 설정됩니다.
+	@RequestMapping(value="/reviewListSort")
+	public Map<String, Object> reviewListSort(@RequestParam(value="page", defaultValue="1", required=false) int page, // page는 넘어올 수도 있고 안 올 수도 있으므로 defaultValue와 required=false 설정
+											  String sortBy) {
+		logger.info("=====[reviewListSort] 리뷰게시판 정렬=====");
+		logger.info("정렬기준: " + sortBy);
+		
+		int limit = 10; // 한 페이지에 보여줄 게시판 목록의 수 (한 화면에 출력할 로우 갯수)
+		int listcount = reviewBoardService.getListCount(); // 총 리스트 수를 받아온다
+		int maxpage = (listcount + limit - 1) / limit; // 총 페이지 수
+		int startpage = ((page - 1) / 10) * 10 + 1; // 현재 페이지에 보여줄 시작 페이지 수(1, 11, 21 등 ...)
+		int endpage = startpage + 10 - 1; // 현재 페이지에 보여줄 마지막 페이지 수(10, 20, 30 등 ...)
+		if(endpage > maxpage) {
+			endpage = maxpage; 
+		}
+		
+		List<ReviewBoard> reviewList = reviewBoardService.getReviewList(page, limit, sortBy);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("limit", limit);
+		map.put("listcount", listcount);
+		map.put("page", page);
+		map.put("maxpage", maxpage);
+		map.put("startpage", startpage);
+		map.put("endpage", endpage);
+		map.put("reviewList", reviewList);
+		return map;
+	}
+	
+	
 	
 	
 	// 리뷰 게시글 작성 폼

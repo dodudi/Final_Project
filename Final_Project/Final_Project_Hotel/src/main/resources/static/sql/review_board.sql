@@ -9,7 +9,7 @@ create table REVIEW_BOARD ( -- 파일 관련 컬럼 삭제
 	REVIEW_RECOMM 	 NUMBER
 )
 
-select * from REVIEW_BOARD
+select * from REVIEW_BOARD order by REVIEW_DATE desc
 
 -- 리뷰글 댓글
 create table REVIEW_COMMENT (
