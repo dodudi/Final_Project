@@ -16,7 +16,7 @@
 		<!-- main css -->
 		<link rel="stylesheet" href="/hotel/static/css/style.css">
 		<link rel="stylesheet" href="/hotel/static/css/responsive.css">
-		<link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_reserve_check.css">
+		<link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_module.css">
 	</head>
 
 	<body>
@@ -60,39 +60,10 @@
 					<div class="content-title">
 						Reservation information</div>
 					<div class="content-table mb-5">
-						<table class="table">
+						<table class="table table-bordered" >
 							<tbody>
-
 								<tr>
-									<td>객실등급</td>
 									<td>r</td>
-								</tr>
-								<tr>
-									<td>예약자명</td>
-									<td>r</td>
-								</tr>
-								<tr>
-									<td>체크인 날짜</td>
-									<td>r</td>
-								</tr>
-								<tr>
-									<td>체크아웃 날짜</td>
-									<td>r</td>
-								</tr>
-								<tr>
-									<td>총 숙박일</td>
-									<td>r</td>
-								</tr>
-								<tr>
-									<td>성인</td>
-									<td>r</td>
-								</tr>
-								<tr>
-									<td>아동</td>
-									<td>r</td>
-								</tr>
-								<tr>
-									<td>총 금액</td>
 									<td>r</td>
 								</tr>
 							</tbody>
@@ -135,12 +106,9 @@
 								</tr>
 							</tbody>
 						</table>
-						<div class="clearfix btn-box">
-							<button type="button" class="btn btn-primary">옵션변경하기</button>
-							<button type="button" class="btn btn-danger">옵션변경하기</button>
-						</div>
+		
 					</div>
-					<div class="content-table">
+					<div class="content-table mb-4">
 						<table class="table">
 							<tbody>
 
@@ -174,17 +142,6 @@
 		<jsp:include page="../main/footer.jsp" />
 	</body>
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-	<script src="/hotel/static/js/jquery-3.2.1.min.js"></script>
-	<script src="/hotel/static/js/popper.js"></script>
-	<script src="/hotel/static/js/bootstrap.min.js"></script>
-	<script src="/hotel/static/vendors/owl-carousel/owl.carousel.min.js"></script>
-	<script src="/hotel/static/js/jquery.ajaxchimp.min.js"></script>
-	<script src="/hotel/static/js/mail-script.js"></script>
-	<script src="/hotel/static/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
-	<script src="/hotel/static/vendors/nice-select/js/jquery.nice-select.js"></script>
-	<script src="/hotel/static/js/mail-script.js"></script>
-	<script src="/hotel/static/js/stellar.js"></script>
-	<script src="/hotel/static/vendors/lightbox/simpleLightbox.min.js"></script>
-	<script src="/hotel/static/js/custom.js"></script>
+
 
 	</html>

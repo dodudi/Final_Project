@@ -23,7 +23,7 @@
 		<link rel="stylesheet" href="/hotel/static/css/responsive.css">
 
         <!--mypage_member_check.css-->
-		<link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_reserve_check.css">
+		<link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_module.css">
 	</head>
 
 	<body>
@@ -70,7 +70,7 @@
 							<tbody>
 
 								<tr>
-									<td>객실등급</td>
+									<th>객실등급</th>
 									<td>r</td>
 								</tr>
 								<tr>
