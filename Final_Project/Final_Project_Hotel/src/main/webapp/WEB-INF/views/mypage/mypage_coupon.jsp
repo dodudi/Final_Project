@@ -23,7 +23,7 @@
 		<link rel="stylesheet" href="/hotel/static/css/responsive.css">
 
         <!--mypage_member_check.css-->
-		<link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_reserve_check.css">
+		<link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_module.css">
 	</head>
 
 	<body>

@@ -1,0 +1,42 @@
+
+.list-group{
+    position: sticky;
+    left:0;
+    top: 80px;
+}
+
+.content-table >  table > tbody > tr > th{
+    display: inline;
+}
+
+
+.header_area{
+    width: 100%;
+    position: sticky!important;
+    border-bottom:1px solid rgba(0, 0, 0, 0.125);
+    background-color: white!important;
+}
+.nav-background{
+    border-right:1px solid rgba(0, 0, 0, 0.125);
+}
+.header_area > .container{
+    padding: 0 0;
+    
+}
+
+
+.nav-title, .content-title{
+    font:500 12px/80px "Poppins", sans-serif;
+    font-size: 1.5rem;
+    color:#222222;
+}
+
+.mypage_background{
+    border-left:1px solid rgba(0, 0, 0, 0.125);
+    border-right:1px solid rgba(0, 0, 0, 0.125);
+    background-color: white;
+}
+
+.content-background{
+    padding:0 48px!important;
+}

@@ -29,14 +29,14 @@
                  <div class="single-footer-widget instafeed">
                      <h6 class="footer_title">InstaFeed</h6>
                      <ul class="list_style instafeed d-flex flex-wrap">
-                         <li><img src="static/image/instagram/Image-01.jpg" alt=""></li>
-                         <li><img src="static/image/instagram/Image-02.jpg" alt=""></li>
-                         <li><img src="static/image/instagram/Image-03.jpg" alt=""></li>
-                         <li><img src="static/image/instagram/Image-04.jpg" alt=""></li>
-                         <li><img src="static/image/instagram/Image-05.jpg" alt=""></li>
-                         <li><img src="static/image/instagram/Image-06.jpg" alt=""></li>
-                         <li><img src="static/image/instagram/Image-07.jpg" alt=""></li>
-                         <li><img src="static/image/instagram/Image-08.jpg" alt=""></li>
+                         <li><img src="/hotel/static/image/instagram/Image-01.jpg" alt=""></li>
+                         <li><img src="/hotel/static/image/instagram/Image-02.jpg" alt=""></li>
+                         <li><img src="/hotel/static/image/instagram/Image-03.jpg" alt=""></li>
+                         <li><img src="/hotel/static/image/instagram/Image-04.jpg" alt=""></li>
+                         <li><img src="/hotel/static/image/instagram/Image-05.jpg" alt=""></li>
+                         <li><img src="/hotel/static/image/instagram/Image-06.jpg" alt=""></li>
+                         <li><img src="/hotel/static/image/instagram/Image-07.jpg" alt=""></li>
+                         <li><img src="/hotel/static/image/instagram/Image-08.jpg" alt=""></li>
                      </ul>
                  </div>
              </div>						
@@ -54,16 +54,3 @@
  </footer>
 <!--================ End footer Area  =================-->
  <!-- Optional JavaScript -->
-     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-     <script src="${pageContext.request.contextPath}/resources/js/jquery-3.2.1.min.js"></script>
-     <script src="${pageContext.request.contextPath}/resources/js/popper.js"></script>
-     <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
-     <script src="${pageContext.request.contextPath}/resources/vendors/owl-carousel/owl.carousel.min.js"></script>
-     <script src="${pageContext.request.contextPath}/resources/js/jquery.ajaxchimp.min.js"></script>
-     <script src="${pageContext.request.contextPath}/resources/js/mail-script.js"></script>
-     <script src="${pageContext.request.contextPath}/resources/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
-     <script src="${pageContext.request.contextPath}/resources/vendors/nice-select/js/jquery.nice-select.js"></script>
-     <script src="${pageContext.request.contextPath}/resources/js/mail-script.js"></script>
-     <script src="${pageContext.request.contextPath}/resources/js/stellar.js"></script>
-     <script src="${pageContext.request.contextPath}/resources/vendors/lightbox/simpleLightbox.min.js"></script>
-     <script src="${pageContext.request.contextPath}/resources/js/custom.js"></script>
