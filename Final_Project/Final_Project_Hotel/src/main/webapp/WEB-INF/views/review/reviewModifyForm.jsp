@@ -72,12 +72,21 @@ $(function(){
     // 수정완료 버튼 클릭
     $("form").submit(function(){
     	var content = $('#summernote').summernote('code');
-    	$('input[name="REVIEW_CONTENT"]').val(content);
+    	console.log("*내용 길이 = " + content.length);
     	
-    	if($('#summernote').val() == '') {
+    	// 내용 없으면 등록 불가
+    	if(content.replaceAll('<p><br></p>', '') == '') {
     		alert('내용을 입력해주세요.');
     		return false;
     	}
+    	
+    	// 1000자 이상의 글은 등록 불가
+    	if(content.length > 1000) {
+    		alert('1000자 이상의 내용은 등록할 수 없습니다. (현재 길이: ' + content.length + '자)');
+    		return false;
+    	}
+    	
+    	$('input[name="REVIEW_CONTENT"]').val(content);
     })
     
     
@@ -121,8 +130,8 @@ $(function(){
 			
 			
 			<div class="col-sm-12">
-				<button onClick="history.go(-1)" class="genric-btn danger circle" style="float:right">취소</button> <!-- 리뷰리스트로 돌아간다 -->
-				<button type="submit" class="genric-btn primary circle" style="float:right">수정완료</button>
+				<button onClick="history.go(-1)" class="genric-btn danger circle float-right">취소</button> <!-- 리뷰리스트로 돌아간다 -->
+				<button type="submit" class="genric-btn primary circle float-right">수정완료</button>
 			</div>
 			
 			<!-- 403에러 방지 토큰 -->

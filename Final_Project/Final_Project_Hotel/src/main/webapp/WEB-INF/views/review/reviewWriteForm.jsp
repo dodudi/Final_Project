@@ -76,18 +76,24 @@ $(function(){
     $("form").submit(function(){
     	//var content = $('#summernote').summernote('code').replaceAll('<p>', '<br>').replaceAll('</p>', '');
     	var content = $('#summernote').summernote('code');
-    	$('input[name="REVIEW_CONTENT"]').val(content);
+    	console.log("*내용 길이 = " + content.length);
     	
-    	if($('#summernote').val() == '') {
+    	// 내용 없으면 등록 불가
+    	if(content.replaceAll('<p><br></p>', '') == '') {
     		alert('내용을 입력해주세요.');
     		return false;
     	}
+    	
+    	// 1000자 이상의 글은 등록 불가
+    	if(content.length > 1000) {
+    		alert('1000자 이상의 내용은 등록할 수 없습니다. (현재 길이: ' + content.length + '자)');
+    		return false;
+    	}
+    	
+    	$('input[name="REVIEW_CONTENT"]').val(content);
     })
 
 }) // ready end
-
-
-
 </script>
 </head>
 <body>
@@ -107,7 +113,7 @@ $(function(){
 	<div class="container">
 		<h3 class="text-heading title_color">커뮤니티 > 후기게시판 > 글쓰기</h3> 
 		
-		<form action="reviewWrite" method="post">          
+		<form action="reviewWrite" method="post" novalidate>     
 		    <h4><label for="REVIEW_SUBJECT">Title</label></h4>
 			<input type="text" class="form-control" name="REVIEW_SUBJECT" placeholder="Enter title" required>     
 		
@@ -117,10 +123,11 @@ $(function(){
 			<h4><label for="summernote">contents</label></h4>   
 			<textarea id="summernote" name="content" required></textarea>
 			<input type="hidden" name="REVIEW_CONTENT">
+			(<span id="contentLengh" style="">/1000)</span>
 			
 			<div class="col-sm-12">
-				<button onClick="history.go(-1)" class="genric-btn danger circle" style="float:right">취소</button> <!-- 리뷰리스트로 돌아간다 -->
-				<button type="submit" class="genric-btn primary circle" style="float:right">등록</button>
+				<button onClick="history.go(-1)" class="genric-btn danger circle float-right">취소</button> <!-- 리뷰리스트로 돌아간다 -->
+				<button type="submit" class="genric-btn primary circle float-right">등록</button>
 			</div>
 			
 			<!-- 403에러 방지 토큰 -->
