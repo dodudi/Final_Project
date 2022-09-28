@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hotel.asia.mybatis.mapper.ReviewBoardMapper">
+	<insert id="write" parameterType="reviewBoard">
+		insert into REVIEW_BOARD 
+		values
+		( (select nvl(max(REVIEW_NUM),0)+1 from REVIEW_BOARD),
+		  #{MEM_ID}, #{REVIEW_PASS}, #{REVIEW_SUBJECT}, #{REVIEW_CONTENT}, 
+		  sysdate, 0, 0 
+		)
+	</insert>
+	
+	<select id="getListCount" resultType="int">
+		select count(*) from REVIEW_BOARD
+	</select>
+	
+	<select id="getReviewList" parameterType="map" resultType="reviewBoard">
+		select *
+		from ( select d.*, rownum rnum
+	   		   from (select REVIEW_BOARD.*, nvl(cnt,0) cnt
+             		 from REVIEW_BOARD left outer join (select REVIEW_NUM, count(*) cnt
+                                                 		from REVIEW_COMMENT
+                                                		group by REVIEW_NUM) c
+             		 on REVIEW_BOARD.REVIEW_NUM = c.REVIEW_NUM                                   
+             	 	 where rownum &lt;= #{endrow}) d
+     		  ) 
+		where rnum &gt;= #{startrow} and rnum &lt;= #{endrow}
+		order by REVIEW_DATE desc	
+	</select>
+	
+	<update id="setReadCountUpdate" parameterType="int">
+		update REVIEW_BOARD
+		set    REVIEW_READCOUNT = REVIEW_READCOUNT + 1
+		where  REVIEW_NUM = #{num}
+	</update>
+	
+	<select id="getDetail" parameterType="int" resultType="reviewBoard">
+		select *
+		from   REVIEW_BOARD
+		where  REVIEW_NUM = #{num}
+	</select>
+</mapper>
