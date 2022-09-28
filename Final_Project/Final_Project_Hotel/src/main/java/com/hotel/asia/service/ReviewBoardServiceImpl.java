@@ -60,7 +60,7 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
 		return mapper.modify(rb);
 	}
 	
-	// 글 수정 시 비밀번호 맞는지 확인
+	// 글 수정, 삭제 시 비밀번호 맞는지 확인
 	@Override
 	public boolean isReviewWriter(int review_NUM, String review_PASS) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -74,6 +74,12 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
 		} else {
 			return true;
 		}
+	}
+	
+	// 글 삭제
+	@Override
+	public int reviewDelete(int review_NUM) {
+		return mapper.delete(review_NUM);
 	}
 	
 	

@@ -25,8 +25,11 @@ public interface ReviewBoardMapper {
 	// 글 수정
 	public int modify(ReviewBoard rb);
 	
-	// 글 수정 시 비밀번호 맞는지 확인
+	// 글 수정, 삭제 시 비밀번호 맞는지 확인
 	public ReviewBoard isReviewWriter(HashMap<String, Object> map);
+	
+	// 글 삭제
+	public int delete(int review_NUM);
 	
 	
 

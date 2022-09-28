@@ -130,7 +130,7 @@ $(function(){
 			
 			
 			<div class="col-sm-12">
-				<button onClick="history.go(-1)" class="genric-btn danger circle float-right">취소</button> <!-- 리뷰리스트로 돌아간다 -->
+				<a onClick="history.go(-1)" class="genric-btn danger circle float-right" style="color:white">취소</a> <!-- 글 상세보기로 돌아간다 -->
 				<button type="submit" class="genric-btn primary circle float-right">수정완료</button>
 			</div>
 			

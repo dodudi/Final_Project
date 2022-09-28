@@ -72,15 +72,21 @@ $(function(){
 	}
     	
     	
-   
-    $("form").submit(function(){
+    // 폼 제출
+    $("#write").click(function(){
     	//var content = $('#summernote').summernote('code').replaceAll('<p>', '<br>').replaceAll('</p>', '');
     	var content = $('#summernote').summernote('code');
     	console.log("*내용 길이 = " + content.length);
     	
+    	// 비밀번호 없으면 등록 불가
+    	if( $.trim($("input[type='password']").val()) == '' ){
+    		alert('비밀번호를 입력해주세요.');
+    		return false;
+    	}
+    	
     	// 내용 없으면 등록 불가
     	if(content.replaceAll('<p><br></p>', '') == '') {
-    		alert('내용을 입력해주세요.');
+    		alert('내용을 작성해주세요.');
     		return false;
     	}
     	
@@ -123,11 +129,10 @@ $(function(){
 			<h4><label for="summernote">contents</label></h4>   
 			<textarea id="summernote" name="content" required></textarea>
 			<input type="hidden" name="REVIEW_CONTENT">
-			(<span id="contentLengh" style="">/1000)</span>
 			
 			<div class="col-sm-12">
-				<button onClick="history.go(-1)" class="genric-btn danger circle float-right">취소</button> <!-- 리뷰리스트로 돌아간다 -->
-				<button type="submit" class="genric-btn primary circle float-right">등록</button>
+				<a onClick="history.go(-1)" class="genric-btn danger circle float-right" style="color:white">취소</a> <!-- 리뷰리스트로 돌아간다 -->
+				<button type="submit" id="write" class="genric-btn primary circle float-right">등록</button>
 			</div>
 			
 			<!-- 403에러 방지 토큰 -->

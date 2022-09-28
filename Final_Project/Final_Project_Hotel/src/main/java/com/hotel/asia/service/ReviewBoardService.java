@@ -23,7 +23,10 @@ public interface ReviewBoardService {
 	// 글 수정
 	public int modify(ReviewBoard rb);
 	
-	// 글 수정 시 비밀번호 맞는지 확인
+	// 글 수정, 삭제 시 비밀번호 맞는지 확인
 	public boolean isReviewWriter(int review_NUM, String review_PASS);
+	
+	// 글 삭제
+	public int reviewDelete(int review_NUM);
 
 }

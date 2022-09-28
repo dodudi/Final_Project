@@ -5,14 +5,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.google.gson.JsonObject;
 import com.hotel.asia.dto.ReviewBoard;
 import com.hotel.asia.service.ReviewBoardService;
@@ -202,6 +207,37 @@ public class ReviewController {
 		}
 	}
 	
+	
+	// 리뷰 삭제
+	@PostMapping("/reviewDelete")
+	public String reviewDelete(String REVIEW_PASS, int REVIEW_NUM, Model mv, 
+							   RedirectAttributes rattr, HttpServletRequest request) {
+		// 글 삭제 시 비밀번호 맞는지 확인.
+		boolean usercheck = reviewBoardService.isReviewWriter(REVIEW_NUM, REVIEW_PASS);
+		
+		// 비밀번호가 일치하지 않는 경우
+		if(usercheck == false) {
+			rattr.addFlashAttribute("state", "passFail"); // 상세페이지에 보낼 state
+			rattr.addAttribute("num", REVIEW_NUM);
+			return "redirect:reviewDetail";
+		}
+		
+		// 비밀번호 일치하는 경우 삭제됩니다.
+		int result = reviewBoardService.reviewDelete(REVIEW_NUM);
+		
+		// 삭제 실패한 경우
+		if(result == 0) {
+			logger.info("게시판 삭제 실패");
+			mv.addAttribute("url", request.getRequestURL());
+			mv.addAttribute("message", "삭제 실패");
+			return "error/error";
+		}
+		
+		// 삭제 성공한 경우 - 글 목록 보기 요청을 전송하는 부분
+		logger.info("리뷰 삭제 성공");
+		rattr.addFlashAttribute("state", "deleteSuccess");
+		return "redirect:reviewList";
+	}
 	
    
 }

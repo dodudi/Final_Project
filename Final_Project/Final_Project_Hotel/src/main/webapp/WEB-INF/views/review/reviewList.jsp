@@ -8,7 +8,10 @@
 <title>후기 게시판</title>
 <script>
 $(function(){
-	
+	// 글 삭제 성공 후 리뷰리스트 페이지로 온 경우
+    if('${state}' == 'deleteSuccess'){
+		alert("글이 삭제되었습니다.");
+	}
 }) // ready end
 </script>
 </head>

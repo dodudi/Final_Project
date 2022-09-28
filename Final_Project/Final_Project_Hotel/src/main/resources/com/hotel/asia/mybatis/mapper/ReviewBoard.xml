@@ -55,5 +55,9 @@
 	    and      REVIEW_PASS = #{REVIEW_PASS}
 	</select>
 	
+	<delete id="delete" parameterType="int">
+		delete from REVIEW_BOARD
+		where  REVIEW_NUM = #{REVIEW_NUM}
+	</delete>
 	
 </mapper>
