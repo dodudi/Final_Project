@@ -27,7 +27,7 @@
                 <div class="container">
                     <div class="hotel_booking_table">
                         <div class="col-md-3">
-                            <h2>Book<br> Your Room</h2>
+                            <h2>객실 예약</h2>
                         </div>
                         <div class="col-md-9">
                             <div class="boking_table">
@@ -76,7 +76,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="book_tabel_item">
-                                            <a class="book_now_btn button_hover" href="#">Book Now</a>
+                                            <a class="book_now_btn button_hover" href="#">예약하기</a>
                                         </div>
                                     </div>
                                 </div>
