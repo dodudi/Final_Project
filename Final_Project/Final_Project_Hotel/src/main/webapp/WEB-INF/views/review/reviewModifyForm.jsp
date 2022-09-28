@@ -22,7 +22,7 @@ $(function(){
         	placeholder: '내용을 작성하세요',
             height: 400,
             lang: "ko-KR", // 에디터 한글 설정
-            //focus : true, // 에디터에 커서 이동
+            focus : true, // 에디터에 커서 이동
             toolbar: [
                 ['fontname', ['fontname']], // 글꼴 설정
                 ['fontsize', ['fontsize']], // 글자 크기 설정
@@ -35,7 +35,6 @@ $(function(){
                 ['view', ['codeview','fullscreen']] // 코드보기, 확대해서보기, 도움말
             ],
             fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋음체','바탕체'], // 추가한 글꼴
-            //airMode:true // 글보기 모드
             
             // 이미지 첨부 콜백함수
             callbacks: {	
@@ -105,22 +104,23 @@ $(function(){
 
 <section class="sample-text-area">
 	<div class="container">
-		<h3 class="text-heading title_color">커뮤니티 > 후기게시판 > 글쓰기</h3> 
+		<h3 class="text-heading title_color">커뮤니티 > 후기게시판 > 글 수정하기</h3> 
 		
-		<form action="reviewWrite" method="post">          
-		    <h4><label for="REVIEW_SUBJECT">Title</label></h4>
-			<input type="text" class="form-control" name="REVIEW_SUBJECT" placeholder="Enter title" required>     
-		
-			<h4><label for="REVIEW_PASS">Password</label></h4>
-			<input type="password" class="form-control" name="REVIEW_PASS" placeholder="Enter password" required>        
+		<form action="reviewModify" method="post">          
+		    <h4><label for="REVIEW_SUBJECT">제목</label></h4>
+			<input type="text" class="form-control" name="REVIEW_SUBJECT" id="REVIEW_SUBJECT" value="${review.REVIEW_SUBJECT}" placeholder="Enter title" required>     
 		     
-			<h4><label for="summernote">contents</label></h4>   
-			<textarea id="summernote" name="content" required></textarea>
+			<h4><label for="summernote">내용</label></h4>   
+			<textarea id="summernote" name="content" required>${review.REVIEW_CONTENT}</textarea>
 			<input type="hidden" name="REVIEW_CONTENT">
+			
+			<h4><label for="REVIEW_PASS">Password</label></h4>
+			<input type="password" class="form-control" name="REVIEW_PASS" id="REVIEW_PASS" placeholder="Enter password" required>        
+			
 			
 			<div class="col-sm-12">
 				<button onClick="history.go(-1)" class="genric-btn danger circle" style="float:right">취소</button> <!-- 리뷰리스트로 돌아간다 -->
-				<button type="submit" class="genric-btn primary circle" style="float:right">등록</button>
+				<button type="submit" class="genric-btn primary circle" style="float:right">수정완료</button>
 			</div>
 			
 			<!-- 403에러 방지 토큰 -->

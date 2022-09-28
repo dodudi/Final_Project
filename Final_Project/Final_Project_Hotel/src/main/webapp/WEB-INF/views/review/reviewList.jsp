@@ -131,6 +131,13 @@ $(function(){
 				</ul>
 			</div>
 		</c:if>
+		
+		<!-- 게시글이 없는 경우 -->
+		<c:if test="${listcount == 0}">
+			<div class="container" style="margin-top:80px; margin-bottom:80px; text-align:center">
+				<font size=5>등록된 글이 없습니다.</font>
+			</div>
+		</c:if>
 	</div>
 </section>
 
