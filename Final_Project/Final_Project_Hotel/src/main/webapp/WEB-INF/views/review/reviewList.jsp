@@ -196,9 +196,9 @@ $(function(){
 							</td>
 							<td>
 								<a href="reviewDetail?num=${reviewList.REVIEW_NUM}">
-									${reviewList.REVIEW_SUBJECT}
-									<%-- <span class="gray small">[<c:out value="${reviewList.CNT }"/>]</span> --%>
+									${reviewList.REVIEW_SUBJECT}&nbsp;&nbsp; 
 								</a>
+									<span ="gray small">[<c:out value="${reviewList.CNT }"/>]</span>
 							</td>
 							<td>${reviewList.REVIEW_DATE}</td>
 							<td>${reviewList.MEM_ID}</td>

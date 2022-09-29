@@ -6,6 +6,7 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>	
 <jsp:include page="../main/header.jsp"/> <!-- 헤더 -->
 <title>후기 게시글 상세보기</title>
+<script src="../resources/project_js/review/reviewDetail.js" charset="UTF-8"></script>
 <script>
 $(function(){
 	// 글 수정 성공 후 상세보기 페이지로 온 경우
