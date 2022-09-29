@@ -136,7 +136,7 @@ $(function(){
 				<thead>
 					<tr>
 						<td>
-							아이디 나올거임! ${review.MEM_ID}
+							<strong>${review.MEM_ID}</strong>
 						</td>
 						<td>
 							<textarea rows="3" class="form-control" id="content" maxLength="50" placeholder="총 50자까지 가능합니다."></textarea>

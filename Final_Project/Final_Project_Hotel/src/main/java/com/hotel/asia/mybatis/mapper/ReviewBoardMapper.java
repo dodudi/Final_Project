@@ -11,7 +11,7 @@ public interface ReviewBoardMapper {
 	public int write(ReviewBoard rb);
 	
 	// 글 개수
-	public int getListCount();
+	public int getListCount(HashMap<String, String> map);
 	
 	// 글 리스트
 	public List<ReviewBoard> getReviewList(HashMap<String, Object> map);

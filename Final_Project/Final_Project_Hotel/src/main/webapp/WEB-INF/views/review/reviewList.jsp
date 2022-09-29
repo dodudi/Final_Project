@@ -10,7 +10,7 @@
 //1. 페이지 이동
 function go(page) {
 	var sortBy= $('#sort').val(); // page는 1
-	var data = "sortBy=" + sortBy + "&page=" + page;
+	var data = "sortBy=" + sortBy + "&page=" + page + "&search_field=${search_field}&search_word=${search_word}";
 	sortList(data);
 } // function go end
 
@@ -51,7 +51,6 @@ function sortList(sdata) {
 				var num = data.listcount - (data.page - 1) * data.limit;
 				console.log(num);
 				var output = "<tbody>";
-				console.log("*받아온 리뷰리스트=>" + data.reviewList);
 				$(data.reviewList).each(function(index, item) {
 					output += '<tr><td>' + (num--) + '</td>'
 					output += '	   <td>'
@@ -108,6 +107,25 @@ $(function(){
 		go(1); // 보여줄 페이지(go)를 1페이지로 설정합니다. - 선언적 함수 go는 ready 안에 작성하면 안 됨!!
 	}); // change end
 	
+	
+	// 검색
+	// 1. 검색어를 입력한 후 다시 리뷰리스트로 온 경우 검색 필드와 나타나도록 합니다.
+	var selectedValue = '${search_field}';
+	if (selectedValue != '-1') {
+		$("input[name='search_field']").val(selectedValue);
+	}
+	// 검색버튼 클릭
+	$("#searchBtn").click(function(){
+		var search_word = $("input[name='search_word']"); // 검색어 - input 태그(Object)
+		
+		// 검색어 공백 유효성 검사
+		if (search_word.val().replaceAll(" ", "") == '') { // 모든 공백 제거
+			alert("검색어를 입력하세요");
+			search_word.focus();
+			return false;
+		}
+	}) // 검색버튼 클릭 end
+	
 }) // ready end
 </script>
 </head>
@@ -132,16 +150,17 @@ $(function(){
 		<a href="reviewWriteForm" class="genric-btn primary circle">글쓰기</a>
 		
 		<!-- 검색 -->
-		<form action="" method="post" style="float:right">
+		<form action="reviewList" method="post" style="float:right">
 			<div class="input-group">
 				<select class="form-control" name="search_field">
-					<option value="subjectNcontent" selected>제목+내용</option>
-					<option value="subject">제목</option>
-					<option value="content">내용</option>
+					<option value="0" selected>제목</option>
+					<option value="1">글쓴이</option>
 				</select>
-				<input name="search_word" type="text" class="form-control" value="${search_word}"> <!-- 검색어를 입력한 후 다시 돌아온 경우 검색어가 나타나도록 합니다. -->
-				<button class="genric-btn primary circle" type="submit">검색</button>
+				<input name="search_word" type="text" class="form-control" value="${search_word}" placeholder="검색어 입력"> <!-- 검색어를 입력한 후 다시 돌아온 경우 검색어가 나타나도록 합니다. -->
+				<button type="submit" id="searchBtn" class="genric-btn primary circle">검색</button>
 			</div>
+			<!-- 403에러 방지 토큰 -->
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 		</form><br><br>
 		
 		<!-- 정렬 -->
@@ -200,7 +219,7 @@ $(function(){
 					</c:if>
 					<c:if test="${page > 1}"> 
 						<li class="page-item">
-							<a href="reviewList?page=${page-1}" class="page-link">이전&nbsp;</a> <!-- page(현재 페이지)가 1페이지보다 크면 이동할 이전 페이지가 생긴다 -->
+							<a href="reviewList?page=${page-1}&search_field=${search_field}&search_word=${search_word}" class="page-link">이전&nbsp;</a> <!-- page(현재 페이지)가 1페이지보다 크면 이동할 이전 페이지가 생긴다 -->
 						</li>
 					</c:if>
 					
@@ -212,7 +231,7 @@ $(function(){
 						</c:if>
 						<c:if test="${a != page}">
 							<li class="page-item">
-								<a href="reviewList?page=${a}" class="page-link">${a}</a>
+								<a href="reviewList?page=${a}&search_field=${search_field}&search_word=${search_word}" class="page-link">${a}</a>
 							</li>
 						</c:if>
 					</c:forEach>
@@ -224,7 +243,7 @@ $(function(){
 					</c:if>	
 					<c:if test="${page < maxpage}">
 						<li class="page-item">
-							<a href="reviewList?page=${page+1}" class="page-link">&nbsp;다음</a>
+							<a href="reviewList?page=${page+1}&search_field=${search_field}&search_word=${search_word}" class="page-link">&nbsp;다음</a>
 						</li>
 					</c:if>						
 				</ul>

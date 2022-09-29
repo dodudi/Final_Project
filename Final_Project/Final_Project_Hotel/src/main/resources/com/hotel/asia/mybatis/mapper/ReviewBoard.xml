@@ -12,8 +12,10 @@
 		)
 	</insert>
 	
-	<select id="getListCount" resultType="int">
+	<!-- 리뷰 리스트 -->
+	<select id="getListCount" parameterType="map" resultType="int">
 		select count(*) from REVIEW_BOARD
+		<include refid="search_" />
 	</select>
 	
 	<select id="getReviewList" parameterType="map" resultType="reviewBoard">
@@ -24,11 +26,26 @@
                                                  		from REVIEW_COMMENT
                                                 		group by REVIEW_NUM) c
              		 on REVIEW_BOARD.REVIEW_NUM = c.REVIEW_NUM
+             		 <include refid="search_" />
              		 order by ${sortBy} desc ) d <!-- orderby는 출력변수이므로 ${} -->
                where rownum &lt;= #{endrow}
      		  ) 
 		where rnum &gt;= #{startrow} and rnum &lt;= #{endrow}
 	</select>
+
+	<!-- 검색 -->
+	<sql id="search_">
+		<if test="search_field!=null">
+	    	where	           
+	        <choose>
+	        	<when test="search_field=='REVIEW_SUBJECT'">REVIEW_SUBJECT</when>
+	            <when test="search_field=='MEM_ID'">MEM_ID</when>
+	        </choose>	  
+	        like #{search_word}	     
+    	</if>
+	</sql>
+	
+	
 	
 	<update id="setReadCountUpdate" parameterType="int">
 		update REVIEW_BOARD

@@ -41,22 +41,24 @@ public class ReviewController {
 	
 	// 리뷰 게시판 이동
 	@RequestMapping(value="/reviewList")
-	public ModelAndView reviewList(@RequestParam(value="page", defaultValue="1", required=false) int page,
-								   @RequestParam(value="sortBy", defaultValue="REVIEW_DATE", required=false) String sortBy,
+	public ModelAndView reviewList(@RequestParam(value="page", defaultValue="1", required=false) int page, // 페이지
+								   @RequestParam(value="sortBy", defaultValue="REVIEW_DATE", required=false) String sortBy, // 정렬기준
+								   @RequestParam(value="search_field", defaultValue="-1", required=false) int index, // 검색 기준
+								   @RequestParam(value="search_word", defaultValue="", required=false) String search_word, // 검색어
 			                       ModelAndView mv, HttpSession session) {
 		session.setAttribute("id", "A1234"); // 임시로 id 저장 나중에 지우기!!
 		
 		logger.info("=====[reviewList] 리뷰게시판 이동=====");
 		
 		int limit = 10; // 한 페이지에 보여줄 게시판 목록의 수 (한 화면에 출력할 로우 갯수)
-		int listcount = reviewBoardService.getListCount(); // 총 리스트 수를 받아온다
+		int listcount = reviewBoardService.getListCount(index, search_word); // 총 리스트 수를 받아온다
 		int maxpage = (listcount + limit - 1) / limit; // 총 페이지 수
 		int startpage = ((page - 1) / 10) * 10 + 1; // 현재 페이지에 보여줄 시작 페이지 수(1, 11, 21 등 ...)
 		int endpage = startpage + 10 - 1; // 현재 페이지에 보여줄 마지막 페이지 수(10, 20, 30 등 ...)
 		if(endpage > maxpage) {
 			endpage = maxpage; 
 		}
-		List<ReviewBoard> reviewList = reviewBoardService.getReviewList(page, limit, sortBy);
+		List<ReviewBoard> reviewList = reviewBoardService.getReviewList(page, limit, sortBy, index, search_word);
 		 
 		logger.info("* 총 리뷰 수:" + listcount);
 		
@@ -67,21 +69,23 @@ public class ReviewController {
 		mv.addObject("endpage", endpage);
 		mv.addObject("listcount", listcount);
 		mv.addObject("limit", limit);
+		mv.addObject("search_field", index);
+		mv.addObject("search_word", search_word);
 		mv.addObject("reviewList", reviewList);
 		return mv;
 	}
-	
-	
 	// 리뷰 게시판 정렬
 	@ResponseBody
 	@RequestMapping(value="/reviewListSort")
 	public Map<String, Object> reviewListSort(@RequestParam(value="page", defaultValue="1", required=false) int page, // page는 넘어올 수도 있고 안 올 수도 있으므로 defaultValue와 required=false 설정
+											  @RequestParam(value="search_field", defaultValue="-1", required=false) int index, // 검색 기준
+											  @RequestParam(value="search_word", defaultValue="", required=false) String search_word, // 검색어
 											  String sortBy) {
 		logger.info("=====[reviewListSort] 리뷰게시판 정렬=====");
 		logger.info("정렬기준: " + sortBy);
 		
 		int limit = 10; // 한 페이지에 보여줄 게시판 목록의 수 (한 화면에 출력할 로우 갯수)
-		int listcount = reviewBoardService.getListCount(); // 총 리스트 수를 받아온다
+		int listcount = reviewBoardService.getListCount(index, search_word); // 총 리스트 수를 받아온다
 		int maxpage = (listcount + limit - 1) / limit; // 총 페이지 수
 		int startpage = ((page - 1) / 10) * 10 + 1; // 현재 페이지에 보여줄 시작 페이지 수(1, 11, 21 등 ...)
 		int endpage = startpage + 10 - 1; // 현재 페이지에 보여줄 마지막 페이지 수(10, 20, 30 등 ...)
@@ -89,7 +93,7 @@ public class ReviewController {
 			endpage = maxpage; 
 		}
 		
-		List<ReviewBoard> reviewList = reviewBoardService.getReviewList(page, limit, sortBy);
+		List<ReviewBoard> reviewList = reviewBoardService.getReviewList(page, limit, sortBy, index, search_word);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("limit", limit);
 		map.put("listcount", listcount);
@@ -97,6 +101,8 @@ public class ReviewController {
 		map.put("maxpage", maxpage);
 		map.put("startpage", startpage);
 		map.put("endpage", endpage);
+		//map.put("search_field", index);
+		//map.put("search_word", search_word);
 		map.put("reviewList", reviewList);
 		return map;
 	}

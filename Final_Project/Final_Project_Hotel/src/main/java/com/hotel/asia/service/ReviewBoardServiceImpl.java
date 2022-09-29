@@ -27,16 +27,30 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
 	
 	// 글 갯수
 	@Override
-	public int getListCount() {
-		return mapper.getListCount();
+	public int getListCount(int index, String search_word) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		// index == -1 : search_field가 넘어오지 않은 상태로, defaultValue="-1"
+		if(index != -1) {
+			String[] search_field= new String[] {"REVIEW_SUBJECT", "MEM_ID"};
+			map.put("search_field", search_field[index]);
+			map.put("search_word", "%" + search_word + "%");
+		}
+		return mapper.getListCount(map);
 	}
 	
 	// 글 리스트
 	@Override
-	public List<ReviewBoard> getReviewList(int page, int limit, String sortBy) {
+	public List<ReviewBoard> getReviewList(int page, int limit, String sortBy, int index, String search_word) {
 		HashMap<String, Object> map = new HashMap<String, Object>();		
 		int startrow = (page-1) * limit + 1; 
-		int endrow = startrow + limit - 1; 		
+		int endrow = startrow + limit - 1;
+		
+		// index == -1 : search_field가 넘어오지 않은 상태로, defaultValue="-1"
+		if(index != -1) {
+			String[] search_field= new String[] {"REVIEW_SUBJECT", "MEM_ID"};
+			map.put("search_field", search_field[index]);
+			map.put("search_word", "%" + search_word + "%");
+		}
 		
 		map.put("startrow", startrow);
 		map.put("endrow", endrow);

@@ -9,10 +9,10 @@ public interface ReviewBoardService {
 	public int write(ReviewBoard rb);
 	
 	// 글 갯수
-	public int getListCount();
+	public int getListCount(int index, String search_word);
 	
 	// 글 리스트
-	public List<ReviewBoard> getReviewList(int page, int limit, String sortBy);
+	public List<ReviewBoard> getReviewList(int page, int limit, String sortBy, int index, String search_word);
 	
 	// 조회수
 	public int setReadCountUpdate(int num);
