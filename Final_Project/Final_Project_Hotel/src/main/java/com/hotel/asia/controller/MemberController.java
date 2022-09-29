@@ -29,7 +29,7 @@ import com.hotel.asia.service.MemberService;
 import com.hotel.asia.task.SendMail;
 
 @Controller
-@RequestMapping(value="/member")	//http://localhost:8088/myhome4/member/로 시작하는 주소 매핑 
+@RequestMapping(value="/member")
 public class MemberController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
@@ -47,71 +47,27 @@ public class MemberController {
 	
 	
 	//로그인 폼 이동 
-	//http://localhost:8088/myhome4/member/login
-	//<security:remember-me> 설정후 
-	//로그인 유지를 위한  쿠키의 값 수정 
+	//http://localhost:9000/hotel/member/login
 	@RequestMapping(value="/login", method=RequestMethod.GET)
 	public ModelAndView login(ModelAndView mv, 
 								@CookieValue(value="remember-me", required=false) Cookie readCookie,
 								HttpSession session,
 								Principal userPrincipal){
 		if(readCookie != null) {
-			logger.info("저장된 아이디 :" + userPrincipal.getName());	//principal.getName() : 로그인한 아이디 값을 알수있다. 
-			mv.setViewName("redirect:/board/list");		
+			logger.info("저장된 아이디 :" + userPrincipal.getName());	 
+			mv.setViewName("redirect:/main/main");		
 		} else {
-			mv.setViewName("member/loginForm");
-			mv.addObject("loginfail", session.getAttribute("loginfail"));//세션에 저장된 값을 한번만 실행될수있도록 model에 처리 
-			session.removeAttribute("loginfail");	//세션값 제거
+			mv.setViewName("member/login");
+			mv.addObject("loginfail", session.getAttribute("loginfail"));
+			session.removeAttribute("loginfail");
 		}
 		return mv;
 	}
 	
-	//로그인 처리 
-	//@RequestMapping(value="/loginProcess", method=RequestMethod.POST)
-	public String loginProcess(@RequestParam("id") String id,
-								@RequestParam("password") String password,
-								@RequestParam(value="remember", defaultValue="", required=false)
-								String remember,
-								HttpServletResponse response,
-								HttpSession session,
-								RedirectAttributes rattr) {
-		
-		int result = memberservice.isId(id, password);	//로그인 처리하는 isId에서 변경필요! (패스워드땜에)
-		logger.info("결과 : " + result);
-		
-		if(result == 1) {
-			//로그인 성공 
-			session.setAttribute("id", id);
-			Cookie savecookie = new Cookie("saveid", id);
-			if(!remember.equals(""))  {
-				savecookie.setMaxAge(60*60);
-				logger.info("쿠키저장 : 60*60");
-			}else {
-				logger.info("쿠키저장 : 0");
-				savecookie.setMaxAge(0);
-			}
-			response.addCookie(savecookie);
-			
-			return "redirect:/board/list";		//context 경로 바로 뒤에 붙음 
-												//http://localhost:8088/myhome4/board/list
-		}else {
-			rattr.addFlashAttribute("result", result);
-			return "redirect:login";			//http://localhost:8088/myhome4/member/login
-		}
-	}
-	
-	//로그아웃
-	//@RequestMapping(value="/logout", method=RequestMethod.GET)
-	public String loginout(HttpSession session) {
-		session.invalidate();
-		return "redirect:login";
-	}
-	
 	//회원가입 폼 이동 
-	//http://localhost:8088/myhome4/member/join
 	@RequestMapping(value="/join", method=RequestMethod.GET)
 	public String join() {
-		return "member/join";	//WEB-INF/views/member/join.jsp
+		return "member/join";
 	}
 	
 	//회원가입 POST
@@ -143,17 +99,6 @@ public class MemberController {
 			return "error/error";
 		}
 	}
-	
-	/* 내가 한 풀이 
-	 public String joinProcess(Member m) {
-		int result = memberservice.insert(m);
-		
-		if(result == 1) {
-			return "member/loginForm";
-		}
-		return null;
-	}
-	*/
 	
 	
 	//회원가입폼에서 아이디 검사
