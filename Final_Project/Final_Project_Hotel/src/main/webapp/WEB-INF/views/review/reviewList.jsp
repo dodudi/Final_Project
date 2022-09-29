@@ -198,7 +198,7 @@ $(function(){
 								<a href="reviewDetail?num=${reviewList.REVIEW_NUM}">
 									${reviewList.REVIEW_SUBJECT}&nbsp;&nbsp; 
 								</a>
-									<span ="gray small">[<c:out value="${reviewList.CNT }"/>]</span>
+									<span class="gray small">[<c:out value="${reviewList.CNT}"/>]</span> <!-- 총 댓글 수 -->
 							</td>
 							<td>${reviewList.REVIEW_DATE}</td>
 							<td>${reviewList.MEM_ID}</td>

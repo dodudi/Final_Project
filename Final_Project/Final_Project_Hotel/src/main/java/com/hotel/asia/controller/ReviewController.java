@@ -30,6 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.gson.JsonObject;
 import com.hotel.asia.dto.ReviewBoard;
 import com.hotel.asia.service.ReviewBoardService;
+import com.hotel.asia.service.ReviewCommService;
 
 @Controller
 @RequestMapping(value="/review")
@@ -37,7 +38,10 @@ public class ReviewController {
 	private static final Logger logger = LoggerFactory.getLogger(ReviewController.class);
 	
 	@Autowired
-	private ReviewBoardService reviewBoardService; 
+	private ReviewBoardService reviewBoardService;
+	@Autowired
+	private ReviewCommService reviewCommService;
+	
 	
 	// 리뷰 게시판 이동
 	@RequestMapping(value="/reviewList")
@@ -46,7 +50,7 @@ public class ReviewController {
 								   @RequestParam(value="search_field", defaultValue="-1", required=false) int index, // 검색 기준
 								   @RequestParam(value="search_word", defaultValue="", required=false) String search_word, // 검색어
 			                       ModelAndView mv, HttpSession session) {
-		session.setAttribute("id", "A1234"); // 임시로 id 저장 나중에 지우기!!
+		session.setAttribute("id", "A1234"); // ======임시로 id 저장 나중에 지우기!!
 		
 		logger.info("=====[reviewList] 리뷰게시판 이동=====");
 		
@@ -192,9 +196,9 @@ public class ReviewController {
 			mv.addObject("message", "상세보기 실패입니다.");
 		} else {
 			logger.info("상세보기 성공");
-			//int count = commentService.getListCount(num); // 댓글처리 할 때 주석 풀기
+			int count = reviewCommService.getCommListCount(num); // 총 댓글 수
 			mv.setViewName("review/reviewDetail");
-			//mv.addObject("count", count); // 댓글처리 할 때 주석 풀기
+			mv.addObject("count", count);
 			mv.addObject("already", already); // 이미 추천한 사람인지 확인
 			mv.addObject("review", review);
 		}

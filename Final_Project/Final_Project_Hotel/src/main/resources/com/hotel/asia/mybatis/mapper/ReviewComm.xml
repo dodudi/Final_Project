@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hotel.asia.mybatis.mapper.ReviewCommMapper">
+	<select id="getCommListCount" parameterType="int" resultType="int">
+		select count(*) from REVIEW_COMMENT
+		where REVIEW_NUM = #{REVIEW_NUM}
+	</select>
+	
+	<select id="getCommentList" resultType="reviewComm" parameterType="map">
+		select *
+		from ( select rownum rnum, b.*
+		       from   ( select REVIEW_COMMENT.*
+		          		from REVIEW_COMMENT
+		          		where REVIEW_NUM = #{REVIEW_NUM}
+		          		order by REVIEW_COMMENT_RE_REF desc, REVIEW_COMMENT_RE_SEQ asc ) b
+		       where rownum &lt;= #{endrow} ) 
+		 where rnum between #{startrow} and #{endrow}
+	</select>
+	
+	<insert id="commWrite" parameterType="reviewComm">
+		insert into REVIEW_COMMENT
+		values
+		(  (select nvl(max(REVIEW_COMMENT_NUM),0)+1 from REVIEW_COMMENT),
+		   #{REVIEW_NUM}, #{MEM_ID},
+		   0, 0, 0,
+		   #{REVIEW_COMMENT_CONTENT}, sysdate, 'N')
+	</insert>
+	
+	<update id="commModify" parameterType="reviewComm">
+		update REVIEW_COMMENT
+		set    REVIEW_COMMENT_CONTENT = #{REVIEW_COMMENT_CONTENT},
+			   REVIEW_COMMENT_REVISION = 'Y'
+		where  REVIEW_COMMENT_NUM = #{REVIEW_COMMENT_NUM}
+	</update>
+	
+	<delete id="commDelete" parameterType="int"> <!-- 수정해야함 -->
+		delete from REVIEW_COMMENT
+		where  REVIEW_COMMENT_NUM = #{REVIEW_COMMENT_NUM}
+	</delete>
+	
+	<!-- 답댓글 등록 -->
+	<select id="refComm" parameterType="int" resultType="reviewComm">
+		select * from REVIEW_COMMENT
+		where REVIEW_COMMENT_NUM = #{REVIEW_COMMENT_NUM}
+	</select>
+	<!-- 1. BOARD_RE_SEQ값 수정 -->
+	<update id="commReplyUpdate" parameterType="reviewComm">
+	  update  REVIEW_COMMENT
+		set   REVIEW_COMMENT_RE_SEQ = REVIEW_COMMENT_RE_SEQ+1
+		where REVIEW_COMMENT_RE_REF = #{REVIEW_COMMENT_RE_REF}
+		and   REVIEW_COMMENT_RE_SEQ <![CDATA[ > ]]> #{REVIEW_COMMENT_RE_SEQ}
+	</update>
+	<!-- 2. 답댓글 등록 -->
+	<insert id="commReply" parameterType="reviewComm">
+		insert into REVIEW_COMMENT
+		values
+		( (select nvl(max(REVIEW_COMMENT_NUM),0)+1 from REVIEW_COMMENT),
+		   #{REVIEW_NUM}, #{MEM_ID},
+		   #{REVIEW_COMMENT_RE_REF}, #{REVIEW_COMMENT_RE_LEV}, #{REVIEW_COMMENT_RE_SEQ}, 
+		   #{REVIEW_COMMENT_CONTENT}, sysdate, 'N')
+	</insert>
+
+</mapper>
