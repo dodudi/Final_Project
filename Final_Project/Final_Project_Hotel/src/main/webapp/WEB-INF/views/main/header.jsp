@@ -29,11 +29,11 @@
              <!-- Collect the nav links, forms, and other content for toggling -->
              <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                  <ul class="nav navbar-nav menu_nav ml-auto">
-                     <li class="nav-item active"><a class="nav-link" href="home">Hotel</a></li>
-                     <li class="nav-item"><a class="nav-link" href="accomodation">Accomodation</a></li>
-                     <li class="nav-item"><a class="nav-link" href="promotion">Promotion</a></li>
+                     <li class="nav-item"><a class="nav-link" href="home">소  개</a></li>
+                     <li class="nav-item"><a class="nav-link" href="accomodation">객  실</a></li>
+                     <li class="nav-item"><a class="nav-link" href="promotion">프로모션</a></li>
                      <li class="nav-item submenu dropdown">
-                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Community</a>
+                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">커뮤니티</a>
                          <ul class="dropdown-menu">
                              <li class="nav-item"><a class="nav-link" href="info">공지사항</a></li>
                              <li class="nav-item"><a class="nav-link" href="qna">문의사항</a></li>
