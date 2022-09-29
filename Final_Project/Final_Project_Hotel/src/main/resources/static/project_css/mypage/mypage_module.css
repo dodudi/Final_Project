@@ -5,11 +5,6 @@
     top: 80px;
 }
 
-.content-table >  table > tbody > tr > th{
-    display: inline;
-}
-
-
 .header_area{
     width: 100%;
     position: sticky!important;
@@ -23,7 +18,11 @@
     padding: 0 0;
     
 }
-
+.content-sub-title{
+    font:500 12px/12px "Poppins", sans-serif;   
+    color:#222222;
+    font-size: 1rem;
+}
 
 .nav-title, .content-title{
     font:500 12px/80px "Poppins", sans-serif;
@@ -40,3 +39,4 @@
 .content-background{
     padding:0 48px!important;
 }
+

@@ -1,0 +1,8 @@
+
+.content-table >  table > tbody > tr > td:first-child{
+    width: 20%;
+}
+
+.content-title{
+    padding-left: 12px;
+}

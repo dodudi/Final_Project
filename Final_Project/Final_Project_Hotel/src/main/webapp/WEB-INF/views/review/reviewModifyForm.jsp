@@ -16,17 +16,15 @@
 <title> 리뷰 게시글 작성 </title>
 <script>
 $(function(){
-	// 메인화면 페이지 로드 함수
     $(document).ready(function () {
         $('#summernote').summernote({
         	placeholder: '내용을 작성하세요',
             height: 400,
             lang: "ko-KR", // 에디터 한글 설정
-            //focus : true, // 에디터에 커서 이동
+            focus : true, // 에디터에 커서 이동
             toolbar: [
                 ['fontname', ['fontname']], // 글꼴 설정
                 ['fontsize', ['fontsize']], // 글자 크기 설정
-                //['style', ['bold', 'italic', 'underline','strikethrough', 'clear']], // 굵기, 기울임꼴, 밑줄,취소 선, 서식지우기
                 ['color', ['forecolor','color']], // 글자색
                 ['para', ['ul', 'ol', 'paragraph']], // 글머리 기호, 번호매기기, 문단정렬
     		    ['table', ['table']], // 표만들기
@@ -35,7 +33,6 @@ $(function(){
                 ['view', ['codeview','fullscreen']] // 코드보기, 확대해서보기, 도움말
             ],
             fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋음체','바탕체'], // 추가한 글꼴
-            //airMode:true // 글보기 모드
             
             // 이미지 첨부 콜백함수
             callbacks: {	
@@ -71,22 +68,15 @@ $(function(){
 		});
 	}
     	
-    	
-    // 폼 제출
-    $("#write").click(function(){
-    	//var content = $('#summernote').summernote('code').replaceAll('<p>', '<br>').replaceAll('</p>', '');
+	
+    // 수정완료 버튼 클릭
+    $("form").submit(function(){
     	var content = $('#summernote').summernote('code');
     	console.log("*내용 길이 = " + content.length);
     	
-    	// 비밀번호 없으면 등록 불가
-    	if( $.trim($("input[type='password']").val()) == '' ){
-    		alert('비밀번호를 입력해주세요.');
-    		return false;
-    	}
-    	
     	// 내용 없으면 등록 불가
     	if(content.replaceAll('<p><br></p>', '') == '') {
-    		alert('내용을 작성해주세요.');
+    		alert('내용을 입력해주세요.');
     		return false;
     	}
     	
@@ -98,6 +88,12 @@ $(function(){
     	
     	$('input[name="REVIEW_CONTENT"]').val(content);
     })
+    
+    
+    // 글 수정 시 비밀번호가 다른 경우
+    if('${state}' == 'passFail'){
+		alert("비밀번호가 다릅니다.");
+	}
 
 }) // ready end
 </script>
@@ -117,22 +113,25 @@ $(function(){
 
 <section class="sample-text-area">
 	<div class="container">
-		<h3 class="text-heading title_color">커뮤니티 > 후기게시판 > 글쓰기</h3> 
+		<h3 class="text-heading title_color">커뮤니티 > 후기게시판 > 글 수정하기</h3> 
 		
-		<form action="reviewWrite" method="post" novalidate>     
-		    <h4><label for="REVIEW_SUBJECT">Title</label></h4>
-			<input type="text" class="form-control" name="REVIEW_SUBJECT" placeholder="Enter title" required>     
-		
-			<h4><label for="REVIEW_PASS">Password</label></h4>
-			<input type="password" class="form-control" name="REVIEW_PASS" placeholder="Enter password" required>        
+		<form action="reviewModify" method="post">
+			<input type="hidden" name="REVIEW_NUM" value="${review.REVIEW_NUM}">
+			       
+		    <h4><label for="REVIEW_SUBJECT">제목</label></h4>
+			<input type="text" class="form-control" name="REVIEW_SUBJECT" value="${review.REVIEW_SUBJECT}" placeholder="Enter title" required>     
 		     
-			<h4><label for="summernote">contents</label></h4>   
-			<textarea id="summernote" name="content" required></textarea>
+			<h4><label for="summernote">내용</label></h4>   
+			<textarea id="summernote" name="content" required>${review.REVIEW_CONTENT}</textarea>
 			<input type="hidden" name="REVIEW_CONTENT">
 			
+			<h4><label for="REVIEW_PASS">Password</label></h4>
+			<input type="password" class="form-control" name="REVIEW_PASS" placeholder="Enter password" required>        
+			
+			
 			<div class="col-sm-12">
-				<a onClick="history.go(-1)" class="genric-btn danger circle float-right" style="color:white">취소</a> <!-- 리뷰리스트로 돌아간다 -->
-				<button type="submit" id="write" class="genric-btn primary circle float-right">등록</button>
+				<a onClick="history.go(-1)" class="genric-btn danger circle float-right" style="color:white">취소</a> <!-- 글 상세보기로 돌아간다 -->
+				<button type="submit" class="genric-btn primary circle float-right">수정완료</button>
 			</div>
 			
 			<!-- 403에러 방지 토큰 -->

@@ -17,6 +17,7 @@
 		<link rel="stylesheet" href="/hotel/static/css/style.css">
 		<link rel="stylesheet" href="/hotel/static/css/responsive.css">
 		<link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_module.css">
+		<link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_reserve_check.css">
 	</head>
 
 	<body>
@@ -57,15 +58,42 @@
 				<!--My Page Select Nav End-->
 
 				<div class="col-9 content-background ">
-					<div class="content-title">
-						Reservation information</div>
+					<div class="content-title">Reservation information</div>
 					<div class="content-table mb-5">
 						<table class="table table-bordered" >
 							<tbody>
 								<tr>
-									<td>r</td>
-									<td>r</td>
-								</tr>
+                                    <td>객실등급</td>
+                                    <td colspan="3">r</td>
+                                </tr>
+                                <tr>
+                                    <td>예약자명</td>
+                                    <td colspan="3">r</td>
+                                </tr>
+                                <tr>
+                                    <td>체크인 날짜</td>
+                                    <td>r</td>
+                                </tr>
+                                <tr>
+                                    <td>체크아웃 날짜</td>
+                                    <td>r</td>
+                                </tr>
+                                <tr>
+                                    <td>총 숙박일</td>
+                                    <td>r</td>
+                                </tr>
+                                <tr>
+                                    <td>성인</td>
+                                    <td>r</td>
+                                </tr>
+                                <tr>
+                                    <td>아동</td>
+                                    <td>r</td>
+                                </tr>
+                                <tr>
+                                    <td>총 금액</td>
+                                    <td>r</td>
+                                </tr>
 							</tbody>
 						</table>
 						<div class="clearfix btn-box">
@@ -75,45 +103,61 @@
 					</div>
 
 					<div class="content-title">Breakfast | Dinner Information</div>
-					<div class="content-table">
-						<table class="table">
+					<div class="content-table mb-4">
+						<table class="table table-bordered">
 							<tbody>
 
 								<tr>
-									<td rowspan="4">조식</td>
-									<td>날짜</td>
-									<td>1일</td>
-									<td>2일</td>
-									<td>3일</td>
+									<td colspan="5" class ="content-sub-title">Breakfast</td>
 								</tr>
 								<tr>
+									<td rowspan="3">2022/02/22</td>
 									<td>성인</td>
-									<td>0명</td>
-									<td>0명</td>
 									<td>0명</td>
 								</tr>
 								<tr>
 									<td>아동</td>
 									<td>0명</td>
+								</tr>
+								<tr>
+									<td>총금액</td>
+									<td>0원</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="content-table mb-4">
+						<table class="table table-bordered">
+							<tbody>
+
+								<tr>
+									<td colspan="5"  class ="content-sub-title">Dinner</td>
+								</tr>
+								<tr>
+									<td rowspan="3">2022/02/22</td>
+									<td>성인</td>
 									<td>0명</td>
+								</tr>
+								<tr>
+									<td>아동</td>
 									<td>0명</td>
 								</tr>
 								<tr>
 									<td>총금액</td>
 									<td>0원</td>
-									<td>0원</td>
-									<td>0원</td>
 								</tr>
-							</tbody>
-						</table>
-		
-					</div>
-					<div class="content-table mb-4">
-						<table class="table">
-							<tbody>
-
 								<tr>
-									<td colspan="5">석식</td>
+									<td rowspan="3">2022/02/22</td>
+									<td>성인</td>
+									<td>0명</td>
+								</tr>
+								<tr>
+									<td>아동</td>
+									<td>0명</td>
+								</tr>
+								<tr>
+									<td>총금액</td>
+									<td>0원</td>
 								</tr>
 								<tr>
 									<td rowspan="3">2022/02/22</td>
