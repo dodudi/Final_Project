@@ -31,6 +31,17 @@ public interface ReviewBoardMapper {
 	// 글 삭제
 	public int delete(int review_NUM);
 	
+	// 글 이전에 추천한 사람인지 확인
+	public ReviewBoard reviewRecommMem(HashMap<String, Object> map);
+	// 추천 테이블에 추가
+	public int reviewRecommTab(HashMap<String, Object> map);
+	// 추천 성공 여부
+	public int reviewRecomm(int review_NUM);
+	// 추천 테이블에서 삭제
+	public int reviewRecommTabDel(HashMap<String, Object> map);
+	// 추천 해제 여부
+	public int reviewRecommDel(int review_NUM);
+	
 	
 
 }

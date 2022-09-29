@@ -55,11 +55,12 @@ function sortList(sdata) {
 				$(data.reviewList).each(function(index, item) {
 					output += '<tr><td>' + (num--) + '</td>'
 					output += '	   <td>'
-					output += '        <div><a href="reviewDetail?num=' + item.REVIEW_NUM  + '">' + item.REVIEW_SUBJECT + '</a></div>'
+					output += '        <a href="reviewDetail?num=' + item.REVIEW_NUM  + '">' + item.REVIEW_SUBJECT + '</a>'
 					output += '	   </td>'		
-					output += '    <td><div>' + item.REVIEW_DATE+'</div></td>'
-					output += '    <td><div>' + item.MEM_ID+'</div></td>'
-					output += '    <td><div>' + item.REVIEW_READCOUNT+'</div></td>'
+					output += '    <td>' + item.REVIEW_DATE +'</td>'
+					output += '    <td>' + item.MEM_ID +'</td>'
+					output += '    <td>' + item.REVIEW_READCOUNT +'</td>'
+					output += '    <td>' + item.REVIEW_RECOMM +'</td></tr>'
 				}) // each end
 				output += "</tbody>"
 				$('table').append(output)//table 완성

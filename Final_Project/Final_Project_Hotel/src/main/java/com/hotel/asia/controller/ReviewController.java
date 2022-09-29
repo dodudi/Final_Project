@@ -43,7 +43,9 @@ public class ReviewController {
 	@RequestMapping(value="/reviewList")
 	public ModelAndView reviewList(@RequestParam(value="page", defaultValue="1", required=false) int page,
 								   @RequestParam(value="sortBy", defaultValue="REVIEW_DATE", required=false) String sortBy,
-			                       ModelAndView mv) {
+			                       ModelAndView mv, HttpSession session) {
+		session.setAttribute("id", "A1234"); // 임시로 id 저장 나중에 지우기!!
+		
 		logger.info("=====[reviewList] 리뷰게시판 이동=====");
 		
 		int limit = 10; // 한 페이지에 보여줄 게시판 목록의 수 (한 화면에 출력할 로우 갯수)
@@ -71,7 +73,7 @@ public class ReviewController {
 	
 	
 	// 리뷰 게시판 정렬
-	@ResponseBody // 각 메서드의 실행 결과를 JSON으로 변환되어 HTTP ResponseBODY에 설정됩니다.
+	@ResponseBody
 	@RequestMapping(value="/reviewListSort")
 	public Map<String, Object> reviewListSort(@RequestParam(value="page", defaultValue="1", required=false) int page, // page는 넘어올 수도 있고 안 올 수도 있으므로 defaultValue와 required=false 설정
 											  String sortBy) {
@@ -165,13 +167,17 @@ public class ReviewController {
 	
 	// 리뷰글 보기
 	@GetMapping(value="/reviewDetail")
-	public ModelAndView reviewDetail(int num, ModelAndView mv, HttpServletRequest request,
+	public ModelAndView reviewDetail(int num, ModelAndView mv, HttpServletRequest request, HttpSession session,
 							         @RequestHeader(value="referer") String beforeURL) {
 		logger.info("referer:" + beforeURL);
 		if(beforeURL.endsWith("reviewList")) { // hotel/review/reviewList 에서 제목을 클릭한 경우 조회수 증가
 			reviewBoardService.setReadCountUpdate(num);
 		}
 		ReviewBoard review = reviewBoardService.getDetail(num);
+		
+		// 이미 추천한 사람인지 확인
+		int already = reviewBoardService.reviewRecommMem(num, (String)session.getAttribute("id"));
+		logger.info("*reviewRecommMem => " + already + " (기존에 있으면 1, 없으면 0)");
 		
 		if(review == null) {
 			logger.info("상세보기 실패");
@@ -183,6 +189,7 @@ public class ReviewController {
 			//int count = commentService.getListCount(num); // 댓글처리 할 때 주석 풀기
 			mv.setViewName("review/reviewDetail");
 			//mv.addObject("count", count); // 댓글처리 할 때 주석 풀기
+			mv.addObject("already", already); // 이미 추천한 사람인지 확인
 			mv.addObject("review", review);
 		}
 		return mv;
@@ -274,6 +281,47 @@ public class ReviewController {
 		rattr.addFlashAttribute("state", "deleteSuccess");
 		return "redirect:reviewList";
 	}
+	
+	
+	// 리뷰 추천
+	@ResponseBody
+	@RequestMapping(value="/reviewRecomm")
+	public Map<String, Integer> reviewRecomm(int REVIEW_NUM, HttpSession session) {
+		logger.info("=====[reviewRecomm] 리뷰 추천=====");
+		String id = (String)session.getAttribute("id");
+		
+		// 이미 추천한 사람인지 확인
+		int already = reviewBoardService.reviewRecommMem(REVIEW_NUM, id);
+		logger.info("*reviewRecommMem => " + already + " (기존에 있으면 1, 없으면 0)");
+		
+		int tab = 0; // 추천 테이블에 추가 여부
+		int tabDel = 0; // 추천 테이블에 삭제 여부
+		int recomm = 0; // 추천 성공 여부
+		int recommDel = 0; // 추천 해제 여부
+		if(already == 0) {
+			tab = reviewBoardService.reviewRecommTab(REVIEW_NUM, id);
+			if(tab == 1) {
+				recomm = reviewBoardService.reviewRecomm(REVIEW_NUM);
+			}
+		} else if(already == 1) {
+			tabDel = reviewBoardService.reviewRecommTabDel(REVIEW_NUM, id);
+			if(tabDel == 1) {
+				recommDel = reviewBoardService.reviewRecommDel(REVIEW_NUM);
+			}
+		}
+		
+		logger.info("*reviewRecommTab => " + tab + " (추천 테이블에 삽입 성공 시 1, 실패 시 0)");
+		logger.info("*reviewRecomm => " + recomm + " (추천 성공 시 1, 실패 시 0)");
+		logger.info("*reviewRecommTabDel => " + tabDel + " (추천 테이블에 삭제 성공 시 1, 실패 시 0)");
+		logger.info("*reviewRecommDel => " + recommDel + " (추천 해제 시 1, 실패 시 0)");
+		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("already", already); // 이미 추천한 사람인지 확인
+		map.put("recomm", recomm);   // 추천 성공 여부
+		map.put("recommDel", recommDel);   // 추천 해제 여부
+		return map;
+	}
+	
 	
    
 }

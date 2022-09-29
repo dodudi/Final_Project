@@ -84,6 +84,48 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
 		return mapper.delete(review_NUM);
 	}
 	
+	// 글 이전에 추천한 사람인지 확인
+	@Override
+	public int reviewRecommMem(int review_NUM, String id) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("REVIEW_NUM", review_NUM);
+		map.put("MEM_ID", id);
+		ReviewBoard review = mapper.reviewRecommMem(map);
+		
+		// 새로 추천하는 사람이면 0, 기존에 추천한 사람이면 1
+		if(review == null) { 
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+	// 추천 테이블에 추가
+	@Override
+	public int reviewRecommTab(int review_NUM, String id) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("REVIEW_NUM", review_NUM);
+		map.put("MEM_ID", id);
+		return mapper.reviewRecommTab(map);
+	}
+	// 추천 성공 여부
+	@Override
+	public int reviewRecomm(int review_NUM) {
+		return mapper.reviewRecomm(review_NUM);
+	}
+	// 추천 테이블에서 삭제
+	@Override
+	public int reviewRecommTabDel(int review_NUM, String id) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("REVIEW_NUM", review_NUM);
+		map.put("MEM_ID", id);
+		return mapper.reviewRecommTabDel(map);
+	}
+	// 추천 해제 여부
+	@Override
+	public int reviewRecommDel(int review_NUM) {
+		return mapper.reviewRecommDel(review_NUM);
+	}
+	
 	
 
 }

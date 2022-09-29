@@ -60,4 +60,35 @@
 		where  REVIEW_NUM = #{REVIEW_NUM}
 	</delete>
 	
+	<!-- 기존 추천 이력 있는지 확인 -->
+	<select id="reviewRecommMem" parameterType="map" resultType="reviewBoard">
+	    select * from REVIEW_BOARD_RECOMM
+	    where    REVIEW_NUM = #{REVIEW_NUM} 
+	    and      MEM_ID = #{MEM_ID}
+	</select>
+	
+	<!-- 1. 추천 성공 -->
+	<insert id="reviewRecommTab" parameterType="map">
+		insert into REVIEW_BOARD_RECOMM 
+		values
+		( (select nvl(max(RECOMM_ID), 0)+1 from REVIEW_BOARD_RECOMM),
+		   #{REVIEW_NUM}, #{MEM_ID} )
+	</insert>
+	<update id="reviewRecomm" parameterType="int">
+		update REVIEW_BOARD
+		set    REVIEW_RECOMM = REVIEW_RECOMM + 1
+		where  REVIEW_NUM = #{review_NUM}
+	</update>
+	<!-- 2. 추천 해제 -->
+	<delete id="reviewRecommTabDel" parameterType="map">
+		delete from REVIEW_BOARD_RECOMM
+		where REVIEW_NUM = #{REVIEW_NUM}
+		and   MEM_ID = #{MEM_ID}
+	</delete>
+	<update id="reviewRecommDel" parameterType="int">
+		update REVIEW_BOARD
+		set    REVIEW_RECOMM = REVIEW_RECOMM - 1
+		where  REVIEW_NUM = #{review_NUM}
+	</update>
+	
 </mapper>
