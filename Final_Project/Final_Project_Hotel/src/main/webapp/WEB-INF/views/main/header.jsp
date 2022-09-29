@@ -15,6 +15,16 @@
      <!-- main css -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/responsive.css">
+    <!-- 로그아웃 script -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script>
+	$(function() {
+		$("#logout").click(function(event) {
+			event.preventDefault();
+			$("form[name=logout]").submit();
+		})
+	})
+	</script>
 <!--================Header Area =================-->
  <header class="header_area">
      <div class="container">
@@ -29,7 +39,7 @@
              <!-- Collect the nav links, forms, and other content for toggling -->
              <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                  <ul class="nav navbar-nav menu_nav ml-auto">
-                     <li class="nav-item"><a class="nav-link" href="home">소  개</a></li>
+                     <li class="nav-item active"><a class="nav-link" href="home">소  개</a></li>
                      <li class="nav-item"><a class="nav-link" href="accomodation">객  실</a></li>
                      <li class="nav-item"><a class="nav-link" href="promotion">프로모션</a></li>
                      <li class="nav-item submenu dropdown">
@@ -43,7 +53,7 @@
                  </ul>
                  
              	<sec:authorize access="isAnonymous()">
-             	   <ul class="nav navbar-nav ml-auto">
+             	   <ul class="nav navbar-nav menu_nav ml-auto">
 		            <li class="nav-item"><a href="${pageContext.request.contextPath}/member/login" class="nav-link">로그인</a></li>
 		            <li class="nav-item"><a href="${pageContext.request.contextPath}/member/join" class="nav-link">회원가입</a></li>
 		      	  </ul>
@@ -51,30 +61,30 @@
              	
 	    		<sec:authorize access="isAuthenticated()">
     			   <sec:authentication property="principal" var="pinfo"/>
-    			  	 <ul class="nav navbar-nav ml-auto">
+    			  	 <ul class="nav navbar-nav menu_nav ml-auto">
 				      <li class="nav-item">
-				      	<form action="${pageContext.request.contextPath}/member/logout" method="post"
-				      			style="margin-bottom:0px" name="logout">
+				      	<form action="${pageContext.request.contextPath}/member/logout" method="post" name="logout">
 				      		<a class="nav-link" href="#" id="logout">
 				      			<span id="loginid">${pinfo.username}</span>님(로그아웃)
 				      		</a>
 				      		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 				      	</form>
 				      </li>
-				      <li class="nav-item">
-				      	<a class="nav-link" href="${pageContext.request.contextPath}/member/update">정보수정</a>
-				      </li>
 					      
 				      <c:if test="${pinfo.username=='admin' }">
-			      		<!-- Dropdown -->
-		     	  		<li class="nav-item dropdown">
-		     	  			<a class="nav-link dropdown-toggle" href="#" id="navbardrop"
-		     	  				data-toggle="dropdown">관리자</a>
-		     	  			<div class="dropdown-menu">
-		     	  				<a class="dropdown-item" href="${pageContext.request.contextPath}/member/list">회원정보</a>
-		     	  				<a class="dropdown-item" href="${pageContext.request.contextPath}/board/list">게시판</a>
-		     	  			</div>
-		     	  		</li>
+	                     <li class="nav-item submenu dropdown">
+	                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">관리자페이지</a>
+	                         <ul class="dropdown-menu">
+	                             <li class="nav-item"><a class="nav-link" href="info">공지사항</a></li>
+	                             <li class="nav-item"><a class="nav-link" href="qna">문의사항</a></li>
+	                             <li class="nav-item"><a class="nav-link" href="member/list">회원리스트</a></li>
+	                             <li class="nav-item"><a class="nav-link" href="member/update">정보수정</a></li>
+	                         </ul>
+	                     </li> 
+			     	  </c:if>
+			     	  
+				      <c:if test="${pinfo.username!='admin' }">
+	                     <li class="nav-item"><a class="nav-link" href="mypage">마이페이지</a></li>
 			     	  </c:if>
 			     	</ul>
 		     	</sec:authorize>

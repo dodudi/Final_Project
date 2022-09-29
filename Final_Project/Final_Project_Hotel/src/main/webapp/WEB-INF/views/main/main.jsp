@@ -99,7 +99,7 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="accomodation_item text-center">
                             <div class="hotel_img">
-                                <img src="static/image/room1.jpg" alt="">
+                                <img src="${pageContext.request.contextPath}/resources/image/room1.jpg" alt="">
                                 <a href="#" class="btn theme_btn button_hover">Book Now</a>
                             </div>
                             <a href="#">
@@ -111,7 +111,7 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="accomodation_item text-center">
                             <div class="hotel_img">
-                                <img src="static/image/room2.jpg" alt="">
+                                <img src="${pageContext.request.contextPath}/resources/image/room2.jpg" alt="">
                                 <a href="#" class="btn theme_btn button_hover">Book Now</a>
                             </div>
                             <a href="#">
@@ -123,7 +123,7 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="accomodation_item text-center">
                             <div class="hotel_img">
-                                <img src="static/image/room3.jpg" alt="">
+                                <img src="${pageContext.request.contextPath}/resources/image/room3.jpg" alt="">
                                 <a href="#" class="btn theme_btn button_hover">Book Now</a>
                             </div>
                             <a href="#">
@@ -135,7 +135,7 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="accomodation_item text-center">
                             <div class="hotel_img">
-                                <img src="static/image/room4.jpg" alt="">
+                                <img src="${pageContext.request.contextPath}/resources/image/room4.jpg" alt="">
                                 <a href="#" class="btn theme_btn button_hover">Book Now</a>
                             </div>
                             <a href="#">

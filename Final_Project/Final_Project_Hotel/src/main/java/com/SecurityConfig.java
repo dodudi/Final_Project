@@ -43,13 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 						.successHandler(loginSuccessHandler())
 						.failureHandler(loginFailHandler());
 		
-		/*
-		 	(1) logoutSuccessUrl : 로그아웃 후 이동할 주소 
-		 	(2) logoutUrl : 여기서 처리하기 때문에 컨트롤러 logout 제거합니다. post방식 요구 
-		 	(3) invalidateHttpSession : 로그아웃시 세션 속성들 제거 
-		 	(4) deleteCookies : 쿠키 제거 
-		 */
-		http.logout().logoutSuccessUrl("/member/login")
+		http.logout().logoutSuccessUrl("/")
 					 .logoutUrl("/member/logout")
 					 .invalidateHttpSession(true)
 					 .deleteCookies("remember-me", "JSESSION_ID");

@@ -14,19 +14,8 @@ $(document).ready(function(){
         event.preventDefault();
     });
 
-    $("#sign_up").click(function(){ // when click Sign Up button, hide the Log In elements, and display the Sign Up elements
-        $("#title-login").toggleClass("hidden",true);
-        $("#login-fieldset").toggleClass("hidden",true);
-        $("#login-form-submit").toggleClass("hidden",true);
-        $("#lost-password-link").toggleClass("hidden",true);
-        $("#sign_up").toggleClass("active-button",false);
-        $("#log_in").removeAttr("disabled");
-        
-        $("#title-signup").toggleClass("hidden",false);
-        $("#signup-fieldset").toggleClass("hidden",false);
-        $("#signup-form-submit").toggleClass("hidden",false);
-        $("#log_in").toggleClass("active-button",true);
-        $("#sign_up").prop('disabled', true);
+    $("#sign_up").click(function(){ 
+       location.href="${pageContext.request.contextPath}/member/join";
     });
     
     $("#log_in").click(function(){ // when click Log In button, hide the Sign Up elements, and display the Log In elements

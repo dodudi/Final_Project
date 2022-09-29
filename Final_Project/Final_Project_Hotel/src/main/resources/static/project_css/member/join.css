@@ -105,26 +105,26 @@ fieldset{
 
 .animate2
 {
-    -webkit-animation-delay: 0.5s;
-    -moz-animation-delay: 0.5s;
+    -webkit-animation-delay: 0.7s;
+    -moz-animation-delay: 0.7s;
 }
 
 .animate3
 {
-    -webkit-animation-delay: 0.8s;
-    -moz-animation-delay: 0.8s;
+    -webkit-animation-delay: 1.1s;
+    -moz-animation-delay: 1.1s;
 }
 
 .animate4
 {
-    -webkit-animation-delay: 1.4s;
-    -moz-animation-delay: 1.4s;
+    -webkit-animation-delay: 1.5s;
+    -moz-animation-delay: 1.5s;
 }
 
 .animate5
 {
-    -webkit-animation-delay: 2.0s;
-    -moz-animation-delay: 2.0s;
+    -webkit-animation-delay: 2.2s;
+    -moz-animation-delay: 2.2s;
 }
 
 
@@ -237,7 +237,7 @@ a{
     }
 
   .panel{
-        width: 450px;
+        width: 800px;
         max-width: 90%;
         background-size: cover;
         margin: 1% auto;
