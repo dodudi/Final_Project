@@ -9,7 +9,22 @@
 
 	<body>
 		<h2>결제 데모</h2>
+		<select name="pg" id="pg">
+			<option value="kakaopay.TC0ONETIME">카카오</option>
+			<option value="tosspay.tosstest">토스</option>
+		</select>
+		<br>
+		<label for="price">상품이름</label>
+		<input type="text" id="item_name" name="item_name" value="${paymentDTO.itemName}">
+		<br>
+		<label for="price">상품가격</label>
+		<input type="text" id="item_price" name="item_price" value="${paymentDTO.itemPrice}">
+		<br>
+		<label for="price">구매자</label>
+		<input type="text" id="user_name" name="user_name" value="${paymentDTO.name}">
+		<br>
 		<button id="payment" type="button">결제테스트</button>
+
 	</body>
 
 	<!-- jQuery -->
@@ -30,24 +45,24 @@
 
 		function payment(data) {
 			IMP.init('imp83310785');
-			IMP.request_pay({ // param
-				pg: "kakaopay.TC0ONETIME",
+			IMP.request_pay({
+				pg: $('#pg').val(),
 				pay_method: "card",
-				merchant_uid: "ORD20180131-0000012",
-				name: "노르웨이 회전 의자",
-				amount: 64900,
+				merchant_uid: "ORD20180131-0000014",
+				name: $('#item_name').val(),
+				amount: 55555,
 				buyer_email: "gildong@gmail.com",
-				buyer_name: "홍길동",
+				buyer_name: $('#user_name').val(),
 				buyer_tel: "010-4242-4242",
 				buyer_addr: "서울특별시 강남구 신사동",
 				buyer_postcode: "01182"
 			}, function (rsp) { // callback
 				if (rsp.success) {
-					console.log("결제성공");
 					// 결제 성공 시 로직,
+					console.log("결제성공");
 				} else {
-					console.log("결제실패");
 					// 결제 실패 시 로직,
+					console.log("결제실패");
 				}
 			});
 		}
