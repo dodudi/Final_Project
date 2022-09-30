@@ -3,7 +3,7 @@
     <html lang="en">
 
     <head>
-        <title>객실예약확인페이지</title>
+        <title>카카오 맵 확인 jsp</title>
     </head>
 
     <body>
@@ -13,7 +13,7 @@
     <!--카카오 맵 사용        https://apis.map.kakao.com/web/sample/basicMarker/-->
     <!--카카오 개발자 페이지   https://developers.kakao.com/-->
 
-    <!-- services와 clusterer, drawing 라이브러리 불러오기 -->
+    <!-- 카카오 맵 services 라이브러리 불러오기 -->
     <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1418c80ef227e872aa2578e5a817185e&libraries=services"></script>
     <!-- kakao map api-->

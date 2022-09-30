@@ -6,14 +6,10 @@
 		<meta charset="UTF-8">
 		<title>Insert title here</title>
 	</head>
-	
+
 	<!--결제 오류발생시 payment.js에서  merchant_uid를 바꿔서 해볼것-->
 	<body>
 		<h2>결제 데모</h2>
-		<select name="pg" id="pg">
-			<option value="kakaopay.TC0ONETIME">카카오</option>
-			<option value="tosspay.tosstest">토스</option>
-		</select>
 		<br>
 		<label for="price">상품이름</label>
 		<input type="text" id="item_name" name="item_name" value="${paymentDTO.itemName}">
