@@ -50,7 +50,7 @@ public class ReviewController {
 								   @RequestParam(value="search_field", defaultValue="-1", required=false) int index, // 검색 기준
 								   @RequestParam(value="search_word", defaultValue="", required=false) String search_word, // 검색어
 			                       ModelAndView mv, HttpSession session) {
-		session.setAttribute("id", "A1234"); // ======임시로 id 저장 나중에 지우기!!
+		session.setAttribute("id", "D1234"); // ======임시로 id 저장 나중에 지우기!!
 		
 		logger.info("=====[reviewList] 리뷰게시판 이동=====");
 		
@@ -223,8 +223,6 @@ public class ReviewController {
 		mv.setViewName("review/reviewModifyForm"); // 글 수정 폼 페이지로 이동하기 위해 경로 설정
 		return mv;
 	}
-	
-	
 	// 리뷰글 수정
 	@RequestMapping(value="/reviewModify")
 	public String reviewModify(ReviewBoard rb, ModelAndView mv, HttpSession session, RedirectAttributes rattr) {
@@ -319,16 +317,19 @@ public class ReviewController {
 				recommDel = reviewBoardService.reviewRecommDel(REVIEW_NUM);
 			}
 		}
-		
 		logger.info("*reviewRecommTab => " + tab + " (추천 테이블에 삽입 성공 시 1, 실패 시 0)");
 		logger.info("*reviewRecomm => " + recomm + " (추천 성공 시 1, 실패 시 0)");
 		logger.info("*reviewRecommTabDel => " + tabDel + " (추천 테이블에 삭제 성공 시 1, 실패 시 0)");
 		logger.info("*reviewRecommDel => " + recommDel + " (추천 해제 시 1, 실패 시 0)");
 		
+		// 게시글 추천수
+		ReviewBoard rb= reviewBoardService.getDetail(REVIEW_NUM);
+		
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("already", already); // 이미 추천한 사람인지 확인
 		map.put("recomm", recomm);   // 추천 성공 여부
-		map.put("recommDel", recommDel);   // 추천 해제 여부
+		map.put("recommDel", recommDel);  // 추천 해제 여부
+		map.put("recommCount", rb.getREVIEW_RECOMM()); // 게시글 추천수
 		return map;
 	}
 	

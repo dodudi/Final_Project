@@ -39,11 +39,13 @@ $(function(){
  					alert("추천되었습니다.");
  					$("#recomm").attr('class','genric-btn primary circle');
  					$("#recomm").text("추천해제");
+ 					$("table > tbody > tr:nth-child(3) > td:nth-child(4)").text(data.recommCount);
  				}
  				if(data.recommDel == 1) { // 추천 해제
  					alert("추천 해제되었습니다.");
  					$("#recomm").attr('class','genric-btn primary-border circle');
  					$("#recomm").text("추천");
+ 					$("table > tbody > tr:nth-child(3) > td:nth-child(4)").text(data.recommCount);
  				}
  			}, // success end
  			error : function(error){
@@ -350,22 +352,24 @@ $(function(){
 		<!-- 게시글 -->
 		<table class="table">
 			<tr>
-				<td>제목</td>
-				<td>${review.REVIEW_SUBJECT}</td>
+				<th>제목</th>
+				<td colspan="3">${review.REVIEW_SUBJECT}</td>
 			</tr>
 			<tr>
-				<td>작성자</td>
-				<td>${review.MEM_ID}</td>
+				<th>작성자</th>
+				<td colspan="3">${review.MEM_ID}</td>
 			</tr>
 			<tr>
-				<td>등록일</td>
+				<th>등록일</th>
 				<td>${review.REVIEW_DATE}</td>
+				<th>추천수</th>
+				<td>${review.REVIEW_RECOMM}</td>
 			</tr>
 			<tr>
-				<td colspan="2">${review.REVIEW_CONTENT}</td>
+				<td colspan="4">${review.REVIEW_CONTENT}</td>
 			</tr>
 			<tr>
-				<td colspan="2">
+				<td colspan="4">
 					<!-- 로그인 아이디가 댓글 작성자인 경우에만 추천 버튼 생김 -->
 					<c:if test="${id != review.MEM_ID}">
 						<!-- 기존 추천 여부에 따라 버튼 변경 -->
@@ -419,7 +423,7 @@ $(function(){
 			<table class="table" style="margin-top:50px">
 				<thead>
 					<tr>
-						<td colspan="5"><span id="count">${count}</span>개의 댓글</td>
+						<th colspan="5"><span id="count">${count}</span>개의 댓글</th>
 					</tr>
 					<tr>
 						<td>
