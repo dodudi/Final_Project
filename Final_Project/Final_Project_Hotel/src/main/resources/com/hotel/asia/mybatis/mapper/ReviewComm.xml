@@ -14,7 +14,7 @@
 		       from   ( select REVIEW_COMMENT.*
 		          		from REVIEW_COMMENT
 		          		where REVIEW_NUM = #{REVIEW_NUM}
-		          		order by REVIEW_COMMENT_RE_REF desc, REVIEW_COMMENT_RE_SEQ asc ) b
+		          		order by REVIEW_COMMENT_RE_REF desc, REVIEW_COMMENT_DATE asc) b
 		       where rownum &lt;= #{endrow} ) 
 		 where rnum between #{startrow} and #{endrow}
 	</select>
@@ -35,10 +35,33 @@
 		where  REVIEW_COMMENT_NUM = #{REVIEW_COMMENT_NUM}
 	</update>
 	
-	<delete id="commDelete" parameterType="int"> <!-- 수정해야함 -->
+	<!-- 댓글 삭제 -->
+	<select id="commDetail" parameterType="int" resultType="reviewComm">
+		select * from REVIEW_COMMENT
+		where  REVIEW_COMMENT_NUM = #{REVIEW_COMMENT_NUM}
+	</select>
+	<delete id="commDeleteAll" parameterType="int"> <!-- 원문 댓글인 경우, 답댓글까지 모두 삭제 -->
+		<![CDATA[
+			delete from REVIEW_COMMENT
+			where  REVIEW_COMMENT_RE_REF =  #{REVIEW_COMMENT_RE_REF}
+			and    REVIEW_COMMENT_RE_LEV >= #{REVIEW_COMMENT_RE_LEV}
+			and    REVIEW_COMMENT_RE_SEQ >= #{REVIEW_COMMENT_RE_SEQ}
+			and    REVIEW_COMMENT_RE_SEQ <=( nvl((SELECT min(REVIEW_COMMENT_RE_SEQ)-1 
+					                     FROM   REVIEW_COMMENT 
+										 WHERE  REVIEW_COMMENT_RE_REF = #{REVIEW_COMMENT_RE_REF} 
+									     AND    REVIEW_COMMENT_RE_LEV = #{REVIEW_COMMENT_RE_LEV} 
+									     AND    REVIEW_COMMENT_RE_SEQ > #{REVIEW_COMMENT_RE_SEQ}) ,
+									     (SELECT max(REVIEW_COMMENT_RE_SEQ) 
+									      FROM   REVIEW_COMMENT 
+										  WHERE  REVIEW_COMMENT_RE_REF = #{REVIEW_COMMENT_RE_REF} )))
+		]]> 		
+	</delete>
+	<delete id="commDelete" parameterType="int"> <!-- 답댓글인 경우 해당 댓글만 삭제 -->
 		delete from REVIEW_COMMENT
 		where  REVIEW_COMMENT_NUM = #{REVIEW_COMMENT_NUM}
 	</delete>
+	
+	
 	
 	<!-- 답댓글 등록 -->
 	<select id="refComm" parameterType="int" resultType="reviewComm">

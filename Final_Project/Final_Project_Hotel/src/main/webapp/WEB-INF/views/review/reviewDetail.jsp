@@ -38,12 +38,12 @@ $(function(){
  				if(data.recomm == 1) { // 추천
  					alert("추천되었습니다.");
  					$("#recomm").attr('class','genric-btn primary circle');
- 					$("#recomm").val("추천해제");
+ 					$("#recomm").text("추천해제");
  				}
  				if(data.recommDel == 1) { // 추천 해제
  					alert("추천 해제되었습니다.");
  					$("#recomm").attr('class','genric-btn primary-border circle');
- 					$("#recomm").val("추천");
+ 					$("#recomm").text("추천");
  				}
  			}, // success end
  			error : function(error){
@@ -91,7 +91,14 @@ $(function(){
 						if (this.REVIEW_COMMENT_RE_LEV != 0) { // 답댓글인 경우 꺾인 화살표 표시
 							output += '<img src="${pageContext.request.contextPath}/resources/project_image/review/commReply.png" style="width:30px; height:30px">'
 						}
-						output += 			"<b style='color:black'>"+this.MEM_ID + "</b><br>" + this.REVIEW_COMMENT_DATE + "</td>";
+						output += 			"<b style='color:black'>" + this.MEM_ID
+						
+						// 수정된 댓글인 경우 '수정됨' 표시
+						if(this.REVIEW_COMMENT_REVISION == 'Y') {
+							output += "&nbsp;&nbsp;<span style='color:blue'>수정됨</span>";
+						}
+						
+						output += "			 </b><br>" + this.REVIEW_COMMENT_DATE.substring(2) + "</td>";
 						output += "<td>";
 						
 						// 답댓글인 경우 원문 댓글 작성자 구하기
@@ -108,9 +115,9 @@ $(function(){
 						        },
 								success : function(refCommMem){
 									if(refCommMem != '') {
-										output += "<b style='color:#3C99DC'>@"+refCommMem+"</b>";
+										output += "<b style='color:#3C99DC;'>@"+refCommMem+"</b>";
 									} else {
-										alert("답댓글의 원문댓글 작성자 구하기 실패");
+										console.log("댓글 삭제시 => 답댓글의 원문댓글 작성자 구하기 실패");
 									}
 								} // success end
 							}) // ajax end
@@ -118,16 +125,17 @@ $(function(){
 						
 						// XSS(Cross-Site Scripting) : 권한이 없는 사용자가 웹사이트에 스크립트를 삽입하는 공격기법으로,
 						// 이것을 방지하기 위한 방법으로 2번처럼 <td></td> 영역을 만든 뒤
-						// 3번에서 text() 안에 this.context를 넣어 스크립트를 문자열로 만듭니다.
-						output += "			<textarea disabled rows='1' cols='100' style='border:none;'>" + this.REVIEW_COMMENT_CONTENT + "</textarea>"
-						       +  "			<input type='hidden' value=" + this.REVIEW_COMMENT_NUM + "></td>" // 수정, 삭제 시 필요한 댓글 번호 hidden
+						// 3번에서 text() 안에 this.context를 넣어 스크립트를 문자열로 만듭니다.								
+						output += "			<textarea disabled rows='1' cols='100' style='border:none;background-color:#f9f9ff'>" + this.REVIEW_COMMENT_CONTENT + "</textarea>"
+						       +  "			<input type='hidden' value=" + this.REVIEW_COMMENT_NUM + ">" // 수정, 삭제 시 필요한 댓글 번호 hidden
+						       +  "			<span style='display:none'>"+ this.REVIEW_COMMENT_RE_LEV+"</span></td>" // 수정, 삭제 시 필요한 댓글 번호 hidden
 						output += '		<td><img src="${pageContext.request.contextPath}/resources/project_image/review/commRecomm.png" style="width:30px; height:30px"></td>'; // 좋아요(♡) 아이콘
 						output += "		<td><a href='#' data-toggle='dropdown'>"
 						       +  '				<img src="${pageContext.request.contextPath}/resources/project_image/review/commMenu.png" style="width:30px; height:30px">' // 아이콘 모양 바꿀 수 있으면 바꾸기!!
 						       +  "			</a>"
 						       +  "			<ul class='dropdown-menu'>"		
 						       +  "				<li class='nav-item'><button class='genric-btn default-border' id='commReply'>답댓글</button></li>";
-						if("${id}" == this.MEM_ID) { // 로그인 아이디가 댓글 작성자와 같은 경우에만 수정, 삭제 버튼 생김
+						if("${id}" == this.MEM_ID || "${id}" == 'admin') { // 로그인 아이디가 관리자 or 댓글 작성자인 경우에만 수정, 삭제 버튼 생김
 							output += "			<li class='nav-item'><button class='genric-btn default-border' id='commModify'>수정</button></li>"
 							       +  "			<li class='nav-item'><button class='genric-btn default-border' id='commDelete'>삭제</button></li>";
 						}				
@@ -192,7 +200,6 @@ $(function(){
 	// 답댓글 등록 클릭
 	$("body").on('click', '#commReply', function(){
 		var replyRefNum = $(this).parent().parent().parent().parent().find('td:nth-child(2) > input').val() // 답댓글 다는 댓글 번호
-		//var replyRefMem = $(this).parent().parent().parent().parent().find('td:nth-child(1) > b').text();
 		
 		// 답댓글 작성할 입력란 생성
 		var replyTextarea = '<tr>'
@@ -200,7 +207,6 @@ $(function(){
 						 + '	<td>'
 						 + '		<textarea rows="2" class="form-control" maxLength="50" placeholder="총 50자까지 가능합니다."></textarea>'
 						 + '		<input type="hidden" value="' + replyRefNum + '">' // 답댓글 다는 댓글 번호를 새로 생기는 답댓글 입력란 밑에 hidden으로 저장
-						 //+ '		<input type="hidden" value="' + replyRefMem + '">' // 답댓글 다는 댓글의 작성자를 hidden으로 저장
 						 + '	</td>'
 						 + '	<td><button id="commReplyBtn" class="float-right">등록</button></td>'
 						 + '    <td><button id="commReplyCancelBtn" class="float-right">취소</button></td></tr>';
@@ -211,8 +217,7 @@ $(function(){
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
 		
-		var refNum = $(this).parent().parent().find('td:nth-child(2) > input:nth-child(2)').val(); // 답댓글 다는 댓글 번호
-		//var refMem = $(this).parent().parent().find('td:nth-child(2) > input:nth-child(3)').val(); // 답댓글 다는 댓글의 작성자
+		var refNum = $(this).parent().parent().find('td:nth-child(2) > input').val(); // 답댓글 다는 댓글 번호
 		var replyContent = $(this).parent().parent().find('td:nth-child(2) > textarea').val(); // 답댓글 내용
 		if(!replyContent) {
 			alert('내용을 입력하세요');
@@ -296,19 +301,24 @@ $(function(){
 			return;
 		}
 		var commNum = $(this).parent().parent().parent().parent().find('td:nth-child(2) > input').val() // 삭제할 댓글 번호
+		var commLEV = $(this).parent().parent().parent().parent().find('td:nth-child(2) > span').text() // 삭제할 댓글 LEV
 		console.log("*삭제할 댓글번호: " + commNum);
+		console.log("*삭제할 댓글레벨: " + commLEV);
 		
 		var token  = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
 		$.ajax({
 			type : "post",
 			url: "../reviewComm/commDelete",
-			data : {"REVIEW_COMMENT_NUM": commNum},
+			data : {"REVIEW_COMMENT_NUM": commNum,
+				    "REVIEW_COMMENT_LEV": commLEV
+			},
 			beforeSend : function(xhr) {
 				xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리
 			},
 			success : function(result){
-				if(result == 1) {
+				console.log(result);
+				if(result >= 1) {
 					alert("댓글이 삭제되었습니다.");
 					commentList(page); // 등록, 수정, 삭제 후 해당 페이지 보여줍니다.
 				} else {
@@ -356,7 +366,8 @@ $(function(){
 			</tr>
 			<tr>
 				<td colspan="2">
-					<!-- 작성자 본인 아닐 때만 나오게 c:if 하기~~ -->
+					<!-- 로그인 아이디가 댓글 작성자인 경우에만 추천 버튼 생김 -->
+					<c:if test="${id != review.MEM_ID}">
 						<!-- 기존 추천 여부에 따라 버튼 변경 -->
 						<c:if test="${already == 0}">
 							<button type="button" class="genric-btn primary-border circle" id="recomm">추천</button>
@@ -364,11 +375,14 @@ $(function(){
 						<c:if test="${already == 1}">
 							<button type="button" class="genric-btn primary circle" id="recomm">추천해제</button>
 						</c:if>
+					</c:if>
 					
-					<!-- 작성자 본인일 때만 나오게 c:if 하기~~ -->
+					<!-- 로그인 아이디가 관리자 or 글 작성자인 경우에만 수정, 삭제 버튼 생김 -->
+					<c:if test="${id == review.MEM_ID || id == 'admin'}">
 						<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> <!-- 삭제 모달 안 나오는거 해결 -->
 						<button class="genric-btn danger circle float-right" data-toggle="modal" data-target="#deleteReview">삭제</button>
 						<a href="reviewModifyForm?num=${review.REVIEW_NUM}" class="genric-btn info circle float-right">수정</a>
+					</c:if>	
 				</td>
 			</tr>
 		</table>

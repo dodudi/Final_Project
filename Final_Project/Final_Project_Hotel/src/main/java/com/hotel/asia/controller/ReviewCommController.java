@@ -65,6 +65,7 @@ public class ReviewCommController {
 		return result;
 	}
 	
+	
 	// 답댓글 등록
 	@PostMapping("/commReply")
 	public int commReply(ReviewComm rc) {
@@ -100,19 +101,22 @@ public class ReviewCommController {
 		return result;
 	}
 	
-	/*
+	
 	// 댓글 삭제
 	@PostMapping(value="/commDelete")
-	public int commDelete(int REVIEW_COMMENT_NUM) {
+	public int commDelete(int REVIEW_COMMENT_NUM, int REVIEW_COMMENT_LEV) {
 		logger.info("=====[reviewDelete]=====");
+		logger.info("*삭제할 댓글번호: " + REVIEW_COMMENT_NUM);
+		logger.info("*삭제할 댓글레벨: " + REVIEW_COMMENT_LEV);
 		
-		int result = reviewCommService.reviewDelete(REVIEW_COMMENT_NUM);
-		if(result == 1) {
-			logger.info("댓글 삭제 성공");
-		} else {
-			logger.info("댓글 삭제 실패");
+		int result;
+		if(REVIEW_COMMENT_LEV == 0) { // 원문 댓글인 경우, 답댓글까지 모두 삭제
+			logger.info("*commDeleteAll => 답댓글까지 삭제 (∵원문댓글)");
+			result = reviewCommService.commDeleteAll(REVIEW_COMMENT_NUM);
+		} else { // 답댓글인 경우 해당 댓글만 삭제
+			logger.info("*commDelete => 해당 댓글만 삭제 (∵답댓글)");
+			result = reviewCommService.commDelete(REVIEW_COMMENT_NUM);
 		}
 		return result;
 	}
-	*/
 }

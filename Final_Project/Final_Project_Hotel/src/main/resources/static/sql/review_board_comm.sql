@@ -11,7 +11,7 @@ create table REVIEW_COMMENT (
   REVIEW_COMMENT_REVISION VARCHAR2(10) check (REVIEW_COMMENT_REVISION in ('N', 'Y'))
 );
 
-select * from  REVIEW_COMMENT where MEM_ID = 'B1234' 
+select * from  REVIEW_COMMENT where review_num =29
 -- 댓글 조회
 select *
 from ( select rownum rnum, b.*
