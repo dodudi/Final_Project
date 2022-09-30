@@ -63,10 +63,15 @@ public class ReviewCommServiceImpl implements ReviewCommService{
 		rc.setREVIEW_COMMENT_RE_SEQ(rc.getREVIEW_COMMENT_RE_SEQ() + 1);
 		return mapper.commReply(rc);
 	}
-
 	@Override
-	public ReviewComm refComm(int REVIEW_COMMENT_NUM) {
+	public ReviewComm refComm(int REVIEW_COMMENT_NUM) { // 답댓글 다는 원문 댓글 정보
 		return mapper.refComm(REVIEW_COMMENT_NUM);
+	}
+	
+	// 답댓글 다는 원문 댓글 작성자
+	@Override
+	public String refCommMem(int REVIEW_COMMENT_RE_REF, int REVIEW_COMMENT_RE_SEQ) {
+		return mapper.refCommMem(REVIEW_COMMENT_RE_REF, REVIEW_COMMENT_RE_SEQ);
 	}
 	
 }	

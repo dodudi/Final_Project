@@ -3,9 +3,9 @@
 <!doctype html>
 <html lang="en">
 <head>
+<jsp:include page="../main/header.jsp"/> <!-- 헤더 -->
 <script src="http://code.jquery.com/jquery-latest.js"></script>	
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
-<jsp:include page="../main/header.jsp"/> <!-- 헤더 -->
 <title>후기 게시글 상세보기</title>
 <style>
 	textarea {resize: none;}
@@ -53,7 +53,7 @@ $(function(){
  	})
  	
  	
- 	// 댓글-----------------------------------------------------------------
+ 	// ==================== 댓글==================== //
 	console.log("글번호 => " + ${review.REVIEW_NUM});
 	
 	$("#comment tbody").hide(); // 댓글 리스트 숨기기
@@ -72,7 +72,7 @@ $(function(){
 		$.ajax({
 			type : "POST",
 			url:"../reviewComm/reviewCommList",
-			data: {"REVIEW_NUM" : ${review.REVIEW_NUM}, "page" : currentPage },		
+			data: {"REVIEW_NUM" : ${review.REVIEW_NUM}, "page" : currentPage},		
 			beforeSend : function(xhr) { 
 	        	xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리		
 	        },
@@ -86,13 +86,40 @@ $(function(){
 					$(rdata.commList).each(function(){
 						
 						output = '';
-						output += "<tr><td>";
-						output += this.MEM_ID + "<br>" + this.REVIEW_COMMENT_DATE.substring(2,11) + "</td>";
-						//--- <img src="${pageContext.request.contextPath}/resources/project_image/review/commReply.png" style="width:30px; height:30px">${id}</td>'
+						output += "<tr>";
+						output += "		<td>";
+						if (this.REVIEW_COMMENT_RE_LEV != 0) { // 답댓글인 경우 꺾인 화살표 표시
+							output += '<img src="${pageContext.request.contextPath}/resources/project_image/review/commReply.png" style="width:30px; height:30px">'
+						}
+						output += 			"<b style='color:black'>"+this.MEM_ID + "</b><br>" + this.REVIEW_COMMENT_DATE + "</td>";
+						output += "<td>";
+						
+						// 답댓글인 경우 원문 댓글 작성자 구하기
+						if(this.REVIEW_COMMENT_RE_SEQ != 0) {
+							$.ajax({
+								type: "post",
+								async: false, // ajax 데이터 전역변수에 담기
+								url: "../reviewComm/commReplyRefMem",
+								data: {"REVIEW_COMMENT_RE_REF": this.REVIEW_COMMENT_RE_REF,
+									   "REVIEW_COMMENT_RE_SEQ": this.REVIEW_COMMENT_RE_SEQ
+								},
+								beforeSend : function(xhr) { 
+						        	xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리		
+						        },
+								success : function(refCommMem){
+									if(refCommMem != '') {
+										output += "<b style='color:#3C99DC'>@"+refCommMem+"</b>";
+									} else {
+										alert("답댓글의 원문댓글 작성자 구하기 실패");
+									}
+								} // success end
+							}) // ajax end
+						}
+						
 						// XSS(Cross-Site Scripting) : 권한이 없는 사용자가 웹사이트에 스크립트를 삽입하는 공격기법으로,
 						// 이것을 방지하기 위한 방법으로 2번처럼 <td></td> 영역을 만든 뒤
 						// 3번에서 text() 안에 this.context를 넣어 스크립트를 문자열로 만듭니다.
-						output += "		<td><textarea disabled cols='100' style='border:none;'>" + this.REVIEW_COMMENT_CONTENT + "</textarea>"
+						output += "			<textarea disabled rows='1' cols='100' style='border:none;'>" + this.REVIEW_COMMENT_CONTENT + "</textarea>"
 						       +  "			<input type='hidden' value=" + this.REVIEW_COMMENT_NUM + "></td>" // 수정, 삭제 시 필요한 댓글 번호 hidden
 						output += '		<td><img src="${pageContext.request.contextPath}/resources/project_image/review/commRecomm.png" style="width:30px; height:30px"></td>'; // 좋아요(♡) 아이콘
 						output += "		<td><a href='#' data-toggle='dropdown'>"
@@ -162,16 +189,18 @@ $(function(){
 		commentList(++page);
 	}); // 더보기 클릭 end
 	
-	var replyRefNum; // 답댓글 다는 댓글 번호 저장할 변수
 	// 답댓글 등록 클릭
 	$("body").on('click', '#commReply', function(){
-		replyRefNum = $(this).parent().parent().parent().parent().find('td:nth-child(2) > input').val() // 답댓글 다는 댓글 번호
+		var replyRefNum = $(this).parent().parent().parent().parent().find('td:nth-child(2) > input').val() // 답댓글 다는 댓글 번호
+		//var replyRefMem = $(this).parent().parent().parent().parent().find('td:nth-child(1) > b').text();
+		
 		// 답댓글 작성할 입력란 생성
 		var replyTextarea = '<tr>'
 						 + '	<td><img src="${pageContext.request.contextPath}/resources/project_image/review/commReply.png" style="width:30px; height:30px">${id}</td>'
 						 + '	<td>'
 						 + '		<textarea rows="2" class="form-control" maxLength="50" placeholder="총 50자까지 가능합니다."></textarea>'
 						 + '		<input type="hidden" value="' + replyRefNum + '">' // 답댓글 다는 댓글 번호를 새로 생기는 답댓글 입력란 밑에 hidden으로 저장
+						 //+ '		<input type="hidden" value="' + replyRefMem + '">' // 답댓글 다는 댓글의 작성자를 hidden으로 저장
 						 + '	</td>'
 						 + '	<td><button id="commReplyBtn" class="float-right">등록</button></td>'
 						 + '    <td><button id="commReplyCancelBtn" class="float-right">취소</button></td></tr>';
@@ -182,7 +211,8 @@ $(function(){
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
 		
-		var refNum = $(this).parent().parent().find('td:nth-child(2) > input').val(); // 답댓글 다는 댓글 번호
+		var refNum = $(this).parent().parent().find('td:nth-child(2) > input:nth-child(2)').val(); // 답댓글 다는 댓글 번호
+		//var refMem = $(this).parent().parent().find('td:nth-child(2) > input:nth-child(3)').val(); // 답댓글 다는 댓글의 작성자
 		var replyContent = $(this).parent().parent().find('td:nth-child(2) > textarea').val(); // 답댓글 내용
 		if(!replyContent) {
 			alert('내용을 입력하세요');

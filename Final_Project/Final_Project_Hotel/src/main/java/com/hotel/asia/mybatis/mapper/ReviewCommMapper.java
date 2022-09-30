@@ -28,8 +28,10 @@ public interface ReviewCommMapper {
 	// 답댓글 등록
 	public int commReplyUpdate(ReviewComm rc); // BOARD_RE_SEQ값 수정
 	public int commReply(ReviewComm rc);
-
-	public ReviewComm refComm(int REVIEW_COMMENT_NUM);
+	public ReviewComm refComm(int REVIEW_COMMENT_NUM); // 답댓글 다는 원문 댓글 정보
+	
+	// 답댓글 다는 원문 댓글 작성자
+	public String refCommMem(int REVIEW_COMMENT_RE_REF, int REVIEW_COMMENT_RE_SEQ);
 
 	
 

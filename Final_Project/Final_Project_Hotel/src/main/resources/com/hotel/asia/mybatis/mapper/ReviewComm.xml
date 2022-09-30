@@ -24,7 +24,7 @@
 		values
 		(  (select nvl(max(REVIEW_COMMENT_NUM),0)+1 from REVIEW_COMMENT),
 		   #{REVIEW_NUM}, #{MEM_ID},
-		   0, 0, 0,
+		   (select nvl(max(REVIEW_COMMENT_NUM),0)+1 from REVIEW_COMMENT), 0, 0,
 		   #{REVIEW_COMMENT_CONTENT}, sysdate, 'N')
 	</insert>
 	
@@ -61,5 +61,13 @@
 		   #{REVIEW_COMMENT_RE_REF}, #{REVIEW_COMMENT_RE_LEV}, #{REVIEW_COMMENT_RE_SEQ}, 
 		   #{REVIEW_COMMENT_CONTENT}, sysdate, 'N')
 	</insert>
+	
+	<!-- 답댓글 다는 원문 댓글 작성자 -->
+	<select id="refCommMem" parameterType="int" resultType="string">
+		select MEM_ID
+		from  REVIEW_COMMENT
+		where REVIEW_COMMENT_RE_REF = #{REVIEW_COMMENT_RE_REF}
+		and   REVIEW_COMMENT_RE_SEQ = #{REVIEW_COMMENT_RE_SEQ}
+	</select>
 
 </mapper>

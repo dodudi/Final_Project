@@ -36,6 +36,20 @@ public class ReviewCommController {
 		map.put("commList", commList);
 		return map;
 	}
+	// 답댓글인 경우 원문 댓글 작성자 구하기
+	@PostMapping(value="/commReplyRefMem")
+	public String commReplyRefMem(int REVIEW_COMMENT_RE_REF, int REVIEW_COMMENT_RE_SEQ) {
+		logger.info("=====[commReplyRefMem]=====");
+		logger.info("*답댓글 seq: " + REVIEW_COMMENT_RE_SEQ);
+		REVIEW_COMMENT_RE_SEQ -= 1; // 답댓글의 원문 댓글은 답댓글의 seq보다 1 작다
+		logger.info("*원문 seq: " + REVIEW_COMMENT_RE_SEQ);
+		
+		String refCommMem = reviewCommService.refCommMem(REVIEW_COMMENT_RE_REF, REVIEW_COMMENT_RE_SEQ);
+		logger.info("*원문댓글 작성자: " + refCommMem);
+		return refCommMem;
+	}
+	
+	
 	
 	// 댓글 등록
 	@PostMapping(value="/commWrite")
