@@ -26,4 +26,14 @@ public interface MemberMapper {
 	public int getSearchListCount(Map<String, String> map) ;
 
 	public List<Member> getSearchList(Map<String, Object> map) ;
+	
+	
+	
+	
+	// ==========[현능] 22-09-30 추가==========
+	// 회원 정보
+	public Member getMemberInfo(String id);
+	// 휴대폰 번호 중복 검사 
+	public Member phoneCheck(int phone);
+
 }

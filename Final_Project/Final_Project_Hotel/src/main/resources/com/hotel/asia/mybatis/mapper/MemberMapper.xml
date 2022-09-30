@@ -77,4 +77,15 @@
 	-->
 	
 	
+	
+	
+	
+	<!-- ==========[현능] 22-09-30 추가========== -->
+	<select id="getMemberInfo" parameterType="String" resultType="member">
+		select * from member where MEM_ID = #{id}
+ 	</select>
+ 	
+ 	<select id="phoneCheck" parameterType="int" resultType="member">
+		select * from member where MEM_PHONE = #{phone}
+ 	</select>
 </mapper>

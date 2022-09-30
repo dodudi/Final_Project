@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -219,4 +220,20 @@ public class MemberController {
 		return "redirect:list";
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	// ==========[현능] 22-09-30 추가==========
+	// 휴대폰 번호 중복 검사 - ajax
+	@ResponseBody
+	@PostMapping("/phoneCheck")
+	public int phoneCheck(int phone) {
+		int result = memberservice.phoneCheck(phone);
+		logger.info("*** 휴대폰 중복 검사 결과 => "+ result + " (휴대폰번호 있으면 1, 없으면 0, 뭔가 이상하면 -1)");
+		return result;
+	}
 }
