@@ -9,9 +9,8 @@
         <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
       
 		<!-- Animate.css-->
-         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/project_css/member/join.css" >
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css" >
         
         <!-- Google JQuery CDN -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -24,12 +23,10 @@
     <body>
         <div>
            <div class="panel shadow1">
-                <form class="login-form"> 
-                	<div class="panel-switch animated">
-                        <button type="button" id="step1" disabled>STEP1 <br>회원인증</button> 
-                        ---<span class="icon"><i class="fas fa-running"  aria-hidden="true"></i>---</span>
-                        <button type="button" id="step2" class="active-button">STEP2 <br>정보입력</button>
-                        <button type="button" id="step3"class="active-button">STEP3 <br>가입완료</button>
+                <form class="login-form">
+                    <div class="panel-switch animated fadeIn">
+                        <button type="button" id="log_in" class="active-button">로그인</button>
+                        <button type="button" id="sign_up" class="" disabled>회원가입</button>
                     </div>
                     <h1 class="animated fadeInUp animate1" id="title-login">환영합니다!</h1>
                     <fieldset id="login-fieldset">

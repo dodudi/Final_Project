@@ -16,10 +16,8 @@
                     data-background=""></div>
                 <div class="container">
                     <div class="banner_content text-center">
-                        <h6>Away from monotonous life</h6>
+                        <h6>Inspiring Senses & Touching place </h6>
                         <h2>Relax Your Mind</h2>
-                        <p>If you are looking at blank cassettes on the web, you may be very confused at the<br>
-                            difference in price. You may see some for as low as $.17 each.</p>
                     </div>
                 </div>
             </div>
@@ -96,6 +94,18 @@
                     </p>
                 </div>
                 <div class="row mb_30">
+                   <div class="col-lg-3 col-sm-6">
+                        <div class="accomodation_item text-center">
+                            <div class="hotel_img">
+                                <img src="${pageContext.request.contextPath}/resources/image/room4.jpg" alt="">
+                                <a href="#" class="btn theme_btn button_hover">Book Now</a>
+                            </div>
+                            <a href="#">
+                                <h4 class="sec_h4">Standard Room</h4>
+                            </a>
+                              <h5><small>KRW</small> 100,000 ~ </h5>
+                        </div>
+                    </div>
                     <div class="col-lg-3 col-sm-6">
                         <div class="accomodation_item text-center">
                             <div class="hotel_img">
@@ -103,9 +113,9 @@
                                 <a href="#" class="btn theme_btn button_hover">Book Now</a>
                             </div>
                             <a href="#">
-                                <h4 class="sec_h4">Double Deluxe Room</h4>
+                           	 <h4 class="sec_h4">Double Deluxe Room</h4>
                             </a>
-                            <h5>$250<small>/night</small></h5>
+                            <h5><small>KRW</small> 200,000 ~ </h5>
                         </div>
                     </div>
                     <div class="col-lg-3 col-sm-6">
@@ -117,7 +127,7 @@
                             <a href="#">
                                 <h4 class="sec_h4">Single Deluxe Room</h4>
                             </a>
-                            <h5>$200<small>/night</small></h5>
+                              <h5><small>KRW</small> 200,000 ~ </h5>
                         </div>
                     </div>
                     <div class="col-lg-3 col-sm-6">
@@ -129,19 +139,7 @@
                             <a href="#">
                                 <h4 class="sec_h4">Honeymoon Suit</h4>
                             </a>
-                            <h5>$750<small>/night</small></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="accomodation_item text-center">
-                            <div class="hotel_img">
-                                <img src="${pageContext.request.contextPath}/resources/image/room4.jpg" alt="">
-                                <a href="#" class="btn theme_btn button_hover">Book Now</a>
-                            </div>
-                            <a href="#">
-                                <h4 class="sec_h4">Economy Double</h4>
-                            </a>
-                            <h5>$200<small>/night</small></h5>
+                              <h5><small>KRW</small> 700,000 ~ </h5>
                         </div>
                     </div>
                 </div>
