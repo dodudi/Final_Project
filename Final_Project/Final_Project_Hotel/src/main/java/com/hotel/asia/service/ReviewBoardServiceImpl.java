@@ -27,16 +27,30 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
 	
 	// 글 갯수
 	@Override
-	public int getListCount() {
-		return mapper.getListCount();
+	public int getListCount(int index, String search_word) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		// index == -1 : search_field가 넘어오지 않은 상태로, defaultValue="-1"
+		if(index != -1) {
+			String[] search_field= new String[] {"REVIEW_SUBJECT", "MEM_ID"};
+			map.put("search_field", search_field[index]);
+			map.put("search_word", "%" + search_word + "%");
+		}
+		return mapper.getListCount(map);
 	}
 	
 	// 글 리스트
 	@Override
-	public List<ReviewBoard> getReviewList(int page, int limit, String sortBy) {
+	public List<ReviewBoard> getReviewList(int page, int limit, String sortBy, int index, String search_word) {
 		HashMap<String, Object> map = new HashMap<String, Object>();		
 		int startrow = (page-1) * limit + 1; 
-		int endrow = startrow + limit - 1; 		
+		int endrow = startrow + limit - 1;
+		
+		// index == -1 : search_field가 넘어오지 않은 상태로, defaultValue="-1"
+		if(index != -1) {
+			String[] search_field= new String[] {"REVIEW_SUBJECT", "MEM_ID"};
+			map.put("search_field", search_field[index]);
+			map.put("search_word", "%" + search_word + "%");
+		}
 		
 		map.put("startrow", startrow);
 		map.put("endrow", endrow);
@@ -82,6 +96,48 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
 	@Override
 	public int reviewDelete(int review_NUM) {
 		return mapper.delete(review_NUM);
+	}
+	
+	// 글 이전에 추천한 사람인지 확인
+	@Override
+	public int reviewRecommMem(int review_NUM, String id) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("REVIEW_NUM", review_NUM);
+		map.put("MEM_ID", id);
+		ReviewBoard review = mapper.reviewRecommMem(map);
+		
+		// 새로 추천하는 사람이면 0, 기존에 추천한 사람이면 1
+		if(review == null) { 
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+	// 추천 테이블에 추가
+	@Override
+	public int reviewRecommTab(int review_NUM, String id) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("REVIEW_NUM", review_NUM);
+		map.put("MEM_ID", id);
+		return mapper.reviewRecommTab(map);
+	}
+	// 추천 성공 여부
+	@Override
+	public int reviewRecomm(int review_NUM) {
+		return mapper.reviewRecomm(review_NUM);
+	}
+	// 추천 테이블에서 삭제
+	@Override
+	public int reviewRecommTabDel(int review_NUM, String id) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("REVIEW_NUM", review_NUM);
+		map.put("MEM_ID", id);
+		return mapper.reviewRecommTabDel(map);
+	}
+	// 추천 해제 여부
+	@Override
+	public int reviewRecommDel(int review_NUM) {
+		return mapper.reviewRecommDel(review_NUM);
 	}
 	
 	

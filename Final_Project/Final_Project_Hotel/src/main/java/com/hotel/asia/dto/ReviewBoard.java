@@ -9,6 +9,7 @@ public class ReviewBoard {
 	private String REVIEW_DATE;
 	private int REVIEW_READCOUNT;
 	private int REVIEW_RECOMM;
+	private int CNT; // 댓글 수
 	
 	
 	//getter, setter
@@ -60,7 +61,10 @@ public class ReviewBoard {
 	public void setREVIEW_RECOMM(int rEVIEW_RECOMM) {
 		REVIEW_RECOMM = rEVIEW_RECOMM;
 	}
-	
-	
-	
+	public int getCNT() {
+		return CNT;
+	}
+	public void setCNT(int cNT) {
+		CNT = cNT;
+	}
 }

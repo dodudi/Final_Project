@@ -12,8 +12,10 @@
 		)
 	</insert>
 	
-	<select id="getListCount" resultType="int">
+	<!-- 리뷰 리스트 -->
+	<select id="getListCount" parameterType="map" resultType="int">
 		select count(*) from REVIEW_BOARD
+		<include refid="search_" />
 	</select>
 	
 	<select id="getReviewList" parameterType="map" resultType="reviewBoard">
@@ -24,11 +26,26 @@
                                                  		from REVIEW_COMMENT
                                                 		group by REVIEW_NUM) c
              		 on REVIEW_BOARD.REVIEW_NUM = c.REVIEW_NUM
+             		 <include refid="search_" />
              		 order by ${sortBy} desc ) d <!-- orderby는 출력변수이므로 ${} -->
                where rownum &lt;= #{endrow}
      		  ) 
 		where rnum &gt;= #{startrow} and rnum &lt;= #{endrow}
 	</select>
+
+	<!-- 검색 -->
+	<sql id="search_">
+		<if test="search_field!=null">
+	    	where	           
+	        <choose>
+	        	<when test="search_field=='REVIEW_SUBJECT'">REVIEW_SUBJECT</when>
+	            <when test="search_field=='MEM_ID'">MEM_ID</when>
+	        </choose>	  
+	        like #{search_word}	     
+    	</if>
+	</sql>
+	
+	
 	
 	<update id="setReadCountUpdate" parameterType="int">
 		update REVIEW_BOARD
@@ -59,5 +76,36 @@
 		delete from REVIEW_BOARD
 		where  REVIEW_NUM = #{REVIEW_NUM}
 	</delete>
+	
+	<!-- 기존 추천 이력 있는지 확인 -->
+	<select id="reviewRecommMem" parameterType="map" resultType="reviewBoard">
+	    select * from REVIEW_BOARD_RECOMM
+	    where    REVIEW_NUM = #{REVIEW_NUM} 
+	    and      MEM_ID = #{MEM_ID}
+	</select>
+	
+	<!-- 1. 추천 성공 -->
+	<insert id="reviewRecommTab" parameterType="map">
+		insert into REVIEW_BOARD_RECOMM 
+		values
+		( (select nvl(max(RECOMM_ID), 0)+1 from REVIEW_BOARD_RECOMM),
+		   #{REVIEW_NUM}, #{MEM_ID} )
+	</insert>
+	<update id="reviewRecomm" parameterType="int">
+		update REVIEW_BOARD
+		set    REVIEW_RECOMM = REVIEW_RECOMM + 1
+		where  REVIEW_NUM = #{review_NUM}
+	</update>
+	<!-- 2. 추천 해제 -->
+	<delete id="reviewRecommTabDel" parameterType="map">
+		delete from REVIEW_BOARD_RECOMM
+		where REVIEW_NUM = #{REVIEW_NUM}
+		and   MEM_ID = #{MEM_ID}
+	</delete>
+	<update id="reviewRecommDel" parameterType="int">
+		update REVIEW_BOARD
+		set    REVIEW_RECOMM = REVIEW_RECOMM - 1
+		where  REVIEW_NUM = #{review_NUM}
+	</update>
 	
 </mapper>

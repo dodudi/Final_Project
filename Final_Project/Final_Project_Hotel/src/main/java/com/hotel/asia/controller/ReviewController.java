@@ -30,6 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.gson.JsonObject;
 import com.hotel.asia.dto.ReviewBoard;
 import com.hotel.asia.service.ReviewBoardService;
+import com.hotel.asia.service.ReviewCommService;
 
 @Controller
 @RequestMapping(value="/review")
@@ -37,24 +38,31 @@ public class ReviewController {
 	private static final Logger logger = LoggerFactory.getLogger(ReviewController.class);
 	
 	@Autowired
-	private ReviewBoardService reviewBoardService; 
+	private ReviewBoardService reviewBoardService;
+	@Autowired
+	private ReviewCommService reviewCommService;
+	
 	
 	// 리뷰 게시판 이동
 	@RequestMapping(value="/reviewList")
-	public ModelAndView reviewList(@RequestParam(value="page", defaultValue="1", required=false) int page,
-								   @RequestParam(value="sortBy", defaultValue="REVIEW_DATE", required=false) String sortBy,
-			                       ModelAndView mv) {
+	public ModelAndView reviewList(@RequestParam(value="page", defaultValue="1", required=false) int page, // 페이지
+								   @RequestParam(value="sortBy", defaultValue="REVIEW_DATE", required=false) String sortBy, // 정렬기준
+								   @RequestParam(value="search_field", defaultValue="-1", required=false) int index, // 검색 기준
+								   @RequestParam(value="search_word", defaultValue="", required=false) String search_word, // 검색어
+			                       ModelAndView mv, HttpSession session) {
+		session.setAttribute("id", "A1234"); // ======임시로 id 저장 나중에 지우기!!
+		
 		logger.info("=====[reviewList] 리뷰게시판 이동=====");
 		
 		int limit = 10; // 한 페이지에 보여줄 게시판 목록의 수 (한 화면에 출력할 로우 갯수)
-		int listcount = reviewBoardService.getListCount(); // 총 리스트 수를 받아온다
+		int listcount = reviewBoardService.getListCount(index, search_word); // 총 리스트 수를 받아온다
 		int maxpage = (listcount + limit - 1) / limit; // 총 페이지 수
 		int startpage = ((page - 1) / 10) * 10 + 1; // 현재 페이지에 보여줄 시작 페이지 수(1, 11, 21 등 ...)
 		int endpage = startpage + 10 - 1; // 현재 페이지에 보여줄 마지막 페이지 수(10, 20, 30 등 ...)
 		if(endpage > maxpage) {
 			endpage = maxpage; 
 		}
-		List<ReviewBoard> reviewList = reviewBoardService.getReviewList(page, limit, sortBy);
+		List<ReviewBoard> reviewList = reviewBoardService.getReviewList(page, limit, sortBy, index, search_word);
 		 
 		logger.info("* 총 리뷰 수:" + listcount);
 		
@@ -65,21 +73,23 @@ public class ReviewController {
 		mv.addObject("endpage", endpage);
 		mv.addObject("listcount", listcount);
 		mv.addObject("limit", limit);
+		mv.addObject("search_field", index);
+		mv.addObject("search_word", search_word);
 		mv.addObject("reviewList", reviewList);
 		return mv;
 	}
-	
-	
 	// 리뷰 게시판 정렬
-	@ResponseBody // 각 메서드의 실행 결과를 JSON으로 변환되어 HTTP ResponseBODY에 설정됩니다.
+	@ResponseBody
 	@RequestMapping(value="/reviewListSort")
 	public Map<String, Object> reviewListSort(@RequestParam(value="page", defaultValue="1", required=false) int page, // page는 넘어올 수도 있고 안 올 수도 있으므로 defaultValue와 required=false 설정
+											  @RequestParam(value="search_field", defaultValue="-1", required=false) int index, // 검색 기준
+											  @RequestParam(value="search_word", defaultValue="", required=false) String search_word, // 검색어
 											  String sortBy) {
 		logger.info("=====[reviewListSort] 리뷰게시판 정렬=====");
 		logger.info("정렬기준: " + sortBy);
 		
 		int limit = 10; // 한 페이지에 보여줄 게시판 목록의 수 (한 화면에 출력할 로우 갯수)
-		int listcount = reviewBoardService.getListCount(); // 총 리스트 수를 받아온다
+		int listcount = reviewBoardService.getListCount(index, search_word); // 총 리스트 수를 받아온다
 		int maxpage = (listcount + limit - 1) / limit; // 총 페이지 수
 		int startpage = ((page - 1) / 10) * 10 + 1; // 현재 페이지에 보여줄 시작 페이지 수(1, 11, 21 등 ...)
 		int endpage = startpage + 10 - 1; // 현재 페이지에 보여줄 마지막 페이지 수(10, 20, 30 등 ...)
@@ -87,7 +97,7 @@ public class ReviewController {
 			endpage = maxpage; 
 		}
 		
-		List<ReviewBoard> reviewList = reviewBoardService.getReviewList(page, limit, sortBy);
+		List<ReviewBoard> reviewList = reviewBoardService.getReviewList(page, limit, sortBy, index, search_word);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("limit", limit);
 		map.put("listcount", listcount);
@@ -95,6 +105,8 @@ public class ReviewController {
 		map.put("maxpage", maxpage);
 		map.put("startpage", startpage);
 		map.put("endpage", endpage);
+		//map.put("search_field", index);
+		//map.put("search_word", search_word);
 		map.put("reviewList", reviewList);
 		return map;
 	}
@@ -165,13 +177,17 @@ public class ReviewController {
 	
 	// 리뷰글 보기
 	@GetMapping(value="/reviewDetail")
-	public ModelAndView reviewDetail(int num, ModelAndView mv, HttpServletRequest request,
+	public ModelAndView reviewDetail(int num, ModelAndView mv, HttpServletRequest request, HttpSession session,
 							         @RequestHeader(value="referer") String beforeURL) {
 		logger.info("referer:" + beforeURL);
 		if(beforeURL.endsWith("reviewList")) { // hotel/review/reviewList 에서 제목을 클릭한 경우 조회수 증가
 			reviewBoardService.setReadCountUpdate(num);
 		}
 		ReviewBoard review = reviewBoardService.getDetail(num);
+		
+		// 이미 추천한 사람인지 확인
+		int already = reviewBoardService.reviewRecommMem(num, (String)session.getAttribute("id"));
+		logger.info("*reviewRecommMem => " + already + " (기존에 있으면 1, 없으면 0)");
 		
 		if(review == null) {
 			logger.info("상세보기 실패");
@@ -180,9 +196,10 @@ public class ReviewController {
 			mv.addObject("message", "상세보기 실패입니다.");
 		} else {
 			logger.info("상세보기 성공");
-			//int count = commentService.getListCount(num); // 댓글처리 할 때 주석 풀기
+			int count = reviewCommService.getCommListCount(num); // 총 댓글 수
 			mv.setViewName("review/reviewDetail");
-			//mv.addObject("count", count); // 댓글처리 할 때 주석 풀기
+			mv.addObject("count", count);
+			mv.addObject("already", already); // 이미 추천한 사람인지 확인
 			mv.addObject("review", review);
 		}
 		return mv;
@@ -274,6 +291,47 @@ public class ReviewController {
 		rattr.addFlashAttribute("state", "deleteSuccess");
 		return "redirect:reviewList";
 	}
+	
+	
+	// 리뷰 추천
+	@ResponseBody
+	@RequestMapping(value="/reviewRecomm")
+	public Map<String, Integer> reviewRecomm(int REVIEW_NUM, HttpSession session) {
+		logger.info("=====[reviewRecomm] 리뷰 추천=====");
+		String id = (String)session.getAttribute("id");
+		
+		// 이미 추천한 사람인지 확인
+		int already = reviewBoardService.reviewRecommMem(REVIEW_NUM, id);
+		logger.info("*reviewRecommMem => " + already + " (기존에 있으면 1, 없으면 0)");
+		
+		int tab = 0; // 추천 테이블에 추가 여부
+		int tabDel = 0; // 추천 테이블에 삭제 여부
+		int recomm = 0; // 추천 성공 여부
+		int recommDel = 0; // 추천 해제 여부
+		if(already == 0) {
+			tab = reviewBoardService.reviewRecommTab(REVIEW_NUM, id);
+			if(tab == 1) {
+				recomm = reviewBoardService.reviewRecomm(REVIEW_NUM);
+			}
+		} else if(already == 1) {
+			tabDel = reviewBoardService.reviewRecommTabDel(REVIEW_NUM, id);
+			if(tabDel == 1) {
+				recommDel = reviewBoardService.reviewRecommDel(REVIEW_NUM);
+			}
+		}
+		
+		logger.info("*reviewRecommTab => " + tab + " (추천 테이블에 삽입 성공 시 1, 실패 시 0)");
+		logger.info("*reviewRecomm => " + recomm + " (추천 성공 시 1, 실패 시 0)");
+		logger.info("*reviewRecommTabDel => " + tabDel + " (추천 테이블에 삭제 성공 시 1, 실패 시 0)");
+		logger.info("*reviewRecommDel => " + recommDel + " (추천 해제 시 1, 실패 시 0)");
+		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("already", already); // 이미 추천한 사람인지 확인
+		map.put("recomm", recomm);   // 추천 성공 여부
+		map.put("recommDel", recommDel);   // 추천 해제 여부
+		return map;
+	}
+	
 	
    
 }

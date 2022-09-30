@@ -9,10 +9,10 @@ public interface ReviewBoardService {
 	public int write(ReviewBoard rb);
 	
 	// 글 갯수
-	public int getListCount();
+	public int getListCount(int index, String search_word);
 	
 	// 글 리스트
-	public List<ReviewBoard> getReviewList(int page, int limit, String sortBy);
+	public List<ReviewBoard> getReviewList(int page, int limit, String sortBy, int index, String search_word);
 	
 	// 조회수
 	public int setReadCountUpdate(int num);
@@ -28,5 +28,16 @@ public interface ReviewBoardService {
 	
 	// 글 삭제
 	public int reviewDelete(int review_NUM);
+	
+	// 글 이전에 추천한 사람인지 확인
+	public int reviewRecommMem(int review_NUM, String id);
+	// 추천 테이블에 추가
+	public int reviewRecommTab(int review_NUM, String id);
+	// 추천 성공 여부
+	public int reviewRecomm(int review_NUM);
+	// 추천 테이블에서 삭제
+	public int reviewRecommTabDel(int review_NUM, String id);
+	// 추천 해제 여부
+	public int reviewRecommDel(int review_NUM);
 
 }
