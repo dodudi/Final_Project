@@ -20,4 +20,16 @@ public interface MemberService {
 	public List<Member> getSearchList(int index, String search_word,int page, int limit);
 	
 	public int getSearchListCount(int index, String search_word);
+	
+	
+	
+	
+	
+	
+	
+	// ==========[현능] 22-09-30 추가==========
+	// 회원 정보
+	public Member getMemberInfo(String attribute);
+	// 휴대폰 번호 중복 검사 
+	public int phoneCheck(int phone);
 }

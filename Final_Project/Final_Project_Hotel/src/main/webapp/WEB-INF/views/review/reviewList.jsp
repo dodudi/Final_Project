@@ -112,7 +112,7 @@ $(function(){
 	// 1. 검색어를 입력한 후 다시 리뷰리스트로 온 경우 검색 필드와 나타나도록 합니다.
 	var selectedValue = '${search_field}';
 	if (selectedValue != '-1') {
-		$("input[name='search_field']").val(selectedValue);
+		$("select[name='search_field']").val(selectedValue);
 	}
 	// 검색버튼 클릭
 	$("#searchBtn").click(function(){
@@ -258,6 +258,18 @@ $(function(){
 		</c:if>
 	</div>
 </section>
+
+
+
+<!--========== 추가옵션예약 테스트버튼 ==========-->
+<button type="button" id="testBtn">객실예약테스트버튼</button>
+<script>
+	$(function(){
+		$("#testBtn").click(function(){
+			location.href="${pageContext.request.contextPath}/reservation/testRez"
+		})
+	})
+</script>
 
 <!-- 푸터 -->        
 <jsp:include page="../main/footer.jsp"/> 	

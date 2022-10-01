@@ -45,12 +45,6 @@ public class ReviewCommServiceImpl implements ReviewCommService{
 		return mapper.commModify(rc);
 	}
 	
-	// 댓글 삭제
-	@Override
-	public int commDelete(int REVIEW_COMMENT_NUM) {
-		return mapper.commDelete(REVIEW_COMMENT_NUM);
-	}
-	
 	// 답댓글 등록
 	@Override
 	public int commReplyUpdate(ReviewComm rc) { // BOARD_RE_SEQ값 수정
@@ -63,10 +57,34 @@ public class ReviewCommServiceImpl implements ReviewCommService{
 		rc.setREVIEW_COMMENT_RE_SEQ(rc.getREVIEW_COMMENT_RE_SEQ() + 1);
 		return mapper.commReply(rc);
 	}
-
 	@Override
-	public ReviewComm refComm(int REVIEW_COMMENT_NUM) {
+	public ReviewComm refComm(int REVIEW_COMMENT_NUM) { // 답댓글 다는 원문 댓글 정보
 		return mapper.refComm(REVIEW_COMMENT_NUM);
+	}
+	
+	// 답댓글 다는 원문 댓글 작성자
+	@Override
+	public String refCommMem(int REVIEW_COMMENT_RE_REF, int REVIEW_COMMENT_RE_SEQ) {
+		return mapper.refCommMem(REVIEW_COMMENT_RE_REF, REVIEW_COMMENT_RE_SEQ);
+	}
+	
+	
+	// 댓글 삭제
+	@Override
+	public int commDeleteAll(int REVIEW_COMMENT_NUM) { // 원문 댓글인 경우, 답댓글까지 모두 삭제
+		int result = 0;
+		ReviewComm rc = mapper.commDetail(REVIEW_COMMENT_NUM);
+		
+		if(rc != null) {
+			result = mapper.commDeleteAll(rc);
+		}
+		
+		return result;
+	}
+	@Override
+	public int commDelete(int REVIEW_COMMENT_NUM) { // 답댓글인 경우 해당 댓글만 삭제
+		int result = mapper.commDelete(REVIEW_COMMENT_NUM);
+		return result;
 	}
 	
 }	
