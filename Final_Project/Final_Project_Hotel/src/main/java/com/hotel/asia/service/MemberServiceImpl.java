@@ -110,6 +110,30 @@ public class MemberServiceImpl implements MemberService {
 		}
 		return result;
 	}
-
+	
+	
+	
+	
+	
+	
+	
+	// ==========[현능] 22-09-30 추가==========
+	// 회원 정보
+	@Override
+	public Member getMemberInfo(String id) {
+		return dao.getMemberInfo(id);
+	}
+	// 휴대폰 번호 중복 검사 
+	@Override
+	public int phoneCheck(int phone) {
+		int result = -1;
+		Member m = dao.phoneCheck(phone);
+		if(m == null) {
+			result = 0;
+		} else {
+			result = 1;
+		}
+		return result; // 휴대폰번호 있으면 1, 없으면 0, 매퍼 작동 안 하면 -1
+	}
 	
 }

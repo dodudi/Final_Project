@@ -36,6 +36,20 @@ public class ReviewCommController {
 		map.put("commList", commList);
 		return map;
 	}
+	// 답댓글인 경우 원문 댓글 작성자 구하기
+	@PostMapping(value="/commReplyRefMem")
+	public String commReplyRefMem(int REVIEW_COMMENT_RE_REF, int REVIEW_COMMENT_RE_SEQ) {
+		logger.info("=====[commReplyRefMem]=====");
+		logger.info("*답댓글 seq: " + REVIEW_COMMENT_RE_SEQ);
+		REVIEW_COMMENT_RE_SEQ -= 1; // 답댓글의 원문 댓글은 답댓글의 seq보다 1 작다
+		logger.info("*원문 seq: " + REVIEW_COMMENT_RE_SEQ);
+		
+		String refCommMem = reviewCommService.refCommMem(REVIEW_COMMENT_RE_REF, REVIEW_COMMENT_RE_SEQ);
+		logger.info("*원문댓글 작성자: " + refCommMem);
+		return refCommMem;
+	}
+	
+	
 	
 	// 댓글 등록
 	@PostMapping(value="/commWrite")
@@ -50,6 +64,7 @@ public class ReviewCommController {
 		}
 		return result;
 	}
+	
 	
 	// 답댓글 등록
 	@PostMapping("/commReply")
@@ -86,19 +101,22 @@ public class ReviewCommController {
 		return result;
 	}
 	
-	/*
+	
 	// 댓글 삭제
 	@PostMapping(value="/commDelete")
-	public int commDelete(int REVIEW_COMMENT_NUM) {
+	public int commDelete(int REVIEW_COMMENT_NUM, int REVIEW_COMMENT_LEV) {
 		logger.info("=====[reviewDelete]=====");
+		logger.info("*삭제할 댓글번호: " + REVIEW_COMMENT_NUM);
+		logger.info("*삭제할 댓글레벨: " + REVIEW_COMMENT_LEV);
 		
-		int result = reviewCommService.reviewDelete(REVIEW_COMMENT_NUM);
-		if(result == 1) {
-			logger.info("댓글 삭제 성공");
-		} else {
-			logger.info("댓글 삭제 실패");
+		int result;
+		if(REVIEW_COMMENT_LEV == 0) { // 원문 댓글인 경우, 답댓글까지 모두 삭제
+			logger.info("*commDeleteAll => 답댓글까지 삭제 (∵원문댓글)");
+			result = reviewCommService.commDeleteAll(REVIEW_COMMENT_NUM);
+		} else { // 답댓글인 경우 해당 댓글만 삭제
+			logger.info("*commDelete => 해당 댓글만 삭제 (∵답댓글)");
+			result = reviewCommService.commDelete(REVIEW_COMMENT_NUM);
 		}
 		return result;
 	}
-	*/
 }
