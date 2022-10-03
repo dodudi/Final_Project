@@ -6,4 +6,10 @@
 	<select id="getRoomDetail" parameterType="int" resultType="room">
 		select * from room where ROOM_ID = #{room_ID}
  	</select>
+ 	
+ 	<update id="updateRezState" parameterType="int">
+ 		update room
+ 		set    ROOM_STATE = 'Y'
+ 		where  ROOM_ID = #{ROOM_ID}
+ 	</update>
 </mapper>

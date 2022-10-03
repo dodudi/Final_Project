@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hotel.asia.mybatis.mapper.RezMapper">
+	<insert id="reservation" parameterType="rez">
+		insert into REZ
+		values
+		((select nvl(max(REZ_ID),0)+1 from REZ), 
+		 #{ROOM_ID}, #{MEM_ID},
+		 #{REZ_CHECKIN}, #{REZ_CHECKOUT},
+		 #{REZ_ADULT}, #{REZ_CHILD})		
+	</insert>
+
+</mapper>
