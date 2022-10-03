@@ -383,7 +383,7 @@ $(function(){
 					
 					<!-- 로그인 아이디가 관리자 or 글 작성자인 경우에만 수정, 삭제 버튼 생김 -->
 					<c:if test="${id == review.MEM_ID || id == 'admin'}">
-						<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> <!-- 삭제 모달 안 나오는거 해결 -->
+						<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 삭제 모달 안 나오는거 해결 -->
 						<button class="genric-btn danger circle float-right" data-toggle="modal" data-target="#deleteReview">삭제</button>
 						<a href="reviewModifyForm?num=${review.REVIEW_NUM}" class="genric-btn info circle float-right">수정</a>
 					</c:if>	

@@ -7,6 +7,8 @@ create table options (
 
 select * from options;
 
+
+
 insert into options values (1, '조식', 29000, 19000);
 insert into options values (2, '디너', 39000, 29000);
 insert into options values (3, '수영장', 20000, 10000);
