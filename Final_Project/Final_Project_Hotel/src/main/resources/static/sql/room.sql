@@ -11,3 +11,5 @@ create table room (
 select * from room order by ROOM_ID;
 drop table room;
 delete from room;
+
+update room set ROOM_STATE = 'N'

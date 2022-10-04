@@ -29,13 +29,13 @@ public class Rez {
 		MEM_ID = mEM_ID;
 	}
 	public String getREZ_CHECKIN() {
-		return REZ_CHECKIN;
+		return REZ_CHECKIN.substring(0, 10);
 	}
 	public void setREZ_CHECKIN(String rEZ_CHECKIN) {
 		REZ_CHECKIN = rEZ_CHECKIN;
 	}
 	public String getREZ_CHECKOUT() {
-		return REZ_CHECKOUT;
+		return REZ_CHECKOUT.substring(0, 10);
 	}
 	public void setREZ_CHECKOUT(String rEZ_CHECKOUT) {
 		REZ_CHECKOUT = rEZ_CHECKOUT;

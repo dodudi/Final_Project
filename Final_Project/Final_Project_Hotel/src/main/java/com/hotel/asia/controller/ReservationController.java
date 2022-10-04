@@ -1,5 +1,11 @@
 package com.hotel.asia.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -49,7 +55,7 @@ public class ReservationController {
 	// 객실 + 추가옵션 예약
 	@RequestMapping("/reservationRoomOption")
 	public ModelAndView reservationRoomOption(Rez rez,
-											  ModelAndView mv, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+											  ModelAndView mv, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws ParseException {
 		logger.info("***** [reservationRoomOption] 넘어온 정보 *****");
 		logger.info("* 객실아이디 : " + rez.getROOM_ID());
 		logger.info("* 회원아이디 : " + session.getAttribute("id"));
@@ -93,7 +99,8 @@ public class ReservationController {
 			return mv;
 		} else { // 객실 예약 성공
 			logger.info("[객실 예약 성공] result=" + result + " / 추가옵션 예약 시작");
-			roomService.updateRezState(rez.getROOM_ID()); // 해당 객실 상태 Y로 바꾸기
+			logger.info("[객실 예약 번호] REZ_ID=" + rez.getREZ_ID());
+			logger.info("[예약된 객실 상태 변경 여부] " + roomService.updateRezState(rez.getROOM_ID()));
 			
 			// 2. 옵션 예약
 			// 조식
@@ -157,6 +164,44 @@ public class ReservationController {
 			} 
 		} // 객실, 옵션 예약 end
 		
+		
+		int optRezListCount = optionRezService.getOptRezListCount(rez.getREZ_ID()); // 옵션 예약 리스트 갯수
+		List<OptionReservation> optRezList = optionRezService.getOptRezList(rez.getREZ_ID()); // 옵션 예약 리스트
+		logger.info("=====[optRezList]=====");
+		for(OptionReservation test : optRezList) {
+			logger.info("getOPTION_RESERVATION_ID: " + test.getOPTION_RESERVATION_ID());
+			logger.info("getREZ_ID: " + test.getREZ_ID());
+			logger.info("getOPTION_ID: " + test.getOPTION_ID());
+			logger.info("getOPTION_RESERVATION_DATE: " + test.getOPTION_RESERVATION_DATE());
+			logger.info("getADULT: " + test.getADULT());
+			logger.info("getCHILD: " + test.getCHILD());
+			logger.info("==========");
+		}
+		
+		// 숙박일수 계산
+		String date1 = rez.getREZ_CHECKOUT(); // 체크아웃 날짜
+		String date2 = rez.getREZ_CHECKIN(); // 체크인 날짜
+		Date format1 = new SimpleDateFormat("yyyy-MM-dd").parse(date1);
+        Date format2 = new SimpleDateFormat("yyyy-MM-dd").parse(date2);
+        long diffSec = (format1.getTime() - format2.getTime()) / 1000; // 초 차이
+        long nights = diffSec / (24*60*60); // 일자 수 차이
+		logger.info("*** 숙박일수 : " + nights);
+		// 체크인 날짜 ~ 체크아웃 날짜
+		List<String> dateList3 = new ArrayList<String>();
+		for(int i = 0; i < dateList2.length; i++) {
+			logger.info("***[체크인 날짜 ~ 체크아웃 날짜] " + dateList2[i].replaceAll("[\\[\\] ]", ""));
+			dateList3.add(dateList2[i].replaceAll("[\\[\\] ]", ""));
+		}
+		
+		mv.addObject("optRezListCount", optRezListCount); // 옵션 예약 리스트 갯수
+		mv.addObject("optRezList", optRezList); // 옵션 예약 리스트
+		mv.addObject("rez", rez); // 객실 예약 정보
+		mv.addObject("nights", nights); // 숙박일수
+		mv.addObject("dateList", dateList3); // 체크인 날짜 ~ 체크아웃 날짜 (list)
+		mv.setViewName("reservation/reservationComplete");
+		return mv;
+		
+		/*
 		// 옵션 예약 인원
 		mv.addObject("bfAdult", bfAdult); // 조식 성인
 		mv.addObject("bfChild", bfChild); // 조식 아동
@@ -164,7 +209,6 @@ public class ReservationController {
 		mv.addObject("dnChild", dnChild); // 디너 아동
 		mv.addObject("spAdult", spAdult); // 수영장 성인
 		mv.addObject("spChild", spChild); // 수영장 아동
-		mv.setViewName("reservation/reservationComplete");
-		return mv;
+		*/
 	}
 }

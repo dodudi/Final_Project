@@ -6,6 +6,9 @@
 <head>
 <jsp:include page="../main/header.jsp"/> <!-- 헤더 -->
 <script src="http://code.jquery.com/jquery-latest.js"></script> <!-- 제이쿼리 -->
+<style>
+	#bfHide, #dnHide, #spHide { width:20px; height:20px; float:right }
+</style>
 <script>
 $(function(){
 	// 옵션 예약 날짜
@@ -124,6 +127,36 @@ $(function(){
 	})
 	
 	
+	
+	// 옵션 테이블 접기
+	// 1. 조식
+	$("#bfHide").click(function(){
+		var tbody = $("#bfTable > tbody");
+		if(tbody.is(":visible")){
+			tbody.hide();
+		} else {
+			tbody.show();
+		}
+	})
+	// 2. 디너
+	$("#dnHide").click(function(){
+		var tbody = $("#dnTable > tbody");
+		if(tbody.is(":visible")){
+			tbody.hide();
+		} else {
+			tbody.show();
+		}
+	})
+	// 3. 수영장
+	$("#spHide").click(function(){
+		var tbody = $("#spTable > tbody");
+		if(tbody.is(":visible")){
+			tbody.hide();
+		} else {
+			tbody.show();
+		}
+	})
+	
 }) // ready end
 </script>
 </head>
@@ -152,7 +185,11 @@ $(function(){
 	                       <div class="col-lg-12">
 	                       		<!-- 1. 조식 -->
 	                       		<table class="table" id="bfTable">
-	                       			<caption style="caption-side:top"><strong>조식</strong></caption>
+	                       			<caption style="caption-side:top">
+	                       				<strong>조식</strong>
+	                       				<img src="${pageContext.request.contextPath}/resources/project_image/option/question.png" style="width:20px; height:20px">
+	                       				<img src="${pageContext.request.contextPath}/resources/project_image/option/underarrow.png" id="bfHide">
+	                       			</caption>
 	                       			<c:forEach var="nights" begin="1" end="${nights}">
 	                       				<c:forEach var="option" items="${optionList}">
 			                       			<c:if test="${option.OPTION_NAME eq '조식'}">
@@ -200,7 +237,11 @@ $(function(){
 		                       		
 	                       		<!-- 2. 디너 -->
 	                       		<table class="table" id="dnTable">
-	                       			<caption style="caption-side:top"><strong>디너</strong></caption>
+	                       			<caption style="caption-side:top">
+	                       				<strong>디너</strong>
+	                       				<img src="${pageContext.request.contextPath}/resources/project_image/option/question.png" style="width:20px; height:20px">
+	                       				<img src="${pageContext.request.contextPath}/resources/project_image/option/underarrow.png" id="dnHide">
+	                       			</caption>
 	                       			<c:forEach var="nights" begin="1" end="${nights}">
 	                       				<c:forEach var="option" items="${optionList}">
 			                       			<c:if test="${option.OPTION_NAME eq '디너'}">
@@ -247,7 +288,11 @@ $(function(){
 	                       		
 	                       		<!-- 3. 수영장 -->
 	                       		<table class="table" id="spTable">
-	                       			<caption style="caption-side:top"><strong>수영장</strong></caption>
+	                       			<caption style="caption-side:top">
+	                       				<strong>수영장</strong>
+	                       				<img src="${pageContext.request.contextPath}/resources/project_image/option/question.png" style="width:20px; height:20px">
+	                       				<img src="${pageContext.request.contextPath}/resources/project_image/option/underarrow.png" id="spHide">
+	                       			</caption>
 	                       			<c:forEach var="nights" begin="1" end="${nights + 1}">
 	                       				<c:forEach var="option" items="${optionList}">
 			                       			<c:if test="${option.OPTION_NAME eq '수영장'}">
