@@ -7,10 +7,10 @@
 <jsp:include page="../main/header.jsp"/> <!-- 헤더 -->
 <script src="http://code.jquery.com/jquery-latest.js"></script> <!-- 제이쿼리 -->
 
-<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.2.js"></script> <!-- 아임포트 API -->
+<!-- 결제 시스템 - 아임포트API -->
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 <script>
 $(function(){
-	
 	// 휴대폰번호 변경 여부 확인
 	var phoneAuthChk = true;
 	var originalPhone = "${member.MEM_PHONE}"; // 기존 휴대폰번호
@@ -98,24 +98,10 @@ $(function(){
 	})
 	
 	
-	/*
-	// 결제
-	function payment() {
-		var totalPrice = $("input[name='totalPrice']").val();
-		var url = "${pageContext.request.contextPath}/payment/payment?totalPrice="+totalPrice;  
-		
-		window.open(url, "payment",
-					"left=350px, top=100px, width=1000px, height=600px");
-	}*/
-	
-	
-	
-	
-	
 	// 폼 전송
-	$("form").submit(function(){
+	/* $("form").submit(function(){
 		// 휴대폰 중복검사 확인 
-		var submit_phone_value = $.trim($("input[name='MEM_PHONE']").val()); input_phone
+		var submit_phone_value = $.trim($("input[name='MEM_PHONE']").val());
 		if (phoneAuthChk == false ) {
 			alert("변경된 휴대폰번호를 인증해주세요.");
 			return false;
@@ -125,12 +111,51 @@ $(function(){
 			alert("취소 정책을 확인해주세요.");
 			return false;
 		}
-
-		//payment();
-		
-	})
+	}) */
 	
+	// 결제하기 버튼 클릭
+	$("#paymentBtn").click(function () {
+		// 휴대폰 중복검사 확인 
+		var submit_phone_value = $.trim($("input[name='MEM_PHONE']").val());
+		if (phoneAuthChk == false ) {
+			alert("변경된 휴대폰번호를 인증해주세요.");
+			return false;
+		}
+		// 취소정책 확인 - 체크박스 체크 여부
+		if ( !$("input[type='checkbox']").is(":checked")) {
+			alert("취소 정책을 확인해주세요.");
+			return false;
+		}
+        payment();
+    });
 }) // ready end
+
+function payment() {
+    IMP.init('imp83310785');
+    IMP.request_pay({
+        pg: "html5_inicis.INIpayTest",
+        pay_method: "card",
+        merchant_uid : new Date().getTime(), // 가맹점에서 생성/관리하는 고유 주문번호 (중복 불가)
+        name: "3", // 아이템 이름
+        amount: 100, // 아이템 가격
+        buyer_email: "gildong@gmail.com",
+        buyer_name: "홍길동", // 결제자 이름
+        buyer_tel: "010-4242-4242",
+        buyer_addr: "서울특별시 강남구 신사동",
+        buyer_postcode: "01182"
+    }, function (rsp) {
+    	$("input[name='PAYMENT_ID']").val(rsp.merchant_uid);
+    	$("input[name='PAYMENT_PRICE']").val(rsp.paid_amount);
+    	console.log("결제 번호 => " + rsp.merchant_uid);
+    	console.log("결제 금액 => " + rsp.paid_amount);
+        if (rsp.success) {
+        	console.log("[결제 성공] rsp.status=" + rsp.status);
+        	$("form").submit();
+          } else {
+        	console.log("결제 실패. 에러 내용: " +  rsp.error_msg);
+          }
+    });
+}
 </script>
 </head>
 <body>
@@ -148,7 +173,7 @@ $(function(){
     <!--================Blog Area =================-->
     <section class="blog_area single-post-area">
         <div class="container">
-        	<form action="${pageContext.request.contextPath}/reservation/reservationRoomOption" method="post"> <!-- /reservation/reservationRoomOption --> <%--  action="${pageContext.request.contextPath}/payment/payment" --%>
+        	<form action="${pageContext.request.contextPath}/reservation/reservationRoomOption" method="post"> <!-- /reservation/reservationRoomOption -->
 	            <div class="row">
 	                <div class="col-lg-8 posts-list">
 	                    <div class="single-post row">
@@ -242,7 +267,7 @@ $(function(){
 										</dl>
 									</div>
 									<input type="checkbox">예약취소 및 미입실 관련 위약금 규정’과 취소 정책을 확인하고 동의합니다.
-									<button type="submit" class="btn">결제하기</button>
+									<button type="button" class="btn" id="paymentBtn">결제하기</button>
 					            </div>
 	                       </div>
 	                    </div>
@@ -359,6 +384,8 @@ $(function(){
 				<input type="hidden" name="dnChild" value="${dnChild}">   <!-- 디너 아동 -->
 				<input type="hidden" name="spAdult" value="${spAdult}">   <!-- 수영장 성인 -->
 				<input type="hidden" name="spChild" value="${spChild}">   <!-- 수영장 아동 -->
+				<input type="hidden" name="PAYMENT_ID">    <!-- 결제 번호 -->
+				<input type="hidden" name="PAYMENT_PRICE"> <!-- 결제 금액 -->
             </form>
         </div>
     </section>

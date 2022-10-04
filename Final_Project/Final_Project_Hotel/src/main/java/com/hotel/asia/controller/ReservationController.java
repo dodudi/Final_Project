@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.hotel.asia.dto.OptionReservation;
+import com.hotel.asia.dto.Payment;
 import com.hotel.asia.dto.Rez;
 import com.hotel.asia.service.OptionRezService;
+import com.hotel.asia.service.PaymentService;
 import com.hotel.asia.service.RezService;
 import com.hotel.asia.service.RoomService;
 
@@ -29,11 +31,13 @@ public class ReservationController {
 	private static final Logger logger = LoggerFactory.getLogger(ReservationController.class);
 	
 	@Autowired
-	private RezService rezService;
+	private RezService rezService; 
 	@Autowired
 	private OptionRezService optionRezService;
 	@Autowired
 	private RoomService roomService;
+	@Autowired
+	private PaymentService paymentService;
 	
 	@RequestMapping("/testRez")
 	public String testRoomList() {
@@ -54,7 +58,7 @@ public class ReservationController {
 	//========== [현능] ==========
 	// 객실 + 추가옵션 예약
 	@RequestMapping("/reservationRoomOption")
-	public ModelAndView reservationRoomOption(Rez rez,
+	public ModelAndView reservationRoomOption(Rez rez, Payment pm,
 											  ModelAndView mv, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws ParseException {
 		logger.info("***** [reservationRoomOption] 넘어온 정보 *****");
 		logger.info("* 객실아이디 : " + rez.getROOM_ID());
@@ -161,22 +165,19 @@ public class ReservationController {
 					}
 					logger.info("[" + dateList2[i] + " | 수영장 옵션 예약 성공] res=" + res);
 				}
-			} 
+			}
+			logger.info("=====[옵션 예약 끝]=====");
 		} // 객실, 옵션 예약 end
 		
-		
-		int optRezListCount = optionRezService.getOptRezListCount(rez.getREZ_ID()); // 옵션 예약 리스트 갯수
-		List<OptionReservation> optRezList = optionRezService.getOptRezList(rez.getREZ_ID()); // 옵션 예약 리스트
-		logger.info("=====[optRezList]=====");
-		for(OptionReservation test : optRezList) {
-			logger.info("getOPTION_RESERVATION_ID: " + test.getOPTION_RESERVATION_ID());
-			logger.info("getREZ_ID: " + test.getREZ_ID());
-			logger.info("getOPTION_ID: " + test.getOPTION_ID());
-			logger.info("getOPTION_RESERVATION_DATE: " + test.getOPTION_RESERVATION_DATE());
-			logger.info("getADULT: " + test.getADULT());
-			logger.info("getCHILD: " + test.getCHILD());
-			logger.info("==========");
-		}
+		// 결제정보 DB저장
+		logger.info("***** [payment] 넘어온 정보 *****");
+		logger.info("*결제번호 : " + pm.getPAYMENT_ID());
+		logger.info("*결제금액 : " + pm.getPAYMENT_PRICE());
+		pm.setROOM_ID(rez.getROOM_ID());
+		pm.setMEM_ID((String) session.getAttribute("id"));
+		int paymentResult = paymentService.payment(pm);
+		logger.info("[결제 성공 여부] paymentResult=" + paymentResult);
+
 		
 		// 숙박일수 계산
 		String date1 = rez.getREZ_CHECKOUT(); // 체크아웃 날짜
@@ -193,6 +194,9 @@ public class ReservationController {
 			dateList3.add(dateList2[i].replaceAll("[\\[\\] ]", ""));
 		}
 		
+		int optRezListCount = optionRezService.getOptRezListCount(rez.getREZ_ID()); // 옵션 예약 리스트 갯수
+		List<OptionReservation> optRezList = optionRezService.getOptRezList(rez.getREZ_ID()); // 옵션 예약 리스트
+		
 		mv.addObject("optRezListCount", optRezListCount); // 옵션 예약 리스트 갯수
 		mv.addObject("optRezList", optRezList); // 옵션 예약 리스트
 		mv.addObject("rez", rez); // 객실 예약 정보
@@ -200,15 +204,5 @@ public class ReservationController {
 		mv.addObject("dateList", dateList3); // 체크인 날짜 ~ 체크아웃 날짜 (list)
 		mv.setViewName("reservation/reservationComplete");
 		return mv;
-		
-		/*
-		// 옵션 예약 인원
-		mv.addObject("bfAdult", bfAdult); // 조식 성인
-		mv.addObject("bfChild", bfChild); // 조식 아동
-		mv.addObject("dnAdult", dnAdult); // 디너 성인
-		mv.addObject("dnChild", dnChild); // 디너 아동
-		mv.addObject("spAdult", spAdult); // 수영장 성인
-		mv.addObject("spChild", spChild); // 수영장 아동
-		*/
 	}
 }
