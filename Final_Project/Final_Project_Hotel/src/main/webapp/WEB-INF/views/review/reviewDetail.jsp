@@ -347,7 +347,7 @@ $(function(){
 
 <section class="sample-text-area">
 	<div class="container">
-		<h3 class="text-heading title_color">커뮤니티 > <a href="/hotel/review/reviewList" style="text-decoration: none; color: black;">후기게시판</a> > 상세보기</h3> 
+		<h3 style="color:black;font-weight:bold">커뮤니티 > <a href="/hotel/review/reviewList" style="text-decoration:none; color:black;">후기게시판</a> > 상세보기</h3> 
 		
 		<!-- 게시글 -->
 		<table class="table">

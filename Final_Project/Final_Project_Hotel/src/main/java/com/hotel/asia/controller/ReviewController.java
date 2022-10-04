@@ -142,8 +142,11 @@ public class ReviewController {
 			return "로그인페이지";
 		} else {
 			logger.info("[글 작성 성공] result = " + result);
+			int REVIEW_NUM = rb.getREVIEW_NUM();
+			logger.info("[작성된 글의 REVIEW_NUM]" + REVIEW_NUM);
+			rattr.addAttribute("num", REVIEW_NUM);
 		}
-		return "redirect:reviewList";
+		return "redirect:reviewDetail";
 	}
 	// 이미지 처리 - c드라이브에 hotelAsiaReviewImage 폴더 만들기 (C:\hotelAsiaReviewImage)
 	@RequestMapping(value="/uploadImage", produces="application/json")

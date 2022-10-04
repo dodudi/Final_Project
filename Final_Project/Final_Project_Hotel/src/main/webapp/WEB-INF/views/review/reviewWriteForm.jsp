@@ -118,16 +118,16 @@ $(function(){
 
 <section class="sample-text-area">
 	<div class="container">
-		<h3 class="text-heading title_color">커뮤니티 > 후기게시판 > 글쓰기</h3> 
+		<h3 style="color:black;font-weight:bold">커뮤니티 > <a href="/hotel/review/reviewList" style="text-decoration:none; color:black;">후기게시판</a> > 글쓰기</h3> 
 		
 		<form action="reviewWrite" method="post" novalidate>     
-		    <h4><label for="REVIEW_SUBJECT">Title</label></h4>
+		    <h4><label for="REVIEW_SUBJECT">제목</label></h4>
 			<input type="text" class="form-control" name="REVIEW_SUBJECT" placeholder="Enter title" required>     
 		
-			<h4><label for="REVIEW_PASS">Password</label></h4>
+			<h4><label for="REVIEW_PASS">비밀번호</label></h4>
 			<input type="password" class="form-control" name="REVIEW_PASS" placeholder="Enter password" required>        
 		     
-			<h4><label for="summernote">contents</label></h4>   
+			<h4><label for="summernote">내용</label></h4>   
 			<textarea id="summernote" name="content" required></textarea>
 			<input type="hidden" name="REVIEW_CONTENT">
 			

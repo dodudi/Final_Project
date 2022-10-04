@@ -114,7 +114,7 @@ $(function(){
 
 <section class="sample-text-area">
 	<div class="container">
-		<h3 class="text-heading title_color">커뮤니티 > 후기게시판 > 글 수정하기</h3> 
+		<h3 style="color:black;font-weight:bold">커뮤니티 > <a href="/hotel/review/reviewList" style="text-decoration:none; color:black;">후기게시판</a> > 글 수정하기</h3> 
 		
 		<form action="reviewModify" method="post">
 			<input type="hidden" name="REVIEW_NUM" value="${review.REVIEW_NUM}">
