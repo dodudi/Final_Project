@@ -55,14 +55,19 @@ function sortList(sdata) {
 				console.log(num);
 				var output = "<tbody>";
 				$(data.reviewList).each(function(index, item) {
-					output += '<tr><td>' + (num--) + '</td>'
-					output += '	   <td>'
-					output += '        <a href="reviewDetail?num=' + item.REVIEW_NUM  + '">' + item.REVIEW_SUBJECT + '</a>'
-					output += '	   </td>'		
-					output += '    <td>' + item.REVIEW_DATE +'</td>'
-					output += '    <td>' + item.MEM_ID +'</td>'
-					output += '    <td>' + item.REVIEW_READCOUNT +'</td>'
-					output += '    <td>' + item.REVIEW_RECOMM +'</td></tr>'
+					output += '<tr><td>' + (num--) + '</td>';
+					output += '	   <td>';
+					output += '        <a href="reviewDetail?num=' + item.REVIEW_NUM  + '">' + item.REVIEW_SUBJECT + '&nbsp;&nbsp;</a>'
+							+ '		   <span class="gray small">[' + item.CNT + ']</span>'; // 댓글 수
+					output += '	   </td>';
+					output += '    <td>' + item.REVIEW_DATE;
+					if(item.REVIEW_DATE >= data.nowday) { // 새 글 new 표시
+						output += '	   &nbsp;&nbsp;<img src="${pageContext.request.contextPath}/resources/project_image/review/new.png" style="width:15px; height:15px">';		
+					}
+					output += '	   </td>';
+					output += '    <td>' + item.MEM_ID +'</td>';
+					output += '    <td>' + item.REVIEW_READCOUNT +'</td>';
+					output += '    <td>' + item.REVIEW_RECOMM +'</td></tr>';
 				}) // each end
 				output += "</tbody>"
 				$('table').append(output)//table 완성
@@ -199,11 +204,16 @@ $(function(){
 							</td>
 							<td>
 								<a href="reviewDetail?num=${reviewList.REVIEW_NUM}">
-									${reviewList.REVIEW_SUBJECT}&nbsp;&nbsp; 
+									${reviewList.REVIEW_SUBJECT}&nbsp;&nbsp;
 								</a>
-									<span class="gray small">[<c:out value="${reviewList.CNT}"/>]</span> <!-- 총 댓글 수 -->
+								<span class="gray small">[<c:out value="${reviewList.CNT}"/>]</span> <!-- 총 댓글 수 -->
 							</td>
-							<td>${reviewList.REVIEW_DATE}</td>
+							<td>
+								${reviewList.REVIEW_DATE}&nbsp;&nbsp;
+								<c:if test="${reviewList.REVIEW_DATE >= nowday}">
+									<img src="${pageContext.request.contextPath}/resources/project_image/review/new.png" style="width:15px; height:15px">
+								</c:if>
+							</td>
 							<td>${reviewList.MEM_ID}</td>
 							<td>${reviewList.REVIEW_READCOUNT}</td>
 							<td>${reviewList.REVIEW_RECOMM}</td>

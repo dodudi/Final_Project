@@ -3,6 +3,8 @@ package com.hotel.asia.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,9 +68,15 @@ public class ReviewController {
 			endpage = maxpage; 
 		}
 		List<ReviewBoard> reviewList = reviewBoardService.getReviewList(page, limit, sortBy, index, search_word);
-		 
-		logger.info("* 총 리뷰 수:" + listcount);
+		logger.info("*총 리뷰 수: " + listcount);
 		
+		// 새 글 new 표시 하기 위한 하루 전 시각 구하기
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, -1); // 하루 동안 보이도록 함
+        String nowday = format.format(cal.getTime());
+        logger.info("[하루 전 시각] "+ nowday);
+        
 		mv.setViewName("review/reviewList");
 		mv.addObject("page", page);
 		mv.addObject("maxpage", maxpage);
@@ -79,6 +87,7 @@ public class ReviewController {
 		mv.addObject("search_field", index);
 		mv.addObject("search_word", search_word);
 		mv.addObject("reviewList", reviewList);
+		mv.addObject("nowday", nowday); // 새 글 new 표시 하기 위한 하루 전 시각
 		return mv;
 	}
 	// 리뷰 게시판 정렬
@@ -99,8 +108,15 @@ public class ReviewController {
 		if(endpage > maxpage) {
 			endpage = maxpage; 
 		}
-		
 		List<ReviewBoard> reviewList = reviewBoardService.getReviewList(page, limit, sortBy, index, search_word);
+		
+		// 새 글 new 표시 하기 위한 하루 전 시각 구하기
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, -1); // 하루 동안 보이도록 함
+        String nowday = format.format(cal.getTime());
+        logger.info("[하루 전 시각] "+ nowday);
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("limit", limit);
 		map.put("listcount", listcount);
@@ -108,9 +124,8 @@ public class ReviewController {
 		map.put("maxpage", maxpage);
 		map.put("startpage", startpage);
 		map.put("endpage", endpage);
-		//map.put("search_field", index);
-		//map.put("search_word", search_word);
 		map.put("reviewList", reviewList);
+		map.put("nowday", nowday); // 새 글 new 표시 하기 위한 하루 전 시각
 		return map;
 	}
 	
@@ -194,6 +209,13 @@ public class ReviewController {
 		int already = reviewBoardService.reviewRecommMem(num, (String)session.getAttribute("id"));
 		logger.info("*reviewRecommMem => " + already + " (기존에 있으면 1, 없으면 0)");
 		
+		// 새 글 new 표시 하기 위한 하루 전 시각 구하기
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, -1); // 하루 동안 보이도록 함
+        String nowday = format.format(cal.getTime());
+        logger.info("[하루 전 시각] "+ nowday);
+		
 		if(review == null) {
 			logger.info("상세보기 실패");
 			mv.setViewName("error/error");
@@ -204,8 +226,9 @@ public class ReviewController {
 			int count = reviewCommService.getCommListCount(num); // 총 댓글 수
 			mv.setViewName("review/reviewDetail");
 			mv.addObject("count", count);
-			mv.addObject("already", already); // 이미 추천한 사람인지 확인
 			mv.addObject("review", review);
+			mv.addObject("already", already); // 이미 추천한 사람인지 확인
+			mv.addObject("nowday", nowday); // 새 글 new 표시 하기 위한 하루 전 시각
 		}
 		return mv;
 	}

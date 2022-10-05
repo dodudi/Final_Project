@@ -362,7 +362,12 @@ $(function(){
 			</tr>
 			<tr>
 				<th>등록일</th>
-				<td>${review.REVIEW_DATE}</td>
+				<td>
+					${review.REVIEW_DATE}&nbsp;&nbsp;
+					<c:if test="${review.REVIEW_DATE >= nowday}">
+						<img src="${pageContext.request.contextPath}/resources/project_image/review/new.png" style="width:15px; height:15px">
+					</c:if>
+				</td>
 				<th style="width:10%">추천수</th>
 				<td>${review.REVIEW_RECOMM}</td>
 			</tr>
