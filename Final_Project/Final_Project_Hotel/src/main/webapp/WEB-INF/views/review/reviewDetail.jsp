@@ -9,6 +9,7 @@
 <title>후기 게시글 상세보기</title>
 <style>
 	textarea {resize: none;}
+	* {color:black}
 	#replyComm, #reviewModify, #reviewDelete {color:blue;}
 </style>
 <script>
@@ -210,8 +211,8 @@ $(function(){
 						 + '		<textarea rows="2" class="form-control" maxLength="50" placeholder="총 50자까지 가능합니다."></textarea>'
 						 + '		<input type="hidden" value="' + replyRefNum + '">' // 답댓글 다는 댓글 번호를 새로 생기는 답댓글 입력란 밑에 hidden으로 저장
 						 + '	</td>'
-						 + '	<td><button id="commReplyBtn" class="float-right">등록</button></td>'
-						 + '    <td><button id="commReplyCancelBtn" class="float-right">취소</button></td></tr>';
+						 + '	<td colspan="2"><button id="commReplyCancelBtn" class="btn btn-danger float-right">취소</button>'
+						 + '        <button id="commReplyBtn" class="btn btn-info float-right">등록</button></td></tr>';
 		$(this).parent().parent().parent().parent().after(replyTextarea); 
 	})
 	// 답댓글 달기
@@ -352,7 +353,7 @@ $(function(){
 		<!-- 게시글 -->
 		<table class="table">
 			<tr>
-				<th>제목</th>
+				<th style="width:10%">제목</th>
 				<td colspan="3">${review.REVIEW_SUBJECT}</td>
 			</tr>
 			<tr>
@@ -362,7 +363,7 @@ $(function(){
 			<tr>
 				<th>등록일</th>
 				<td>${review.REVIEW_DATE}</td>
-				<th>추천수</th>
+				<th style="width:10%">추천수</th>
 				<td>${review.REVIEW_RECOMM}</td>
 			</tr>
 			<tr>
@@ -430,7 +431,6 @@ $(function(){
 							${id} <!-- 댓글 작성자는 현재 로그인 된 계정주 -->
 						</td>
 						<td colspan="2">
-							<!-- textarea 모양 조절 -->
 							<textarea rows="3" class="form-control" id="commContent" maxLength="50" placeholder="총 50자까지 가능합니다."></textarea> 
 						</td>
 						<td>
