@@ -33,7 +33,7 @@ public class OptionReservation {
 		OPTION_ID = oPTION_ID;
 	}
 	public String getOPTION_RESERVATION_DATE() {
-		return OPTION_RESERVATION_DATE;
+		return OPTION_RESERVATION_DATE.substring(0, 10);
 	}
 	public void setOPTION_RESERVATION_DATE(String oPTION_RESERVATION_DATE) {
 		OPTION_RESERVATION_DATE = oPTION_RESERVATION_DATE;

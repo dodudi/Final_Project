@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hotel.asia.mybatis.mapper.PaymentMapper">
+	<insert	id="payment" parameterType="payment">
+		insert into payment
+		values
+		(#{PAYMENT_ID},
+		 (select REZ_ID from REZ where ROOM_ID = #{ROOM_ID} and MEM_ID = #{MEM_ID}),
+		 #{PAYMENT_PRICE}, sysdate)
+	</insert>
+
+
+</mapper>

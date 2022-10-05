@@ -50,7 +50,7 @@ public class ReviewController {
 								   @RequestParam(value="search_field", defaultValue="-1", required=false) int index, // 검색 기준
 								   @RequestParam(value="search_word", defaultValue="", required=false) String search_word, // 검색어
 			                       ModelAndView mv, HttpSession session) {
-		session.setAttribute("id", "D1234"); // ======임시로 id 저장 나중에 지우기!!
+		session.setAttribute("id", "A1234"); // ======임시로 id 저장 나중에 지우기!!
 		
 		logger.info("=====[reviewList] 리뷰게시판 이동=====");
 		
@@ -143,7 +143,7 @@ public class ReviewController {
 		} else {
 			logger.info("[글 작성 성공] result = " + result);
 			int REVIEW_NUM = rb.getREVIEW_NUM();
-			logger.info("[작성된 글의 REVIEW_NUM]" + REVIEW_NUM);
+			logger.info("[작성된 글의 REVIEW_NUM] " + REVIEW_NUM);
 			rattr.addAttribute("num", REVIEW_NUM);
 		}
 		return "redirect:reviewDetail";

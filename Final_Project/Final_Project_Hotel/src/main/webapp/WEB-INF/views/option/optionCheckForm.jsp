@@ -48,7 +48,7 @@ $(function(){
                     </div>
                 </div>
                 <div class="col-md-9">
-                    <form class="row contact_form" action="contact_process.php" method="post" id="contactForm" novalidate="novalidate">
+                    <form class="row contact_form" action="" method="post">
                         <div class="col-md-12">
                             <div class="form-group">
                             	<span>객실명</span>
@@ -76,16 +76,14 @@ $(function(){
 	                            		</tr>
 	                            	</thead>
 	                            	<tbody>
-	                            		<c:set var="a" value="1"/> <!-- 객실 금액 2번만 나오게 하기 위한 변수 -->
 	                            		<c:forEach var="dl" items="${dateList}">
 		                            		<tr>
 		                            			<th><input type="text" name="dateList" value="${dl}"></th>
 		                            			<th>객실명아이디<input type="text" name="ROOM_ID" value="${rez.ROOM_ID}"></th>
 		                            			<td>
-		                            				<c:if test="${a != 3}">
+		                            				<c:if test="${dl != rez.REZ_CHECKOUT}"> <!-- 체크아웃 날짜는 숙박하지 않으므로 객실 금액이 부과되지 않는다 -->
 		                            					<span><fmt:formatNumber value="${room.ROOM_PRICE}" pattern="#,###"/>원</span>
 		                            				</c:if>
-		                            				<c:set var="a" value="${a+1}"/>
 		                            			</td>
 		                            		</tr>
 	                            			<c:forEach var="optDate" items="${optList}"> <!-- List -->
@@ -199,8 +197,9 @@ $(function(){
 	        </form>    
         </div>
     </section>
-    
     <!--================Contact Area =================-->
+    
+    
 <!-- 푸터 -->        
 <jsp:include page="../main/footer.jsp"/>      
 </body>

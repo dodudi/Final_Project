@@ -22,3 +22,5 @@ insert into room values(8, '패밀리룸', 700000, '', 4, '최대 4인 최고급
 select * from room order by ROOM_ID;
 drop table room;
 delete from room;
+
+update room set ROOM_STATE = 'N'
