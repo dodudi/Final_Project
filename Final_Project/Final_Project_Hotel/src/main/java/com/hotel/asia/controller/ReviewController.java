@@ -29,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.JsonObject;
 import com.hotel.asia.dto.ReviewBoard;
+import com.hotel.asia.service.MemberService;
 import com.hotel.asia.service.ReviewBoardService;
 import com.hotel.asia.service.ReviewCommService;
 
@@ -41,6 +42,8 @@ public class ReviewController {
 	private ReviewBoardService reviewBoardService;
 	@Autowired
 	private ReviewCommService reviewCommService;
+	@Autowired
+	private MemberService memberService;
 	
 	
 	// 리뷰 게시판 이동
@@ -50,7 +53,7 @@ public class ReviewController {
 								   @RequestParam(value="search_field", defaultValue="-1", required=false) int index, // 검색 기준
 								   @RequestParam(value="search_word", defaultValue="", required=false) String search_word, // 검색어
 			                       ModelAndView mv, HttpSession session) {
-		session.setAttribute("id", "A1234"); // ======임시로 id 저장 나중에 지우기!!
+		session.setAttribute("id", "C1234"); // ======임시로 id 저장 나중에 지우기!!
 		
 		logger.info("=====[reviewList] 리뷰게시판 이동=====");
 		
@@ -118,7 +121,6 @@ public class ReviewController {
 	@RequestMapping(value="/reviewWriteForm")
 	public ModelAndView  reviewWriteForm(ModelAndView mv, HttpSession session) {
 		logger.info("리뷰게시글 작성 폼 이동");
-		//mv.addObject("id", session.getAttribute("id"));
 		mv.setViewName("review/reviewWriteForm");
 		return mv;
 	}
@@ -132,9 +134,8 @@ public class ReviewController {
 		logger.info("*내용: " + rb.getREVIEW_CONTENT());
 		logger.info("*작성자: " + (String)session.getAttribute("id"));
 		
-		rb.setMEM_ID((String)session.getAttribute("id"));
-		
-		int result = reviewBoardService.write(rb);
+		rb.setMEM_ID((String)session.getAttribute("id")); // 작성자는 로그인된 계정
+		int result = reviewBoardService.write(rb); // 글 작성
 		
 		if(result == 0) {
 			logger.info("[글 작성 실패] result = " + result);
@@ -142,9 +143,10 @@ public class ReviewController {
 			return "로그인페이지";
 		} else {
 			logger.info("[글 작성 성공] result = " + result);
-			int REVIEW_NUM = rb.getREVIEW_NUM();
-			logger.info("[작성된 글의 REVIEW_NUM] " + REVIEW_NUM);
-			rattr.addAttribute("num", REVIEW_NUM);
+			logger.info("[작성된 글의 REVIEW_NUM] " + rb.getREVIEW_NUM());
+			int ptResult = memberService.rewardPoint((String)session.getAttribute("id"), 100); // 리뷰 작성 시 포인트 적립
+			logger.info("[리뷰포인트 적립여부] ptResult = " + ptResult);
+			rattr.addAttribute("num", rb.getREVIEW_NUM());
 		}
 		return "redirect:reviewDetail";
 	}
