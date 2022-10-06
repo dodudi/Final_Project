@@ -7,8 +7,15 @@
 <head>
 <jsp:include page="../main/header.jsp"/> <!-- 헤더 -->
 <script src="http://code.jquery.com/jquery-latest.js"></script> <!-- 제이쿼리 -->
+<title>예약정보 확인</title>
+<style>
+	input[readonly] {border:none; width:80px}
+</style>
 <script>
 $(function(){
+	// 모든 input태그 readonly
+	$("input").attr("readonly", true);
+	
 	
 	// 총금액 계산	
 	var price = $("#checkTable > tbody > tr > td > span").text().replace(/,/g, '').split('원');
@@ -70,7 +77,7 @@ $(function(){
 	                    <div class="contact_info">
 	                        <div class="info_item">
 	                            <table class="table" id="checkTable">
-	                            	<thead>
+	                            	<thead class="thead-light">
 	                            		<tr>
 	                            			<th>항목</th><th>선택사항</th><th>금액</th>
 	                            		</tr>
@@ -78,11 +85,15 @@ $(function(){
 	                            	<tbody>
 	                            		<c:forEach var="dl" items="${dateList}">
 		                            		<tr>
-		                            			<th><input type="text" name="dateList" value="${dl}"></th>
-		                            			<th>객실명아이디<input type="text" name="ROOM_ID" value="${rez.ROOM_ID}"></th>
+		                            			<th><input type="text" name="dateList" value="${dl}" onfocus="this.blur();"></th>
+		                            			<th>객실명or아이디<input type="text" name="ROOM_ID" value="${rez.ROOM_ID}" onfocus="this.blur();"></th>
 		                            			<td>
-		                            				<c:if test="${dl != rez.REZ_CHECKOUT}"> <!-- 체크아웃 날짜는 숙박하지 않으므로 객실 금액이 부과되지 않는다 -->
+		                            				 <!-- 체크아웃 날짜는 숙박하지 않으므로 객실 금액이 부과되지 않는다 (0원) -->
+		                            				<c:if test="${dl != rez.REZ_CHECKOUT}">
 		                            					<span><fmt:formatNumber value="${room.ROOM_PRICE}" pattern="#,###"/>원</span>
+		                            				</c:if>
+		                            				<c:if test="${dl == rez.REZ_CHECKOUT}">
+		                            					<span><fmt:formatNumber value="0" pattern="#,###"/>원</span>
 		                            				</c:if>
 		                            			</td>
 		                            		</tr>
@@ -98,11 +109,11 @@ $(function(){
 					                            							<c:forEach var="people" items="${date.value}"> <!-- Map -->
 				                            									<c:if test="${fn:contains(people.key, 'Adult')}">
 				                            										<c:set var="bfAdult" value="${people.value}"/>
-				                            										성인 : <input type="text" name="bfAdult" value="${bfAdult}">명
+				                            										성인:&nbsp;<input type="text" name="bfAdult" value="${bfAdult}" onfocus="this.blur();" style="width:15px">명&nbsp;&nbsp;&nbsp;&nbsp;
 						                            							</c:if>
 						                            							<c:if test="${fn:contains(people.key, 'Child')}">
 						                            								<c:set var="bfChild" value="${people.value}"/>
-						                            								아동 : <input type="text" name="bfChild" value="${bfChild}">명
+						                            								아동:&nbsp;<input type="text" name="bfChild" value="${bfChild}" onfocus="this.blur();" style="width:15px">명
 						                            							</c:if>
 						                            						</c:forEach>
 					                            						</td>
@@ -120,11 +131,11 @@ $(function(){
 				                            								<c:forEach var="people" items="${date.value}"> <!-- Map -->
 				                            									<c:if test="${fn:contains(people.key, 'Adult')}">
 						                            								<c:set var="dnAdult" value="${people.value}"/>
-						                            								성인 : <input type="text" name="dnAdult" value="${dnAdult}">명
+						                            								성인:&nbsp;<input type="text" name="dnAdult" value="${dnAdult}" onfocus="this.blur();" style="width:15px">명&nbsp;&nbsp;&nbsp;&nbsp;
 						                            							</c:if>
 						                            							<c:if test="${fn:contains(people.key, 'Child')}">
 						                            								<c:set var="dnChild" value="${people.value}"/>
-						                            								아동 : <input type="text" name="dnChild" value="${dnChild}">명
+						                            								아동:&nbsp;<input type="text" name="dnChild" value="${dnChild}" onfocus="this.blur();" style="width:15px">명
 						                            							</c:if>	
 						                            						</c:forEach>
 					                            						</td>
@@ -142,11 +153,11 @@ $(function(){
 					                            							<c:forEach var="people" items="${date.value}"> <!-- Map -->
 				                            									<c:if test="${fn:contains(people.key, 'Adult')}">
 						                            								<c:set var="spAdult" value="${people.value}"/>
-						                            								성인 : <input type="text" name="spAdult" value="${spAdult}">명
+						                            								성인:&nbsp;<input type="text" name="spAdult" value="${spAdult}" onfocus="this.blur();" style="width:15px">명&nbsp;&nbsp;&nbsp;&nbsp;
 						                            							</c:if>
 						                            							<c:if test="${fn:contains(people.key, 'Child')}">
 						                            								<c:set var="spChild" value="${people.value}"/>
-						                            								아동 : <input type="text" name="spChild" value="${spChild}">명
+						                            								아동:&nbsp;<input type="text" name="spChild" value="${spChild}" onfocus="this.blur();" style="width:15px">명
 						                            							</c:if>	
 						                            						</c:forEach>
 					                            						</td>
@@ -169,7 +180,7 @@ $(function(){
 	                            	<tfoot>
 								        <tr>
 								            <th colspan="3" style="text-align:right">
-								            	총 합계 : <input type="text" name="total"> 원
+								            	총 합계:&nbsp;&nbsp;&nbsp;<input type="text" name="total" onfocus="this.blur();">원
 								            </th>
 								        </tr>
 								    </tfoot>

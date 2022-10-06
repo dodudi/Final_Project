@@ -6,6 +6,9 @@
 <jsp:include page="../main/header.jsp"/> <!-- 헤더 -->
 <script src="http://code.jquery.com/jquery-latest.js"></script> <!-- 제이쿼리 -->
 <title>후기 게시판</title>
+<style>
+	* {color:black}
+</style>
 <script>
 //1. 페이지 이동
 function go(page) {
@@ -52,14 +55,19 @@ function sortList(sdata) {
 				console.log(num);
 				var output = "<tbody>";
 				$(data.reviewList).each(function(index, item) {
-					output += '<tr><td>' + (num--) + '</td>'
-					output += '	   <td>'
-					output += '        <a href="reviewDetail?num=' + item.REVIEW_NUM  + '">' + item.REVIEW_SUBJECT + '</a>'
-					output += '	   </td>'		
-					output += '    <td>' + item.REVIEW_DATE +'</td>'
-					output += '    <td>' + item.MEM_ID +'</td>'
-					output += '    <td>' + item.REVIEW_READCOUNT +'</td>'
-					output += '    <td>' + item.REVIEW_RECOMM +'</td></tr>'
+					output += '<tr><td>' + (num--) + '</td>';
+					output += '	   <td>';
+					output += '        <a href="reviewDetail?num=' + item.REVIEW_NUM  + '">' + item.REVIEW_SUBJECT + '&nbsp;&nbsp;</a>'
+							+ '		   <span class="gray small">[' + item.CNT + ']</span>'; // 댓글 수
+					output += '	   </td>';
+					output += '    <td>' + item.REVIEW_DATE;
+					if(item.REVIEW_DATE >= data.nowday) { // 새 글 new 표시
+						output += '	   &nbsp;&nbsp;<img src="${pageContext.request.contextPath}/resources/project_image/review/new.png" style="width:15px; height:15px">';		
+					}
+					output += '	   </td>';
+					output += '    <td>' + item.MEM_ID +'</td>';
+					output += '    <td>' + item.REVIEW_READCOUNT +'</td>';
+					output += '    <td>' + item.REVIEW_RECOMM +'</td></tr>';
 				}) // each end
 				output += "</tbody>"
 				$('table').append(output)//table 완성
@@ -156,8 +164,8 @@ $(function(){
 					<option value="0" selected>제목</option>
 					<option value="1">글쓴이</option>
 				</select>
-				<input name="search_word" type="text" class="form-control" value="${search_word}" placeholder="검색어 입력"> <!-- 검색어를 입력한 후 다시 돌아온 경우 검색어가 나타나도록 합니다. -->
-				<button type="submit" id="searchBtn" class="genric-btn primary circle">검색</button>
+				<input name="search_word" type="text" class="form-control" value="${search_word}" placeholder="검색어 입력" style="height:38px"> <!-- 검색어를 입력한 후 다시 돌아온 경우 검색어가 나타나도록 합니다. -->
+				<button type="submit" id="searchBtn" class="genric-btn primary circle" style="margin-left:3px;">검색</button>
 			</div>
 			<!-- 403에러 방지 토큰 -->
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
@@ -176,9 +184,9 @@ $(function(){
 		<!-- 게시글 리스트 -->
 		<c:if test="${listcount > 0}">
 			<table class="table">
-				<thead>
+				<thead class="thead-light">
 					<tr>
-						<th>글번호</th>
+						<th style="width:10%">글번호</th>
 						<th>제목</th>
 						<th>등록일</th>
 						<th>작성자</th>
@@ -196,11 +204,16 @@ $(function(){
 							</td>
 							<td>
 								<a href="reviewDetail?num=${reviewList.REVIEW_NUM}">
-									${reviewList.REVIEW_SUBJECT}&nbsp;&nbsp; 
+									${reviewList.REVIEW_SUBJECT}&nbsp;&nbsp;
 								</a>
-									<span class="gray small">[<c:out value="${reviewList.CNT}"/>]</span> <!-- 총 댓글 수 -->
+								<span class="gray small">[<c:out value="${reviewList.CNT}"/>]</span> <!-- 총 댓글 수 -->
 							</td>
-							<td>${reviewList.REVIEW_DATE}</td>
+							<td>
+								${reviewList.REVIEW_DATE}&nbsp;&nbsp;
+								<c:if test="${reviewList.REVIEW_DATE >= nowday}">
+									<img src="${pageContext.request.contextPath}/resources/project_image/review/new.png" style="width:15px; height:15px">
+								</c:if>
+							</td>
 							<td>${reviewList.MEM_ID}</td>
 							<td>${reviewList.REVIEW_READCOUNT}</td>
 							<td>${reviewList.REVIEW_RECOMM}</td>
