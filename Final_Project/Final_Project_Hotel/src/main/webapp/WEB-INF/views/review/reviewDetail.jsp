@@ -101,7 +101,11 @@ $(function(){
 							output += "&nbsp;&nbsp;<span style='color:blue'>수정됨</span>";
 						}
 						
-						output += "			 </b><br>" + this.REVIEW_COMMENT_DATE.substring(2) + "</td>";
+						output += "			 </b><br>" + this.REVIEW_COMMENT_DATE.substring(2);
+						if(this.REVIEW_COMMENT_DATE >= "${nowday}") { // 새 댓글 new 표시
+							output += '	   &nbsp;&nbsp;<img src="${pageContext.request.contextPath}/resources/project_image/review/new.png" style="width:15px; height:15px">';		
+						}
+						output += "</td>";
 						output += "<td>";
 						
 						// 답댓글인 경우 원문 댓글 작성자 구하기

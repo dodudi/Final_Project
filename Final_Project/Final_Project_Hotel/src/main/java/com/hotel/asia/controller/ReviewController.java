@@ -29,6 +29,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.co.shineware.nlp.komoran.constant.DEFAULT_MODEL;
+import kr.co.shineware.nlp.komoran.core.Komoran;
+import kr.co.shineware.nlp.komoran.model.KomoranResult;
+import kr.co.shineware.nlp.komoran.model.Token;
+
 import com.google.gson.JsonObject;
 import com.hotel.asia.dto.ReviewBoard;
 import com.hotel.asia.service.MemberService;
@@ -55,7 +60,7 @@ public class ReviewController {
 								   @RequestParam(value="search_field", defaultValue="-1", required=false) int index, // 검색 기준
 								   @RequestParam(value="search_word", defaultValue="", required=false) String search_word, // 검색어
 			                       ModelAndView mv, HttpSession session) {
-		session.setAttribute("id", "C1234"); // ======임시로 id 저장 나중에 지우기!!
+		session.setAttribute("id", "A1234"); // ======임시로 id 저장 나중에 지우기!!
 		
 		logger.info("=====[reviewList] 리뷰게시판 이동=====");
 		
@@ -77,6 +82,24 @@ public class ReviewController {
         String nowday = format.format(cal.getTime());
         logger.info("[하루 전 시각] "+ nowday);
         
+        // ==================== 검색어 ====================
+        if(index == 0) { // 검색 기준이 제목일 때 검색어 리스트에 들어간다
+			Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
+			KomoranResult analyzeResultList = komoran.analyze(search_word);
+			List<Token> searchWordList = analyzeResultList.getTokenList();
+			int addResult = 0;
+			
+			logger.info("==================== 검색어 갱신 결과 ====================");
+			for(Token searchWord : searchWordList) {
+				if(searchWord.getPos().equals("NNG") || searchWord.getPos().equals("NNP")) { // 검색 문장 중 일반명사(NNG), 고유명사(NNP)만 리스트에 추가 (https://komorandocs.readthedocs.io/ko/latest/firststep/postypes.html)
+					addResult = reviewBoardService.addSearchWord(searchWord.getMorph()); // 검색어 리스트 추가 or 갱신
+					logger.info(searchWord.getMorph() + "(" + searchWord.getPos() + ") => addResult=" + addResult + "(추가되면 1)" );
+				}
+			}
+		}
+		List<String> topSearchWordList = reviewBoardService.getTopSearchWordList(); // 인기검색어 리스트
+
+        
 		mv.setViewName("review/reviewList");
 		mv.addObject("page", page);
 		mv.addObject("maxpage", maxpage);
@@ -88,6 +111,7 @@ public class ReviewController {
 		mv.addObject("search_word", search_word);
 		mv.addObject("reviewList", reviewList);
 		mv.addObject("nowday", nowday); // 새 글 new 표시 하기 위한 하루 전 시각
+		mv.addObject("topSearchWordList", topSearchWordList); // 인기검색어 리스트
 		return mv;
 	}
 	// 리뷰 게시판 정렬

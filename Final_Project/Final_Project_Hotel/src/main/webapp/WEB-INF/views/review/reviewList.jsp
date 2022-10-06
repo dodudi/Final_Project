@@ -8,6 +8,12 @@
 <title>후기 게시판</title>
 <style>
 	* {color:black}
+	
+	/* 인기검색어 사이드바 */
+	.blog_right_sidebar {
+	    position: relative;
+	    top: 10%;
+	}
 </style>
 <script>
 //1. 페이지 이동
@@ -153,122 +159,153 @@ $(function(){
 <!-- 게시판 -->
 <section class="sample-text-area">
 	<div class="container">
-		<h3 class="text-heading title_color">커뮤니티 > 후기게시판</h3>
-		
-		<a href="reviewWriteForm" class="genric-btn primary circle">글쓰기</a>
-		
-		<!-- 검색 -->
-		<form action="reviewList" method="post" style="float:right">
-			<div class="input-group">
-				<select class="form-control" name="search_field">
-					<option value="0" selected>제목</option>
-					<option value="1">글쓴이</option>
-				</select>
-				<input name="search_word" type="text" class="form-control" value="${search_word}" placeholder="검색어 입력" style="height:38px"> <!-- 검색어를 입력한 후 다시 돌아온 경우 검색어가 나타나도록 합니다. -->
-				<button type="submit" id="searchBtn" class="genric-btn primary circle" style="margin-left:3px;">검색</button>
-			</div>
-			<!-- 403에러 방지 토큰 -->
-			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-		</form><br><br>
-		
-		<!-- 정렬 -->
-		<div class="rows float-right" style="margin-bottom:10px;">
-			<select class="form-control" id="sort">
-				<option value="REVIEW_DATE" selected>등록순</option>
-				<option value="REVIEW_READCOUNT">조회순</option>
-				<option value="REVIEW_RECOMM">추천순</option>
-			</select>
-		</div>	
-          
-		
-		<!-- 게시글 리스트 -->
-		<c:if test="${listcount > 0}">
-			<table class="table">
-				<thead class="thead-light">
-					<tr>
-						<th style="width:10%">글번호</th>
-						<th>제목</th>
-						<th>등록일</th>
-						<th>작성자</th>
-						<th>조회수</th>
-						<th>추천순</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:set var="num" value="${listcount - (page - 1)*limit}"/>
-					<c:forEach var="reviewList" items="${reviewList}">
-						<tr>
-							<td>
-								<c:out value="${num}"/>  <!-- num 출력 -->
-								<c:set var="num" value="${num-1}"/>  <!-- num=num-1; -->
-							</td>
-							<td>
-								<a href="reviewDetail?num=${reviewList.REVIEW_NUM}">
-									${reviewList.REVIEW_SUBJECT}&nbsp;&nbsp;
-								</a>
-								<span class="gray small">[<c:out value="${reviewList.CNT}"/>]</span> <!-- 총 댓글 수 -->
-							</td>
-							<td>
-								${reviewList.REVIEW_DATE}&nbsp;&nbsp;
-								<c:if test="${reviewList.REVIEW_DATE >= nowday}">
-									<img src="${pageContext.request.contextPath}/resources/project_image/review/new.png" style="width:15px; height:15px">
+		<div class="row">
+			<div class="col-lg-10">
+				<h3 class="text-heading title_color">커뮤니티 > 후기게시판</h3>
+				
+				<a href="reviewWriteForm" class="genric-btn primary circle">글쓰기</a>
+				
+				<!-- 검색 -->
+				<form action="reviewList" method="post" style="float:right">
+					<div class="input-group">
+						<select class="form-control" name="search_field">
+							<option value="0" selected>제목</option>
+							<option value="1">글쓴이</option>
+						</select>
+						<input name="search_word" type="text" class="form-control" value="${search_word}" placeholder="검색어 입력" style="height:38px"> <!-- 검색어를 입력한 후 다시 돌아온 경우 검색어가 나타나도록 합니다. -->
+						<button type="submit" id="searchBtn" class="genric-btn primary circle" style="margin-left:3px;">검색</button>
+					</div>
+					<!-- 403에러 방지 토큰 -->
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+				</form><br><br>
+				
+				<!-- 정렬 -->
+				<div class="rows float-right" style="margin-bottom:10px;">
+					<select class="form-control" id="sort">
+						<option value="REVIEW_DATE" selected>등록순</option>
+						<option value="REVIEW_READCOUNT">조회순</option>
+						<option value="REVIEW_RECOMM">추천순</option>
+					</select>
+				</div>	
+		          
+				
+				<!-- 게시글 리스트 -->
+				<c:if test="${listcount > 0}">
+					<table class="table">
+						<thead class="thead-light">
+							<tr>
+								<th style="width:10%">글번호</th>
+								<th>제목</th>
+								<th>등록일</th>
+								<th>작성자</th>
+								<th>조회수</th>
+								<th>추천순</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:set var="num" value="${listcount - (page - 1)*limit}"/>
+							<c:forEach var="reviewList" items="${reviewList}">
+								<tr>
+									<td>
+										<c:out value="${num}"/>  <!-- num 출력 -->
+										<c:set var="num" value="${num-1}"/>  <!-- num=num-1; -->
+									</td>
+									<td>
+										<a href="reviewDetail?num=${reviewList.REVIEW_NUM}">
+											${reviewList.REVIEW_SUBJECT}&nbsp;&nbsp;
+										</a>
+										<span class="gray small">[<c:out value="${reviewList.CNT}"/>]</span> <!-- 총 댓글 수 -->
+									</td>
+									<td>
+										${reviewList.REVIEW_DATE}&nbsp;&nbsp;
+										<c:if test="${reviewList.REVIEW_DATE >= nowday}">
+											<img src="${pageContext.request.contextPath}/resources/project_image/review/new.png" style="width:15px; height:15px">
+										</c:if>
+									</td>
+									<td>${reviewList.MEM_ID}</td>
+									<td>${reviewList.REVIEW_READCOUNT}</td>
+									<td>${reviewList.REVIEW_RECOMM}</td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+					
+					<!-- 페이지네이션 -->
+					<div class="center-block">
+						<ul class="pagination justify-content-center">
+							<c:if test="${page <= 1}">  <!-- page는 현재 페이지 -->
+								<li class="page-item">
+									<a class="page-link gray">이전&nbsp;</a> <!-- page(현재 페이지)가 1페이지보다 작은 경우 이동할 이전 페이지가 없다 -->
+								</li>
+							</c:if>
+							<c:if test="${page > 1}"> 
+								<li class="page-item">
+									<a href="reviewList?page=${page-1}&search_field=${search_field}&search_word=${search_word}" class="page-link">이전&nbsp;</a> <!-- page(현재 페이지)가 1페이지보다 크면 이동할 이전 페이지가 생긴다 -->
+								</li>
+							</c:if>
+							
+							<c:forEach var="a" begin="${startpage}" end="${endpage}">
+								<c:if test="${a == page}">
+									<li class="page-item active">
+										<a class="page-link">${a}</a>
+									</li>
 								</c:if>
-							</td>
-							<td>${reviewList.MEM_ID}</td>
-							<td>${reviewList.REVIEW_READCOUNT}</td>
-							<td>${reviewList.REVIEW_RECOMM}</td>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
+								<c:if test="${a != page}">
+									<li class="page-item">
+										<a href="reviewList?page=${a}&search_field=${search_field}&search_word=${search_word}" class="page-link">${a}</a>
+									</li>
+								</c:if>
+							</c:forEach>
+							
+							<c:if test="${page >= maxpage}">
+								<li class="page-item">
+									<a class="page-link gray">&nbsp;다음</a>
+								</li>
+							</c:if>	
+							<c:if test="${page < maxpage}">
+								<li class="page-item">
+									<a href="reviewList?page=${page+1}&search_field=${search_field}&search_word=${search_word}" class="page-link">&nbsp;다음</a>
+								</li>
+							</c:if>						
+						</ul>
+					</div>
+				</c:if>
+				
+				<!-- 게시글이 없는 경우 -->
+				<c:if test="${listcount == 0}">
+					<div class="container" style="margin-top:80px; margin-bottom:80px; text-align:center">
+						<font size=5>등록된 글이 없습니다.</font>
+					</div>
+				</c:if>
+			</div>
 			
-			<!-- 페이지네이션 -->
-			<div class="center-block">
-				<ul class="pagination justify-content-center">
-					<c:if test="${page <= 1}">  <!-- page는 현재 페이지 -->
-						<li class="page-item">
-							<a class="page-link gray">이전&nbsp;</a> <!-- page(현재 페이지)가 1페이지보다 작은 경우 이동할 이전 페이지가 없다 -->
-						</li>
-					</c:if>
-					<c:if test="${page > 1}"> 
-						<li class="page-item">
-							<a href="reviewList?page=${page-1}&search_field=${search_field}&search_word=${search_word}" class="page-link">이전&nbsp;</a> <!-- page(현재 페이지)가 1페이지보다 크면 이동할 이전 페이지가 생긴다 -->
-						</li>
-					</c:if>
-					
-					<c:forEach var="a" begin="${startpage}" end="${endpage}">
-						<c:if test="${a == page}">
-							<li class="page-item active">
-								<a class="page-link">${a}</a>
-							</li>
-						</c:if>
-						<c:if test="${a != page}">
-							<li class="page-item">
-								<a href="reviewList?page=${a}&search_field=${search_field}&search_word=${search_word}" class="page-link">${a}</a>
-							</li>
-						</c:if>
-					</c:forEach>
-					
-					<c:if test="${page >= maxpage}">
-						<li class="page-item">
-							<a class="page-link gray">&nbsp;다음</a>
-						</li>
-					</c:if>	
-					<c:if test="${page < maxpage}">
-						<li class="page-item">
-							<a href="reviewList?page=${page+1}&search_field=${search_field}&search_word=${search_word}" class="page-link">&nbsp;다음</a>
-						</li>
-					</c:if>						
-				</ul>
+			<!-- 인기 검색어 -->
+			<div class="col-lg-2">
+				<div class="blog_right_sidebar">
+					<aside class="single_sidebar_widget post_category_widget">
+	                    <h4 class="widget_title">인기 검색어</h4>
+	                    <ol class="list_style cat-list">
+	                    	<!-- 인기검색어 있을 떄 -->
+	                    	<c:if test="${!empty topSearchWordList}">
+		                    	<c:set var="num" value="1"/>
+		                    	<c:forEach var="top" items="${topSearchWordList }">
+			                        <li>
+			                            ${num }
+			                            <c:set var="num" value="${num + 1}" />
+			                            <a href="reviewList?search_field=0&search_word=${top}">${top}</a>
+			                        </li>
+		                        </c:forEach>
+	                        </c:if>
+	                        
+	                        <!-- 인기검색어 없을 때 (한 번도 검색하지 않은 경우) -->
+	                    	<c:if test="${empty topSearchWordList}">
+	                    		<span>인기 검색어 없음</span>
+	                    	</c:if>
+	                    </ol>   
+	                </aside>
+				</div>
 			</div>
-		</c:if>
-		
-		<!-- 게시글이 없는 경우 -->
-		<c:if test="${listcount == 0}">
-			<div class="container" style="margin-top:80px; margin-bottom:80px; text-align:center">
-				<font size=5>등록된 글이 없습니다.</font>
-			</div>
-		</c:if>
+		</div>
 	</div>
 </section>
 
