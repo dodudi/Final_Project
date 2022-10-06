@@ -21,7 +21,7 @@ body {
     width: 450px;
     max-width: 90%;
     height: 700px;
-    background:url("../../image/door.jpg")  #fff;
+    background:url("../../image/black.jpg")  #fff;
     background-repeat:no-repeat;
     background-position: top center;
     background-size: cover;
@@ -182,15 +182,19 @@ fieldset input:focus {
 }
 
 label{
-	position: absolute;
 	margin-right: 10px;
 	color: #fff;
 	font-weight: 400;
 	font-size: 0.8em;
 }
 
+.msg {
+	display: block;
+    text-align: left;
+    padding-left: 50px;
+}
+
 .login_form{
-    position: relative;
     bottom:0;
     width: 70%;
     height: 4em;
@@ -248,7 +252,7 @@ a{
 @media (max-width:500px) {
 
     html, body{
-        background:url("../../image/door.jpg")  #fff;
+        background:url("../../image/black.jpg")  #fff;
         background-repeat:no-repeat;
         background-position: top center;
         background-size: cover;
@@ -290,4 +294,10 @@ a{
         margin-top: 100px;
     }
     
+}
+
+.error {
+	color: red;
+	font-size: 12px;
+	  position: relative;
 }

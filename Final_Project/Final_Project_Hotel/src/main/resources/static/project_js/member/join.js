@@ -14,16 +14,12 @@ $(function(){
         event.preventDefault();
     });
 
-    $("#sign_up").click(function(){ 
-       location.href="../member/join";
+    $("button").hover(function(){
+    	$(".button2").css('cursor', ' default');
     });
     
-    $("#login-form-submit").click(function() {
-    	if("${loginfail}" == "loginFailMsg"){
-    	alert("아이디 또는 비밀번호가 일치하지 않습니다.");
-    	}
-    })
     
+   
 });
 	
 	

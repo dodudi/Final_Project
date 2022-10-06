@@ -1,6 +1,7 @@
 package com.hotel.security;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -9,12 +10,14 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
-//AuthenticationFailHandler : 로그인 실패 후 처리할 작업을 해야할 때 사용하는 인터페이스 입니다.
-
-public class LoginFailHandler implements AuthenticationFailureHandler{
+public class LoginFailHandler extends SimpleUrlAuthenticationFailureHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(LoginFailHandler.class);
 	
@@ -22,11 +25,28 @@ public class LoginFailHandler implements AuthenticationFailureHandler{
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 				AuthenticationException exception) throws IOException, ServletException{
 		
+		String errorMessage;        
+		
+		if (exception instanceof BadCredentialsException) {
+            errorMessage = "아이디 또는 비밀번호가 맞지 않습니다. 다시 확인해 주세요.";
+        } else if (exception instanceof InternalAuthenticationServiceException) {
+            errorMessage = "내부적으로 발생한 시스템 문제로 인해 요청을 처리할 수 없습니다. 관리자에게 문의하세요.";
+        } else if (exception instanceof UsernameNotFoundException) {
+            errorMessage = "계정이 존재하지 않습니다. 회원가입 진행 후 로그인 해주세요.";
+        } else if (exception instanceof AuthenticationCredentialsNotFoundException) {
+            errorMessage = "인증 요청이 거부되었습니다. 관리자에게 문의하세요.";
+        } else {
+            errorMessage = "알 수 없는 이유로 로그인에 실패하였습니다 관리자에게 문의하세요.";
+        }  // 여기선 첫번째 값 외에 다른건 받질 못함 ... ㅠㅠ 
+		
 		HttpSession session = request.getSession();
-		logger.info(exception.getMessage());
-		logger.info("로그인 실패");
-		session.setAttribute("loginfail", "loginFailMsg");
-		String url = request.getContextPath() + "/member/login";
-		response.sendRedirect(url);
+		session.setAttribute("errorMessage", errorMessage);
+		logger.info("errorMessage : " + errorMessage);
+		errorMessage= URLEncoder.encode(errorMessage,"UTF-8");//한글 인코딩 깨지는 문제 방지
+        setDefaultFailureUrl("/member/login");
+        super.onAuthenticationFailure(request,response,exception);
+	
 	}
+
+
 }
