@@ -115,7 +115,6 @@ $(function(){
 </section>
 <!--================Breadcrumb Area =================-->
 
-
 <section class="sample-text-area">
 	<div class="container">
 		<h3 style="color:black;font-weight:bold">커뮤니티 > <a href="/hotel/review/reviewList" style="text-decoration:none; color:black;">후기게시판</a> > 글쓰기</h3> 
@@ -141,9 +140,6 @@ $(function(){
 		</form>
 	</div>
 </section>
-
-
-
 
 <!-- 푸터 -->        
 <jsp:include page="../main/footer.jsp"/> 	

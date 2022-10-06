@@ -14,7 +14,7 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-ko-KR.js"></script>
 
-<title> 리뷰 게시글 작성 </title>
+<title> 후기 게시글 수정 </title>
 <script>
 $(function(){
     $(document).ready(function () {
@@ -105,7 +105,7 @@ $(function(){
     <div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
     <div class="container">
         <div class="page-cover text-center">
-            <h2 class="page-cover-tittle">후기게시글 작성</h2>
+            <h2 class="page-cover-tittle">후기게시글 수정</h2>
         </div>
     </div>
 </section>

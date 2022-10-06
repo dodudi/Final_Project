@@ -117,7 +117,7 @@ public class MemberServiceImpl implements MemberService {
 	
 	
 	
-	// ==========[현능] 22-09-30 추가==========
+	// ==========[현능] 22-10-05 수정==========
 	// 회원 정보
 	@Override
 	public Member getMemberInfo(String id) {
@@ -134,6 +134,14 @@ public class MemberServiceImpl implements MemberService {
 			result = 1;
 		}
 		return result; // 휴대폰번호 있으면 1, 없으면 0, 매퍼 작동 안 하면 -1
+	}
+	// 포인트 적립
+	@Override
+	public int rewardPoint(String id, int point) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("MEM_ID", id);
+		map.put("MEM_POINT", point);
+		return dao.rewardPoint(map);
 	}
 	
 }

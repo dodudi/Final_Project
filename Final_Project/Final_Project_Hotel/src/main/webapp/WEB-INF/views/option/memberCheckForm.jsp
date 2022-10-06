@@ -6,11 +6,13 @@
 <head>
 <jsp:include page="../main/header.jsp"/> <!-- 헤더 -->
 <script src="http://code.jquery.com/jquery-latest.js"></script> <!-- 제이쿼리 -->
-
-<!-- 결제 시스템 - 아임포트API -->
-<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script> <!-- 결제 시스템 - 아임포트API -->
+<title>고객정보 확인</title>
+<style>
+	
+</style>
 <script>
-$(function(){
+$(function(){	
 	// 휴대폰번호 변경 여부 확인
 	var phoneAuthChk = true;
 	var originalPhone = "${member.MEM_PHONE}"; // 기존 휴대폰번호
@@ -75,7 +77,7 @@ $(function(){
 								console.log("phoneAuthChk = " + phoneAuthChk);
 							}
 						}) // 휴대폰 번호 인증 ajax end
-					} 
+					}
 				}
 			}) // 휴대폰 번호 중복 검사 $.ajax end
 		}
@@ -98,23 +100,8 @@ $(function(){
 	})
 	
 	
-	// 폼 전송
-	/* $("form").submit(function(){
-		// 휴대폰 중복검사 확인 
-		var submit_phone_value = $.trim($("input[name='MEM_PHONE']").val());
-		if (phoneAuthChk == false ) {
-			alert("변경된 휴대폰번호를 인증해주세요.");
-			return false;
-		}
-		// 취소정책 확인 - 체크박스 체크 여부
-		if ( !$("input[type='checkbox']").is(":checked")) {
-			alert("취소 정책을 확인해주세요.");
-			return false;
-		}
-	}) */
-	
 	// 결제하기 버튼 클릭
-	$("#paymentBtn").click(function () {
+	$("#paymentBtn").click(function() {
 		// 휴대폰 중복검사 확인 
 		var submit_phone_value = $.trim($("input[name='MEM_PHONE']").val());
 		if (phoneAuthChk == false ) {
@@ -126,18 +113,19 @@ $(function(){
 			alert("취소 정책을 확인해주세요.");
 			return false;
 		}
-        payment();
+        payment(); // 결제 함수 호출
     });
 }) // ready end
 
+// 결제 함수
 function payment() {
     IMP.init('imp83310785');
     IMP.request_pay({
         pg: "html5_inicis.INIpayTest",
         pay_method: "card",
         merchant_uid : new Date().getTime(), // 가맹점에서 생성/관리하는 고유 주문번호 (중복 불가)
-        name: "3", // 아이템 이름
-        amount: 100, // 아이템 가격
+        name: "3", // "${room.ROOM_TYPE}" 또는 "${rez.ROOM_ID}" // 아이템 이름
+        amount: 100, // "${totalPrice}" // 아이템 가격
         buyer_email: "gildong@gmail.com",
         buyer_name: "홍길동", // 결제자 이름
         buyer_tel: "010-4242-4242",
@@ -145,17 +133,21 @@ function payment() {
         buyer_postcode: "01182"
     }, function (rsp) {
     	$("input[name='PAYMENT_ID']").val(rsp.merchant_uid);
-    	$("input[name='PAYMENT_PRICE']").val(rsp.paid_amount);
+    	//$("input[name='PAYMENT_PRICE']").val(rsp.paid_amount); // 실제 결제 금액
+    	$("input[name='PAYMENT_PRICE']").val("${totalPrice}"); // 시스템상 결제 금액
     	console.log("결제 번호 => " + rsp.merchant_uid);
     	console.log("결제 금액 => " + rsp.paid_amount);
+        console.log("[결제 상태] rsp.status=" + rsp.status);
         if (rsp.success) {
         	console.log("[결제 성공] rsp.status=" + rsp.status);
         	$("form").submit();
-          } else {
+        } else {
         	console.log("결제 실패. 에러 내용: " +  rsp.error_msg);
-          }
+        	//alert("결제에 실패하셨습니다. 관리자에게 문의해주세요."); // 나중에 이거 주석 풀기!
+        	$("form").submit(); // 나중에 이거 지우기!
+        }
     });
-}
+} // payment() end
 </script>
 </head>
 <body>
@@ -194,8 +186,7 @@ function payment() {
 	                       				</td>
 	                       			</tr>
 	                       			<tr>
-	                       				<th>이메일</th>
-	                       				<td>${member.MEM_EMAIL}</td>
+	                       				<th>이메일</th><td>${member.MEM_EMAIL}</td>
 	                       			</tr>
 	                       		</table>
 	                       </div>
@@ -206,9 +197,7 @@ function payment() {
 					            <div class="cancel">
 									<table class="table">
 										<colgroup>
-											<col width="10%">
-											<col width="45%">
-											<col width="45%">
+											<col width="10%"><col width="45%"><col width="45%">
 										</colgroup>
 										<thead>
 											<tr>
