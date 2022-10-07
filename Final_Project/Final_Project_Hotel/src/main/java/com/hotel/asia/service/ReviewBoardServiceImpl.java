@@ -3,8 +3,6 @@ package com.hotel.asia.service;
 import java.util.HashMap;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +11,6 @@ import com.hotel.asia.mybatis.mapper.ReviewBoardMapper;
 
 @Service
 public class ReviewBoardServiceImpl implements ReviewBoardService{
-	private static final Logger logger = LoggerFactory.getLogger(ReviewBoardServiceImpl.class);
 	
 	@Autowired
 	private ReviewBoardMapper mapper;
@@ -149,5 +146,10 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
 	@Override
 	public List<String> getTopSearchWordList() {
 		return mapper.getTopSearchWordList();
+	}
+	// 인기검색어 삭제 (only 관리자)
+	@Override
+	public int deleteSearchWord(String searchWord) {
+		return mapper.deleteSearchWord(searchWord);
 	}
 }

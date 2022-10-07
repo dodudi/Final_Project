@@ -128,7 +128,7 @@ $(function(){
 	if (selectedValue != '-1') {
 		$("select[name='search_field']").val(selectedValue);
 	}
-	// 검색버튼 클릭
+	// 2. 검색버튼 클릭
 	$("#searchBtn").click(function(){
 		var search_word = $("input[name='search_word']"); // 검색어 - input 태그(Object)
 		
@@ -139,6 +139,36 @@ $(function(){
 			return false;
 		}
 	}) // 검색버튼 클릭 end
+	
+	
+	// 관리자 - 인기검색어 삭제
+	$('form[name="searchWordDelete"]').submit(function(){
+		var token  = $("meta[name='_csrf']").attr("content");
+ 		var header = $("meta[name='_csrf_header']").attr("content");
+		var searchWord = $(this).parent().find('input:nth-child(1)').val(); // 삭제할 인기검색어
+		console.log("삭제할 검색어 => " + searchWord);
+		$.ajax({
+			type: "post",
+			url: "searchWordDelete",
+			data: {"searchWord": searchWord},
+			beforeSend : function(xhr) { 
+	        	xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리		
+	        },
+			success : function(result) {
+				console.log(result);
+				if(result == 1) { // 검색어 삭제 성공
+					alert('삭제되었습니다.');
+				} else {
+					alert('삭제되지 않았습니다.');
+				}
+			}, // success end
+			error : function(error){
+				alert("검색어 삭제 에러 : " + error);
+			}
+		})
+	}) // 인기검색어 삭제 end
+	
+	
 	
 }) // ready end
 </script>
@@ -288,11 +318,44 @@ $(function(){
 	                    	<!-- 인기검색어 있을 떄 -->
 	                    	<c:if test="${!empty topSearchWordList}">
 		                    	<c:set var="num" value="1"/>
-		                    	<c:forEach var="top" items="${topSearchWordList }">
+		                    	<c:forEach var="top" items="${topSearchWordList}">
 			                        <li>
-			                            ${num }
-			                            <c:set var="num" value="${num + 1}" />
+			                            <span>${num}&nbsp;&nbsp;&nbsp;&nbsp;</span>
 			                            <a href="reviewList?search_field=0&search_word=${top}">${top}</a>
+			                            
+			                            <!-- 관리자만 인기검색어 삭제 가능 -->
+			                            <c:if test="${id == 'admin'}">
+			                            	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+											<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+			                            	<a href="#">
+				                            	<img data-toggle="modal" data-target="#searchWordDeleteBtn${num}" src="${pageContext.request.contextPath}/resources/project_image/review/searchWordDelete.png" class="float-right" style="width:10px; height:10px">
+											</a>
+											
+											<!-- 인기검색어 삭제 모달 -->
+											<div class="modal" id="searchWordDeleteBtn${num}">
+												<c:set var="num" value="${num + 1}" />
+												<div class="modal-dialog">
+													<div class="modal-content">
+														<div class="modal-body">
+															<form name="searchWordDelete" method="post">
+																<input type="hidden" value="${top}"> <!-- 삭제할 인기검색어 -->
+																<div class="modal-header">
+															        <h5 class="modal-title">
+															        	검색어 '${top}'을(를) 정말 삭제하시겠습니까?
+															        </h5>
+															        <button type="button" class="close" data-dismiss="modal">&times;</button>
+														        </div>
+														        <button type="submit" class="btn btn-primary">삭제</button>
+																<button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>
+																
+																<!-- 403에러 방지 토큰 -->
+																<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+															</form>
+														</div>
+													</div>
+												</div>
+											</div>
+			                            </c:if>
 			                        </li>
 		                        </c:forEach>
 	                        </c:if>
