@@ -3,6 +3,8 @@ package com.hotel.asia.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +29,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.co.shineware.nlp.komoran.constant.DEFAULT_MODEL;
+import kr.co.shineware.nlp.komoran.core.Komoran;
+import kr.co.shineware.nlp.komoran.model.KomoranResult;
+import kr.co.shineware.nlp.komoran.model.Token;
+
 import com.google.gson.JsonObject;
 import com.hotel.asia.dto.ReviewBoard;
+import com.hotel.asia.service.MemberService;
 import com.hotel.asia.service.ReviewBoardService;
 import com.hotel.asia.service.ReviewCommService;
 
@@ -41,6 +49,8 @@ public class ReviewController {
 	private ReviewBoardService reviewBoardService;
 	@Autowired
 	private ReviewCommService reviewCommService;
+	@Autowired
+	private MemberService memberService;
 	
 	
 	// 리뷰 게시판 이동
@@ -63,9 +73,33 @@ public class ReviewController {
 			endpage = maxpage; 
 		}
 		List<ReviewBoard> reviewList = reviewBoardService.getReviewList(page, limit, sortBy, index, search_word);
-		 
-		logger.info("* 총 리뷰 수:" + listcount);
+		logger.info("*총 리뷰 수: " + listcount);
 		
+		// 새 글 new 표시 하기 위한 하루 전 시각 구하기
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, -1); // 하루 동안 보이도록 함
+        String nowday = format.format(cal.getTime());
+        logger.info("[하루 전 시각] "+ nowday);
+        
+        // ==================== 검색어 ====================
+        if(index == 0) { // 검색 기준이 제목일 때 검색어 리스트에 들어간다
+			Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
+			KomoranResult analyzeResultList = komoran.analyze(search_word);
+			List<Token> searchWordList = analyzeResultList.getTokenList();
+			int addResult = 0;
+			
+			logger.info("==================== 검색어 갱신 결과 ====================");
+			for(Token searchWord : searchWordList) {
+				if(searchWord.getPos().equals("NNG") || searchWord.getPos().equals("NNP")) { // 검색 문장 중 일반명사(NNG), 고유명사(NNP)만 리스트에 추가 (https://komorandocs.readthedocs.io/ko/latest/firststep/postypes.html)
+					addResult = reviewBoardService.addSearchWord(searchWord.getMorph()); // 검색어 리스트 추가 or 갱신
+					logger.info(searchWord.getMorph() + "(" + searchWord.getPos() + ") => addResult=" + addResult + "(추가되면 1)" );
+				}
+			}
+		}
+		List<String> topSearchWordList = reviewBoardService.getTopSearchWordList(); // 인기검색어 리스트
+
+        
 		mv.setViewName("review/reviewList");
 		mv.addObject("page", page);
 		mv.addObject("maxpage", maxpage);
@@ -76,6 +110,8 @@ public class ReviewController {
 		mv.addObject("search_field", index);
 		mv.addObject("search_word", search_word);
 		mv.addObject("reviewList", reviewList);
+		mv.addObject("nowday", nowday); // 새 글 new 표시 하기 위한 하루 전 시각
+		mv.addObject("topSearchWordList", topSearchWordList); // 인기검색어 리스트
 		return mv;
 	}
 	// 리뷰 게시판 정렬
@@ -96,8 +132,15 @@ public class ReviewController {
 		if(endpage > maxpage) {
 			endpage = maxpage; 
 		}
-		
 		List<ReviewBoard> reviewList = reviewBoardService.getReviewList(page, limit, sortBy, index, search_word);
+		
+		// 새 글 new 표시 하기 위한 하루 전 시각 구하기
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, -1); // 하루 동안 보이도록 함
+        String nowday = format.format(cal.getTime());
+        logger.info("[하루 전 시각] "+ nowday);
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("limit", limit);
 		map.put("listcount", listcount);
@@ -105,9 +148,8 @@ public class ReviewController {
 		map.put("maxpage", maxpage);
 		map.put("startpage", startpage);
 		map.put("endpage", endpage);
-		//map.put("search_field", index);
-		//map.put("search_word", search_word);
 		map.put("reviewList", reviewList);
+		map.put("nowday", nowday); // 새 글 new 표시 하기 위한 하루 전 시각
 		return map;
 	}
 	
@@ -118,7 +160,6 @@ public class ReviewController {
 	@RequestMapping(value="/reviewWriteForm")
 	public ModelAndView  reviewWriteForm(ModelAndView mv, HttpSession session) {
 		logger.info("리뷰게시글 작성 폼 이동");
-		//mv.addObject("id", session.getAttribute("id"));
 		mv.setViewName("review/reviewWriteForm");
 		return mv;
 	}
@@ -132,9 +173,8 @@ public class ReviewController {
 		logger.info("*내용: " + rb.getREVIEW_CONTENT());
 		logger.info("*작성자: " + (String)session.getAttribute("id"));
 		
-		rb.setMEM_ID((String)session.getAttribute("id"));
-		
-		int result = reviewBoardService.write(rb);
+		rb.setMEM_ID((String)session.getAttribute("id")); // 작성자는 로그인된 계정
+		int result = reviewBoardService.write(rb); // 글 작성
 		
 		if(result == 0) {
 			logger.info("[글 작성 실패] result = " + result);
@@ -142,9 +182,10 @@ public class ReviewController {
 			return "로그인페이지";
 		} else {
 			logger.info("[글 작성 성공] result = " + result);
-			int REVIEW_NUM = rb.getREVIEW_NUM();
-			logger.info("[작성된 글의 REVIEW_NUM] " + REVIEW_NUM);
-			rattr.addAttribute("num", REVIEW_NUM);
+			logger.info("[작성된 글의 REVIEW_NUM] " + rb.getREVIEW_NUM());
+			int ptResult = memberService.rewardPoint((String)session.getAttribute("id"), 100); // 리뷰 작성 시 포인트 적립
+			logger.info("[리뷰포인트 적립여부] ptResult = " + ptResult);
+			rattr.addAttribute("num", rb.getREVIEW_NUM());
 		}
 		return "redirect:reviewDetail";
 	}
@@ -192,6 +233,13 @@ public class ReviewController {
 		int already = reviewBoardService.reviewRecommMem(num, (String)session.getAttribute("id"));
 		logger.info("*reviewRecommMem => " + already + " (기존에 있으면 1, 없으면 0)");
 		
+		// 새 글 new 표시 하기 위한 하루 전 시각 구하기
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, -1); // 하루 동안 보이도록 함
+        String nowday = format.format(cal.getTime());
+        logger.info("[하루 전 시각] "+ nowday);
+		
 		if(review == null) {
 			logger.info("상세보기 실패");
 			mv.setViewName("error/error");
@@ -202,8 +250,9 @@ public class ReviewController {
 			int count = reviewCommService.getCommListCount(num); // 총 댓글 수
 			mv.setViewName("review/reviewDetail");
 			mv.addObject("count", count);
-			mv.addObject("already", already); // 이미 추천한 사람인지 확인
 			mv.addObject("review", review);
+			mv.addObject("already", already); // 이미 추천한 사람인지 확인
+			mv.addObject("nowday", nowday); // 새 글 new 표시 하기 위한 하루 전 시각
 		}
 		return mv;
 	}

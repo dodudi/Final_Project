@@ -43,5 +43,8 @@ public interface ReviewBoardMapper {
 	public int reviewRecommDel(int review_NUM);
 	
 	
-
+	// 검색어 리스트 추가 or 갱신
+	public int addSearchWord(String SEARCH_WORD);
+	// 인기검색어 리스트
+	public List<String> getTopSearchWordList();
 }
