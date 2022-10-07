@@ -111,4 +111,31 @@
 		where  REVIEW_NUM = #{review_NUM}
 	</update>
 	
+	
+	<!-- 검색어 리스트 추가 or 갱신 -->
+	<update id="addSearchWord" parameterType="String">
+		MERGE INTO REVIEW_BOARD_SEARCH
+		USING DUAL
+   		ON (SEARCH_WORD = #{SEARCH_WORD})
+   		
+		WHEN MATCHED THEN <!-- 이미 테이블에 있는 검색어는 갱신 -->
+    	UPDATE
+    	SET   SEARCH_COUNT = SEARCH_COUNT + 1,
+    		  SEARCH_DATE = sysdate
+    	WHERE SEARCH_WORD = #{SEARCH_WORD}
+    	
+		WHEN NOT MATCHED THEN <!-- 테이블에 없는 검색어는 추가 -->
+    	INSERT (SEARCH_WORD, SEARCH_COUNT, SEARCH_DATE)
+    	VALUES (#{SEARCH_WORD}, 1, sysdate)
+	</update>
+	<!-- 인기검색어 리스트 -->
+	<select id="getTopSearchWordList" resultType="String">
+		select SEARCH_WORD
+		from ( select *
+			   from     REVIEW_BOARD_SEARCH
+			   order by SEARCH_COUNT desc, SEARCH_DATE desc
+			  )
+		where rownum &lt;= 10	  
+	</select>
+	
 </mapper>

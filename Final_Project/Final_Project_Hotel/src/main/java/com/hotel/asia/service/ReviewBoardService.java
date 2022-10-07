@@ -39,5 +39,11 @@ public interface ReviewBoardService {
 	public int reviewRecommTabDel(int review_NUM, String id);
 	// 추천 해제 여부
 	public int reviewRecommDel(int review_NUM);
+	
+	
+	// 검색어 리스트 추가 or 갱신
+	public int addSearchWord(String searchWord);
+	// 인기검색어 리스트
+	public List<String> getTopSearchWordList();
 
 }

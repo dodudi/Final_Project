@@ -6,19 +6,6 @@
 <head>
 <title>예약완료 - 예약확인 페이지</title>
 <jsp:include page="../main/header.jsp"/> <!-- 헤더 -->
-<script>
-$(function(){
-	// 체크인 날짜 ~ 체크아웃 날짜
-	/* checkInArr = "${rez.REZ_CHECKIN}".split('-');
-	checkIn = new Date(checkInArr[0], checkInArr[1]-1, checkInArr[2]);
-	for(var i = 0; i <= ${nights}; i++) {
-		ableDate = checkIn.getFullYear() + "-" + (checkIn.getMonth()+1) + "-" + checkIn.getDate();
-		console.log("날짜 => " + ableDate);
-		$("#optDate" + (i+1)).val(ableDate);
-		checkIn.setDate(checkIn.getDate() + 1);
-	} */
-}) // ready end
-</script>
 </head>
 <body>
 	<!--================Breadcrumb Area =================-->
@@ -42,11 +29,15 @@ $(function(){
 	        		</tr>
         		<thead>
         		<tbody>
+        			<c:set var="num" value="1" />
 	        		<tr style="background-color:lightgray">
-	        			<th colspan="5">01 일정 및 객실</th>
+	        			<th colspan="5">
+	        				0<c:out value="${num}" /> 일정 및 객실
+	        				<c:set var="num" value="${num+1}" />
+	        			</th>
 	        		</tr>
 	        		<tr>
-	        			<th>객실정보</th><td colspan="3">${rez.ROOM_ID}</td>
+	        			<th>객실정보</th><td colspan="3">${rez.ROOM_ID}&nbsp;${room.ROOM_TYPE}</td>
 	        		</tr>
 	        		<tr>
 	        			<th>체크인</th><td colspan="3">${rez.REZ_CHECKIN}</td>
@@ -58,7 +49,7 @@ $(function(){
 	        			<th>숙박일수</th><td colspan="3">${nights}박</td>
 	        		</tr>
 	        		<tr>
-	        			<th>예약자명</th><td colspan="3">${rez.MEM_ID}</td> <!-- 이름으로 나오게 바꾸기 -->
+	        			<th>예약자명</th><td colspan="3">${rez.MEM_ID}&nbsp;(이름으로 나오게 바꾸기)</td> <!-- 이름으로 나오게 바꾸기 -->
 	        		</tr>
 	        		<tr>
 	        			<th>인원수</th><td colspan="3">${rez.REZ_ADULT + rez.REZ_CHILD}명 (성인 ${rez.REZ_ADULT}명 / 아동 ${rez.REZ_CHILD}명)</td>
@@ -67,7 +58,10 @@ $(function(){
 	        		<!-- 옵션 예약 리스트 -->
 	        		<c:if test="${optRezListCount > 0}">
 		        		<tr style="background-color:lightgray">
-		        			<th colspan="5">02 옵션 선택</th>
+		        			<th colspan="5">
+		        				0<c:out value="${num}" />  옵션 선택
+	    	    				<c:set var="num" value="${num+1}" />
+		        			</th>
 		        		</tr>
 		        		<c:forEach var="dl" items="${dateList}">
 			        		<tr>
@@ -103,16 +97,19 @@ $(function(){
 			        
 			        <!-- 결제금액 -->
 			        <tr style="background-color:lightgray">
-	        			<th colspan="5">03 결제금액</th>
+	        			<th colspan="5">
+	        				0<c:out value="${num}" />  결제금액
+	    	    			<c:set var="num" value="${num+1}" />
+	        			</th>
 	        		</tr>
 	        		<tr>
-	        			<th>총금액</th><td colspan="3">원</td>
+	        			<th>총금액</th><td colspan="3">${paymentInfo.PAYMENT_PRICE}원</td>
 	        		</tr>
 	        		<tr>
-	        			<th>할인금액</th><td colspan="3">원</td>
+	        			<th>할인금액</th><td colspan="3">${paymentInfo.POINT_DISCOUNT}원</td>
 	        		</tr>
 	        		<tr>
-	        			<th>최종 결제금액</th><td colspan="3">원</td>
+	        			<th>최종 결제금액</th><td colspan="3">${paymentInfo.PAYMENT_PRICE - paymentInfo.POINT_DISCOUNT}원</td>
 	        		</tr>
         		</tbody>
         	</table>
