@@ -47,4 +47,6 @@ public interface ReviewBoardMapper {
 	public int addSearchWord(String SEARCH_WORD);
 	// 인기검색어 리스트
 	public List<String> getTopSearchWordList();
+	// 인기검색어 삭제 (only 관리자)
+	public int deleteSearchWord(String SEARCH_WORD);
 }

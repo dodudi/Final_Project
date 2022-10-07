@@ -137,5 +137,9 @@
 			  )
 		where rownum &lt;= 10	  
 	</select>
-	
+	<!-- 인기검색어 삭제 (only 관리자) -->
+	<delete id="deleteSearchWord">
+		delete from REVIEW_BOARD_SEARCH
+		where SEARCH_WORD = #{SEARCH_WORD}
+	</delete>
 </mapper>
