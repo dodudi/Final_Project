@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -50,19 +49,25 @@ public class MemberController {
 	//로그인 폼 이동 
 	//http://localhost:9000/hotel/member/login
 	@RequestMapping(value="/login", method=RequestMethod.GET)
-	public ModelAndView login(ModelAndView mv, 
-								@CookieValue(value="remember-me", required=false) Cookie readCookie,
-								HttpSession session,
-								Principal userPrincipal){
+	public String login(Model m, 
+							@CookieValue(value="remember-me", required=false) Cookie readCookie,
+							Principal userPrincipal,
+							HttpSession session,
+							@RequestParam(value = "error", required = false)String error,   
+							@RequestParam(value = "exception", required = false)String exception
+								){
 		if(readCookie != null) {
-			logger.info("저장된 아이디 :" + userPrincipal.getName());	 
-			mv.setViewName("redirect:/main/main");		
-		} else {
-			mv.setViewName("member/login");
-			mv.addObject("loginfail", session.getAttribute("loginfail"));
-			session.removeAttribute("loginfail");
+			logger.info("저장된 아이디 :" + userPrincipal.getName());	//principal.getName() : 로그인한 아이디 값을 알수있다. 
+			return "/main/main";	
+		} 
+		String errorMsg = (String)session.getAttribute("errorMessage");
+		if(errorMsg != null)
+		{
+			m.addAttribute("error", true);
+			m.addAttribute("exception", session.getAttribute("errorMessage"));
+			session.removeAttribute("errorMessage");
 		}
-		return mv;
+		return "/member/login";
 	}
 	
 	//회원가입 폼 이동 
@@ -86,7 +91,6 @@ public class MemberController {
 		
 		//삽입이 된 경우 
 		if(result == 1) {
-			
 			MailVO vo = new MailVO();
 			vo.setTo(member.getEmail());
 			vo.setContent(member.getId() + "님 회원 가입을 축하드립니다.");
@@ -220,20 +224,4 @@ public class MemberController {
 		return "redirect:list";
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	// ==========[현능] 22-09-30 추가==========
-	// 휴대폰 번호 중복 검사 - ajax
-	@ResponseBody
-	@PostMapping("/phoneCheck")
-	public int phoneCheck(int phone) {
-		int result = memberservice.phoneCheck(phone);
-		logger.info("*** 휴대폰 중복 검사 결과 => "+ result + " (휴대폰번호 있으면 1, 없으면 0, 뭔가 이상하면 -1)");
-		return result;
-	}
 }
