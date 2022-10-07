@@ -38,5 +38,8 @@ public interface MemberMapper {
 	public Member phoneCheck(int phone);
 	// 포인트 적립
 	public int rewardPoint(HashMap<String, Object> map);
+	
+		
+	
 
 }

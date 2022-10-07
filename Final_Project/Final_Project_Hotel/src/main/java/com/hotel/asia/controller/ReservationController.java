@@ -41,7 +41,10 @@ public class ReservationController {
 	private PaymentService paymentService;
 	
 	@RequestMapping("/testRez")
-	public String testRoomList() {
+	public String testRoomList(HttpSession session) {
+		
+		logger.info("테스트 유저 아이디 : user01" );
+		session.setAttribute("id", "user01");
 		return "reservation/testRez";
 	}
 	
@@ -61,6 +64,8 @@ public class ReservationController {
 	@RequestMapping("/reservationRoomOption")
 	public ModelAndView reservationRoomOption(Rez rez, Payment pm,
 											  ModelAndView mv, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws ParseException {
+	
+		
 		logger.info("***** [reservationRoomOption] 넘어온 정보 *****");
 		logger.info("* 객실아이디 : " + rez.getROOM_ID());
 		logger.info("* 회원아이디 : " + session.getAttribute("id"));

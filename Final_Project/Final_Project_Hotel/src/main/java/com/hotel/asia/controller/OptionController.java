@@ -78,6 +78,9 @@ public class OptionController {
 	// 옵션 선택 후 예약정보 확인 폼
 	@PostMapping("/optionCheck")
 	public ModelAndView optionCheck(Rez rez, int nights, ModelAndView mv, HttpServletRequest request,HttpSession session) {
+		
+
+		
 		logger.info("***** [optionCheck] 넘어온 정보 *****");
 		logger.info("* 객실아이디 : " + rez.getROOM_ID());
 		logger.info("* 회원아이디 : " + session.getAttribute("id"));
@@ -108,11 +111,13 @@ public class OptionController {
 		optionPrice.put("dnTotal", Integer.parseInt(request.getParameter("dnTotal").replaceAll(",", "")));
 		optionPrice.put("spTotal", Integer.parseInt(request.getParameter("spTotal").replaceAll(",", "")));
 		
-		
+		logger.info("객실정보");
 		// 객실 정보
 		Room room = roomService.getRoomDetail(rez.getROOM_ID()); // 선택한 객실 정보 구하기 (조회되는 행은 1개)
 		logger.info("** 선택된 객실 가격 =>" + room.getROOM_PRICE());
 		
+		
+		logger.info("조식");
 		// 조식
 		List<Map<String, Map<String, Integer>>> optList = new ArrayList<Map<String, Map<String, Integer>>>(); 
 		for(int i = 1; i<= nights; i++) {
@@ -124,6 +129,7 @@ public class OptionController {
 			optList.add(bfDate);
 		}
 
+		logger.info("디너");
 		// 디너
 		for(int i = 1; i<= nights; i++) {
 			Map<String, Integer> dnPeople = new HashMap<String, Integer>();
@@ -134,6 +140,7 @@ public class OptionController {
 			optList.add(dnDate);
 		}
 		
+		logger.info("수영장");
 		// 수영장
 		for(int i = 1; i<= nights+1 ; i++) {
 			Map<String, Integer> spPeople = new HashMap<String, Integer>();
@@ -144,6 +151,7 @@ public class OptionController {
 			optList.add(spDate);
 		}
 		
+		logger.info("정보확인");
 		// 담긴 정보 확인하기
 		for(Map<String, Map<String, Integer>> a : optList) {
 			for(String b : a.keySet()) {
