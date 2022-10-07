@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hotel.asia.mybatis.mapper.MyPageMapper">
+
+	<select id="getRezData" resultType="rez">
+		SELECT * FROM REZ WHERE MEM_ID = #{MEM_ID}
+	</select>
+	<select id="getOptRezData" resultType="optionreservation">
+		SELECT * FROM OPTION_RESERVATION OPTREZ WHERE OPTREZ.REZ_ID = (SELECT REZ_ID FROM REZ WHERE MEM_ID=#{MEM_ID}) 
+	</select>
+	<select id="getPayment" resultType="payment">
+		SELECT * FROM PAYMENT WHERE REZ_ID = (SELECT REZ_ID FROM REZ WHERE MEM_ID=#{MEM_ID})
+	</select>
+</mapper>
