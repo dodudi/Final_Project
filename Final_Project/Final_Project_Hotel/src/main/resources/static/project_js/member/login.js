@@ -1,4 +1,4 @@
-$(function(){
+$(document).ready(function(){
 
 //--------- change color value of the form text/password inputs -----
 
@@ -17,13 +17,4 @@ $(function(){
     $("#sign_up").click(function(){ 
        location.href="../member/join";
     });
-    
-    $("#login-form-submit").click(function() {
-    	if("${loginfail}" == "loginFailMsg"){
-    	alert("아이디 또는 비밀번호가 일치하지 않습니다.");
-    	}
-    })
-    
 });
-	
-	

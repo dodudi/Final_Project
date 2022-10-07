@@ -26,13 +26,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure (HttpSecurity http) throws Exception{
 		http.authorizeRequests()
-				.antMatchers("/resources/**/**").permitAll()	//누구나 접근 허용 
+				.antMatchers("/resources/**/**").permitAll()
 				.antMatchers("/main/main").permitAll()
 				.antMatchers("/member/login").permitAll()
 				.antMatchers("/member/join").permitAll()
 				.antMatchers("/member/idcheck").permitAll()
 				.antMatchers("/member/joinProcess").permitAll()
-				.antMatchers("/member/list").access("hasRole('ROLE_ADMIN')")	//'ROLE_ADMIN'만 접근 가능 
+				.antMatchers("/member/list").access("hasRole('ROLE_ADMIN')")
 				.antMatchers("/member/info").access("hasRole('ROLE_ADMIN')");
 				//.antMatchers("/**").access("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')");
 		
@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 						.successHandler(loginSuccessHandler())
 						.failureHandler(loginFailHandler());
 		
-		http.logout().logoutSuccessUrl("/") //로그아웃 성공시 리다이렉트 주소 
+		http.logout().logoutSuccessUrl("/")
 					 .logoutUrl("/member/logout")
 					 .invalidateHttpSession(true)
 					 .deleteCookies("remember-me", "JSESSION_ID");
@@ -67,6 +67,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		return new LoginSuccessHandler();
 	}
 	
+	/*
+	 	1. UserDetailsService 인터페이스는 DB에서 유저 정보를 불러오는 loadUserByUsername()가 존재합니다.
+	 		이를 구현하는 클래스는 DB에서 유저의 정보를 가져와서 UserDetails 타입으로 리턴해주는 작업을 합니다. 
+	 	2. UserDetails는 인터페이스로 Security 에서 사용자의 정보를 담는 인터페이스입니다. 
+	 	3. UserDetails 인터페이스를 구현하는 클래스는 실제로 사용자의 정보와 사용자가 가진 권한의 정보를 처리해서 반환하게 됩니다. 
+	 		예) UserDetails user = new User(username, user.getPassword(), roles);
+	 */
 	@Bean
 	public UserDetailsService customUserService() {
 		return new CustomUserDetailsService();
