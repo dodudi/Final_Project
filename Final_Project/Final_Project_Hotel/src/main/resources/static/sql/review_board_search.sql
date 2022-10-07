@@ -4,15 +4,16 @@ create table REVIEW_BOARD_SEARCH (
 	SEARCH_DATE  date
 )
 
-select * from REVIEW_SEARCH_WORD
-delete from REVIEW_SEARCH_WORD
+select * from REVIEW_BOARD_SEARCH
+
+delete from REVIEW_BOARD_SEARCH where SEARCH_WORD = ''
 
 
-select SEARCH_WORD
+select ROWNUM, SEARCH_WORD
 from ( select *
-	   from     REVIEW_SEARCH_WORD
+	   from     REVIEW_BOARD_SEARCH
 	   order by SEARCH_COUNT desc, SEARCH_DATE desc
 	 )
-WHERE ROWNUM <= 3;
+WHERE ROWNUM <= 10;
 
 

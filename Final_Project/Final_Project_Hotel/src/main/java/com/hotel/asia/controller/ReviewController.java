@@ -32,7 +32,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import kr.co.shineware.nlp.komoran.constant.DEFAULT_MODEL;
 import kr.co.shineware.nlp.komoran.core.Komoran;
 import kr.co.shineware.nlp.komoran.model.KomoranResult;
-import kr.co.shineware.nlp.komoran.model.Token;
 
 import com.google.gson.JsonObject;
 import com.hotel.asia.dto.ReviewBoard;
@@ -60,7 +59,7 @@ public class ReviewController {
 								   @RequestParam(value="search_field", defaultValue="-1", required=false) int index, // 검색 기준
 								   @RequestParam(value="search_word", defaultValue="", required=false) String search_word, // 검색어
 			                       ModelAndView mv, HttpSession session) {
-		session.setAttribute("id", "A1234"); // ======임시로 id 저장 나중에 지우기!!
+		session.setAttribute("id", "B1234"); // ======임시로 id 저장 나중에 지우기!!
 		
 		logger.info("=====[reviewList] 리뷰게시판 이동=====");
 		
@@ -86,19 +85,16 @@ public class ReviewController {
         if(index == 0) { // 검색 기준이 제목일 때 검색어 리스트에 들어간다
 			Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
 			KomoranResult analyzeResultList = komoran.analyze(search_word);
-			List<Token> searchWordList = analyzeResultList.getTokenList();
+			List<String> searchWordList = analyzeResultList.getNouns();
 			int addResult = 0;
 			
 			logger.info("==================== 검색어 갱신 결과 ====================");
-			for(Token searchWord : searchWordList) {
-				if(searchWord.getPos().equals("NNG") || searchWord.getPos().equals("NNP")) { // 검색 문장 중 일반명사(NNG), 고유명사(NNP)만 리스트에 추가 (https://komorandocs.readthedocs.io/ko/latest/firststep/postypes.html)
-					addResult = reviewBoardService.addSearchWord(searchWord.getMorph()); // 검색어 리스트 추가 or 갱신
-					logger.info(searchWord.getMorph() + "(" + searchWord.getPos() + ") => addResult=" + addResult + "(추가되면 1)" );
-				}
+			for(String searchWord : searchWordList) {
+				addResult = reviewBoardService.addSearchWord(searchWord); // 검색어 리스트 추가 or 갱신
+				logger.info(searchWord + "=> addResult=" + addResult + "(추가 or 갱신되면 1)" );
 			}
 		}
 		List<String> topSearchWordList = reviewBoardService.getTopSearchWordList(); // 인기검색어 리스트
-
         
 		mv.setViewName("review/reviewList");
 		mv.addObject("page", page);
@@ -324,8 +320,7 @@ public class ReviewController {
 			rattr.addAttribute("num", REVIEW_NUM);
 			return "redirect:reviewDetail";
 		}
-		
-		// 비밀번호 일치하는 경우 삭제됩니다.
+		// 비밀번호 일치하는 경우 삭제
 		int result = reviewBoardService.reviewDelete(REVIEW_NUM);
 		
 		// 삭제 실패한 경우
@@ -335,7 +330,6 @@ public class ReviewController {
 			mv.addAttribute("message", "삭제 실패");
 			return "error/error";
 		}
-		
 		// 삭제 성공한 경우 - 글 목록 보기 요청을 전송하는 부분
 		logger.info("리뷰 삭제 성공");
 		rattr.addFlashAttribute("state", "deleteSuccess");
@@ -383,6 +377,16 @@ public class ReviewController {
 		map.put("recommDel", recommDel);  // 추천 해제 여부
 		map.put("recommCount", rb.getREVIEW_RECOMM()); // 게시글 추천수
 		return map;
+	}
+	
+	
+	// 관리자 - 인기검색어 삭제
+	@ResponseBody
+	@RequestMapping(value="/searchWordDelete")
+	public int searchWordDelete(String searchWord) {
+		int result = reviewBoardService.deleteSearchWord(searchWord); // 인기검색어 삭제
+		logger.info("[인기검색어 삭제 여부] '" + searchWord + "' => result=" + result);
+		return result;
 	}
 	
 	

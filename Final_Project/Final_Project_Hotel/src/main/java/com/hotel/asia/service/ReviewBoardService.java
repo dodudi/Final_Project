@@ -45,5 +45,7 @@ public interface ReviewBoardService {
 	public int addSearchWord(String searchWord);
 	// 인기검색어 리스트
 	public List<String> getTopSearchWordList();
+	// 인기검색어 삭제 (only 관리자)
+	public int deleteSearchWord(String searchWord);
 
 }
