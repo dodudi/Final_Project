@@ -124,7 +124,7 @@ function payment() {
         pg: "html5_inicis.INIpayTest",
         pay_method: "card",
         merchant_uid : new Date().getTime(), // 가맹점에서 생성/관리하는 고유 주문번호 (중복 불가)
-        name: "3", // "${room.ROOM_TYPE}" 또는 "${rez.ROOM_ID}" // 아이템 이름
+        name: "${room.ROOM_TYPE}", // "${room.ROOM_TYPE}" 또는 "${rez.ROOM_ID}" // 아이템 이름
         amount: 100, // "${totalPrice}" // 아이템 가격
         buyer_email: "gildong@gmail.com",
         buyer_name: "홍길동", // 결제자 이름
@@ -143,8 +143,8 @@ function payment() {
         	$("form").submit();
         } else {
         	console.log("결제 실패. 에러 내용: " +  rsp.error_msg);
-        	//alert("결제에 실패하셨습니다. 관리자에게 문의해주세요."); // 나중에 이거 주석 풀기!
-        	$("form").submit(); // 나중에 이거 지우기!
+        	alert("결제에 실패하셨습니다. 관리자에게 문의해주세요."); // 나중에 이거 주석 풀기!
+        	//$("form").submit(); // 나중에 이거 지우기!
         }
     });
 } // payment() end

@@ -220,7 +220,7 @@ $(function(){
 		          
 				
 				<!-- 게시글 리스트 -->
-				<c:if test="${listcount > 0}">
+				<c:if test="${!empty reviewList}">
 					<table class="table">
 						<thead class="thead-light">
 							<tr>
@@ -302,7 +302,8 @@ $(function(){
 				</c:if>
 				
 				<!-- 게시글이 없는 경우 -->
-				<c:if test="${listcount == 0}">
+				<c:if test="${empty reviewList}">
+				<%-- <c:if test="${listcount == 0}"> --%>
 					<div class="container" style="margin-top:80px; margin-bottom:80px; text-align:center">
 						<font size=5>등록된 글이 없습니다.</font>
 					</div>
@@ -321,10 +322,12 @@ $(function(){
 		                    	<c:forEach var="top" items="${topSearchWordList}">
 			                        <li>
 			                            <span>${num}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			                            <c:set var="num" value="${num + 1}" />
 			                            <a href="reviewList?search_field=0&search_word=${top}">${top}</a>
 			                            
 			                            <!-- 관리자만 인기검색어 삭제 가능 -->
 			                            <c:if test="${id == 'admin'}">
+			                            	<c:set var="num" value="${num - 1}" />
 			                            	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 											<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 			                            	<a href="#">

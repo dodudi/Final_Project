@@ -52,7 +52,7 @@ $(function(){
             	<div class="accomodation_item text-center">
                    	<!-- 임시 폼 -->
 				    <form action="${pageContext.request.contextPath}/option/optionForm" method="post">
-				    	객실 번호 : <input type="text" name="ROOM_ID" value="3"><br>
+				    	객실 번호 : <input type="text" name="ROOM_ID" value="7"><br>
 				    	체크인 날짜 : <input type="text" name="REZ_CHECKIN" value="2022-10-10"><br>
 				    	체크아웃 날짜 : <input type="text" name="REZ_CHECKOUT" value="2022-10-11"><br>
 				    	성인 : <input type="text" name="REZ_ADULT" value="2"><br>

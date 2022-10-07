@@ -44,7 +44,7 @@
 	        	<when test="search_field=='REVIEW_SUBJECT'">REVIEW_SUBJECT</when>
 	            <when test="search_field=='MEM_ID'">MEM_ID</when>
 	        </choose>	  
-	        like #{search_word}	     
+	        like #{search_word}
     	</if>
 	</sql>
 	

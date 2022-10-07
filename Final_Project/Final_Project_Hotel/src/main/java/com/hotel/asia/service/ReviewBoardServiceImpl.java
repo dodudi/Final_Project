@@ -152,4 +152,25 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
 	public int deleteSearchWord(String searchWord) {
 		return mapper.deleteSearchWord(searchWord);
 	}
+	/*
+	// 글 리스트 (검색어 있을 때)
+	@Override
+	public List<ReviewBoard> getReviewList(int page, int limit, String sortBy, int index, List<String> searchWords) {
+		HashMap<String, Object> map = new HashMap<String, Object>();		
+		int startrow = (page-1) * limit + 1; 
+		int endrow = startrow + limit - 1;
+		
+		// index == -1 : search_field가 넘어오지 않은 상태로, defaultValue="-1"
+		if(index != -1) {
+			String[] search_field= new String[] {"REVIEW_SUBJECT", "MEM_ID"};
+			map.put("search_field", search_field[index]);
+			map.put("searchWords", searchWords);
+		}
+		
+		map.put("startrow", startrow);
+		map.put("endrow", endrow);
+		map.put("sortBy", sortBy);
+		return mapper.getReviewList(map);
+	}
+	*/
 }

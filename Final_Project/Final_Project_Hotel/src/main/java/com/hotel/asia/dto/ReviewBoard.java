@@ -1,5 +1,7 @@
 package com.hotel.asia.dto;
 
+import java.util.Objects;
+
 public class ReviewBoard {
 	private int REVIEW_NUM;
 	private String MEM_ID;
@@ -67,4 +69,28 @@ public class ReviewBoard {
 	public void setCNT(int cNT) {
 		CNT = cNT;
 	}
+	
+	
+	// 게시글 리스트 중복 제거하기 위한 오버라이딩
+	@Override
+	public int hashCode() {
+		return Objects.hash(CNT, MEM_ID, REVIEW_CONTENT, REVIEW_DATE, REVIEW_NUM, REVIEW_PASS, REVIEW_READCOUNT,
+				REVIEW_RECOMM, REVIEW_SUBJECT);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ReviewBoard other = (ReviewBoard) obj;
+		return CNT == other.CNT && Objects.equals(MEM_ID, other.MEM_ID)
+				&& Objects.equals(REVIEW_CONTENT, other.REVIEW_CONTENT)
+				&& Objects.equals(REVIEW_DATE, other.REVIEW_DATE) && REVIEW_NUM == other.REVIEW_NUM
+				&& Objects.equals(REVIEW_PASS, other.REVIEW_PASS) && REVIEW_READCOUNT == other.REVIEW_READCOUNT
+				&& REVIEW_RECOMM == other.REVIEW_RECOMM && Objects.equals(REVIEW_SUBJECT, other.REVIEW_SUBJECT);
+	}
+	
 }
