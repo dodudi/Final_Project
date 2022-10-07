@@ -140,5 +140,14 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
 	}
 	
 	
-
+	// 검색어 리스트 추가 or 갱신
+	@Override
+	public int addSearchWord(String searchWord) {
+		return mapper.addSearchWord(searchWord);
+	}
+	// 인기검색어 리스트
+	@Override
+	public List<String> getTopSearchWordList() {
+		return mapper.getTopSearchWordList();
+	}
 }

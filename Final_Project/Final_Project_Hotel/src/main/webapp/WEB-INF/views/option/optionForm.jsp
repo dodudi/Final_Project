@@ -6,11 +6,27 @@
 <head>
 <jsp:include page="../main/header.jsp"/> <!-- 헤더 -->
 <script src="http://code.jquery.com/jquery-latest.js"></script> <!-- 제이쿼리 -->
+<title>옵션 신청 페이지</title>
 <style>
 	#bfHide, #dnHide, #spHide { width:20px; height:20px; float:right }
+	input[readonly] {border:none; background-color:#f9f9ff; width:80px}
+	input[name="REZ_CHECKIN"], input[name="REZ_CHECKOUT"], input[name="ROOM_ID"] {float:left}
+	
+	select {
+	  box-sizing: border-box;
+	  padding: 2px;
+	  border-radius: 6px;
+	}
+	option {
+	  padding: 4px;
+	}
 </style>
 <script>
 $(function(){
+	// 모든 input태그 readonly
+	$("input").attr("readonly", true);
+	
+	
 	// 옵션 예약 날짜
 	var checkInArr = "${rez.REZ_CHECKIN}".split('-');
 	var checkIn = new Date(checkInArr[0], checkInArr[1]-1, checkInArr[2]);
@@ -156,7 +172,6 @@ $(function(){
 			tbody.show();
 		}
 	})
-	
 }) // ready end
 </script>
 </head>
@@ -167,9 +182,6 @@ $(function(){
         <div class="container">
             <div class="page-cover text-center">
                 <h2 class="page-cover-tittle f_48">옵션(조식, 디너, 수영장) 신청 페이지</h2>
-                <ol class="breadcrumb">
-                    <li><a href="index.html">Home</a></li>
-                </ol>
             </div>
         </div>
     </section>
@@ -194,7 +206,7 @@ $(function(){
 	                       				<c:forEach var="option" items="${optionList}">
 			                       			<c:if test="${option.OPTION_NAME eq '조식'}">
 				                       			<tr>
-				                       				<td colspan="3">이용날짜 (  <input type="text" name="bfDate${nights}" id="bfDate${nights}">  )</td>
+				                       				<td colspan="3">이용날짜 (  <input type="text" name="bfDate${nights}" id="bfDate${nights}" onfocus="this.blur();">  )</td>
 				                       			</tr>
 				                       			<tr>
 				                       				<td>성인(청소년 포함)</td>
@@ -246,7 +258,7 @@ $(function(){
 	                       				<c:forEach var="option" items="${optionList}">
 			                       			<c:if test="${option.OPTION_NAME eq '디너'}">
 				                       			<tr>
-				                       				<td colspan="3">이용날짜 (  <input type="text" name="dnDate${nights}" id="dnDate${nights}">  )</td>
+				                       				<td colspan="3">이용날짜 (  <input type="text" name="dnDate${nights}" id="dnDate${nights}" onfocus="this.blur();">  )</td>
 				                       			</tr>
 				                       			<tr>
 				                       				<td>성인(청소년 포함)</td>
@@ -297,7 +309,7 @@ $(function(){
 	                       				<c:forEach var="option" items="${optionList}">
 			                       			<c:if test="${option.OPTION_NAME eq '수영장'}">
 				                       			<tr>
-				                       				<td colspan="3">이용날짜 (  <input type="text" name="spDate${nights}" id="spDate${nights}">  )</td>
+				                       				<td colspan="3">이용날짜 (  <input type="text" name="spDate${nights}" id="spDate${nights}" onfocus="this.blur();">  )</td>
 				                       			</tr>
 				                       			<tr>
 				                       				<td>성인(청소년 포함)</td>
@@ -351,22 +363,22 @@ $(function(){
 	                        			<th colspan="2">01 일정 및 객실</th>
 	                        		</tr>
 	                        		<tr>	
-	                        			<th>체크인</th><td><input type="text" name="REZ_CHECKIN" value="${rez.REZ_CHECKIN}"></td>
+	                        			<th style="width:30%">체크인</th><td><input type="text" name="REZ_CHECKIN" value="${rez.REZ_CHECKIN}" onfocus="this.blur();"></td>
 	                        		</tr>
 	                        		<tr>	
-	                        			<th>체크아웃</th><td><input type="text" name="REZ_CHECKOUT" value="${rez.REZ_CHECKOUT}"></td>
+	                        			<th>체크아웃</th><td><input type="text" name="REZ_CHECKOUT" value="${rez.REZ_CHECKOUT}" onfocus="this.blur();"></td>
 	                        		</tr>
 	                        		<tr>	
-	                        			<th>숙박일수</th><td><input type="text" name="nights" value="${nights}">박</td> 
+	                        			<th>숙박일수</th><td><h6 style="float:left"><input type="text" name="nights" value="${nights}" onfocus="this.blur();" style="width:10px">박</h6></td>
 	                        		</tr>
 	                        		<tr>	
-	                        			<th>객실명 (객실id)</th><td><input type="text" name="ROOM_ID" value="${rez.ROOM_ID}"></td>
+	                        			<th>객실명 (or객실id)</th><td><input type="text" name="ROOM_ID" value="${rez.ROOM_ID}" onfocus="this.blur();"></td> <!-- 아이디나올지 타입나올지 상의하기 -->
 	                        		</tr>
 	                        		<tr>	
-	                        			<th>인원수 </th>
+	                        			<th>인원수</th>
 	                        			<td>
-	                        				성인: <input type="text" name="REZ_ADULT" value="${rez.REZ_ADULT}">
-	                        				아동: <input type="text" name="REZ_CHILD" value="${rez.REZ_CHILD}">
+	                        				<h6 style="float:left">성인:&nbsp;<input type="text" name="REZ_ADULT" value="${rez.REZ_ADULT}" onfocus="this.blur();" style="width:15px">명&nbsp;&nbsp;/&nbsp;&nbsp;</h6>
+	                        				<h6 style="float:left">아동:&nbsp;<input type="text" name="REZ_CHILD" value="${rez.REZ_CHILD}" onfocus="this.blur();" style="width:15px">명</h6>
 	                        			</td>
 	                        		</tr>
 	                        	</table>
@@ -378,27 +390,27 @@ $(function(){
 	                        			<th colspan="2">02 옵션 선택</th>
 	                        		</tr>
 	                        		<tr>	
-	                        			<th>조식</th>
+	                        			<th style="width:30%">조식</th>
 	                        			<td>
-	                        				<input type="text" name="bfTotal" id="bfTotal" value="0">원
+	                        				<h6 style="float:left"><input type="text" name="bfTotal" id="bfTotal" value="0" onfocus="this.blur();">원</h6>
 	                        			</td> 
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>디너</th>
 	                        			<td>
-	                        				<input type="text" name="dnTotal" id="dnTotal" value="0">원
+	                        				<h6 style="float:left"><input type="text" name="dnTotal" id="dnTotal" value="0" onfocus="this.blur();">원</h6>
 	                        			</td>
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>수영장</th>
 	                        			<td>
-	                        				<input type="text" name="spTotal" id="spTotal" value="0">원
+	                        				<h6 style="float:left"><input type="text" name="spTotal" id="spTotal" value="0" onfocus="this.blur();">원</h6>
 	                        			</td> 
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>총 금액</th>
 	                        			<td>
-	                        				<input type="text" id="total" value="0">원
+	                        				<h6 style="float:left"><input type="text" id="total" value="0" onfocus="this.blur();">원</h6>
 	                        			</td>
 	                        		</tr>
 	                        	</table>
