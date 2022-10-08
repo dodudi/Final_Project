@@ -1,3 +1,8 @@
+.title-font-l{
+    color: #222222;
+    font-weight: 500;
+    font-size: 2rem;
+}
 
 .list-group{
     position: sticky;

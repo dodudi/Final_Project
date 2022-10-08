@@ -72,7 +72,7 @@
 
 
 					<div class="col content-background">
-						<div>회원가입</div>
+						<div class="title-font-l mt-3 mb-3 bottom-border p-2">회원가입</div>
 						<form>
 							<div class="mb-3">
 								<label for="email" class="form-label">이메일</label>
