@@ -30,7 +30,8 @@ public class MyPageController {
 	// 객실예약확인 페이지
 	@GetMapping("/mypage/reserve")
 	public String reserve(Model model, HttpSession session) {
-		String mem_id = session.getAttribute("id").toString();
+		
+		String mem_id = "user01";
 
 		mem_id = "user01";
 		Rez rez = myPageService.getRezData(mem_id);

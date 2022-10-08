@@ -24,7 +24,7 @@ create table MEMBER(
 	MEM_POINT       NUMBER
 );
 drop table MEMBER;
-
+SELECT * FROM MEMBER WHERE MEM_ID = 'user01';
 SELECT * FROM MEMBER;
 INSERT INTO MEMBER VALUES('user01', '1234', '김길동', 'user01@naver.com', 01011111111, 'ADDRESS1','ADDRESS2', 1000);
 commit;

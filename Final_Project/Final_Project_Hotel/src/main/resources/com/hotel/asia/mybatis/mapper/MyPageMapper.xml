@@ -13,4 +13,8 @@
 	<select id="getPayment" resultType="payment">
 		SELECT * FROM PAYMENT WHERE REZ_ID = (SELECT REZ_ID FROM REZ WHERE MEM_ID=#{MEM_ID})
 	</select>
+	<select id="getMemberData" resultType="member">
+		SELECT * FROM MEMBER WHERE MEM_ID = #{MEM_ID}
+	</select>
+	
 </mapper>

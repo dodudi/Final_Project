@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.hotel.asia.dto.Member;
 import com.hotel.asia.dto.OptionReservation;
 import com.hotel.asia.dto.Payment;
 import com.hotel.asia.dto.Rez;
@@ -64,5 +65,16 @@ public class MyPageMapperTDD {
 		log.info("결제날짜 : " + payment.getPAYMENT_DATE());
 		log.info("=============================");
 
+	}
+	
+	@Test
+	public void getMemberData() {
+		Member member = myPageMapper.getMemberData("user01");
+		log.info(member + "");
+		log.info("" + member.getId());
+		log.info("" + member.getPassword());
+		log.info("" + member.getName());
+		log.info("" + member.getPhone());
+		log.info("" + member.getEmail());
 	}
 }
