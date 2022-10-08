@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -29,15 +31,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import kr.co.shineware.nlp.komoran.constant.DEFAULT_MODEL;
-import kr.co.shineware.nlp.komoran.core.Komoran;
-import kr.co.shineware.nlp.komoran.model.KomoranResult;
-
 import com.google.gson.JsonObject;
 import com.hotel.asia.dto.ReviewBoard;
 import com.hotel.asia.service.MemberService;
 import com.hotel.asia.service.ReviewBoardService;
 import com.hotel.asia.service.ReviewCommService;
+
+import kr.co.shineware.nlp.komoran.constant.DEFAULT_MODEL;
+import kr.co.shineware.nlp.komoran.core.Komoran;
+import kr.co.shineware.nlp.komoran.model.KomoranResult;
 
 @Controller
 @RequestMapping(value="/review")
@@ -62,17 +64,46 @@ public class ReviewController {
 		session.setAttribute("id", "B1234"); // ======임시로 id 저장 나중에 지우기!!
 		
 		logger.info("=====[reviewList] 리뷰게시판 이동=====");
-		
+		List<ReviewBoard> reviewList = new ArrayList<ReviewBoard>(); // 게시글 담을 리스트
 		int limit = 10; // 한 페이지에 보여줄 게시판 목록의 수 (한 화면에 출력할 로우 갯수)
 		int listcount = reviewBoardService.getListCount(index, search_word); // 총 리스트 수를 받아온다
+		logger.info("*총 리뷰 수: " + listcount);
+		
+		// 1. 검색어 없을 때
+		if(search_word.equals("")) {
+			reviewList = reviewBoardService.getReviewList(page, limit, sortBy, index, search_word);
+		}
+		
+        // 2. 검색어 있을 때
+        if(index == 0) { // 검색 기준이 제목일 때 검색어 리스트에 들어간다
+        	List<ReviewBoard> searchReviewList = new ArrayList<ReviewBoard>(); // 검색된 글 리스트
+        	listcount = 0; // 검색된 리스트 수 초기화
+			Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
+			KomoranResult analyzeResultList = komoran.analyze(search_word);
+			List<String> searchWordList = analyzeResultList.getNouns(); // 자연어 명사만 추출
+			int addResult = 0;
+			
+			logger.info("==================== 검색어 갱신 결과 ====================");
+			//List<String> searchWords = new ArrayList<String>(); // 명사만 추출된 검색어 리스트
+			for(String searchWord : searchWordList) {
+				addResult = reviewBoardService.addSearchWord(searchWord); // 검색어 리스트 추가 or 갱신
+				logger.info(searchWord + "=> addResult=" + addResult + "(추가 or 갱신되면 1)" );
+				searchReviewList.addAll(reviewBoardService.getReviewList(page, limit, sortBy, index, searchWord)) ; // 단어별 검색된 글 리스트 추가
+				//searchWords.add("%" + searchWord + "%"); // 명사만 추출된 검색어 리스트
+			}
+			
+			reviewList = new ArrayList<ReviewBoard>(new HashSet<ReviewBoard>(searchReviewList)); // 검색된 리스트 중복 제거
+			listcount = reviewList.size();
+        }
+		List<String> topSearchWordList = reviewBoardService.getTopSearchWordList(); // 인기검색어 리스트
+		
+		// 페이징 처리
 		int maxpage = (listcount + limit - 1) / limit; // 총 페이지 수
 		int startpage = ((page - 1) / 10) * 10 + 1; // 현재 페이지에 보여줄 시작 페이지 수(1, 11, 21 등 ...)
 		int endpage = startpage + 10 - 1; // 현재 페이지에 보여줄 마지막 페이지 수(10, 20, 30 등 ...)
 		if(endpage > maxpage) {
 			endpage = maxpage; 
 		}
-		List<ReviewBoard> reviewList = reviewBoardService.getReviewList(page, limit, sortBy, index, search_word);
-		logger.info("*총 리뷰 수: " + listcount);
 		
 		// 새 글 new 표시 하기 위한 하루 전 시각 구하기
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -80,22 +111,7 @@ public class ReviewController {
         cal.add(Calendar.DAY_OF_MONTH, -1); // 하루 동안 보이도록 함
         String nowday = format.format(cal.getTime());
         logger.info("[하루 전 시각] "+ nowday);
-        
-        // ==================== 검색어 ====================
-        if(index == 0) { // 검색 기준이 제목일 때 검색어 리스트에 들어간다
-			Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
-			KomoranResult analyzeResultList = komoran.analyze(search_word);
-			List<String> searchWordList = analyzeResultList.getNouns();
-			int addResult = 0;
-			
-			logger.info("==================== 검색어 갱신 결과 ====================");
-			for(String searchWord : searchWordList) {
-				addResult = reviewBoardService.addSearchWord(searchWord); // 검색어 리스트 추가 or 갱신
-				logger.info(searchWord + "=> addResult=" + addResult + "(추가 or 갱신되면 1)" );
-			}
-		}
-		List<String> topSearchWordList = reviewBoardService.getTopSearchWordList(); // 인기검색어 리스트
-        
+		
 		mv.setViewName("review/reviewList");
 		mv.addObject("page", page);
 		mv.addObject("maxpage", maxpage);
@@ -311,16 +327,18 @@ public class ReviewController {
 	@PostMapping("/reviewDelete")
 	public String reviewDelete(String REVIEW_PASS, int REVIEW_NUM, Model mv, 
 							   RedirectAttributes rattr, HttpServletRequest request) {
-		// 글 삭제 시 비밀번호 맞는지 확인.
-		boolean usercheck = reviewBoardService.isReviewWriter(REVIEW_NUM, REVIEW_PASS);
-		
-		// 비밀번호가 일치하지 않는 경우
-		if(usercheck == false) {
-			rattr.addFlashAttribute("state", "passFail"); // 상세페이지에 보낼 state
-			rattr.addAttribute("num", REVIEW_NUM);
-			return "redirect:reviewDetail";
+		// 일반회원이 글 삭제할 때는 비밀번호 검사
+		if( REVIEW_PASS != null ) {
+			boolean usercheck = reviewBoardService.isReviewWriter(REVIEW_NUM, REVIEW_PASS); // 글 삭제 시 비밀번호 맞는지 확인
+			
+			if(usercheck == false) { // 비밀번호가 일치하지 않는 경우
+				rattr.addFlashAttribute("state", "passFail"); // 상세페이지에 보낼 state
+				rattr.addAttribute("num", REVIEW_NUM);
+				return "redirect:reviewDetail";
+			}
 		}
-		// 비밀번호 일치하는 경우 삭제
+		
+		// 일반회원 - 비밀번호 일치하는 경우 삭제 / 관리자 - 항상 삭제
 		int result = reviewBoardService.reviewDelete(REVIEW_NUM);
 		
 		// 삭제 실패한 경우

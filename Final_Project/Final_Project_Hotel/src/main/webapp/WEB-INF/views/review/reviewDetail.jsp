@@ -405,23 +405,41 @@ $(function(){
 		<div class="modal" id="deleteReview">
 			<div class="modal-dialog">
 				<div class="modal-content">
-					<div class="modal-header">
-						<h5>삭제를 위해 글 비밀번호를 입력해주세요.</h5>
-						<button type="button" class="close" data-dismiss="modal">&times;</button> <!-- 모달 닫는 x버튼 -->
-					</div>
-					<div class="modal-body">
-						<form action="reviewDelete" method="post">
-							<input type="hidden" name="REVIEW_NUM" value="${review.REVIEW_NUM}"> <!-- 삭제할 글의 글번호 -->
-							<div class="form-group">
-								<input type="password" class="form-control" name="REVIEW_PASS" placeholder="Enter password">
-							</div>
-							<button type="submit" class="btn btn-primary">삭제</button>
-							<button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>
-							
-							<!-- 403에러 방지 토큰 -->
-							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-						</form>
-					</div>
+					<c:if test="${id == review.MEM_ID}"> <!-- 글 작성자일 때는 비밀번호 입력받음 -->
+						<div class="modal-header">
+							<h5>삭제를 위해 글 비밀번호를 입력해주세요.</h5>
+							<button type="button" class="close" data-dismiss="modal">&times;</button> <!-- 모달 닫는 x버튼 -->
+						</div>
+						<div class="modal-body">
+							<form action="reviewDelete" method="post">
+								<input type="hidden" name="REVIEW_NUM" value="${review.REVIEW_NUM}"> <!-- 삭제할 글의 글번호 -->
+								<div class="form-group">
+									<input type="password" class="form-control" name="REVIEW_PASS" placeholder="Enter password">
+								</div>
+								<button type="submit" class="btn btn-primary">삭제</button>
+								<button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>
+								
+								<!-- 403에러 방지 토큰 -->
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+							</form>
+						</div>
+					</c:if>
+					<c:if test="${id == 'admin'}"> <!-- 관리자일 때는 비밀번호 없이 삭제 가능 -->
+						<div class="modal-header">
+							<h5>삭제하시겠습니까?</h5>
+							<button type="button" class="close" data-dismiss="modal">&times;</button> <!-- 모달 닫는 x버튼 -->
+						</div>
+						<div class="modal-body">
+							<form action="reviewDelete" method="post">
+								<input type="hidden" name="REVIEW_NUM" value="${review.REVIEW_NUM}"> <!-- 삭제할 글의 글번호 -->
+								<button type="submit" class="btn btn-primary">삭제</button>
+								<button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>
+								
+								<!-- 403에러 방지 토큰 -->
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+							</form>
+						</div>
+					</c:if>
 				</div>
 			</div>
 		</div>

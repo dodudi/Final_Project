@@ -91,7 +91,7 @@
  	
  	<update id="rewardPoint" parameterType="map">
  		update MEMBER
- 		set    MEM_POINT = #{MEM_POINT}
+ 		set    MEM_POINT = MEM_POINT + #{MEM_POINT}
  		where  MEM_ID = #{MEM_ID}
  	</update>
 </mapper>

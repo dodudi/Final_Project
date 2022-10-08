@@ -9,7 +9,9 @@ create table REVIEW_BOARD ( -- 파일 관련 컬럼 삭제
 	REVIEW_RECOMM 	 NUMBER--없어도 될듯? 해보고지우기
 )
 
-select * from REVIEW_BOARD order by REVIEW_DATE desc
+select * from REVIEW_BOARD
+where REVIEW_SUBJECT like '%조식%' or REVIEW_SUBJECT like '%후기%'
+order by REVIEW_DATE desc
 
 
 -- 리뷰글 추천 테이블
