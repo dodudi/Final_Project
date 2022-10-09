@@ -1,47 +1,16 @@
-.nav-background{
-    padding-top: 20px;
-    padding-bottom: 20px;
-}
-                                          
-.content-background{
-    border-left: 2px solid black;
-    padding-top: 20px;
-    padding-bottom: 20px;
-}
-
-
 .nav-title, .content-title{
     text-align: center;
     font-size: 2rem;
     font-weight: bold;
     border-bottom: 2px solid black;
 }
-.content-table>table{
-    margin : 0 auto;
-    text-align: center;
-}
-.content-table > table > tbody > tr:last-child{
-    border-bottom: 2px solid black;
-}
-.content-table > table > tbody > tr >td:first-child{
-    width:150px;
-}
-
-.content-table > table > tbody > tr >td{
-    text-align: left;
-}
 
 .btn-box{
     margin-top:10px;
     text-align: right;
 }
-.list-group{
-    margin-top: 20px;
-}
-.mypage_background{
-    background-color: beige;
+
+.bottom-border{
+    border-bottom:1px solid rgba(0, 0, 0, 0.125);
 }
 
-.header_area{
-    position: relative;
-}

@@ -1,3 +1,8 @@
+.title-font-l{
+    color: #222222;
+    font-weight: 500;
+    font-size: 2rem;
+}
 
 .list-group{
     position: sticky;
@@ -12,6 +17,8 @@
     background-color: white!important;
 }
 .nav-background{
+    padding-top: 20px;
+    padding-bottom: 20px;
     border-right:1px solid rgba(0, 0, 0, 0.125);
 }
 .header_area > .container{
@@ -34,9 +41,13 @@
     border-left:1px solid rgba(0, 0, 0, 0.125);
     border-right:1px solid rgba(0, 0, 0, 0.125);
     background-color: white;
+
 }
 
 .content-background{
-    padding:0 48px!important;
+    padding:20px 48px!important;
 }
-
+.mypage{
+    width: 100%;
+    background-color: beige;
+}

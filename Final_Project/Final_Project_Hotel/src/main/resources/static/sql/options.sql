@@ -3,7 +3,7 @@ create table options (
 	OPTION_NAME 		  VARCHAR(20),
 	OPTION_DEFAULT_PRICE  NUMBER,
 	OPTION_CHILD_PRICE 	  NUMBER
-)
+);
 
 select * from options;
 
