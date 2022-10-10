@@ -166,8 +166,8 @@
 									</tbody>
 								</table>
 								<div class="clearfix btn-box">
-									<button type="button" class="btn btn-primary">옵션변경하기</button>
-									<button type="button" class="btn btn-danger">옵션변경하기</button>
+									<button type="button" class="btn btn-primary">객실예약변경하기</button>
+									<button type="button" class="btn btn-danger">객실예약취소하기</button>
 								</div>
 							</div>
 						</div>

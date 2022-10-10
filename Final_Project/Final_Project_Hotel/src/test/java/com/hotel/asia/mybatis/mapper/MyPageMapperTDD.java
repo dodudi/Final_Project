@@ -71,10 +71,12 @@ public class MyPageMapperTDD {
 	public void getMemberData() {
 		Member member = myPageMapper.getMemberData("user01");
 		log.info(member + "");
-		log.info("" + member.getId());
-		log.info("" + member.getPassword());
-		log.info("" + member.getName());
-		log.info("" + member.getPhone());
-		log.info("" + member.getEmail());
+		log.info("" + member.getMEM_ID());
+		log.info("" + member.getMEM_PASS());
+		log.info("" + member.getMEM_NAME());
+		log.info("" + member.getMEM_PHONE());
+		log.info("" + member.getMEM_EMAIL());
+		log.info("" + member.getMEM_POINT());
 	}
 }
+
