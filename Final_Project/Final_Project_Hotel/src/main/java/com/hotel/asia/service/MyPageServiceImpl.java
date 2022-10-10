@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hotel.asia.controller.MyPageController;
 import com.hotel.asia.dto.OptionReservation;
 import com.hotel.asia.dto.Payment;
 import com.hotel.asia.dto.Rez;
@@ -22,11 +23,7 @@ public class MyPageServiceImpl implements MyPageService {
 	@Autowired
 	private MyPageMapper myPageMapper;
 
-	//옵션 아이디
-	public static final int BREAKFAST = 1;
-	public static final int DINNER= 2;
-	public static final int SWIMMING= 3;
-	
+	private static final Logger log = LoggerFactory.getLogger(MyPageController.class);	
 	
 	// 객실정보 가져오기
 	public Rez getRezData(String mem_id) {
@@ -59,6 +56,24 @@ public class MyPageServiceImpl implements MyPageService {
 			}
 		}
 		
+		return opt;
+	}
+	
+	//날짜에 대한 옵션 가져오기
+	public List<OptionReservation> getOptRezData(String mem_id, String date, int opt_id){
+		List<OptionReservation> opt_rez = myPageMapper.getOptRezData(mem_id);
+		List<OptionReservation> opt =  null;
+
+		for(int i = 0 ; i < opt_rez.size(); i++) {
+			if(opt_rez.get(i).getOPTION_ID() == opt_id && opt_rez.get(i).getOPTION_RESERVATION_DATE().equals(date)) {
+				if(opt == null)
+					opt = new ArrayList<OptionReservation>();
+				
+				opt.add(opt_rez.get(i));
+				log.info("데이터 추가");
+			}
+		}
+		log.info("리턴 opt : " + opt);
 		return opt;
 	}
 	
