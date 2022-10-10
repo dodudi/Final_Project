@@ -354,11 +354,13 @@ td{
 
 .error {
 	margin-left: 50px;
-	color: orange;
 }
 
 .error2 {
 	display:inline-block;
 	margin-left:150px; 
 	font-size: 12px
-	}
+}
+sup{
+	color: #f8b100;
+}

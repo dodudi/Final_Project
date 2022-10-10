@@ -27,14 +27,14 @@ public class CustomUserDetailsService implements UserDetailsService{
 		Member users = dao.isId(username);
 		
 		if(users==null) {
-			logger.info("username" + username + " not found");
-			throw new UsernameNotFoundException("username" + username + " not found");
+			logger.info("username " + username + " not found");
+			throw new UsernameNotFoundException("username " + username + " not found");
 		}
 		Collection<SimpleGrantedAuthority> roles = new ArrayList<SimpleGrantedAuthority>();
 		
-		roles.add(new SimpleGrantedAuthority(users.getAuth()));
+		roles.add(new SimpleGrantedAuthority(users.getAUTH()));
 		
-		UserDetails user = new User(username, users.getPassword(), roles);
+		UserDetails user = new User(username, users.getMEM_PASS(), roles);
 		
 		return user;
 	}

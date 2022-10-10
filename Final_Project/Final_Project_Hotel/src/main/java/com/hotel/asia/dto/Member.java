@@ -1,62 +1,55 @@
 package com.hotel.asia.dto;
 
 public class Member {
-	private String id;
-	private String password;
-	private String name;
-	private String email;
-	private int phone;
-	private String auth="ROLE_MEMBER";
+	private String MEM_ID;
+	private String MEM_PASS;
+	private String MEM_NAME;
+	private String MEM_EMAIL;
+	private int MEM_PHONE;
+	private int MEM_POINT;
+	private String AUTH="ROLE_MEMBER";
 	
-	public String getId() {
-		return id;
+	public String getMEM_ID() {
+		return MEM_ID;
 	}
-	
-	public void setId(String id) {
-		this.id = id;
+	public void setMEM_ID(String mEM_ID) {
+		MEM_ID = mEM_ID;
 	}
-	
-	public String getPassword() {
-		return password;
+	public String getMEM_PASS() {
+		return MEM_PASS;
 	}
-	
-	public void setPassword(String password) {
-		this.password = password;
+	public void setMEM_PASS(String mEM_PASS) {
+		MEM_PASS = mEM_PASS;
 	}
-	
-	public String getName() {
-		return name;
+	public String getMEM_NAME() {
+		return MEM_NAME;
 	}
-	
-	public void setName(String name) {
-		this.name = name;
+	public void setMEM_NAME(String mEM_NAME) {
+		MEM_NAME = mEM_NAME;
 	}
-	
-	public String getEmail() {
-		return email;
+	public String getMEM_EMAIL() {
+		return MEM_EMAIL;
 	}
-	
-	public void setEmail(String email) {
-		this.email = email;
+	public void setMEM_EMAIL(String mEM_EMAIL) {
+		MEM_EMAIL = mEM_EMAIL;
 	}
-	
-	public int getPhone() {
-		return phone;
+	public int getMEM_PHONE() {
+		return MEM_PHONE;
 	}
-	
-	public void setPhone(int phone) {
-		this.phone = phone;
+	public void setMEM_PHONE(int mEM_PHONE) {
+		MEM_PHONE = mEM_PHONE;
 	}
-	
-	public String getAuth() {
-		return auth;
+	public int getMEM_POINT() {
+		return MEM_POINT;
 	}
-	
-	public void setAuth(String auth) {
-		this.auth = auth;
+	public void setMEM_POINT(int mEM_POINT) {
+		MEM_POINT = mEM_POINT;
 	}
-	
-	
-	
+	public String getAUTH() {
+		return AUTH;
+	}
+	public void setAUTH(String aUTH) {
+		AUTH = aUTH;
+	}
 	
 }
