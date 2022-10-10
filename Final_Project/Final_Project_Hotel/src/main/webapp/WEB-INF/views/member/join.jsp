@@ -10,7 +10,7 @@
       
 		<!-- Animate.css-->
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" 
-		integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+			integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/project_css/member/join.css" >
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" >
@@ -44,12 +44,12 @@
 	                    <div class="accordion accordion-flush " id="accordionFlushExample">
 						  <div class="accordion-item">
 						    <h4 class="accordion-header" id="flush-headingOne">
-						      <input type="checkbox" class="accordion-ck" >
+						      <input type="checkbox" class="accordion-ck" name="ckbox1">
 						      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
 						       	아시아 호텔 리워즈 멤버십 이용약관(필수)
 						      </button>
 						    </h4>
-						    <p class="error"> *멤버십 가입을 위해서는 동의하셔야 합니다</p>
+						    <p class="error" id="errbox1"></p>
 						    <div id="flush-collapseOne" class="accordion-collapse collapse in" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
 						      <div class="accordion-body">
 							      <p>
@@ -123,11 +123,12 @@
 				 		 </div>
 						  <div class="accordion-item">
 						    <h4 class="accordion-header" id="flush-headingOne">
-						      <input type="checkbox" class="accordion-ck" >
+						      <input type="checkbox" class="accordion-ck" name="ckbox2" >
 						      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
 						       	아시아 호텔 사이트 이용약관(필수)
 						      </button>
 						    </h4>
+						     <p class="error" id="errbox2"></p>
 						    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
 						      <div class="accordion-body">
 								<p>
@@ -194,11 +195,12 @@
 	                     <div class="accordion accordion-flush" id="accordionFlushExample">
 						  <div class="accordion-item">
 						    <h4 class="accordion-header" id="flush-headingThree">
-						      <input type="checkbox" class="accordion-ck" >
+						      <input type="checkbox" class="accordion-ck" name="ckbox3">
 						      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
 						       	개인정보의 수집 및 이용(필수)
 						      </button>
 						    </h4>
+						     <p class="error" id="errbox3"></p>
 						    <div id="flush-collapseThree" class="accordion-collapse collapse in" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
 						      <div class="accordion-body">
 						      	<table>
@@ -244,44 +246,48 @@
 						   </div>
 						  </div>
 	                    </div>
-	                    
-	                 <h3 class="re-info">필수정보 입력</h3>
-	                 <fieldset id="login-fieldset" class="login animated fadeInUp animate2">
-	                    <div class="reg-form">
-	                    	<span class="regist">아이디<sup>*</sup></span>
-	                        <input name="id" type="text" maxLength="12" required placeholder="아이디를 입력하세요">
-	                       
-	                    </div>
-	                    <div class="reg-form">
-	                     	<div id="idck" class="error2"></div>
-	                    </div>
-	                    <div class="reg-form">
-	                    	 <span class="regist">비밀번호<sup>*</sup></span>
-	                        <input name="password" type="password" required placeholder="영문(소문자),숫자,특수문자 포함 8~12자리">
-	                    </div>
-	                    <div class="reg-form">
-	                     	<div id="passCk" class="error2"></div>
-	                    </div>
-	                    <div class="reg-form">
-	                     	<span class="regist">비밀번호 확인<sup>*</sup></span>
-	                        <input name="passwordRe" type="password" required>
-	                    </div>
-	                    <div class="reg-form">
-	                     	<div id="passReCk" class="error2"></div>
-	                    </div>
-	                    <div class="reg-form">
-	                     	 <span class="regist">성명(한글)<sup>*</sup></span>
-	                        <input name="username" type="text" required placeholder="이름을 입력하세요">
-	                    </div>
-	                    <div class="reg-form">
-	                      	<span class="regist">이메일</span>
-	                        <input name="email" type="email">
-	                    </div>
-	                    <div class="reg-form">
-	                    	 <span class="regist">휴대폰</span>
-	                        <input  name="phone" type="text">
-	                    </div>
-	                </fieldset>
+	                 <div class="login animated fadeInUp animate2">
+		                 <h3 class="re-info">필수정보 입력</h3>
+		                 <fieldset id="login-fieldset" >
+		                    <div class="reg-form">
+		                    	<span class="regist">아이디<sup>*</sup></span>
+		                        <input name="id" type="text" maxLength="12" required placeholder="아이디를 입력하세요">
+		                    </div>
+		                    <div class="reg-form">
+		                     	<div id="idck" class="error2"></div>
+		                    </div>
+		                    <div class="reg-form">
+		                    	<span class="regist">비밀번호<sup>*</sup></span>
+		                        <input name="password" type="password" maxLength="12" required placeholder="영문(소문자),숫자,특수문자 포함 8~12자리">
+		                    </div>
+		                    <div class="reg-form">
+		                     	<div id="passCk" class="error2"></div>
+		                    </div>
+		                    <div class="reg-form">
+		                     	<span class="regist">비밀번호 확인<sup>*</sup></span>
+		                        <input name="password2" type="password" required>
+		                    </div>
+		                    <div class="reg-form">
+		                     	<div id="passCk2" class="error2"></div>
+		                     	<input type="hidden" id="pwDoubleCk">
+		                    </div>
+		                    <div class="reg-form">
+		                     	<span class="regist">성명(한글)<sup>*</sup></span>
+		                        <input name="username" type="text" required placeholder="이름을 입력하세요">
+		                    </div>
+		                    <div class="reg-form">
+		                      	<span class="regist">이메일<sup>*</sup></span>
+		                        <input name="email" type="email" maxLength="30" required>
+		                    </div>
+		                     <div class="reg-form">
+		                     	<div id="emailCk" class="error2"></div>
+		                    </div>
+		                    <div class="reg-form">
+		                    	<span class="regist">휴대폰</span>
+		                        <input  name="phone" type="text">
+		                    </div>
+		                </fieldset>
+	                </div> 
 	                    
 	                <div class="clearfix">
 	                    <input type="reset" id="login-form-reset" class="login_form button animated fadeInUp animate3" 

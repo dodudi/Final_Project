@@ -5,7 +5,7 @@ import com.hotel.asia.dto.Member;
 
 public interface MemberService {
 	
-	public int isId(String id, String pass);
+	public int isId(String id, String password);
 	
 	public int insert(Member m);
 	
@@ -28,10 +28,10 @@ public interface MemberService {
 	
 	
 	// ==========[현능] 22-10-05 수정==========
-	// 회원 정보
-	public Member getMemberInfo(String id);
-	// 휴대폰 번호 중복 검사 
-	public int phoneCheck(int phone);
-	// 포인트 적립
-	public int rewardPoint(String id, int point);
+	   // 회원 정보
+	   public Member getMemberInfo(String id);
+	   // 휴대폰 번호 중복 검사 
+	   public int phoneCheck(int phone);
+	   // 포인트 적립
+	   public int rewardPoint(String id, int point);
 }

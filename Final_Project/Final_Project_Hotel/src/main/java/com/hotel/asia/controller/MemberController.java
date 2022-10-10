@@ -61,8 +61,7 @@ public class MemberController {
 			return "/main/main";	
 		} 
 		String errorMsg = (String)session.getAttribute("errorMessage");
-		if(errorMsg != null)
-		{
+		if(errorMsg != null){
 			m.addAttribute("error", true);
 			m.addAttribute("exception", session.getAttribute("errorMessage"));
 			session.removeAttribute("errorMessage");
@@ -83,17 +82,16 @@ public class MemberController {
 			 					Model model,
 			 					HttpServletRequest request) {
 		//비밀번호 암호화 추가 
-		String encPassword = passwordEncoder.encode(member.getPassword());
+		String encPassword = passwordEncoder.encode(member.getMEM_PASS());
 		logger.info(encPassword);
-		member.setPassword(encPassword);
+		member.setMEM_PASS(encPassword);
 		
 		int result = memberservice.insert(member);
 		
-		//삽입이 된 경우 
 		if(result == 1) {
 			MailVO vo = new MailVO();
-			vo.setTo(member.getEmail());
-			vo.setContent(member.getId() + "님 회원 가입을 축하드립니다.");
+			vo.setTo(member.getMEM_EMAIL());
+			vo.setContent(member.getMEM_ID() + "님 회원 가입을 축하드립니다.");
 			sendMail.sendMail(vo);
 			
 			rattr.addFlashAttribute("result", "joinSeccess");
@@ -121,9 +119,6 @@ public class MemberController {
 	public ModelAndView member_update(Principal principal,
 										ModelAndView mv) {
 		String id = principal.getName();
-		
-		//오류 테스트 (정수형은 0으로 나눌순없다!)
-		//int i = 5/0;	
 		
 		if(id==null) {
 			mv.setViewName("redirect:login");
@@ -155,11 +150,6 @@ public class MemberController {
 	}
 	
 	//회원정보 수정 폼 
-	/*	1.header.jsp 에서 이동하는 경우 
-	 * 		href="${pageContext.request.contextPath}/member/list"
-	 *  2. member_list.jsp에서 이동하는 경우 
-	 *  	<a href="list?page=2&search_field=-1&search_word=" class="page-link">2</a>
-	 */
 	@RequestMapping(value="/list")
 	public ModelAndView memberList (@RequestParam(value="page",defaultValue="1", required=false) int page,
 									@RequestParam(value="limit",defaultValue="3", required=false) int limit,
@@ -172,13 +162,10 @@ public class MemberController {
 		
 		List<Member> list = memberservice.getSearchList(index, search_word, page, limit);
 		
-		//총 페이지 수
 		int maxpage = (listcount + limit -1) /limit;
 		
-		//현재 페이지에 보여줄 시작 페이지 수 (1, 11, 21 등..)
 		int startpage = ((page -1)/10) * 10 + 1;
 		
-		//현재 페이지에 보여줄 마지막 페이지 수(10,20,30 등 ..)
 		int endpage = startpage +10 -1;
 		
 		if(endpage > maxpage)
@@ -204,7 +191,6 @@ public class MemberController {
 									HttpServletRequest request) {
 		
 		Member m = memberservice.member_info(id);
-		//m=null;		//오류 확인하는 값 //http://localhost:8088/myhome4/member/info?id=A1111 여기서 확인가능 
 		
 		if(m!=null) {
 			mv.setViewName("member/member_info");
