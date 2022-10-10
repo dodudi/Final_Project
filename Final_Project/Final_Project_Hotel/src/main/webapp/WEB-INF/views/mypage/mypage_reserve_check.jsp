@@ -118,8 +118,12 @@
 									</tbody>
 								</table>
 								<div class="clearfix btn-box">
-									<button type="button" class="btn btn-primary">옵션변경하기</button>
-									<button type="button" class="btn btn-danger">옵션변경하기</button>
+									<form action="/hotel/mypage/optionModifyForm" id="optModify" method="post">
+
+										<button type="submit" class="btn btn-primary">객실예약변경하기</button>
+									</form>
+									
+									<button type="button" class="btn btn-danger">객실예약취소하기</button>
 								</div>
 							</div>
 							<!-- Table content Reservation End-->
@@ -165,16 +169,15 @@
 										</c:forEach>
 									</tbody>
 								</table>
-								<div class="clearfix btn-box">
-									<button type="button" class="btn btn-primary">객실예약변경하기</button>
-									<button type="button" class="btn btn-danger">객실예약취소하기</button>
-								</div>
+						
 							</div>
 						</div>
 					</div>
 
 				</div>
 			</div>
+			         <!-- 403에러 방지 토큰 -->
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 			<jsp:include page="../main/footer.jsp" />
 		</body>
 		<script src="/hotel/static/project_js/MyPage_Js/mypage_reserve_check.js"></script>

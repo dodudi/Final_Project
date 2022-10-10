@@ -63,9 +63,9 @@ public class MyPageController {
 		return "mypage/mypage_reserve_check";
 	}
 
+	// 날짜 별로 객실정보 가져오기
 	@ResponseBody
 	@PostMapping(value = "/mypage/dateCheck")
-	// 날짜 별로 객실정보 가져오기
 	public HashMap<String, OptionReservation> rezCheckDate(Model model, @RequestBody HashMap<String, Object> date) {
 
 		String mem_id = "user01";
@@ -93,6 +93,13 @@ public class MyPageController {
 		return resultData;
 	}
 
+	//객실예약 수정 페이지로 이동
+	@PostMapping(value="/mypage/optionModifyForm")
+	public String rezModifyForm() {
+		
+		return "option/optionModifyForm";
+	}
+	
 	// 질문게시판 페이지
 	@GetMapping("/mypage/question")
 	public String question() {
