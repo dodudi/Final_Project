@@ -7,6 +7,7 @@
 	<select id="getRezData" resultType="rez">
 		SELECT * FROM REZ WHERE MEM_ID = #{MEM_ID}
 	</select>
+	
 	<select id="getOptRezData" resultType="optionreservation">
 		SELECT * FROM OPTION_RESERVATION OPTREZ WHERE OPTREZ.REZ_ID = (SELECT REZ_ID FROM REZ WHERE MEM_ID=#{MEM_ID}) 
 	</select>
@@ -16,5 +17,4 @@
 	<select id="getMemberData" resultType="member">
 		SELECT * FROM MEMBER WHERE MEM_ID = #{MEM_ID}
 	</select>
-	
 </mapper>

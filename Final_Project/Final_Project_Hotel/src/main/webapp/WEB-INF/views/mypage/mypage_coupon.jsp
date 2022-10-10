@@ -28,6 +28,7 @@
 
 	<body>
 		<jsp:include page="../main/header.jsp" />
+		
 		<div class="mypage">
 			<div class="container mypage_background">
 				<div class="row">
