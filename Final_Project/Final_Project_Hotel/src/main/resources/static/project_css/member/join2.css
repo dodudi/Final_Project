@@ -188,7 +188,6 @@ fieldset input:focus {
 }
 
 .login_form{
-	
     position: relative;
     bottom:0;
     width: 50%;
@@ -203,8 +202,7 @@ fieldset input:focus {
     font-weight: 600;
     letter-spacing: 2px;
     z-index: 1;
-    
-    transition: background-color 0.2s , color:0.2s;
+    text-align:center;
 }
 
 #login-form-login:active,

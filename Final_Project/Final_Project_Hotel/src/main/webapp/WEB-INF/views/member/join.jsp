@@ -277,14 +277,16 @@
 		                     	<span class="regist">성명(한글)<sup>*</sup></span>
 		                        <input name="MEM_NAME" type="text" required placeholder="이름을 입력하세요">
 		                    </div>
-		                    <div class="reg-form">
+		                    <div class="reg-form" style="align-items:center">
 		                      	<span class="regist">이메일<sup>*</sup></span>
 		                        <input name="MEM_EMAIL" type="email" maxLength="30" required placeholder="이메일을 입력하세요 ">
 		                        <button class="email_btn" type="button" id="emailCkNum">인증번호</button>
+		                        <div id="emailCk" class="error3"></div>
 		                    </div>
-		                     <div class="reg-form">
-		                     	<div class="regist" id="emailCk2" ></div>
-		                     	<input name="emailCK2" type="text" class="error2" id="emailConfirm">
+		                     <div class="reg-form" style="align-items:center">
+		                     	<input name="emailCK2" type="text" id="emailConfirm" disabled required>
+		                     	<button class="email_btn" type="button" id="emailCkNum2">인증확인</button>
+		                     	<span class="point successEmailck">이메일 입력 후 인증번호 보내기를 해주세요.</span>
 		                     	<input type="hidden" id="emailDoubleCk">
 		                    </div>
 		                    <div class="reg-form">

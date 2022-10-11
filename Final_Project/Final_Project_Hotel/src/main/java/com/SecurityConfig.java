@@ -31,6 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers("/member/login").permitAll()
 				.antMatchers("/member/join").permitAll()
 				.antMatchers("/member/idcheck").permitAll()
+				.antMatchers("/member/mailCheck").permitAll()	//이메일인증 추가! 
 				.antMatchers("/member/joinProcess").permitAll()
 				.antMatchers("/member/list").access("hasRole('ROLE_ADMIN')")	//'ROLE_ADMIN'만 접근 가능 
 				.antMatchers("/member/info").access("hasRole('ROLE_ADMIN')");
