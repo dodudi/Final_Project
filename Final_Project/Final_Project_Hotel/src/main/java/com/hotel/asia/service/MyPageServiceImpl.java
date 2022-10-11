@@ -1,11 +1,14 @@
 package com.hotel.asia.service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hotel.asia.controller.MyPageController;
+import com.hotel.asia.dto.Option;
 import com.hotel.asia.dto.OptionReservation;
 import com.hotel.asia.dto.Payment;
 import com.hotel.asia.dto.Rez;
@@ -20,6 +24,7 @@ import com.hotel.asia.mybatis.mapper.MyPageMapper;
 
 @Service
 public class MyPageServiceImpl implements MyPageService {
+	
 	@Autowired
 	private MyPageMapper myPageMapper;
 
@@ -46,6 +51,7 @@ public class MyPageServiceImpl implements MyPageService {
 		return payment;
 	}
 	
+	//멤버 아이디에 대한 옵션 가져오기
 	public List<OptionReservation> getOptRezData(String mem_id, int opt_id){
 		List<OptionReservation> opt_rez = myPageMapper.getOptRezData(mem_id);
 		List<OptionReservation> opt =  new ArrayList<OptionReservation>();
@@ -77,8 +83,7 @@ public class MyPageServiceImpl implements MyPageService {
 		return opt;
 	}
 	
-	//체크아웃 날짜 - 체크인 날짜 -> 몇일
-	
+	//체크아웃 날짜 - 체크인 날짜 -> 몇일 ex) 2022-10-10 ~ 2022-10-13 -> 3
 	public long getDateSub(String start, String end) {
 		long day  = 0;
 		try {
@@ -95,5 +100,46 @@ public class MyPageServiceImpl implements MyPageService {
 		}
 		return day;
 	}
+
+	//옵션 날짜 구하기 -> ex) 2022-10-10 3일 -> 2022-10-10~2022-10-13까지의 날짜를 배열로 반환
+	public List<String> calcBreakFastDate(String checkIn, long subDate) {
+		ArrayList<String> dates = new ArrayList<String>();
+		SimpleDateFormat tf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			Date date = tf.parse(checkIn);
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date);
+			for(int i = 0 ; i < subDate; i++) {
+				dates.add(tf.format(cal.getTime()).toString());
+				cal.add(Calendar.DATE, 1);
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return dates;
+	}
+	
+	//옵션별 가격 측정 ex)(날짜별조식리스트, 옵션성인아동얼마인지 정보, 옵션아이디)
+	public Map<String, Map<String, Integer>> getOptPrice(List<OptionReservation> opts, List<Option> optInfo,  int opt_id){
+		Map<String, Map<String, Integer>> opt_price = new HashMap<String, Map<String,Integer>>();
+		
+		Option  opt=  optInfo.get(opt_id-1);
+		
+		for(int i = 0 ; i < opts.size(); i++) {
+			Map<String, Integer> age_price = new HashMap<String, Integer>();
+			OptionReservation opRez = opts.get(i);
+			int adult_price = opRez.getADULT() * opt.getOPTION_DEFAULT_PRICE();
+			int child_price = opRez.getCHILD() * opt.getOPTION_CHILD_PRICE();
+			
+			log.info("<MyPageService> : " + opRez.getCHILD() + " " + opt.getOPTION_CHILD_PRICE());
+			age_price.put("adultPrice", adult_price);
+			age_price.put("childPrice", child_price);
+			opt_price.put(opRez.getOPTION_RESERVATION_DATE(),age_price);
+		}
+		log.info("<MyPageService> : " + opt_price);
+		return opt_price;
+	}
 }
+
 

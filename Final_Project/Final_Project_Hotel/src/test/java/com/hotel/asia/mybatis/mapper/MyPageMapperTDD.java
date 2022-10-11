@@ -20,7 +20,7 @@ public class MyPageMapperTDD {
 
 	@Autowired
 	private MyPageMapper myPageMapper;
-
+	
 	@Test
 	public void getRezData() {
 		// 사용자 아이디에 대한 객실예약 정보 가져오기
