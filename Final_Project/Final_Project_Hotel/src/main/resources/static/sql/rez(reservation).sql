@@ -13,4 +13,4 @@ create table REZ (
 select * from rez;
 
 commit;
-delete from rez where rez_id = 5
+delete from rez where REZ_ID = 1

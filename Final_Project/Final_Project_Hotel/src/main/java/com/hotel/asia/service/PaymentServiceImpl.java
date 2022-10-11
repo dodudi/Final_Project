@@ -10,9 +10,18 @@ import com.hotel.asia.mybatis.mapper.PaymentMapper;
 public class PaymentServiceImpl implements PaymentService{
 	@Autowired
 	private PaymentMapper mapper;
-
+	
+	// 결제
 	@Override
 	public int payment(Payment pm) {
 		return mapper.payment(pm);
+	}
+	
+	
+	// *****결제취소*****
+	// 예약번호 구하기
+	@Override
+	public int getRezId(String merchant_uid) {
+		return mapper.getRezId(merchant_uid);
 	}
 }

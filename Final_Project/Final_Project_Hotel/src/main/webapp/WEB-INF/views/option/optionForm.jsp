@@ -416,7 +416,7 @@ $(function(){
 	                        	</table>
 	                        </aside>
 	                        <aside class="single_sidebar_widget author_widget">
-	                        	<button type="submit" class="btn btn-warning">계속</button>
+	                        	<button type="submit" class="genric-btn primary circle">계속</button>
 	                        </aside>
 	                    </div>
 	                </div>

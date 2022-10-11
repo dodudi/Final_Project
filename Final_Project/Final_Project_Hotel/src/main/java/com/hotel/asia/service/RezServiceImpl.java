@@ -17,4 +17,10 @@ public class RezServiceImpl  implements RezService{
 		return mapper.reservation(rez);
 	}
 	
+	// 객실 예약 취소 (DB 삭제)
+	@Override
+	public int deleteRez(int REZ_ID) {
+		return mapper.deleteRez(REZ_ID);
+	}
+	
 }

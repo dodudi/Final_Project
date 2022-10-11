@@ -29,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.hotel.asia.dto.MailVO;
 import com.hotel.asia.dto.Member;
 import com.hotel.asia.service.MemberService;
+import com.hotel.asia.task.NaverMessageAuth;
 import com.hotel.asia.task.SendMail;
 
 @Controller
@@ -233,6 +234,40 @@ public class MemberController {
 	public String member_delete(String id) {
 		memberservice.delete(id);
 		return "redirect:list";
+	}
+	
+	
+	
+	
+	
+	// [현능] 22-10-11 없어져서 다시 추가
+	// 휴대폰 번호 중복 검사 - ajax
+	@ResponseBody
+	@PostMapping("/phoneCheck")
+	public int phoneCheck(int phone) {
+		int result = memberservice.phoneCheck(phone);
+		logger.info("*** 휴대폰 중복 검사 결과 => "+ result + " (휴대폰번호 있으면 1, 없으면 0, 뭔가 이상하면 -1)");
+		return result;
+	}
+	
+	// 휴대폰 번호 인증 문자
+	@ResponseBody
+	@PostMapping("/phoneAuth")
+	public String phoneAuth(String phone) {
+		// 인증번호 6자리 난수
+		String random = "";
+		int num = 0;
+		while (num < 99999) {
+			num = (int) (Math.random() * 1000000);
+			random = String.valueOf(num); // 6자리 난수 발생
+		}
+		logger.info("*** 휴대폰번호 => " + phone);
+		logger.info("***인증번호 => " + random);
+		
+		NaverMessageAuth message = new NaverMessageAuth();
+		message.sendMessage(String. valueOf(phone), random);
+		
+		return random;
 	}
 	
 }
