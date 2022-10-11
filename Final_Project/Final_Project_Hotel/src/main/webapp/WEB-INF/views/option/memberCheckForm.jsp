@@ -9,26 +9,26 @@
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script> <!-- 결제 시스템 - 아임포트API -->
 <title>고객정보 확인</title>
 <style>
-	
+	input[readonly] {border:none; background-color:#f9f9ff;}
 </style>
 <script>
-$(function(){	
+$(function(){
 	// 휴대폰번호 변경 여부 확인
 	var phoneAuthChk = true;
 	var originalPhone = "${member.MEM_PHONE}"; // 기존 휴대폰번호
 	var input_phone = ''; //휴대폰 인증번호 검사에 사용된 휴대폰번호를 저장할 변수
 	console.log(originalPhone);
 	
-	$("input[name='MEM_PHONE']").keyup(function(){
+	$("input[name='MEM_PHONE']").keyup(function(){  //pointer-events : auto;
 		if(originalPhone == $(this).val() || input_phone == $(this).val()) {
-			$(this).parent().find('button').css({'color':'gray', 'cursor':'default'}).attr('disabled', true);
+			$(this).parent().find('button').css({'cursor':'default','pointer-events':'none'}).attr('disabled', true).attr('class','genric-btn info-border circle');
 			$("input[name='phoneAuth']").attr('readonly', true);
 			$("input[name='phoneAuthBtn']").attr('disabled', true);
 			console.log("기존 번호랑 같음 or 이미 인증한 번호");
 			phoneAuthChk = true;
 			console.log("phoneAuthChk = " + phoneAuthChk);
 		} else {
-			$(this).parent().find('button').css({'color':'orange', 'cursor':'pointer'}).attr('disabled', false);
+			$(this).parent().find('button').css({'cursor':'pointer','pointer-events':'auto'}).attr('disabled', false).attr('class','genric-btn info circle');
 			phoneAuthChk = false;
 			console.log("phoneAuthChk = " + phoneAuthChk);
 		}
@@ -73,7 +73,7 @@ $(function(){
 								alert("인증번호가 발송되었습니다. => " + rdata);
 								$("input[name='phoneAuthNum']").val(rdata); // 인증번호 저장되는 곳
 								$("input[name='phoneAuth']").attr('type', 'text').attr('readonly', false); // 인증번호 입력란
-								$("input[name='phoneAuthBtn']").attr('type', 'button').attr('disabled', false); // 인증번호 입력 후 일치여부 확인 버튼
+								$("input[name='phoneAuthBtn']").attr('type', 'button').attr('disabled', false).attr('class','genric-btn success circle'); // 인증번호 입력 후 일치여부 확인 버튼
 								console.log("phoneAuthChk = " + phoneAuthChk);
 							}
 						}) // 휴대폰 번호 인증 ajax end
@@ -123,19 +123,20 @@ function payment() {
     IMP.request_pay({
         pg: "html5_inicis.INIpayTest",
         pay_method: "card",
-        merchant_uid : new Date().getTime(), // 가맹점에서 생성/관리하는 고유 주문번호 (중복 불가)
+        //merchant_uid : new Date().getTime(), // 가맹점에서 생성/관리하는 고유 주문번호 (중복 불가)
         name: "${room.ROOM_TYPE}", // "${room.ROOM_TYPE}" 또는 "${rez.ROOM_ID}" // 아이템 이름
         amount: 100, // "${totalPrice}" // 아이템 가격
-        buyer_email: "gildong@gmail.com",
-        buyer_name: "홍길동", // 결제자 이름
-        buyer_tel: "010-4242-4242",
+        buyer_email: "${member.MEM_EMAIL}",
+        buyer_name: "${member.MEM_NAME}", // 결제자 이름
+        buyer_tel: "${member.MEM_PHONE}",
         buyer_addr: "서울특별시 강남구 신사동",
         buyer_postcode: "01182"
     }, function (rsp) {
-    	$("input[name='PAYMENT_ID']").val(rsp.merchant_uid);
+    	$("input[name='PAYMENT_ID']").val(rsp.imp_uid); // rsp.merchant_uid: 주문번호 / rsp.imp_uid: 결제번호
     	//$("input[name='PAYMENT_PRICE']").val(rsp.paid_amount); // 실제 결제 금액
     	$("input[name='PAYMENT_PRICE']").val("${totalPrice}"); // 시스템상 결제 금액
-    	console.log("결제 번호 => " + rsp.merchant_uid);
+    	//console.log("결제 번호 => " + rsp.merchant_uid);
+    	console.log("결제 번호(imp_uid) => " + rsp.imp_uid);
     	console.log("결제 금액 => " + rsp.paid_amount);
         console.log("[결제 상태] rsp.status=" + rsp.status);
         if (rsp.success) {
@@ -144,7 +145,7 @@ function payment() {
         } else {
         	console.log("결제 실패. 에러 내용: " +  rsp.error_msg);
         	alert("결제에 실패하셨습니다. 관리자에게 문의해주세요."); // 나중에 이거 주석 풀기!
-        	//$("form").submit(); // 나중에 이거 지우기!
+        	$("form").submit(); // 나중에 이거 지우기!
         }
     });
 } // payment() end
@@ -178,10 +179,10 @@ function payment() {
 	                       			<tr>
 	                       				<th>연락처</th>
 	                       				<td>
-	                       					<input type="text" name="MEM_PHONE" value="${member.MEM_PHONE}">
+	                       					<input type="text" name="MEM_PHONE" value="${member.MEM_PHONE}" style="backgroundcolor:white;">
 	                       					<input type="hidden" name="phoneAuth" maxlength="6"> <!-- 인증번호 입력하는 곳 -->
 	                       					<input type="hidden" name="phoneAuthBtn" value="인증번호 확인"> <!-- 인증번호 입력 후 일치하는지 확인 버튼 -->
-	                       					<button type="button" id="phoneChkBtn" style="color:gray" disabled>인증하기</button>
+	                       					<button type="button" class="genric-btn info-border circle" id="phoneChkBtn" disabled style="pointer-events: none;">인증하기</button>
 	                       					<input type="hidden" name="phoneAuthNum"> <!-- 인증번호 저장되는 곳 -->
 	                       				</td>
 	                       			</tr>
@@ -256,7 +257,7 @@ function payment() {
 										</dl>
 									</div>
 									<input type="checkbox">예약취소 및 미입실 관련 위약금 규정’과 취소 정책을 확인하고 동의합니다.
-									<button type="button" class="btn" id="paymentBtn">결제하기</button>
+									<button type="button" class="genric-btn primary circle" id="paymentBtn">결제하기</button>
 					            </div>
 	                       </div>
 	                    </div>
@@ -272,26 +273,33 @@ function payment() {
 	                        			<th colspan="2">01 일정 및 객실</th>
 	                        		</tr>
 	                        		<tr>	
-	                        			<th>체크인</th><td><input type="text" name="REZ_CHECKIN" value="${rez.REZ_CHECKIN}"></td>
+	                        			<th>체크인</th><td><input type="text" name="REZ_CHECKIN" value="${rez.REZ_CHECKIN}" readonly onfocus="this.blur();"></td>
 	                        		</tr>
 	                        		<tr>	
-	                        			<th>체크아웃</th><td><input type="text" name="REZ_CHECKOUT" value="${rez.REZ_CHECKOUT}"></td>
+	                        			<th>체크아웃</th><td><input type="text" name="REZ_CHECKOUT" value="${rez.REZ_CHECKOUT}" readonly onfocus="this.blur();"></td>
 	                        		</tr>
 	                        		<tr>	
-	                        			<th>숙박일수</th><td><input type="text" name="nights" value="${nights}">박</td> 
+	                        			<th>숙박일수</th><td><input type="text" name="nights" value="${nights}" readonly onfocus="this.blur();">박</td> 
 	                        		</tr>
 	                        		<tr>	
-	                        			<th>객실명 (객실id)</th><td><input type="text" name="ROOM_ID" value="${rez.ROOM_ID}"></td>
+	                        			<th>객실명</th>
+	                        			<td>
+	                        				<input type="text" value="${room.ROOM_TYPE}" readonly onfocus="this.blur();">
+	                        				<input type="hidden" name="ROOM_ID" value="${room.ROOM_ID}">
+	                        			</td>
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>인원수 </th>
 	                        			<td>
-	                        				성인: <input type="text" name="REZ_ADULT" value="${rez.REZ_ADULT}">
-	                        				아동: <input type="text" name="REZ_CHILD" value="${rez.REZ_CHILD}">
+	                        				<h6 style="float:left">성인:&nbsp;<input type="text" name="REZ_ADULT" value="${rez.REZ_ADULT}" readonly onfocus="this.blur();" style="width:15px">명&nbsp;&nbsp;/&nbsp;&nbsp;</h6>
+	                        				<h6 style="float:left">아동:&nbsp;<input type="text" name="REZ_CHILD" value="${rez.REZ_CHILD}" readonly onfocus="this.blur();" style="width:15px">명</h6>
 	                        			</td>
 	                        		</tr>
 	                        		<tr>	
-	                        			<th>총금액</th><td><input type="text" value="${room.ROOM_PRICE * nights}"></td>
+	                        			<th>총금액</th>
+	                        			<td>
+	                        				<input type="text" value="<fmt:formatNumber value="${room.ROOM_PRICE * nights}" pattern="#,###"/>" readonly onfocus="this.blur();">
+	                        			</td>
 	                        		</tr>
 	                        	</table>
 	                        	<div class="br"></div>
@@ -342,7 +350,7 @@ function payment() {
 	                        		<tr>	
 	                        			<th>마일리지</th>
 	                        			<td>
-	                        				0 / 0point
+	                        				0 / ${member.MEM_POINT} point
 	                        			</td>
 	                        		</tr>
 	                        	</table>

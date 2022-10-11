@@ -189,7 +189,7 @@ $(function(){
 	                    </div>
 	                </div>
 	                <div class="col-md-12 text-right">
-	                    <button type="submit" value="submit" class="btn theme_btn button_hover">회원예약</button>
+	                    <button type="submit" value="submit" class="genric-btn primary circle">회원예약</button>
 	                </div>
 	            </div>
 	            

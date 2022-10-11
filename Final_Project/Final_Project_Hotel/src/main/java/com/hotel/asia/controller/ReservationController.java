@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.hotel.asia.dto.OptionReservation;
@@ -44,7 +46,7 @@ public class ReservationController {
 	public String testRoomList(HttpSession session) {
 		
 		logger.info("테스트 유저 아이디 : user01" );
-		session.setAttribute("id", "user01");
+		session.setAttribute("id", "B1234");
 		return "reservation/testRez";
 	}
 	
@@ -60,12 +62,10 @@ public class ReservationController {
 	
 	
 	//========== [현능] ==========
-	// 객실 + 추가옵션 예약
+	// 객실 예약, 추가옵션 예약, 결제
 	@RequestMapping("/reservationRoomOption")
 	public ModelAndView reservationRoomOption(Rez rez, Payment pm,
 											  ModelAndView mv, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws ParseException {
-	
-		
 		logger.info("***** [reservationRoomOption] 넘어온 정보 *****");
 		logger.info("* 객실아이디 : " + rez.getROOM_ID());
 		logger.info("* 회원아이디 : " + session.getAttribute("id"));
@@ -214,5 +214,29 @@ public class ReservationController {
 		mv.addObject("dateList", dateList3); // 체크인 날짜 ~ 체크아웃 날짜 (list)
 		mv.setViewName("reservation/reservationComplete");
 		return mv;
+	}
+	
+	
+	// 객실 예약 취소, 추가옵션 예약 취소, 결제 취소
+	@ResponseBody
+	@RequestMapping("/reservationCancle")
+	public ModelAndView reservationCancle(@RequestParam(value="merchant_uid") String merchant_uid,
+										  ModelAndView mv, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws ParseException {
+		logger.info("==========[reservationCancle]==========");
+		logger.info("결제번호: " + merchant_uid);
+		int REZ_ID = paymentService.getRezId(merchant_uid); // 예약번호 구하기
+		logger.info("객실예약번호: " + REZ_ID);
+		
+		
+		
+		
+		
+		
+		// DB 삭제
+		int rezResult = rezService.deleteRez(REZ_ID); // 객실 예약 취소 - on delete cascade로 결제 DB, 옵션 예약 DB 한 번에 삭제됨
+		logger.info("*객실 DB 삭제 여부 rezResult=" + rezResult);
+		
+		
+		return null;
 	}
 }
