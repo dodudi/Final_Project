@@ -40,7 +40,7 @@
              <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                  <ul class="nav navbar-nav menu_nav ml-auto">
                      <li class="nav-item active"><a class="nav-link" href="home">소  개</a></li>
-                     <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/room/roomlist">객  실</a></li>
+                     <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/room/roomList">객  실</a></li>
                      <li class="nav-item"><a class="nav-link" href="promotion">프로모션</a></li>
                      <li class="nav-item submenu dropdown">
                          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">커뮤니티</a>

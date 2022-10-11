@@ -29,9 +29,9 @@ public class RoomController {
 	}
 	
 	
-	@RequestMapping(value = "/roomlist", method = RequestMethod.GET)
+	@RequestMapping(value = "/roomList", method = RequestMethod.GET)
 	public String room() {
-		return "/room/roomlist";
+		return "/room/roomList";
 	}
 
 }

@@ -1,0 +1,1 @@
+(function(a){var b=0;if(a(window).width()>1200){window.setInterval(function(){b++;document.getElementsByClassName("home-moving-image")[0].style.backgroundPosition=b+"px 0px"},18)}})(jQuery);
