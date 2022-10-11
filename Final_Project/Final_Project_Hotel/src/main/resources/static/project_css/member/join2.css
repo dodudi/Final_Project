@@ -29,7 +29,7 @@ body {
 }
 
 .panel.shadow1{
-	height: 1200px;
+	height: 700px;
 }
 
 
@@ -67,11 +67,11 @@ form{
     transition: background-color 0.2s , color:0.2s , opacity:0.5s;
 }
 
-.panel-switch .button1:active{
+.panel-switch .button2:active{
     background: #f8b100;
     color: #777777;
 }
-.button2{
+.button1{
     opacity: 0.8;
     point-events: none;
 }
@@ -207,8 +207,8 @@ fieldset input:focus {
     transition: background-color 0.2s , color:0.2s;
 }
 
-#login-form-submit:active,
-#login-form-reset:active{
+#login-form-login:active,
+#login-form-main:active{
     background: #f8b100;
     color: #fff;
 }
@@ -328,62 +328,7 @@ p {
 	margin: 5px;
 }
 
-table {
-	width:100%;
-}
 
-th {
-	border: 1px solid black;
-	background: lightgray;
-}
-td{
-	border: 1px solid black;
-	font-size: 12px
-}
-
-.reg-form {
-	display: flex;
-	width: 100%;
-}
-
-.regist {
-	width:170px;
-	margin: 10px 0;
-    padding: 5px;
-}
-
-.error {
-	margin-left: 50px;
-}
-
-.error2 {
-	display:inline-block;
-	margin-left:150px; 
-	font-size: 12px
-}
-sup{
-	color: #f8b100;
-}
-
-.email_btn {
-	position: relative;
-	width: 20%;
-	min-width:66px;
-    margin: 10px 0 10px 5px;
-    border-radius: 30px;
-	background : #f3c300;
-	color: #fff;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 600;
-    letter-spacing: 2px;
-     border: none;
-}
-
-.email_btn:active{
-	background: #f8b100;
-    color: #fff;
-}
-
-input[name=MEM_EMAIL] {
-	width: 80%;
+h3{
+	color: white;
 }

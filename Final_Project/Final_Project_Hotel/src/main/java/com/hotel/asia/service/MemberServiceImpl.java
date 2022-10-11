@@ -78,7 +78,7 @@ public class MemberServiceImpl implements MemberService {
 	public int getSearchListCount(int index, String search_word) {
 		Map<String, String> map = new HashMap<String, String>();
 		if(index!=-1) {
-			String[] search_field = new String[] {"id", "name", "age", "gender"};
+			String[] search_field = new String[] {"id", "name"};
 			map.put("search_field", search_field[index]);
 			map.put("search_word", "%" + search_word + "%");
 		} return dao.getSearchListCount(map);
