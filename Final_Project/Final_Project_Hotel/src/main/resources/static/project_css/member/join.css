@@ -361,15 +361,22 @@ td{
 	margin-left:150px; 
 	font-size: 12px
 }
+
+.error3{
+	margin-left:10px;
+	font-size:12px;
+	width:30%;
+}
 sup{
 	color: #f8b100;
 }
 
 .email_btn {
 	position: relative;
-	width: 20%;
+	height:35px;
+	width: 15%;
 	min-width:66px;
-    margin: 10px 0 10px 5px;
+    margin: 10px 5px;
     border-radius: 30px;
 	background : #f3c300;
 	color: #fff;
@@ -385,5 +392,15 @@ sup{
 }
 
 input[name=MEM_EMAIL] {
-	width: 80%;
+	width: 50%;
+}
+
+#emailConfirm{
+    margin-left: 140px !important;
+    width: 35%;
+}
+
+.successEmailck{
+	width:50%;
+	font-size:12px;
 }
