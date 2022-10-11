@@ -118,7 +118,7 @@
 									</tbody>
 								</table>
 								<div class="clearfix btn-box">
-									<form action="/hotel/mypage/optionModifyForm" id="optModify" method="post">
+									<form action="/hotel/mypage/testRezModify" id="optModify" method="post">
 										<!-- 403에러 방지 토큰 -->
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 										<button type="submit" class="btn btn-primary">객실예약변경하기</button>
