@@ -76,10 +76,8 @@ public class MyPageServiceImpl implements MyPageService {
 					opt = new ArrayList<OptionReservation>();
 				
 				opt.add(opt_rez.get(i));
-				log.info("데이터 추가");
 			}
 		}
-		log.info("리턴 opt : " + opt);
 		return opt;
 	}
 	
@@ -131,8 +129,8 @@ public class MyPageServiceImpl implements MyPageService {
 			OptionReservation opRez = opts.get(i);
 			int adult_price = opRez.getADULT() * opt.getOPTION_DEFAULT_PRICE();
 			int child_price = opRez.getCHILD() * opt.getOPTION_CHILD_PRICE();
-			
-			log.info("<MyPageService> : " + opRez.getCHILD() + " " + opt.getOPTION_CHILD_PRICE());
+			log.info("<MyPageService> 디너 : " + opRez.getADULT() + " " + opt.getOPTION_DEFAULT_PRICE());
+			log.info("<MyPageService> 아침 : " + opRez.getCHILD() + " " + opt.getOPTION_CHILD_PRICE());
 			age_price.put("adultPrice", adult_price);
 			age_price.put("childPrice", child_price);
 			opt_price.put(opRez.getOPTION_RESERVATION_DATE(),age_price);
