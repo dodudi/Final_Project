@@ -457,6 +457,11 @@ color: #0099ff !important;
 		</div>
 	</div>
 	
+	<!-- [현능] 22-10-12 임시 테스트버튼 추가 -->
+	<form action="roomList_v2">
+		<button>테스트버튼</button>
+	</form>
+	
 	<div class="scroll-to-top"></div>
             
         

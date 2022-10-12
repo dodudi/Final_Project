@@ -1,13 +1,21 @@
 package com.hotel.asia.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.hotel.asia.service.ReservationService;
+import com.hotel.asia.dto.Room;
+import com.hotel.asia.service.RezService;
 import com.hotel.asia.service.RoomService;
 
 @Controller
@@ -17,13 +25,11 @@ public class RoomController {
 	
 	
 	private RoomService roomService;
-	private ReservationService reservationService;
+	private RezService reservationService;
 	
 
 	@Autowired
-	public RoomController(RoomService roomService,
-			              ReservationService reservationService 
-			              ) {
+	public RoomController(RoomService roomService, RezService reservationService) {
 		this.roomService = roomService;
 		this.reservationService = reservationService;
 	}
@@ -32,6 +38,30 @@ public class RoomController {
 	@RequestMapping(value = "/roomList", method = RequestMethod.GET)
 	public String room() {
 		return "/room/roomList";
+	}
+	
+	
+	// =====[현능]=====
+	@RequestMapping(value="/roomList_v2", method = RequestMethod.GET)
+	public ModelAndView roomList_v2(ModelAndView mv) {
+		List<Room> roomList = roomService.getRoomList(); // 전체 객실 리스트
+		int roomListCount = roomService.getRoomListCount(); // 전체 객실 리스트 수
+		mv.addObject("roomList", roomList);
+		mv.addObject("roomListCount", roomListCount);
+		mv.setViewName("room/roomList_v2");
+		return mv;
+	}
+	@ResponseBody
+	@RequestMapping(value="/roomList_v2_select")
+	public Map<String, Object> roomList_v2_select(@RequestParam(value="people", defaultValue="0", required=false) int people) {
+		List<Room> roomList = roomService.getRoomList(); // 전체 객실 리스트
+		int roomListCount = roomService.getRoomListCount(); // 전체 객실 리스트 수
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("roomList", roomList);
+		map.put("roomListCount", roomListCount);
+		map.put("people", people);
+		return map;
 	}
 
 }
