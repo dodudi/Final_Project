@@ -38,13 +38,13 @@ public class SendMail {
 				helper.setTo(vo.getTo());
 				helper.setSubject(vo.getSubject());
 				
+				
+				//로고 이미지 내장해서 보냄 
 				String content = "<img src='cid:Home'>" + vo.getContent();
 				helper.setText(content, true);
 				
 				FileSystemResource file = new FileSystemResource(new File(sendfile));
 				helper.addInline("Home", file);
-				
-				helper.addAttachment("google.png", file);
 				
 			}//prepare() end 
 		};//MimeMessagePreparator end 

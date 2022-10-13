@@ -247,10 +247,12 @@ color: #0099ff !important;
 						<div class="row">
 							<div class="col-lg-6">
 								<div class="room-box background-grey">
-									<div class="room-name">single room</div>
+									<c:forEach val="roomlist" items="roomlist">
+									<div class="room-name">${roomlist.ROOM_ID}</div>
+									</c:forEach>
 									<img src="${pageContext.request.contextPath}/resources/room/img/room3.jpg" alt="">
 									<div class="room-box-in">
-										<h5 class="">pool suite</h5>
+										<h5 class=""></h5>
 										<p class="mt-3">Sed ut perspiciatis unde omnis, totam rem
 											aperiam, eaque ipsa quae ab illo inventore veritatis et.</p>
 										<a href="rooms-gallery.html"><button type="submit" class="mt-1 btn btn-warning">book
@@ -456,6 +458,11 @@ color: #0099ff !important;
 			</div>
 		</div>
 	</div>
+	
+	<!-- [현능] 22-10-12 임시 테스트버튼 추가 -->
+	<form action="roomList_v2">
+		<button>테스트버튼</button>
+	</form>
 	
 	<div class="scroll-to-top"></div>
             

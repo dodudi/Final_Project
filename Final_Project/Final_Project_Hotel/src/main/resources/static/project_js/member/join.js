@@ -88,40 +88,63 @@ $(function(){
 		var pattern = /^\w+@\w+[.]\w{3}$/;
 		var email = $("input[name=MEM_EMAIL]").val();
 		if (!pattern.test(email)) {
-			$("#emailConfirm").css('color', 'red').html("이메일 형식이 맞지 않습니다.");
+			$("#emailCk").css('color', 'red').html("이메일 형식이 맞지 않습니다.");
 			checkemail=false;
 		} else {
-			$("#emailConfirm").css('color','green').html("이메일 형식에 맞습니다.");
+			$("#emailCk").css('color','green').html("이메일 형식에 맞습니다.");
 			checkemail=true;
 		}
 	});
 	
 	//이메일 인증 
 	var code = "";
-	$(".email_btn").click(function(){
+	$("#emailCkNum").click(function(){
 		var email = $("input[name=MEM_EMAIL]").val();
 		
 		$.ajax({
 			type : "POST",
-			url : "mailConfirm",
+			url : "mailCheck",
 			data:{"MEM_EMAIL" : email},
+			dataType : "json",
 			beforeSend : function(xhr){
 			xhr.setRequestHeader(header, token);
 			},
 			success:function(data){
-			  if(data == "error"){
-			  	alert("이메일 주소가 올바르지 않습니다. 유효한 이메일 주소를 입력해주세요.");
-			  	$('input[name=MEM_EMAIL]').attr("autofocus", true);
-			  	$('#emailConfirm').html("유효한 이메일 주소를 입력해주세요")
-			  					.css("color", "red");
+				console.log("data 성공 : " + data);
+				
+			  if(data.message == "success"){
+			 	alert("인증번호가 발송되었습니다. \n 인증번호를 확인해주세요.");
+			  	$('#emailConfirm').attr("disabled", false);
+		  		$('.successEmailck').text("인증번호를 입력한 뒤 인증확인버튼을 눌러주세요.")
+		  					.css("color", "green");
+		  		code = data.serial;
 			  } else {
-			  	alert("인증번호가 발송되었습니다. \n 인증번호를 확인해주세요.");
-			  		$('#emailConfirm').html("인증이 완료되었습니다. ")
-			  					.css("color", "green");
-			  	code = data;
+		  		alert("이메일 주소가 올바르지 않습니다. 유효한 이메일 주소를 입력해주세요.");
+			  	$('input[name=MEM_EMAIL]').attr("autofocus", true);
+			  	$('.successEmailck').text("유효한 이메일 주소를 입력해주세요")
+			  					.css("color", "red");
 			  }
+			},
+			error:function(data){
+				alert("회원가입 에러 발생!");
+				console.log("data error : " + data);
 			}
 		})
+		
+	})
+	
+	$("#emailCkNum2").click(function(){
+		if($("#emailConfirm").val() == code){
+			$(".successEmailck").text("인증번호가 일치합니다.")	
+								.css("color", "green");
+			$("#emailDoubleCk").val("true");
+			$("#emailConfirm").attr("disabled", true);
+		}else{
+			$(".successEmailck").text("인증번호가 일치하지않습니다. 확인해주세요.")	
+								.css("color", "red");
+			$("#emailDoubleCk").val("false");
+			$("#emailConfirm").attr("autofocus", true);
+		}
 	})
 	
 	//checkbox

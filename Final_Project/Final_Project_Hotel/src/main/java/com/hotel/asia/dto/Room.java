@@ -1,5 +1,6 @@
 package com.hotel.asia.dto;
 
+
 public class Room {
 	private int ROOM_ID;
 	private String ROOM_TYPE;
