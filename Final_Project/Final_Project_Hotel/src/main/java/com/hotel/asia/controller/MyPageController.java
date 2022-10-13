@@ -261,7 +261,12 @@ public class MyPageController {
 
 	// 객실 수정 처리! mypage/rezModify.jsp
 	@PostMapping(value = "/mypage/rezModify")
-	public String rezModify() {
+	public String rezModify(Model model, HttpSession session) {
+		String mem_id = session.getAttribute("id").toString();
+		Rez ori_rez = myPageService.getRezData(mem_id);
+		//기존예약정보들 삭제
+		//새로운예약정보 추가
+		myPageService.delRezData(ori_rez.getREZ_ID(), mem_id);
 		return "reservation/rezModify";
 	}
 
