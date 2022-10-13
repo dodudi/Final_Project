@@ -25,4 +25,6 @@
  		set    ROOM_STATE = 'Y'
  		where  ROOM_ID = #{ROOM_ID}
  	</update>
+ 	
+ 	
 </mapper>
