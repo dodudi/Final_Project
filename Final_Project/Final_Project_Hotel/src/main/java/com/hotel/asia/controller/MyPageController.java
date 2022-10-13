@@ -262,7 +262,7 @@ public class MyPageController {
 	// 객실 수정 처리! mypage/rezModify.jsp
 	@PostMapping(value = "/mypage/rezModify")
 	public String rezModify() {
-		return "mypage/rezModify";
+		return "reservation/rezModify";
 	}
 
 	// 질문게시판 페이지
