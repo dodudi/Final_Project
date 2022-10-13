@@ -1,5 +1,7 @@
 package com.hotel.asia.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,13 @@ public class RezServiceImpl  implements RezService{
 	@Override
 	public int deleteRez(int REZ_ID) {
 		return mapper.deleteRez(REZ_ID);
+	}
+	
+	
+	// 객실 예약 리스트
+	@Override
+	public List<Rez> getRezList() {
+		return mapper.getRezList();
 	}
 	
 }
