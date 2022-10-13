@@ -12,4 +12,9 @@
  		set    ROOM_STATE = 'Y'
  		where  ROOM_ID = #{ROOM_ID}
  	</update>
+ 	
+ 	<select id="getRoomList" parameterType="Room" resultType="String">
+ 		select * from room
+ 		where 
+ 	</select>
 </mapper>

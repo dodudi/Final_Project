@@ -1,5 +1,7 @@
 package com.hotel.asia.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,14 @@ public class RoomServiceImpl implements RoomService{
 	public int updateRezState(int room_ID) {
 		return mapper.updateRezState(room_ID);
 	}
+
+	@Override
+	public List<Room> getRoomList(Room room) {
+		return mapper.getRoomList(room);
+	}
+
+
+	
 	
 	
 
