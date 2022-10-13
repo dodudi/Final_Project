@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +25,7 @@ import com.hotel.asia.service.RoomService;
 @Controller
 @RequestMapping(value="/room")
 public class RoomController {
-	private static final Logger logger = LoggerFactory.getLogger(ReservationController.class);
+	private static final Logger logger = LoggerFactory.getLogger(RoomController.class);
 	
 	private RoomService roomService;
 	private RezService reservationService;
@@ -104,9 +103,12 @@ public String room() {
 	}
 	@ResponseBody
 	@RequestMapping(value="/roomList_v2_select")
-	public Map<String, Object> roomList_v2_select(@RequestParam(value="people", defaultValue="0", required=false) int people) {
-		List<Room> roomList = roomService.getRoomList(); // 전체 객실 리스트
-		int roomListCount = roomService.getRoomListCount(); // 전체 객실 리스트 수
+	public Map<String, Object> roomList_v2_select(@RequestParam(value="people", defaultValue="0", required=false) int people,
+												  @RequestParam(value="roomTypes", defaultValue="0", required=false) String roomTypes){
+		logger.info("==========[roomList_v2_select]==========");
+		logger.info("넘어온 객실타입: " + roomTypes);
+		List<Room> roomList = roomService.getRoomList(roomTypes); // 객실 리스트 (선택된 객실 유형만)
+		int roomListCount = roomList.size(); // 객실 리스트 수 (선택된 객실 유형만)
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("roomList", roomList);

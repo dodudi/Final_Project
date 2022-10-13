@@ -238,15 +238,15 @@ $(function(){
 		console.log("선택된 아동 수: " + children);
 		console.log("총 인원 수: " + people);
 		
-		// 2. 선택한 방 산정
+		// 2. 선택한 객실 유형
 		var chk_arr = $(".checkbox");
-        var chk_data = [];
+        var roomTypes = ""; // 선택된 객실 유형 담을 변수
         for( var i=0; i<chk_arr.length; i++ ) {
             if( chk_arr[i].checked == true && chk_arr[i].value != 'on') {
-                chk_data.push(chk_arr[i].value);
+                roomTypes += chk_arr[i].value + ",";
             }
         }
-		
+		console.log("선택된 객실 유형: " +roomTypes);
 		
 		
 		
@@ -255,7 +255,8 @@ $(function(){
 		$.ajax({
 			type : "POST",
 			url: "roomList_v2_select",
-			data: {"people": people},
+			data: {"people": people,
+				   "roomTypes": roomTypes},
 			beforeSend : function(xhr) { 
 	        	xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리(Spring Security CSRF)		
 	        },
@@ -277,7 +278,7 @@ $(function(){
 	        		        + '		<p class="mt-3">'+item.ROOM_DETAIL+'</p>';
 	        		if(item.ROOM_MAX < people) {        
 	        			output += '		<a href="" style="pointer-events:none;">'
-	        		           + '			<button type="submit" class="mt-1 btn btn-warning">'
+	        		           + '			<button type="submit" class="mt-1 btn btn-warning" style="background-color:lightgray">'
 	        		           + '				book from ' + item.ROOM_PRICE + '원'
 	        		           + '			</button>'
 	        		           + '		</a>';
@@ -296,7 +297,6 @@ $(function(){
 					output += "</div></div></div>";		
 	        	}) // each end
 	        	output += "</div>";
-	        	//alert(output);
 	        	$(".roomListParentP").append(output);
 	        } // success end
 		}) // ajax end
@@ -434,7 +434,7 @@ $(function(){
 										<li class="list__item"><label class="label--checkbox">
 											<input type="checkbox" id="double" class="checkbox" name="check" value="더블룸">더블룸</label></li>
 										<li class="list__item"><label class="label--checkbox">
-											<input type="checkbox" id="twin" class="checkbox" name="check" value="트윈룸">트윈룸</label></li>
+											<input type="checkbox" id="twin" class="checkbox" name="check" value="트리플룸">트리플룸</label></li>
 										<li class="list__item"><label class="label--checkbox">
 											<input type="checkbox" id="family" class="checkbox" name="check" value="패밀리룸">패밀리룸</label></li>
 									</ul>
