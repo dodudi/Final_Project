@@ -6,11 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -85,26 +89,25 @@ public class RoomController {
 //		return mv;
 //	}
 
-@RequestMapping(value = "/roomList", method = RequestMethod.GET)
-public String room() {
-   return "/room/roomList";
-}
+
 	
 
 	
-	// =====[현능]=====
-	@RequestMapping(value="/roomList_v2", method = RequestMethod.GET)
-	public ModelAndView roomList_v2(ModelAndView mv) {
+	// 객실 리스트
+	@RequestMapping(value="/roomList", method = RequestMethod.GET)
+	public ModelAndView roomList(ModelAndView mv) {
 		List<Room> roomList = roomService.getRoomList(); // 전체 객실 리스트
 		int roomListCount = roomService.getRoomListCount(); // 전체 객실 리스트 수
 		mv.addObject("roomList", roomList);
 		mv.addObject("roomListCount", roomListCount);
-		mv.setViewName("room/roomList_v2");
+		mv.setViewName("room/roomList");
 		return mv;
 	}
+	
+	//ajax 객실리스트 조회
 	@ResponseBody
-	@RequestMapping(value="/roomList_v2_select")
-	public Map<String, Object> roomList_v2_select(@RequestParam(value="people", defaultValue="0", required=false) int people) {
+	@RequestMapping(value="/roomList_select")
+	public Map<String, Object> roomList_select(@RequestParam(value="people", defaultValue="0", required=false) int people) {
 		List<Room> roomList = roomService.getRoomList(); // 전체 객실 리스트
 		int roomListCount = roomService.getRoomListCount(); // 전체 객실 리스트 수
 		
@@ -114,5 +117,27 @@ public String room() {
 		map.put("people", people);
 		return map;
 	}
+	
+	
+	
+	@GetMapping("/roomDetail")
+	public ModelAndView Detail(@RequestParam(value="num", defaultValue="0") int num,
+							   ModelAndView mv, 
+							   HttpServletRequest request){
+		
+		Room room = roomService.getRoomDetail(num);
+		if (room == null) {
+			logger.info("객실 상세보기 실패");
+			mv.setViewName("error/error");
+			mv.addObject("url", request.getRequestURL());
+			mv.addObject("message", "상세보기 실패입니다.");
+		} else {
+			logger.info("객실 상세보기 성공");
+			mv.setViewName("room/roomDetail");
+			mv.addObject("room", room);
+		}
+		return mv;
+	}
+	
 
 }
