@@ -1,6 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <html lang="ko">
 <head>
 <meta charset="utf-8">
@@ -220,147 +220,172 @@ color: #0099ff !important;
 .inp {padding:10px 10px; background-color:#f1f1f1; border-radius:4px; border:0px;}
 .inp:focus {outline:none; background-color:#eee;}
 </style>
-
+<script>
+$(function(){
+	$("#searchBtn").click(function(){
+		// 1. 인원 수 산정
+		var adults = $("select[name='adults']").val(); // 선택된 성인 수
+		var children = $("select[name='children']").val(); // 선택된 아동 수
+		// select 선택값이 '성인', '소아' 인 경우 0으로 처리
+		if(isNaN(adults)) {
+			adults = 0;
+		}
+		if(isNaN(children)) {
+			children = 0;
+		}
+		var people = parseInt(adults) + parseInt(children); // 총 인원 수
+		console.log("선택된 성인 수: " + adults);
+		console.log("선택된 아동 수: " + children);
+		console.log("총 인원 수: " + people);
+		
+		// 2. 선택한 객실 유형
+		var chk_arr = $(".checkbox");
+        var roomTypes = ""; // 선택된 객실 유형 담을 변수
+        for( var i=0; i<chk_arr.length; i++ ) {
+            if( chk_arr[i].checked == true && chk_arr[i].value != 'on') {
+                roomTypes += chk_arr[i].value + ",";
+            }
+        }
+		console.log("선택된 객실 유형: " +roomTypes);
+		
+		// 3. 체크인, 체크아웃 날짜
+		// 체크인 날짜 연월일 분리
+		var checkInArr = $("#sdate").val().split('.'); 
+		var checkIn = new Date(checkInArr[0], checkInArr[1]-1, checkInArr[2]);
+		console.log("체크인 날짜: " + checkIn.toLocaleString());
+		// 체크아웃 날짜 연월일 분리
+		var checkOutArr = $("#edate").val().split('.'); 
+		var checkOut = new Date(checkOutArr[0], checkOutArr[1]-1, checkOutArr[2]);
+		console.log("체크아웃 날짜: " + checkOut.toLocaleString());
+		// 숙박 일수
+		var nights = (checkOut.getTime() - checkIn.getTime()) / (1000*60*60*24);
+		console.log("숙박일수: " + nights + "박");
+		// 숙박 날짜들 (체크인 날짜 ~ 체크아웃 날짜-1)
+		var nightsDate = "";
+		for(var i = 0; i < nights; i++) {
+			nightsDate += checkIn.getFullYear() + "-" + (checkIn.getMonth()+1) + "-" + checkIn.getDate() + "/";
+			console.log("숙박 날짜 => " + nightsDate);
+			checkIn.setDate(checkIn.getDate() + 1);
+		}
+		
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		$.ajax({
+			type : "POST",
+			url: "roomList_select",
+			data: {"people": people,
+				   "roomTypes": roomTypes},
+			beforeSend : function(xhr) { 
+	        	xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리(Spring Security CSRF)		
+	        },
+	        success: function(data){
+	        	$(".roomListParent").remove();
+	        	var people = data.people;
+	        	var output = '<div class="row roomListParent">';
+	        	$(data.roomList).each(function(index, item) {
+	        		output +='<div class="col-lg-6 roomList">'
+	        			    + '		<div class="room-box background-grey">'
+	        		        + '			<div class="room-name">'+item.ROOM_TYPE+'</div>';
+	        		if(item.ROOM_MAX < people) {
+	        			output += "<img src='" + item.ROOM_IMG + "' style='opacity:0.3;'>";
+	        		} else {
+	        			output += "<img src='" + item.ROOM_IMG + "'>";
+	        		}
+	        		output += '<div class="room-box-in">'
+	        		        + '		<h5>'+item.ROOM_TYPE+'</h5>'
+	        		        + '		<p class="mt-3">'+item.ROOM_DETAIL+'</p>';
+	        		if(item.ROOM_MAX < people) {        
+	        			output += '		<a href="" style="pointer-events:none;">'
+	        		           + '			<button type="submit" class="mt-1 btn btn-warning" style="background-color:lightgray">'
+	        		           + '				book from ' + item.ROOM_PRICE + '원'
+	        		           + '			</button>'
+	        		           + '		</a>';
+	        		} else {
+	        			output += '		<a href="">'
+	        		           + '			<button type="submit" class="mt-1 btn btn-warning">'
+	        		           + '				book from ' + item.ROOM_PRICE + '원'
+	        		           + '			</button>'
+	        		           + '		</a>';
+	        		}
+	        		
+	        		output += '		<div class="room-icons mt-4 pt-4">'
+	        		 	    + '			<img src="${pageContext.request.contextPath}/resources/room/img/5.svg"><img src="${pageContext.request.contextPath}/resources/room/img/2.svg">'
+							+ '			<img src="${pageContext.request.contextPath}/resources/room/img/3.svg"><a href="roomDetail?num='+ item.ROOM_ID +'">객실정보</a>'
+							+ '		</div>';
+					output += "</div></div></div>";		
+	        	}) // each end
+	        	output += "</div>";
+	        	$(".roomListParentP").append(output);
+	        } // success end
+		}) // ajax end
+		
+		
+		
+	})
+	
+	
+	
+	
+	
+}) // ready end
+</script>
 </head>
 <body>
 
  <section class="banner_area">
-            <div class="booking_table d_flex align-items-center">
-                <div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0"
-                    data-background=""></div>
-                <div class="container">
-                    <div class="banner_content text-center">
-                        <h6>Inspiring Senses & Touching place </h6>
-                        <h2>Relax Your Mind</h2>
-                    </div>
-                </div>
-            </div>
-        
-        
+	 <div class="booking_table d_flex align-items-center">
+	     <div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0"
+	         data-background=""></div>
+	     <div class="container">
+	         <div class="banner_content text-center">
+	             <h6>Inspiring Senses & Touching place </h6>
+	             <h2>Relax Your Mind</h2>
+	         </div>
+	     </div>
+	 </div>
   </section>
   
   	<div class="section padding-top-bottom z-bigger">
 		<div class="section z-bigger">
 			<div class="container">
 				<div class="row">
-					<div class="col-lg-8 mt-4 mt-lg-0">
-						<div class="row">
-							<div class="col-lg-6">
-								<div class="room-box background-grey">
-									<c:forEach val="roomlist" items="roomlist">
-									<div class="room-name">${roomlist.ROOM_ID}</div>
-									</c:forEach>
-									<img src="${pageContext.request.contextPath}/resources/room/img/room3.jpg" alt="">
-									<div class="room-box-in">
-										<h5 class=""></h5>
-										<p class="mt-3">Sed ut perspiciatis unde omnis, totam rem
-											aperiam, eaque ipsa quae ab illo inventore veritatis et.</p>
-										<a href="rooms-gallery.html"><button type="submit" class="mt-1 btn btn-warning">book
-											from 130$</button></a>
-										<div class="room-icons mt-4 pt-4">
-											<img src="${pageContext.request.contextPath}/resources/room/img/5.svg" alt=""><img src="${pageContext.request.contextPath}/resources/room/img/2.svg" alt=""><img
-												src="${pageContext.request.contextPath}/resources/room/img/3.svg" alt=""><a href="rooms-gallery.html">full
-												info</a>
+					<!-- 객실리스트 -->
+					<div class="col-lg-8 mt-4 mt-lg-0 roomListParentP">
+						<!-- 객실 리스트 있을 때 -->
+						<c:if test="${roomListCount > 0}">
+							<div class="row roomListParent">
+								<c:forEach var="roomList" items="${roomList}">
+									<div class="col-lg-6 roomList">
+										<div class="room-box background-grey">
+											<div class="room-name">${roomList.ROOM_TYPE}</div>
+											<img src="${roomList.ROOM_IMG}">
+											<div class="room-box-in">
+												<h5>${roomList.ROOM_TYPE}</h5>
+												<p class="mt-3">${roomList.ROOM_DETAIL}</p>
+												<a href="">
+													<button type="submit" class="mt-1 btn btn-warning">
+														book from <fmt:formatNumber value="${roomList.ROOM_PRICE}" pattern="#,###"/>원
+													</button>
+												</a>
+												<div class="room-icons mt-4 pt-4">
+													<img src="${pageContext.request.contextPath}/resources/room/img/5.svg"><img src="${pageContext.request.contextPath}/resources/room/img/2.svg">
+													<img src="${pageContext.request.contextPath}/resources/room/img/3.svg"><a href="roomDetail?num=${roomList.ROOM_ID}">객실정보</a>
+												</div>
+											</div>
 										</div>
 									</div>
-								</div>
+								</c:forEach>
 							</div>
-							<div class="col-lg-6 mt-4 mt-lg-0">
-								<div class="room-box background-grey">
-									<div class="room-name">single room</div>
-									<img src="${pageContext.request.contextPath}/resources/room/img/room4.jpg" alt="">
-									<div class="room-box-in">
-										<h5 class="">small room</h5>
-										<p class="mt-3">Sed ut perspiciatis unde omnis, totam rem
-											aperiam, eaque ipsa quae ab illo inventore veritatis et.</p>
-										<a class="mt-1 btn btn-warning" href="rooms-gallery.html">book
-											from 80$</a>
-										<div class="room-icons mt-4 pt-4">
-											<img src="${pageContext.request.contextPath}/resources/room/img/4.svg" alt=""><img src="${pageContext.request.contextPath}/resources/room/img/2.svg" alt=""><img
-												src="${pageContext.request.contextPath}/resources/room/img/6.svg" alt=""><a href="rooms-gallery.html">full
-												info</a>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-6 mt-4"
-								data-scroll-reveal="enter bottom move 50px over 0.7s after 0.2s">
-								<div class="room-box background-grey">
-									<div class="room-name">doubleroom</div>
-									<img src="${pageContext.request.contextPath}/resources/room/img/room5.jpg" alt="">
-									<div class="room-box-in">
-										<h5 class="">Apartment</h5>
-										<p class="mt-3">Sed ut perspiciatis unde omnis, totam rem
-											aperiam, eaque ipsa quae ab illo inventore veritatis et.</p>
-										<a class="mt-1 btn btn-warning" href="rooms-gallery.html">book
-											from 110$</a>
-										<div class="room-icons mt-4 pt-4">
-											<img src="${pageContext.request.contextPath}/resources/room/img/5.svg" alt=""><img src="${pageContext.request.contextPath}/resources/room/img/2.svg" alt=""><img
-												src="${pageContext.request.contextPath}/resources/room/img/3.svg" alt=""><a href="rooms-gallery.html">full
-												info</a>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-6 mt-4"
-								data-scroll-reveal="enter bottom move 50px over 0.7s after 0.4s">
-								<div class="room-box background-grey">
-									<div class="room-name">double room</div>
-									<img src="${pageContext.request.contextPath}/resources/room/img/room6.jpg" alt="">
-									<div class="room-box-in">
-										<h5 class="">big Apartment</h5>
-										<p class="mt-3">Sed ut perspiciatis unde omnis, totam rem
-											aperiam, eaque ipsa quae ab illo inventore veritatis et.</p>
-										<a class="mt-1 btn btn-warning" href="rooms-gallery.html">book
-											from 160$</a>
-										<div class="room-icons mt-4 pt-4">
-											<img src="${pageContext.request.contextPath}/resources/room/img/5.svg" alt=""><img src="${pageContext.request.contextPath}/resources/room/img/2.svg" alt=""><img
-												src="${pageContext.request.contextPath}/resources/room/img/3.svg" alt=""><a href="rooms-gallery.html">full
-												info</a>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-6 mt-4"
-								data-scroll-reveal="enter bottom move 50px over 0.7s after 0.2s">
-								<div class="room-box background-grey">
-									<div class="room-name">suite andrea</div>
-									<img src="${pageContext.request.contextPath}/resources/room/img/room5.jpg" alt="">
-									<div class="room-box-in">
-										<h5 class="">Apartment</h5>
-										<p class="mt-3">Sed ut perspiciatis unde omnis, totam rem
-											aperiam, eaque ipsa quae ab illo inventore veritatis et.</p>
-										<a class="mt-1 btn btn-warning" href="rooms-gallery.html">book
-											from 110$</a>
-										<div class="room-icons mt-4 pt-4">
-											<img src="${pageContext.request.contextPath}/resources/room/img/5.svg" alt=""><img src="${pageContext.request.contextPath}/resources/room/img/2.svg" alt=""><img
-												src="${pageContext.request.contextPath}/resources/room/img/3.svg" alt=""><a href="rooms-gallery.html">full
-												info</a>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-6 mt-4"
-								data-scroll-reveal="enter bottom move 50px over 0.7s after 0.4s">
-								<div class="room-box background-grey">
-									<div class="room-name">suite diana</div>
-									<img src="${pageContext.request.contextPath}/resources/room/img/room6.jpg" alt="">
-									<div class="room-box-in">
-										<h5 class="">big Apartment</h5>
-										<p class="mt-3">Sed ut perspiciatis unde omnis, totam rem
-											aperiam, eaque ipsa quae ab illo inventore veritatis et.</p>
-										<a class="mt-1 btn btn-warning" href="rooms-gallery.html">book
-											from 160$</a>
-										<div class="room-icons mt-4 pt-4">
-											<img src="${pageContext.request.contextPath}/resources/room/img/5.svg" alt=""><img src="${pageContext.request.contextPath}/resources/room/img/2.svg" alt=""><img
-												src="${pageContext.request.contextPath}/resources/room/img/3.svg" alt=""><a href="rooms-gallery.html">full
-												info</a>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+						</c:if>
+						<!-- 객실 리스트 없을 때 -->
+						<c:if test="${roomListCount == 0}">
+							<h1>예약 가능한 객실이 없습니다.</h1>
+						</c:if>
 					</div>
+					
+					
+					<!-- 날짜선택 네비 -->
 					<div class="col-lg-4 order-first order-lg-last">
 						<div class="section background-dark p-4">
 							<div class="row">
@@ -387,8 +412,8 @@ color: #0099ff !important;
 									<div class="row">
 										<div class="col-12 pt-4">
 											<h6 class="color-white mg-6">인원</h6><br>
-											<select name="adults" class="wide"><option
-													data-display="성인">성인</option>
+											<select name="adults" class="wide">
+												<option data-display="성인">성인</option>
 												<option value="1">1</option>
 												<option value="2">2</option>
 												<option value="3">3</option>
@@ -396,8 +421,8 @@ color: #0099ff !important;
 											</select>
 										</div>
 										<div class="col-12 pt-4">
-											<select name="children" class="wide"><option
-													data-display="소아">소아</option>
+											<select name="children" class="wide">
+												<option data-display="소아">소아</option>
 												<option value="1">1</option>
 												<option value="2">2</option>
 												<option value="3">3</option>
@@ -421,16 +446,16 @@ color: #0099ff !important;
 								<div class="col-12 col-md-6 col-lg-12 pt-5">
 									<h6 class="color-white mb-3">객실 타입</h6>
 									<ul class="list">
-										<li class="list__item"><label class="label--checkbox"><input
-												type="checkbox" id="checkall" class="checkbox" name="checkall" checked>전체</label></li>
-										<li class="list__item"><label class="label--checkbox"><input
-												type="checkbox" id="single" class="checkbox" name="check">싱글룸</label></li>
-										<li class="list__item"><label class="label--checkbox"><input
-												type="checkbox" id="double" class="checkbox" name="check">더블룸</label></li>
-										<li class="list__item"><label class="label--checkbox"><input
-												type="checkbox" id="twin" class="checkbox" name="check">트윈룸</label></li>
-										<li class="list__item"><label class="label--checkbox"><input
-												type="checkbox" id="family" class="checkbox" name="check">패밀리룸</label></li>
+										<li class="list__item"><label class="label--checkbox">
+											<input type="checkbox" id="checkall" class="checkbox" name="checkall" checked>전체</label></li>
+										<li class="list__item"><label class="label--checkbox">
+											<input type="checkbox" id="single" class="checkbox" name="check" value="싱글룸">싱글룸</label></li>
+										<li class="list__item"><label class="label--checkbox">
+											<input type="checkbox" id="double" class="checkbox" name="check" value="더블룸">더블룸</label></li>
+										<li class="list__item"><label class="label--checkbox">
+											<input type="checkbox" id="twin" class="checkbox" name="check" value="트리플룸">트리플룸</label></li>
+										<li class="list__item"><label class="label--checkbox">
+											<input type="checkbox" id="family" class="checkbox" name="check" value="패밀리룸">패밀리룸</label></li>
 									</ul>
 								</div> 
 								<!-- <div class="col-12 col-md-6 col-lg-12 pt-5">
@@ -450,19 +475,13 @@ color: #0099ff !important;
 								</div> -->
 							</div>
 							<br>
-							<button type="submit" class="btn btn-warning float-center submit_next">조회</button>
+							<button type="submit" class="btn btn-warning float-center submit_next" id="searchBtn">조회</button>
 						</div>
 					</div>
-				
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	<!-- [현능] 22-10-12 임시 테스트버튼 추가 -->
-	<form action="roomList_v2">
-		<button>테스트버튼</button>
-	</form>
 	
 	<div class="scroll-to-top"></div>
             

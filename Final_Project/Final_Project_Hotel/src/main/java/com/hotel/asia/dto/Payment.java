@@ -9,8 +9,8 @@ public class Payment {
 	private int POINT_DISCOUNT;
 	
 	// REZ_ID(예약번호) 구하기 위한 필드
-	private int ROOM_ID;
-	private String MEM_ID;
+	//private int ROOM_ID;
+	//private String MEM_ID;
 	
 	
 	// getter, setter
@@ -51,18 +51,4 @@ public class Payment {
 		POINT_DISCOUNT = pOINT_DISCOUNT;
 	}
 	
-	
-	
-	public int getROOM_ID() {
-		return ROOM_ID;
-	}
-	public void setROOM_ID(int rOOM_ID) {
-		ROOM_ID = rOOM_ID;
-	}
-	public String getMEM_ID() {
-		return MEM_ID;
-	}
-	public void setMEM_ID(String mEM_ID) {
-		MEM_ID = mEM_ID;
-	}
 }
