@@ -6,6 +6,55 @@
 <head>
 <title>예약완료 - 예약확인 페이지</title>
 <jsp:include page="../main/header.jsp"/> <!-- 헤더 -->
+<script src="http://code.jquery.com/jquery-latest.js"></script> <!-- 제이쿼리 -->
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script> <!-- 결제 시스템 - 아임포트API -->
+<script>
+$(function(){
+	$("#cancelBtn").click(function(){
+		cancelPay(); // 환불 함수 호출
+	})
+	
+}) // ready end
+
+
+// 환불 함수
+function cancelPay() {
+	console.log("결제번호: ${paymentInfo.PAYMENT_ID}");
+	console.log("주문번호: ${rez.REZ_ID}");
+	console.log("실제주문금액: ${paymentInfo.PAYMENT_PRICE - paymentInfo.POINT_DISCOUNT}");
+	
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	$.ajax({
+	    type: "POST",
+		url: "reservationCancle", // 예: http://www.myservice.com/payments/cancel
+		//url: "https://api.iamport.kr/payments/cancel", // 예: http://www.myservice.com/payments/cancel
+	    beforeSend : function(xhr) { 
+        	xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리(Spring Security CSRF)		
+        },
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "188db2545950c0c1d8b75f71fd97a178eb6d63c4" // 아임포트 서버로부터 발급받은 엑세스 토큰
+          },
+	    data: {
+	      "imp_uid": "${paymentInfo.PAYMENT_ID}", // 결제번호
+	      "cancel_request_amount": 100, // 환불금액 (임시 결제금액 100원이라 동일하게 맞춤)
+	      //"reason": "테스트 결제 환불" // 환불사유
+	      //"access_token": "a9ace025c90c0da2161075da6ddd3492a2fca776" // access token
+	      //"refund_holder": "홍길동", // [가상계좌 환불시 필수입력] 환불 수령계좌 예금주
+	      //"refund_bank": "88" // [가상계좌 환불시 필수입력] 환불 수령계좌 은행코드(예: KG이니시스의 경우 신한은행은 88번)
+	      //"refund_account": "56211105948400" // [가상계좌 환불시 필수입력] 환불 수령계좌 번호
+    	}
+	}).done(function(result) { // 환불 성공시 로직
+		alert("환불 성공");
+	}).fail(function(error) { // 환불 실패시 로직
+		console.log(error);
+		alert("환불 실패");
+	});
+} // cancelPay() end
+
+
+</script>
 </head>
 <body>
 	<!--================Breadcrumb Area =================-->
@@ -25,7 +74,9 @@
         	<table class="table table-bordered">
         		<thead>
 	        		<tr style="background-color:lightgray">
-	        			<th>예약상태</th><th colspan="3">예약완료 - 예약번호 ${rez.REZ_ID}</th>
+	        			<th>예약상태</th>
+	        			<th colspan="3">예약완료 - 예약번호 ${rez.REZ_ID}
+	        			</th>
 	        		</tr>
         		<thead>
         		<tbody>
@@ -113,6 +164,7 @@
 	        		</tr>
         		</tbody>
         	</table>
+        	<button type="submit" id="cancelBtn">환불테스트</button>
         </div>
     </section>
     <!--================Contact Area =================-->

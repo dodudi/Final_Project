@@ -29,9 +29,9 @@ $(function(){
 	
 	// 옵션 예약 날짜
 	var checkInArr = "${rez.REZ_CHECKIN}".split('-');
-	var checkIn = new Date(checkInArr[0], checkInArr[1]-1, checkInArr[2]);
+	var checkIn = new Date(checkInArr[0], checkInArr[1]-1, checkInArr[2]); //년 월 일
 	var checkOutArr = "${rez.REZ_CHECKOUT}".split('-');
-	var checkOut = new Date(checkOutArr[0], checkOutArr[1]-1, checkOutArr[2]);
+	var checkOut = new Date(checkOutArr[0], checkOutArr[1]-1, checkOutArr[2]);//년 월 일
 	console.log("체크인 날짜 : " + checkIn.toLocaleString());
 	console.log("체크아웃 날짜 : " + checkOut.toLocaleString());
 	console.log("숙박일수 : ${nights} 박");
@@ -40,7 +40,7 @@ $(function(){
 	// 1. 조식 가능 날짜 => 체크인 날짜+1 ~ 체크아웃 날짜
 	for(var i = 1; i <= ${nights}; i++) {
 		checkIn.setDate(checkIn.getDate() + 1); 
-		ableDate = checkIn.getFullYear() + "-" + (checkIn.getMonth()+1) + "-" + checkIn.getDate();
+		ableDate = checkIn.getFullYear() + "-" + (checkIn.getMonth()+1) + "-" + checkIn.getDate(); //String 년-월-일
 		console.log("조식 날짜 => " + ableDate);
 		$("#bfDate" + i).val(ableDate);
 	}
@@ -190,7 +190,7 @@ $(function(){
     <!--================Blog Area =================-->
     <section class="blog_area single-post-area">
         <div class="container">
-        	<form action="${pageContext.request.contextPath}/option/optionCheck" method="post">
+        	<form action="/hotel/mypage/optCheck" method="post">
 	            <div class="row">
 	                <div class="col-lg-8 posts-list">
 	                    <div class="single-post row">

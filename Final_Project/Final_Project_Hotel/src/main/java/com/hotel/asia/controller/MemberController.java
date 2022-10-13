@@ -2,7 +2,9 @@ package com.hotel.asia.controller;
 
 import java.io.PrintWriter;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -39,7 +42,8 @@ public class MemberController {
 	private SendMail sendMail;
 	
 	@Autowired
-	public MemberController(MemberService memberservice, PasswordEncoder passwordEncoder, SendMail sendMail) {
+	public MemberController(MemberService memberservice, PasswordEncoder passwordEncoder,
+						SendMail sendMail) {
 		this.memberservice=memberservice;
 		this.passwordEncoder = passwordEncoder;
 		this.sendMail = sendMail;
@@ -81,6 +85,8 @@ public class MemberController {
 			 					RedirectAttributes rattr,
 			 					Model model,
 			 					HttpServletRequest request) {
+		logger.info("mem_pass : " + member.getMEM_PASS());
+		
 		//비밀번호 암호화 추가 
 		String encPassword = passwordEncoder.encode(member.getMEM_PASS());
 		logger.info(encPassword);
@@ -91,11 +97,12 @@ public class MemberController {
 		if(result == 1) {
 			MailVO vo = new MailVO();
 			vo.setTo(member.getMEM_EMAIL());
-			vo.setContent(member.getMEM_ID() + "님 회원 가입을 축하드립니다.");
+			vo.setSubject("회원가입을 축하합니다.");
+			vo.setContent(member.getMEM_NAME() + "님 회원 가입을 축하드립니다.");
 			sendMail.sendMail(vo);
 			
 			rattr.addFlashAttribute("result", "joinSeccess");
-			return "redirect:login";
+			return "member/join2";
 		} else {
 			model.addAttribute("url", request.getRequestURL());
 			model.addAttribute("message", "회원 가입 실패");
@@ -103,10 +110,28 @@ public class MemberController {
 		}
 	}
 	
+	//이메일 인증 
+	@RequestMapping(value="/mailCheck", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> mailCheck(@RequestParam("MEM_EMAIL")String email, Member member) throws Exception {
+		int serial = (int) ((Math.random() * (99999-10000 +1)) + 10000);
+		
+		MailVO vo =  new MailVO();
+		vo.setTo(member.getMEM_EMAIL());
+		vo.setSubject("회원가입시 필요한 인증번호입니다.");
+		vo.setContent("<br><br>" + "[인증번호]" + serial + "입니다.  인증번호 확인란에 기입해주세요.");
+		
+		sendMail.sendMail(vo);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("serial", serial);
+		map.put("message", "success");
+		return map;
+	}
 	
 	//회원가입폼에서 아이디 검사
 	@RequestMapping(value="/idcheck", method=RequestMethod.GET)
-	public void idcheck(@RequestParam("id")String id,
+	public void idcheck(@RequestParam("MEM_ID")String id,
 					HttpServletResponse response) throws Exception {
 		int result = memberservice.isId(id);
 		response.setContentType("text/html; charsest=utf-8");
@@ -186,7 +211,7 @@ public class MemberController {
 	
 	//회원정보 상세 
 	@RequestMapping(value="/info", method=RequestMethod.GET)
-	public ModelAndView member_info(@RequestParam("id") String id,
+	public ModelAndView member_info(@RequestParam("MEM_ID") String id,
 									ModelAndView mv,
 									HttpServletRequest request) {
 		

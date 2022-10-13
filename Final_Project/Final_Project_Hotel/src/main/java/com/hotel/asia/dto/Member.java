@@ -5,7 +5,7 @@ public class Member {
 	private String MEM_PASS;
 	private String MEM_NAME;
 	private String MEM_EMAIL;
-	private int MEM_PHONE;
+	private String MEM_PHONE;
 	private int MEM_POINT;
 	private String AUTH="ROLE_MEMBER";
 	
@@ -33,10 +33,10 @@ public class Member {
 	public void setMEM_EMAIL(String mEM_EMAIL) {
 		MEM_EMAIL = mEM_EMAIL;
 	}
-	public int getMEM_PHONE() {
+	public String getMEM_PHONE() {
 		return MEM_PHONE;
 	}
-	public void setMEM_PHONE(int mEM_PHONE) {
+	public void setMEM_PHONE(String mEM_PHONE) {
 		MEM_PHONE = mEM_PHONE;
 	}
 	public int getMEM_POINT() {

@@ -5,8 +5,8 @@
 		<html lang="en">
 
 		<head>
-			<meta  name="_csrf_header" th:content="${_csrf.headerName}">
-			<meta  id="_csrf" name="_csrf" th:content="${_csrf.token}">
+			<meta name="_csrf_header" th:content="${_csrf.headerName}">
+			<meta id="_csrf" name="_csrf" th:content="${_csrf.token}">
 			<title>객실예약확인페이지</title>
 
 			<!-- Bootstrap CSS -->
@@ -118,11 +118,12 @@
 									</tbody>
 								</table>
 								<div class="clearfix btn-box">
-									<form action="/hotel/mypage/optionModifyForm" id="optModify" method="post">
-
+									<form action="/hotel/mypage/testRezModify" id="optModify" method="post">
+										<!-- 403에러 방지 토큰 -->
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 										<button type="submit" class="btn btn-primary">객실예약변경하기</button>
 									</form>
-									
+
 									<button type="button" class="btn btn-danger">객실예약취소하기</button>
 								</div>
 							</div>
@@ -169,15 +170,14 @@
 										</c:forEach>
 									</tbody>
 								</table>
-						
+
 							</div>
 						</div>
 					</div>
 
 				</div>
 			</div>
-			         <!-- 403에러 방지 토큰 -->
-				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+
 			<jsp:include page="../main/footer.jsp" />
 		</body>
 		<script src="/hotel/static/project_js/MyPage_Js/mypage_reserve_check.js"></script>

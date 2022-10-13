@@ -24,7 +24,7 @@
 	</update>
 	
 	<delete id="delete">
-		delete from member where MEM_ID=#{MEM_ID}
+		delete from member where MEM_ID=#{id}
 	</delete>
 	
 	<select id="getSearchList" resultType="member">
@@ -32,7 +32,7 @@
 						from (select * from member
 								where MEM_ID != 'admin'
 								<include refid="search_"/>
-								order by id) b
+								order by MEM_ID) b
 						where rownum &lt;= #{end}
 				)
 		where rnum &gt;= #{start} and rnum &lt;= #{end}
