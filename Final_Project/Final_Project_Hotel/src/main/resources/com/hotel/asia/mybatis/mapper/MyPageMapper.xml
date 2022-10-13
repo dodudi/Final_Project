@@ -5,16 +5,61 @@
 <mapper namespace="com.hotel.asia.mybatis.mapper.MyPageMapper">
 
 	<select id="getRezData" resultType="rez">
-		SELECT * FROM REZ WHERE MEM_ID = #{MEM_ID}
+		SELECT * FROM REZ WHERE
+		MEM_ID = #{MEM_ID}
 	</select>
-	
+
 	<select id="getOptRezData" resultType="optionreservation">
-		SELECT * FROM OPTION_RESERVATION OPTREZ WHERE OPTREZ.REZ_ID = (SELECT REZ_ID FROM REZ WHERE MEM_ID=#{MEM_ID}) 
+		SELECT * FROM
+		OPTION_RESERVATION OPTREZ WHERE OPTREZ.REZ_ID = (SELECT REZ_ID FROM
+		REZ WHERE MEM_ID=#{MEM_ID})
 	</select>
 	<select id="getPayment" resultType="payment">
-		SELECT * FROM PAYMENT WHERE REZ_ID = (SELECT REZ_ID FROM REZ WHERE MEM_ID=#{MEM_ID})
+		SELECT * FROM PAYMENT WHERE
+		REZ_ID = (SELECT REZ_ID FROM REZ WHERE MEM_ID=#{MEM_ID})
 	</select>
 	<select id="getMemberData" resultType="member">
-		SELECT * FROM MEMBER WHERE MEM_ID = #{MEM_ID}
+		SELECT * FROM MEMBER WHERE
+		MEM_ID = #{MEM_ID}
 	</select>
+
+	<delete id="delOptRez">
+		DELETE FROM OPTION_RESERVATION WHERE REZ_ID
+		=#{REZ_ID}
+	</delete>
+	<delete id="delRez">
+		DELETE FROM REZ WHERE MEM_ID =#{MEM_ID}
+	</delete>
+	<delete id="delPayment">
+		DELETE FROM PAYMENT WHERE REZ_ID = #{REZ_ID}
+	</delete>
+
+	<insert id="addRez" parameterType="rez">
+		<selectKey resultType="int" order="BEFORE"
+			keyProperty="REZ_ID">
+			select nvl(max(REZ_ID),0)+1 from REZ
+		</selectKey>
+		INSERT INTO REZ VALUES(#{REZ_ID}, #{ROOM_ID}, #{MEM_ID},
+		#{REZ_CHECKIN}, #{REZ_CHECKOUT}, #{REZ_ADULT} ,#{REZ_CHILD})
+	</insert>
+	<insert id="addOptRez" parameterType="optionReservation">
+		insert into OPTION_RESERVATION
+		values
+		((select nvl(max(OPTION_RESERVATION_ID),0)+1 from OPTION_RESERVATION),		
+		 (select REZ_ID from REZ where ROOM_ID = #{ROOM_ID} and MEM_ID = #{MEM_ID}),
+		 #{OPTION_ID}, #{OPTION_RESERVATION_DATE},
+		 #{ADULT}, #{CHILD})
+	</insert>
+	
+		<!-- 결제 -->
+	<insert	id="payment" parameterType="payment">
+		insert into payment
+		(PAYMENT_ID,
+		 REZ_ID,
+		 PAYMENT_PRICE, PAYMENT_DATE)
+		values
+		(#{PAYMENT_ID},
+		 (select REZ_ID from REZ where ROOM_ID = #{ROOM_ID} and MEM_ID = #{MEM_ID}),
+		 #{PAYMENT_PRICE}, sysdate)
+	</insert>
 </mapper>
