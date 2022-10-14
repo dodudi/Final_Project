@@ -31,6 +31,7 @@ import com.hotel.asia.dto.Member;
 import com.hotel.asia.service.MemberService;
 import com.hotel.asia.task.NaverMessageAuth;
 import com.hotel.asia.task.SendMail;
+import com.hotel.asia.task.SendSms;
 
 @Controller
 @RequestMapping(value="/member")
@@ -41,13 +42,15 @@ public class MemberController {
 	private MemberService memberservice;
 	private PasswordEncoder passwordEncoder;
 	private SendMail sendMail;
+	private SendSms sendSms;
 	
 	@Autowired
 	public MemberController(MemberService memberservice, PasswordEncoder passwordEncoder,
-						SendMail sendMail) {
+						SendMail sendMail, SendSms sendSms) {
 		this.memberservice=memberservice;
 		this.passwordEncoder = passwordEncoder;
 		this.sendMail = sendMail;
+		this.sendSms = sendSms;
 	}
 	
 	
@@ -128,6 +131,18 @@ public class MemberController {
 		map.put("serial", serial);
 		map.put("message", "success");
 		return map;
+	}
+	
+	//핸드폰 인증 
+	@RequestMapping(value="/phoneCheckJn", method=RequestMethod.POST)
+	@ResponseBody
+	public String phoneCheck(@RequestParam("MEM_PHONE")String phone) throws Exception{
+		int randomNumber = (int)((Math.random()* (9999 - 1000 + 1)) + 1000);//난수 생성
+		String random = Integer.toString(randomNumber);
+		
+		sendSms.sendSms(phone, random);
+		
+		return random;
 	}
 	
 	
@@ -266,4 +281,5 @@ public class MemberController {
 	      
 	      return random;
 	   }
+	
 }
