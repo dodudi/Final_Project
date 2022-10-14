@@ -18,7 +18,7 @@ body {
 }
 
 .panel{
-    width: 500px;
+    width: 850px;
     max-width: 90%;
     background:url("../../image/black.jpg")  #fff;
     background-repeat:no-repeat;
@@ -29,7 +29,7 @@ body {
 }
 
 .panel.shadow1{
-	height: 1200px;
+	height: 100%;
 }
 
 
@@ -41,7 +41,7 @@ body {
 
 
 form{
-    height: 700px;
+    height: 100%;
     padding: 50px;
 }
 

@@ -136,7 +136,7 @@ $(function(){
 			 	alert("인증번호가 발송되었습니다. \n 인증번호를 확인해주세요.");
 			  	$('#emailConfirm').attr("disabled", false);
 		  		$('.successEmailck').text("인증번호 확인 후 인증확인을 눌러주세요.")
-		  					.css("color", "green");
+		  					.css("color", "orange");
 		  		code = data.serial;
 			  } else {
 		  		alert("이메일 주소가 올바르지 않습니다. 유효한 이메일 주소를 입력해주세요.");
@@ -177,36 +177,43 @@ $(function(){
 	});//input[name=MEM_PHONE] end
 	
 	//핸드폰 인증 
-	/*var code2 = "";
+	var code2 = "";
 	$("#phoneCkNum").click(function(){
 		var phone = $("input[name=MEM_PHONE]").val();
 		
 		$.ajax({
 			type : "POST",
-			url : "phoneCheck",
+			url : "phoneCheckJn",
 			data:{"MEM_PHONE" : phone},
 			dataType : "json",
 			beforeSend : function(xhr){
 			xhr.setRequestHeader(header, token);
 			},
 			success:function(data){
-				console.log("data 성공(phone) : " + data.message);
+				console.log("data 성공(phone) : " + data);
 				
-			  if(data.message == "success"){
+				alert("인증번호가 발송되었습니다. \n 인증번호 " + data + "입니다.");
+				$('#phoneConfirm').attr("disabled", false);
+				$('.successPhoneck').text("인증번호 확인 후 인증확인을 눌러주세요.")
+		  					.css("color", "orange");
+		  		code2 = data;			
+		  					
+			  //진짜 발신해서 쓸 때 주석풀고 사용하기 !!
+			  /*if(data == "success"){
 			 	alert("인증번호가 발송되었습니다. \n 인증번호를 확인해주세요.");
 			  	$('#phoneConfirm').attr("disabled", false);
 		  		$('.successPhoneck').text("인증번호 확인 후 인증확인을 눌러주세요.")
-		  					.css("color", "green");
-		  		code2 = data.randonNum;
+		  					.css("color", "orange");
+		  		code2 = data;
 			  } else {
 		  		alert("연락처가 올바르지 않습니다. 유효한 연락처를 입력해주세요.");
 			  	$('input[name=MEM_PHONE]').attr("autofocus", true);
 			  	$('.successPhoneck').text("유효한 연락처를 입력해주세요")
 			  					.css("color", "red");
-			  }
+			  }*/
 			},
 			error:function(data){
-				alert("회원가입 에러 발생!");
+				alert("회원가입 에러 발생!"  );
 				console.log("data error(phone) : " + data);
 			}
 		})
@@ -227,7 +234,6 @@ $(function(){
 			$("#phoneConfirm").attr("autofocus", true);
 		}
 	});//phoneCkNum2 end;
-	*/
 	
 	
 	//checkbox

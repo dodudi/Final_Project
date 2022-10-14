@@ -11,32 +11,30 @@
         <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
       
 		<!-- Animate.css-->
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" 
-			integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+		 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+         	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/project_css/member/join.css" >
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" >
+        
       
         <!-- Google JQuery CDN -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" 
-        	integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
+         	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="${pageContext.request.contextPath}/resources/project_js/member/join.js"></script>
+         
         
-        <!-- datepicker -->
-      <!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"> --> 
+       <!-- datepicker -->
+       <!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"> --> 
        <!-- <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>  -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/project_css/member/jquery-ui.css" >
   		<script src="${pageContext.request.contextPath}/resources/project_js/member/jquery-ui.min.js"></script>
        
-          
         <!-- 로고 -->
         <link rel="icon" href="${pageContext.request.contextPath}/static/image/favicon.png" type="image/png">
     	<title>Hotel Asia</title>
     	
-    	<script>
-    		
-    	</script>
     </head>
     <body>
         <div>
@@ -59,7 +57,7 @@
 						      </button>
 						    </h4>
 						    <p class="error" id="errbox1"></p>
-						    <div id="flush-collapseOne" class="accordion-collapse collapse in" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+						    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
 						      <div class="accordion-body">
 							      <p>
 							      	제 1장 총칙 <br>
@@ -131,7 +129,7 @@
 						    </div>
 				 		 </div>
 						  <div class="accordion-item">
-						    <h4 class="accordion-header" id="flush-headingOne">
+						    <h4 class="accordion-header" id="flush-headingTwo">
 						      <input type="checkbox" class="accordion-ck" name="ckbox2" >
 						      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
 						       	아시아 호텔 사이트 이용약관(필수)
@@ -201,7 +199,7 @@
 	                    
 	                    <h3 class="terms">개인정보 수집 및 활용 동의서</h3>
 	                    <p class="terms-label">아시아 호텔은 홈페이지를 통하여 적법하고 공정한 수단에 의하여 고객님의 개인정보를 수집합니다. </p>
-	                     <div class="accordion accordion-flush" id="accordionFlushExample">
+	                    <div class="accordion accordion-flush " id="accordionFlushExample">
 						  <div class="accordion-item">
 						    <h4 class="accordion-header" id="flush-headingThree">
 						      <input type="checkbox" class="accordion-ck" name="ckbox3">
@@ -209,8 +207,8 @@
 						       	개인정보의 수집 및 이용(필수)
 						      </button>
 						    </h4>
-						     <p class="error" id="errbox3"></p>
-						    <div id="flush-collapseThree" class="accordion-collapse collapse in" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+						    <p class="error" id="errbox3"></p>
+						    <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
 						      <div class="accordion-body">
 						      	<table>
 						      		<tr>
@@ -227,15 +225,15 @@
 						      	<p class="terms-label2">* 필수 항목에 대한 수집 및 이용에 동의하지 않을 권리는 있으나, 미동의시 멤버십에 가입할 수 없습니다.</p>
 						      </div>
 						     </div>
-						   </div>
-					      <div class="accordion-item">
-						    <h4 class="accordion-header" id="flush-headingForth">
-						      <input type="checkbox" class="accordion-ck" >
-						      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseForth" aria-expanded="false" aria-controls="flush-collapseForth">
-						       마케팅 활용 동의(선택)
+						  </div>
+						   <div class="accordion-item">
+						    <h4 class="accordion-header" id="flush-headingFour">
+						      <input type="checkbox" class="accordion-ck" name="ckbox4">
+						      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+						       	마케팅 활용 동의(선택)
 						      </button>
 						    </h4>
-						    <div id="flush-collapseForth" class="accordion-collapse collapse in" aria-labelledby="flush-headingForth" data-bs-parent="#accordionFlushExample">
+						    <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
 						      <div class="accordion-body">
 						      	<table>
 						      		<tr>
@@ -254,7 +252,8 @@
 						     </div>
 						   </div>
 						  </div>
-	                    </div>
+	                  </div>
+	                    
 	                 <div class="login animated fadeInUp animate2">
 		                 <h3 class="re-info">필수정보 입력</h3>
 		                 <fieldset id="login-fieldset" >
@@ -302,7 +301,15 @@
 		                    </div>
 		                    <div class="reg-form" style="align-items:center">
 		                      	<span class="regist">연락처<sup>*</sup></span>
-		                        <input name="MEM_PHONE" type="text" placeholder=" 연락처를 입력하세요">
+		                        <input name="MEM_PHONE" type="text" required placeholder=" 연락처를 입력하세요">
+		                        <button class="email_btn" type="button" id="phoneCkNum">인증번호</button>
+		                        <div id="phoneCk" class="error3"></div>
+		                    </div>
+		                     <div class="reg-form" style="align-items:center">
+		                     	<input name="phoneCK2" type="text" id="phoneConfirm" disabled required>
+		                     	<button class="email_btn" type="button" id="phoneCkNum2">인증확인</button>
+		                     	<span class="point successPhoneck">연락처를 입력 후 인증번호를 전송해주세요</span>
+		                     	<input type="hidden" id="phoneDoubleCk">
 		                    </div>
 		                </fieldset>
 	                </div> 
