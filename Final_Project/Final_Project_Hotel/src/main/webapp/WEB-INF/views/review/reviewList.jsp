@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> <!-- core 라이브러리 -->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!doctype html>
 <html lang="en">
 <head>
@@ -326,39 +327,42 @@ $(function(){
 			                            <a href="reviewList?search_field=0&search_word=${top}">${top}</a>
 			                            
 			                            <!-- 관리자만 인기검색어 삭제 가능 -->
-			                            <c:if test="${id == 'admin'}">
-			                            	<c:set var="num" value="${num - 1}" />
-			                            	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-											<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-			                            	<a href="#">
-				                            	<img data-toggle="modal" data-target="#searchWordDeleteBtn${num}" src="${pageContext.request.contextPath}/resources/project_image/review/searchWordDelete.png" class="float-right" style="width:10px; height:10px">
-											</a>
-											
-											<!-- 인기검색어 삭제 모달 -->
-											<div class="modal" id="searchWordDeleteBtn${num}">
-												<c:set var="num" value="${num + 1}" />
-												<div class="modal-dialog">
-													<div class="modal-content">
-														<div class="modal-body">
-															<form name="searchWordDelete" method="post">
-																<input type="hidden" value="${top}"> <!-- 삭제할 인기검색어 -->
-																<div class="modal-header">
-															        <h5 class="modal-title">
-															        	검색어 '${top}'을(를) 정말 삭제하시겠습니까?
-															        </h5>
-															        <button type="button" class="close" data-dismiss="modal">&times;</button>
-														        </div>
-														        <button type="submit" class="btn btn-primary">삭제</button>
-																<button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>
-																
-																<!-- 403에러 방지 토큰 -->
-																<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-															</form>
+			                            <sec:authorize access="isAuthenticated()">
+			                            	<sec:authentication property="principal" var="pinfo"/>
+				                            <c:if test="${pinfo.username == 'admin'}">
+				                            	<c:set var="num" value="${num - 1}" />
+				                            	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+												<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+				                            	<a href="#">
+					                            	<img data-toggle="modal" data-target="#searchWordDeleteBtn${num}" src="${pageContext.request.contextPath}/resources/project_image/review/searchWordDelete.png" class="float-right" style="width:10px; height:10px">
+												</a>
+												
+												<!-- 인기검색어 삭제 모달 -->
+												<div class="modal" id="searchWordDeleteBtn${num}">
+													<c:set var="num" value="${num + 1}" />
+													<div class="modal-dialog">
+														<div class="modal-content">
+															<div class="modal-body">
+																<form name="searchWordDelete" method="post">
+																	<input type="hidden" value="${top}"> <!-- 삭제할 인기검색어 -->
+																	<div class="modal-header">
+																        <h5 class="modal-title">
+																        	검색어 '${top}'을(를) 정말 삭제하시겠습니까?
+																        </h5>
+																        <button type="button" class="close" data-dismiss="modal">&times;</button>
+															        </div>
+															        <button type="submit" class="btn btn-primary">삭제</button>
+																	<button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>
+																	
+																	<!-- 403에러 방지 토큰 -->
+																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+																</form>
+															</div>
 														</div>
 													</div>
 												</div>
-											</div>
-			                            </c:if>
+				                            </c:if>
+			                            </sec:authorize>
 			                        </li>
 		                        </c:forEach>
 	                        </c:if>

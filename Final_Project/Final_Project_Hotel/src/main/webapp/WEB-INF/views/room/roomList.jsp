@@ -279,9 +279,21 @@ $(function(){
   	        	xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리(Spring Security CSRF)		
   	        },
   	        success: function(data){
+  	        	console.log("===map 잘 왔는지 테스트===");
+  	        	/* for(var i=0; i<data.alreadyRez.length; i++){
+  	        		
+  	        	} */
+  	        	console.log(data.alreadyRez);
+  	        	//console.log(data.alreadyRez[key]);
+  	        	//console.log(typeof(data.alreadyRez));
+  	        	
+  	        	
+  	        	
+  	        	
+  	        	
   	        	$(".roomListParent").remove();
   	        	var people = data.people;
-  	        	var output = '<div class="row roomListParent">';
+  	        	var output = '<form class="row roomListParent" action="reservationCheck" method="POST">';
   	        	$(data.roomList).each(function(index, item) {
   	        		output +='<div class="col-lg-6 roomList">'
   	        			    + '		<div class="room-box background-grey">'
@@ -296,7 +308,7 @@ $(function(){
   	        		        + '		<p class="mt-3">'+item.ROOM_DETAIL+'</p>';
   	        		if(item.ROOM_MAX < people) {        
   	        			output += '		<a href="" style="pointer-events:none;">'
-  	        		           + '			<button type="submit" class="mt-1 btn btn-warning">'
+  	        		           + '			<button type="submit" class="mt-1 btn btn-warning" style="background-color:lightgray">'
   	        		           + '				book from ' + item.ROOM_PRICE + '원'
   	        		           + '			</button>'
   	        		           + '		</a>';
@@ -314,7 +326,7 @@ $(function(){
   							+ '		</div>';
   					output += "</div></div></div>";		
   	        	}) // each end
-  	        	output += "</div>";
+  	        	output += "</form>";
   	        	//alert(output);
   	        	$(".roomListParentP").append(output);
   	        } // success end
@@ -449,7 +461,7 @@ $(function(){
 										<li class="list__item"><label class="label--checkbox">
 											<input type="checkbox" id="double" class="checkbox" name="check" value="더블룸">더블룸</label></li>
 										<li class="list__item"><label class="label--checkbox">
-											<input type="checkbox" id="twin" class="checkbox" name="check" value="트윈룸">트윈룸</label></li>
+											<input type="checkbox" id="twin" class="checkbox" name="check" value="트리플룸">트리플룸</label></li>
 										<li class="list__item"><label class="label--checkbox">
 											<input type="checkbox" id="family" class="checkbox" name="check" value="패밀리룸">패밀리룸</label></li>
 									</ul>
@@ -503,8 +515,8 @@ $('.checkbox').click(function(){
 	
 <!-- 캘린더 옵션  -->
 //예약 가능한 방이 0개일 때 배열로 가져와 날짜 비활성화
-var disabledDays = ["2022-10-20", "2022-10-21" , "2022-10-22"];
-console.log(disabledDays.length);
+/* var disabledDays = ["2022-10-20", "2022-10-21" , "2022-10-22"];
+console.log(disabledDays.length); */
 
 //datepicker 기본 설정
      
@@ -550,12 +562,12 @@ console.log(disabledDays.length);
         var dates = date.getDate();
         var year = date.getFullYear();
         
-        for(i=0; i<disabledDays.length;i++){
+        /* for(i=0; i<disabledDays.length;i++){
         	if($.inArray(year + '-' +(month+1) + '-' +
         	dates,disabledDays) != -1) {
         		return [false];
         	}
-        }
+        } */
         return [true];
  
      };  

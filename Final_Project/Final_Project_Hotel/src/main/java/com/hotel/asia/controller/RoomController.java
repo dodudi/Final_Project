@@ -89,7 +89,7 @@ public class RoomController {
 				logger.info("숙박날짜 => " + sdf.format(checkInCal.getTime()));
 				rezDate.add(sdf.format(checkInCal.getTime()));
 			}
-			alreadyRez.put(rez.getREZ_ID(), rezDate);
+			alreadyRez.put(rez.getROOM_ID(), rezDate);
 		}
 		logger.info("=====map 확인=====");
 		for (Entry<Integer, List<String>> entrySet : alreadyRez.entrySet()) {
