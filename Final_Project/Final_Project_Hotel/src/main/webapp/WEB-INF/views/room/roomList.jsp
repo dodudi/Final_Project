@@ -222,6 +222,7 @@ color: #0099ff !important;
 </style>
 <script>
 $(function(){
+	// 조회버튼
 	$("#searchBtn").click(function(){
 		// 1. 인원 수 산정
 		var adults = $("select[name='adults']").val(); // 선택된 성인 수
@@ -261,13 +262,12 @@ $(function(){
 		var nights = (checkOut.getTime() - checkIn.getTime()) / (1000*60*60*24);
 		console.log("숙박일수: " + nights + "박");
 		// 숙박 날짜들 (체크인 날짜 ~ 체크아웃 날짜-1)
-		var nightsDate = "";
+		var nightsDate = [];
 		for(var i = 0; i < nights; i++) {
-			nightsDate += checkIn.getFullYear() + "-" + (checkIn.getMonth()+1) + "-" + checkIn.getDate() + "/";
-			console.log("숙박 날짜 => " + nightsDate);
+			nightsDate[i] = checkIn.getFullYear() + "-" + (checkIn.getMonth()+1) + "-" + checkIn.getDate();
+			console.log("숙박 날짜 => " + nightsDate[i]);
 			checkIn.setDate(checkIn.getDate() + 1);
 		}
-		
 		
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
@@ -280,15 +280,29 @@ $(function(){
 	        	xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리(Spring Security CSRF)		
 	        },
 	        success: function(data){
+	        	console.log(data.alreadyRez);
 	        	$(".roomListParent").remove();
 	        	var people = data.people;
 	        	var output = '<div class="row roomListParent">';
 	        	$(data.roomList).each(function(index, item) {
 	        		output +='<div class="col-lg-6 roomList">'
 	        			    + '		<div class="room-box background-grey">'
-	        		        + '			<div class="room-name">'+item.ROOM_TYPE+'</div>';
+	        		        + '			<div class="room-name">'+ item.ROOM_TYPE + '</div>';
 	        		if(item.ROOM_MAX < people) {
 	        			output += "<img src='" + item.ROOM_IMG + "' style='opacity:0.3;'>";
+	        			/* //==============================================
+	        			$(data.rezList).each(function(index, rez) {
+	        				if(item.ROOM_ID == rez.ROOM_ID) {
+	        					for(int i = 0; i < nightsDate.length; i++) {
+	        						if()
+	        						
+	        						output += "<img src='" + item.ROOM_IMG + "' style='opacity:0.3;'>";
+	        					}
+	        					
+	        					
+	        				}
+	        			}) // 예약리스트 each end=========================== */
+	        			
 	        		} else {
 	        			output += "<img src='" + item.ROOM_IMG + "'>";
 	        		}
@@ -319,10 +333,7 @@ $(function(){
 	        	$(".roomListParentP").append(output);
 	        } // success end
 		}) // ajax end
-		
-		
-		
-	})
+	}) // 조회버튼 end
 	
 	
 	
