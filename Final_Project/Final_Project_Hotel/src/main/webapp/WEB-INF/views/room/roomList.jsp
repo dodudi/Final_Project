@@ -276,18 +276,20 @@ $(function(){
 		$.ajax({
 			type : "POST",
 			url: "roomList_select",
-			data: {"people": people},
+			data: {"people": people,
+	               "roomTypes": roomTypes},	
 			beforeSend : function(xhr) { 
 	        	xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리(Spring Security CSRF)		
 	        },
 	        success: function(data){
 	        	$(".roomListParent").remove();
 	        	var people = data.people;
-	        	var output = '<div class="row roomListParent">';
+	        	var output = '<form class="row roomListParent" action="reservationCheck" method="POST">';
 	        	$(data.roomList).each(function(index, item) {
 	        		output +='<div class="col-lg-6 roomList">'
 	        			    + '		<div class="room-box background-grey">'
 	        		        + '			<div class="room-name">'+item.ROOM_TYPE+'</div>';
+	        		      
 	        		if(item.ROOM_MAX < people) {
 	        			output += "<img src='" + item.ROOM_IMG + "' style='opacity:0.3;'>";
 	        		} else {
@@ -298,16 +300,16 @@ $(function(){
 	        		        + '		<p class="mt-3">'+item.ROOM_DETAIL+'</p>';
 	        		if(item.ROOM_MAX < people) {        
 	        			output += '		<a href="" style="pointer-events:none;">'
-	        		           + '			<button type="submit" class="mt-1 btn btn-warning">'
+	        		           + '			<button type="button" class="mt-1 btn btn-warning" style="background-color:lightgray">'
 	        		           + '				book from ' + item.ROOM_PRICE + '원'
 	        		           + '			</button>'
 	        		           + '		</a>';
 	        		} else {
-	        			output += '		<a href="">'
-	        		           + '			<button type="submit" class="mt-1 btn btn-warning">'
+	        				output +=	 '<input type=hidden name=room_id value='+item.ROOM_ID + '>'
+	        		           + '			<button type="button" class="mt-1 btn btn-warning">'
 	        		           + '				book from ' + item.ROOM_PRICE + '원'
 	        		           + '			</button>'
-	        		           + '		</a>';
+	        		           + '<input type=hidden name=room_price value='+item.ROOM_PRICE + '>'
 	        		}
 	        		
 	        		output += '		<div class="room-icons mt-4 pt-4">'
@@ -316,7 +318,8 @@ $(function(){
 							+ '		</div>';
 					output += "</div></div></div>";		
 	        	}) // each end
-	        	output += "</div>";
+	        	output += '<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">'
+	        	output += "</form>";
 	        	//alert(output);
 	        	$(".roomListParentP").append(output);
 	        } // success end
@@ -417,7 +420,7 @@ $(function(){
 									<div class="row">
 										<div class="col-12 pt-4">
 											<h6 class="color-white mg-6">인원</h6><br>
-											<select name="adults" class="wide">
+											<select name="adults" id="adult" class="wide">
 												<option data-display="성인">성인</option>
 												<option value="1">1</option>
 												<option value="2">2</option>
@@ -426,7 +429,7 @@ $(function(){
 											</select>
 										</div>
 										<div class="col-12 pt-4">
-											<select name="children" class="wide">
+											<select name="children" id="child" class="wide">
 												<option data-display="소아">소아</option>
 												<option value="1">1</option>
 												<option value="2">2</option>
@@ -458,7 +461,7 @@ $(function(){
 										<li class="list__item"><label class="label--checkbox">
 											<input type="checkbox" id="double" class="checkbox" name="check" value="더블룸">더블룸</label></li>
 										<li class="list__item"><label class="label--checkbox">
-											<input type="checkbox" id="twin" class="checkbox" name="check" value="트윈룸">트윈룸</label></li>
+											<input type="checkbox" id="twin" class="checkbox" name="check" value="트리플룸">트리플룸</label></li>
 										<li class="list__item"><label class="label--checkbox">
 											<input type="checkbox" id="family" class="checkbox" name="check" value="패밀리룸">패밀리룸</label></li>
 									</ul>
@@ -569,67 +572,31 @@ console.log(disabledDays.length);
  
      };  
      
- 
-    /*  
-     bookedDays = ["2022-10-10", "2022-10-20" , "2022-10-30"]
+     
+     //흩어져있는 데이터 하나의 form으로 묶어서 데이터 넘기기위한 함수
+     //mt-1 btn btn-warning
+     $("body").on('click' , '.mt-1.btn.btn-warning' ,  function(){
+    	 
+    	 let form = document.createElement('form');
+    	 form.action = '../reservation/reservationCheck';
+    	 form.method = 'POST';
 
-     function disableDates(){
-     		 var m = date.getMonth() + 1;
-              var d = date.getDate();
-              var y = date.getFullYear();
-                  for (i = 0; i < bookedDays.length; i++) {
-                  if ($.inArray(y + '-' + m + '-' + d, bookedDays) != -1) {
-                  return [false];
-                  }
-                  }
-                  return [true];
-     } */
+    	 form.innerHTML = '<input name="room_id" value=' + $(this).prev().val() + '>'
+    	 form.innerHTML += '<input name="checkin" value=' + $('#sdate').val() + '>'
+    	 form.innerHTML += '<input name="checkout" value=' + $('#edate').val() + '>'
+    	 form.innerHTML += '<input name="adult" value=' + $('#adult').val() + '>'
+    	 form.innerHTML += '<input name="child" value=' + $('#child').val() + '>'
+    	 form.innerHTML += '<input name="room_type" value=' + $(this).closest('.room-box').find('.room-name').text() + '>'
+    	 form.innerHTML += '<input name="room_img" value=' + $(this).closest('.room-box').find('img').attr('src') + '>'
+    	 form.innerHTML += '<input name="room_price" value=' + $(this).next().val() + '>'
+    	 form.innerHTML += '<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">'
+    	 
 
-    /* $('#edate').datepicker();
-    $('#edate').datepicker("option", "minDate", $("#sdate").val());
-    $('#edate').datepicker("option", "onClose", function ( selectedDate ) {
-        $("#sdate").datepicker( "option", "maxDate", selectedDate );
-    });  */
-    
-    
-   /*  $('#edate').datepicker("option", "onClose", function (selectedDate) {
-    	if(selectedDate.length==10)
-       		$("#sdate").datepicker("option", "maxDate", selectedDate);
-    	else
-    		$("#sdate").datepicker("option", "maxDate", max);
-    }); */
-    
-    
-   /*  $('#sdate').datepicker("option", "onClose", function (selectedDate) {
-    	if(selectedDate.length==10)
-            $("#edate").datepicker("option", "minDate", selectedDate);
-        else
-            $("#edate").datepicker("option", "minDate", min);
-    });  */
-    
-    
-    /* $(".datepicker").change(function(){
-	   console.log('datepicker선택');
-	   console.log($(this).val());
-	   console.log($(this).index());
-	   index = $(this).index()
-	   $("#d" +  index   ).val($(this).val());
-   }) */
-   
-   
-   
-   
-    
-    
-   
-    	
-   
-    
-    
-    
-    
-   
-  
+    	 // 폼을 제출하려면 반드시 폼이 문서 안에 있어야 합니다.
+    	 document.body.append(form);
+    	 form.submit();
+     })
+     
     
     
 	</script>
