@@ -255,6 +255,7 @@ public class OptionController {
 		mv.addObject("member", member); // 회원 정보
 		mv.addObject("totalPrice", totalPrice); // 총금액 (객실 + 옵션)
 		
+		
 		// 옵션 예약 인원
 		mv.addObject("dateList", Arrays.toString(dateList)); // 체크인 날짜 ~ 체크아웃 날짜
 		mv.addObject("bfAdult", Arrays.toString(bfAdult)); // 조식 성인
