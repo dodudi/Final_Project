@@ -16,13 +16,20 @@
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/project_css/member/join.css" >
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" >
-        
+      
         <!-- Google JQuery CDN -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" 
         	integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="${pageContext.request.contextPath}/resources/project_js/member/join.js"></script>
         
+        <!-- datepicker -->
+      <!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"> --> 
+       <!-- <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>  -->
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/project_css/member/jquery-ui.css" >
+  		<script src="${pageContext.request.contextPath}/resources/project_js/member/jquery-ui.min.js"></script>
+       
+          
         <!-- 로고 -->
         <link rel="icon" href="${pageContext.request.contextPath}/static/image/favicon.png" type="image/png">
     	<title>Hotel Asia</title>
@@ -277,6 +284,10 @@
 		                     	<span class="regist">성명(한글)<sup>*</sup></span>
 		                        <input name="MEM_NAME" type="text" required placeholder="이름을 입력하세요">
 		                    </div>
+		                    <div class="reg-form">
+		                    	<span class="regist">생년월일<sup>*</sup></span>
+								<input name="MEM_BIRTH" type="text" required readonly>
+		                    </div>
 		                    <div class="reg-form" style="align-items:center">
 		                      	<span class="regist">이메일<sup>*</sup></span>
 		                        <input name="MEM_EMAIL" type="email" maxLength="30" required placeholder="이메일을 입력하세요 ">
@@ -286,12 +297,12 @@
 		                     <div class="reg-form" style="align-items:center">
 		                     	<input name="emailCK2" type="text" id="emailConfirm" disabled required>
 		                     	<button class="email_btn" type="button" id="emailCkNum2">인증확인</button>
-		                     	<span class="point successEmailck">이메일 입력 후 인증번호 보내기를 해주세요.</span>
+		                     	<span class="point successEmailck">이메일 입력 후 인증번호를 전송해주세요 </span>
 		                     	<input type="hidden" id="emailDoubleCk">
 		                    </div>
-		                    <div class="reg-form">
-		                    	<span class="regist">휴대폰<sup>*</sup></span>
-		                        <input  name="MEM_PHONE" type="text" required>
+		                    <div class="reg-form" style="align-items:center">
+		                      	<span class="regist">연락처<sup>*</sup></span>
+		                        <input name="MEM_PHONE" type="text" placeholder=" 연락처를 입력하세요">
 		                    </div>
 		                </fieldset>
 	                </div> 

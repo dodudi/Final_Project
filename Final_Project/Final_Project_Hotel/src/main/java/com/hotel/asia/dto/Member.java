@@ -4,10 +4,12 @@ public class Member {
 	private String MEM_ID;
 	private String MEM_PASS;
 	private String MEM_NAME;
+	private	String MEM_BIRTH;
 	private String MEM_EMAIL;
 	private String MEM_PHONE;
 	private int MEM_POINT;
 	private String AUTH="ROLE_MEMBER";
+	
 	
 	public String getMEM_ID() {
 		return MEM_ID;
@@ -26,6 +28,12 @@ public class Member {
 	}
 	public void setMEM_NAME(String mEM_NAME) {
 		MEM_NAME = mEM_NAME;
+	}
+	public String getMEM_BIRTH() {
+		return MEM_BIRTH;
+	}
+	public void setMEM_BIRTH(String mEM_BIRTH) {
+		MEM_BIRTH = mEM_BIRTH;
 	}
 	public String getMEM_EMAIL() {
 		return MEM_EMAIL;
