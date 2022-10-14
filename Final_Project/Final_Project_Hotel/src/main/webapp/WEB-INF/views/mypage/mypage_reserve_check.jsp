@@ -68,9 +68,9 @@
 								filter
 								<select name="checkFilter" id="checkFilter">
 									<option name="optCheck" value="all">All</option>
-									<c:forEach var="breakFast" items="${optBreakFast}">
-										<option name="optCheck" value="${breakFast.OPTION_RESERVATION_DATE}">
-											${breakFast.OPTION_RESERVATION_DATE}
+									<c:forEach var="allDate" items="${allDates}">
+										<option name="optCheck" value="${allDate}">
+											${allDate}
 									</c:forEach>
 								</select>
 							</div>

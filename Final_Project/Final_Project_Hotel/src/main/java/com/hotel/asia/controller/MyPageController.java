@@ -33,8 +33,6 @@ import com.hotel.asia.service.MyPageServiceImpl;
 import com.hotel.asia.service.OptionService;
 import com.hotel.asia.service.RoomService;
 
-import oracle.jdbc.proxy.annotation.GetProxy;
-import oracle.jdbc.proxy.annotation.Post;
 
 /*
  * MyPage에 관한 Controller입니다.
@@ -66,13 +64,15 @@ public class MyPageController {
 		List<OptionReservation> swimming = myPageService.getOptRezData(mem_id, OptionId.SWIMMING);
 		Payment payment = myPageService.getPayment(mem_id);
 
+		List<String> allDates = myPageService.calcBreakFastDate(rez.getREZ_CHECKIN(), day);
+		log.info(allDates + "");
 		model.addAttribute("rezData", rez);
 		model.addAttribute("optBreakFast", breakFast);
 		model.addAttribute("optDinner", dinner);
 		model.addAttribute("optSwimming", swimming);
 		model.addAttribute("payMentData", payment);
 		model.addAttribute("subDate", day);
-
+		model.addAttribute("allDates", allDates);
 		// 객실정보 가져오기~
 		return "mypage/mypage_reserve_check";
 	}
@@ -215,7 +215,15 @@ public class MyPageController {
 				log.info(b + "->" + a.get(b));
 			}
 		}
-
+		
+		//옵션아이디
+		//날짜
+		//성인
+		//아동
+		
+		//session.setAttribute("new_rez", rez);
+		//session.setAttribute("", optList)
+		
 		mv.addObject("rez", rez); // 객실 예약 정보
 		mv.addObject("nights", nights); // 숙박일수
 		mv.addObject("dateList", dateList); // 날짜 리스트 (체크인 날짜 ~ 체크아웃 날짜)
@@ -263,10 +271,11 @@ public class MyPageController {
 	@PostMapping(value = "/mypage/rezModify")
 	public String rezModify(Model model, HttpSession session) {
 		String mem_id = session.getAttribute("id").toString();
-		Rez ori_rez = myPageService.getRezData(mem_id);
 		//기존예약정보들 삭제
-		//새로운예약정보 추가
+		Rez ori_rez = myPageService.getRezData(mem_id);
 		myPageService.delRezData(ori_rez.getREZ_ID(), mem_id);
+		
+		//새로운예약정보 추가
 		return "reservation/rezModify";
 	}
 
