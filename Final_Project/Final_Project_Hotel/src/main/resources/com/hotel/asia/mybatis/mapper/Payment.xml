@@ -11,7 +11,7 @@
 		 PAYMENT_PRICE, PAYMENT_DATE)
 		values
 		(#{PAYMENT_ID},
-		 (select REZ_ID from REZ where ROOM_ID = #{ROOM_ID} and MEM_ID = #{MEM_ID}),
+		 #{REZ_ID},
 		 #{PAYMENT_PRICE}, sysdate)
 	</insert>
 	

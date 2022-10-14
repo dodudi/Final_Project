@@ -78,9 +78,6 @@ public class OptionController {
 	// 옵션 선택 후 예약정보 확인 폼
 	@PostMapping("/optionCheck")
 	public ModelAndView optionCheck(Rez rez, int nights, ModelAndView mv, HttpServletRequest request,HttpSession session) {
-		
-
-		
 		logger.info("***** [optionCheck] 넘어온 정보 *****");
 		logger.info("* 객실아이디 : " + rez.getROOM_ID());
 		logger.info("* 회원아이디 : " + session.getAttribute("id"));

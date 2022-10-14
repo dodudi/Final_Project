@@ -223,29 +223,50 @@ color: #0099ff !important;
 <script>
 $(function(){
 	$("#searchBtn").click(function(){
-		// 1. 인원 수 산정
-		var adults = $("select[name='adults']").val(); // 선택된 성인 수
-		var children = $("select[name='children']").val(); // 선택된 아동 수
-		// select 선택값이 '성인', '소아' 인 경우 0으로 처리
-		if(isNaN(adults)) {
-			adults = 0;
-		}
-		if(isNaN(children)) {
-			children = 0;
-		}
-		var people = parseInt(adults) + parseInt(children); // 총 인원 수
-		console.log("선택된 성인 수: " + adults);
-		console.log("선택된 아동 수: " + children);
-		console.log("총 인원 수: " + people);
-		
-		// 2. 선택한 방 산정
-		var chk_arr = $(".checkbox");
-        var chk_data = [];
+	// 1. 인원 수 산정
+      var adults = $("select[name='adults']").val(); // 선택된 성인 수
+      var children = $("select[name='children']").val(); // 선택된 아동 수
+      // select 선택값이 '성인', '소아' 인 경우 0으로 처리
+      if(isNaN(adults)) {
+         adults = 0;
+      }
+      if(isNaN(children)) {
+         children = 0;
+      }
+      var people = parseInt(adults) + parseInt(children); // 총 인원 수
+      console.log("선택된 성인 수: " + adults);
+      console.log("선택된 아동 수: " + children);
+      console.log("총 인원 수: " + people);
+      
+      // 2. 선택한 객실 유형
+      var chk_arr = $(".checkbox");
+        var roomTypes = ""; // 선택된 객실 유형 담을 변수
         for( var i=0; i<chk_arr.length; i++ ) {
             if( chk_arr[i].checked == true && chk_arr[i].value != 'on') {
-                chk_data.push(chk_arr[i].value);
+                roomTypes += chk_arr[i].value + ",";
             }
         }
+      console.log("선택된 객실 유형: " +roomTypes);
+      
+      // 3. 체크인, 체크아웃 날짜
+      // 체크인 날짜 연월일 분리
+      var checkInArr = $("#sdate").val().split('.'); 
+      var checkIn = new Date(checkInArr[0], checkInArr[1]-1, checkInArr[2]);
+      console.log("체크인 날짜: " + checkIn.toLocaleString());
+      // 체크아웃 날짜 연월일 분리
+      var checkOutArr = $("#edate").val().split('.'); 
+      var checkOut = new Date(checkOutArr[0], checkOutArr[1]-1, checkOutArr[2]);
+      console.log("체크아웃 날짜: " + checkOut.toLocaleString());
+      // 숙박 일수
+      var nights = (checkOut.getTime() - checkIn.getTime()) / (1000*60*60*24);
+      console.log("숙박일수: " + nights + "박");
+      // 숙박 날짜들 (체크인 날짜 ~ 체크아웃 날짜-1)
+      var nightsDate = [];
+      for(var i = 0; i < nights; i++) {
+         nightsDate[i] = checkIn.getFullYear() + "-" + (checkIn.getMonth()+1) + "-" + checkIn.getDate();
+         console.log("숙박 날짜 => " + nightsDate[i]);
+         checkIn.setDate(checkIn.getDate() + 1);
+      }
 		
 		
 		
