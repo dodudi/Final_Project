@@ -22,7 +22,7 @@ $(function(){
     	$(".button2").css('cursor', ' default');
     });
     
-    //id ck/pw/email
+    //id ck/pw/email/phone
 	var checkid = false;
 	var checkpw = false;
 	var checkemail = false;
@@ -65,7 +65,7 @@ $(function(){
 						.html("영문(소문자),숫자,특수기호(!,@,#,$,%,^,&,*,?,~)포함 8~12자리 입력해주세요");
 			checkpw=false;
 		} 
-	});
+	});//input[name=MEM_PASS] end
 	
 	//passCk2
 	$('input[name=password2]').on('keyup',function(){
@@ -79,7 +79,27 @@ $(function(){
 			$("#passCk2").css('color', 'red').text("비밀번호가 일치하지 않습니다.");
 			$("#pwDoubleCk").val("false");
 		}	
+	}); //passCk2 end
+	
+	//birth
+	$('input[name=MEM_BIRTH]').datepicker({
+		dateFormat: 'yy-mm-dd',		//표시할 날짜 형식 
+		changeYear: true,			
+		changeMonth: true,	
+		showMonthAfterYear: true,	
+		yearSuffix: '년',
+		dayNamesMin: ['일','월','화','수','목','금','토'], //달력의 요일 텍스트
+        dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'], //달력의 요일 Tooltip
+		monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'], //달력의 월 부분 텍스트
+        monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'], //달력의 월 부분 Tooltip
+		maxDate: "-15y",	//최대값설정해서 최소값 이전날짜는 disable 처리 
+		
+		showButtonPanel: true,
+		closeText: "닫기"
 	});
+	
+	$('input[name=MEM_BIRTH]').datepicker('setDate', 'today');	//초기값 오늘날짜로 
+	
 	
 	//emailCk
 	$('input[name=MEM_EMAIL]').on('keyup', function(){
@@ -94,7 +114,7 @@ $(function(){
 			$("#emailCk").css('color','green').html("이메일 형식에 맞습니다.");
 			checkemail=true;
 		}
-	});
+	});//input[name=MEM_EMAIL] end
 	
 	//이메일 인증 
 	var code = "";
@@ -110,12 +130,12 @@ $(function(){
 			xhr.setRequestHeader(header, token);
 			},
 			success:function(data){
-				console.log("data 성공 : " + data);
+				console.log("data 성공(email) : " + data.message);
 				
 			  if(data.message == "success"){
 			 	alert("인증번호가 발송되었습니다. \n 인증번호를 확인해주세요.");
 			  	$('#emailConfirm').attr("disabled", false);
-		  		$('.successEmailck').text("인증번호를 입력한 뒤 인증확인버튼을 눌러주세요.")
+		  		$('.successEmailck').text("인증번호 확인 후 인증확인을 눌러주세요.")
 		  					.css("color", "green");
 		  		code = data.serial;
 			  } else {
@@ -127,12 +147,13 @@ $(function(){
 			},
 			error:function(data){
 				alert("회원가입 에러 발생!");
-				console.log("data error : " + data);
+				console.log("data error(email) : " + data);
 			}
 		})
 		
-	})
+	});//emailCkNum end;
 	
+	//이메일 인증번호 이중체크 
 	$("#emailCkNum2").click(function(){
 		if($("#emailConfirm").val() == code){
 			$(".successEmailck").text("인증번호가 일치합니다.")	
@@ -140,12 +161,74 @@ $(function(){
 			$("#emailDoubleCk").val("true");
 			$("#emailConfirm").attr("disabled", true);
 		}else{
-			$(".successEmailck").text("인증번호가 일치하지않습니다. 확인해주세요.")	
+			$(".successEmailck").text("인증번호가 일치하지않습니다.확인해주세요.")	
 								.css("color", "red");
 			$("#emailDoubleCk").val("false");
 			$("#emailConfirm").attr("autofocus", true);
 		}
-	})
+	});//emailCkNum2 end;
+	
+	
+	//phoneCk
+	$('input[name=MEM_PHONE]').on('keyup', function(){
+		$(this).val( $(this).val().replace(/[^0-9]/g, "")
+				.replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3")
+				.replace("--", "-") );
+	});//input[name=MEM_PHONE] end
+	
+	//핸드폰 인증 
+	/*var code2 = "";
+	$("#phoneCkNum").click(function(){
+		var phone = $("input[name=MEM_PHONE]").val();
+		
+		$.ajax({
+			type : "POST",
+			url : "phoneCheck",
+			data:{"MEM_PHONE" : phone},
+			dataType : "json",
+			beforeSend : function(xhr){
+			xhr.setRequestHeader(header, token);
+			},
+			success:function(data){
+				console.log("data 성공(phone) : " + data.message);
+				
+			  if(data.message == "success"){
+			 	alert("인증번호가 발송되었습니다. \n 인증번호를 확인해주세요.");
+			  	$('#phoneConfirm').attr("disabled", false);
+		  		$('.successPhoneck').text("인증번호 확인 후 인증확인을 눌러주세요.")
+		  					.css("color", "green");
+		  		code2 = data.randonNum;
+			  } else {
+		  		alert("연락처가 올바르지 않습니다. 유효한 연락처를 입력해주세요.");
+			  	$('input[name=MEM_PHONE]').attr("autofocus", true);
+			  	$('.successPhoneck').text("유효한 연락처를 입력해주세요")
+			  					.css("color", "red");
+			  }
+			},
+			error:function(data){
+				alert("회원가입 에러 발생!");
+				console.log("data error(phone) : " + data);
+			}
+		})
+		
+	});//phoneCkNum end;
+	
+	//핸드폰 인증번호 이중체크 
+	$("#phoneCkNum2").click(function(){
+		if($("#phoneConfirm").val() == code2){
+			$(".successPhoneck").text("인증번호가 일치합니다.")	
+								.css("color", "green");
+			$("#phoneDoubleCk").val("true");
+			$("#phoneConfirm").attr("disabled", true);
+		}else{
+			$(".successPhoneck").text("인증번호가 일치하지않습니다.확인해주세요.")		
+								.css("color", "red");
+			$("#phoneDoubleCk").val("false");
+			$("#phoneConfirm").attr("autofocus", true);
+		}
+	});//phoneCkNum2 end;
+	*/
+	
 	
 	//checkbox
 	$('input[name=ckbox1]').click(function() {
@@ -165,9 +248,9 @@ $(function(){
 		if(!($(this).prop("checked"))){
 			$("#errbox3").css('color','orange').html("*멤버십 가입을 위해서는 동의하셔야 합니다");
 		}
-	})
+	});//checkbox end
 	
-
+	
 	
 	//submit
 	$('form').submit(function() {
@@ -178,8 +261,26 @@ $(function(){
 		}
 		
 		if(!checkemail){
-			alert("email 형식을 확인하세요");
+			alert("email 형식을 확인하세요.");
 			$("input[name=MEM_EMAIL]").val('').focus();
+			return false;
+		}
+		
+		if(!$("input[name='ckbox1']").prop("checked")){
+			$("input[name='ckbox1']").val('').focus();
+			$("#errbox1").css('color','orange').html("*멤버십 가입을 위해서는 동의하셔야 합니다");
+			return false;
+		}
+		
+		if(!$("input[name='ckbox2']").prop("checked")){
+			$("input[name='ckbox2']").val('').focus();
+			$("#errbox2").css('color','orange').html("*멤버십 가입을 위해서는 동의하셔야 합니다");
+			return false;
+		}
+		
+		if(!$("input[name='ckbox3']").prop("checked")){
+			$("input[name='ckbox3']").val('').focus();
+			$("#errbox3").css('color','orange').html("*멤버십 가입을 위해서는 동의하셔야 합니다");
 			return false;
 		}
 	
