@@ -223,113 +223,104 @@ color: #0099ff !important;
 <script>
 $(function(){
 	$("#searchBtn").click(function(){
-	// 1. 인원 수 산정
-      var adults = $("select[name='adults']").val(); // 선택된 성인 수
-      var children = $("select[name='children']").val(); // 선택된 아동 수
-      // select 선택값이 '성인', '소아' 인 경우 0으로 처리
-      if(isNaN(adults)) {
-         adults = 0;
-      }
-      if(isNaN(children)) {
-         children = 0;
-      }
-      var people = parseInt(adults) + parseInt(children); // 총 인원 수
-      console.log("선택된 성인 수: " + adults);
-      console.log("선택된 아동 수: " + children);
-      console.log("총 인원 수: " + people);
-      
-      // 2. 선택한 객실 유형
-      var chk_arr = $(".checkbox");
+		// 1. 인원 수 산정
+      	var adults = $("select[name='adults']").val(); // 선택된 성인 수
+      	var children = $("select[name='children']").val(); // 선택된 아동 수
+      	// select 선택값이 '성인', '소아' 인 경우 0으로 처리
+      	if(isNaN(adults)) {
+      		adults = 0;
+      	}
+      	if(isNaN(children)) {
+        	children = 0;
+      	}
+      	var people = parseInt(adults) + parseInt(children); // 총 인원 수
+        console.log("선택된 성인 수: " + adults);
+        console.log("선택된 아동 수: " + children);
+        console.log("총 인원 수: " + people);
+        
+        // 2. 선택한 객실 유형
+        var chk_arr = $(".checkbox");
         var roomTypes = ""; // 선택된 객실 유형 담을 변수
-        for( var i=0; i<chk_arr.length; i++ ) {
-            if( chk_arr[i].checked == true && chk_arr[i].value != 'on') {
-                roomTypes += chk_arr[i].value + ",";
-            }
+        for(var i=0; i < chk_arr.length; i++) {
+      	  if( chk_arr[i].checked == true && chk_arr[i].value != 'on') {
+      		  roomTypes += chk_arr[i].value + ",";
+      	  }
         }
-      console.log("선택된 객실 유형: " +roomTypes);
-      
-      // 3. 체크인, 체크아웃 날짜
-      // 체크인 날짜 연월일 분리
-      var checkInArr = $("#sdate").val().split('.'); 
-      var checkIn = new Date(checkInArr[0], checkInArr[1]-1, checkInArr[2]);
-      console.log("체크인 날짜: " + checkIn.toLocaleString());
-      // 체크아웃 날짜 연월일 분리
-      var checkOutArr = $("#edate").val().split('.'); 
-      var checkOut = new Date(checkOutArr[0], checkOutArr[1]-1, checkOutArr[2]);
-      console.log("체크아웃 날짜: " + checkOut.toLocaleString());
-      // 숙박 일수
-      var nights = (checkOut.getTime() - checkIn.getTime()) / (1000*60*60*24);
-      console.log("숙박일수: " + nights + "박");
-      // 숙박 날짜들 (체크인 날짜 ~ 체크아웃 날짜-1)
-      var nightsDate = [];
-      for(var i = 0; i < nights; i++) {
-         nightsDate[i] = checkIn.getFullYear() + "-" + (checkIn.getMonth()+1) + "-" + checkIn.getDate();
-         console.log("숙박 날짜 => " + nightsDate[i]);
-         checkIn.setDate(checkIn.getDate() + 1);
-      }
-		
-		
-		
-		
-		var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-		$.ajax({
-			type : "POST",
-			url: "roomList_select",
-			data: {"people": people},
-			beforeSend : function(xhr) { 
-	        	xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리(Spring Security CSRF)		
-	        },
-	        success: function(data){
-	        	$(".roomListParent").remove();
-	        	var people = data.people;
-	        	var output = '<div class="row roomListParent">';
-	        	$(data.roomList).each(function(index, item) {
-	        		output +='<div class="col-lg-6 roomList">'
-	        			    + '		<div class="room-box background-grey">'
-	        		        + '			<div class="room-name">'+item.ROOM_TYPE+'</div>';
-	        		if(item.ROOM_MAX < people) {
-	        			output += "<img src='" + item.ROOM_IMG + "' style='opacity:0.3;'>";
-	        		} else {
-	        			output += "<img src='" + item.ROOM_IMG + "'>";
-	        		}
-	        		output += '<div class="room-box-in">'
-	        		        + '		<h5>'+item.ROOM_TYPE+'</h5>'
-	        		        + '		<p class="mt-3">'+item.ROOM_DETAIL+'</p>';
-	        		if(item.ROOM_MAX < people) {        
-	        			output += '		<a href="" style="pointer-events:none;">'
-	        		           + '			<button type="submit" class="mt-1 btn btn-warning">'
-	        		           + '				book from ' + item.ROOM_PRICE + '원'
-	        		           + '			</button>'
-	        		           + '		</a>';
-	        		} else {
-	        			output += '		<a href="">'
-	        		           + '			<button type="submit" class="mt-1 btn btn-warning">'
-	        		           + '				book from ' + item.ROOM_PRICE + '원'
-	        		           + '			</button>'
-	        		           + '		</a>';
-	        		}
-	        		
-	        		output += '		<div class="room-icons mt-4 pt-4">'
-	        		 	    + '			<img src="${pageContext.request.contextPath}/resources/room/img/5.svg"><img src="${pageContext.request.contextPath}/resources/room/img/6.svg">'
-							+ '			<img src="${pageContext.request.contextPath}/resources/room/img/3.svg"><a href="roomDetail?num='+ item.ROOM_ID +'">객실정보</a>'
-							+ '		</div>';
-					output += "</div></div></div>";		
-	        	}) // each end
-	        	output += "</div>";
-	        	//alert(output);
-	        	$(".roomListParentP").append(output);
-	        } // success end
-		}) // ajax end
-		
-		
-		
-	})
-	
-	
-	
-	
-	
+        console.log("선택된 객실 유형: " +roomTypes);
+        
+        // 3. 체크인, 체크아웃 날짜
+        // 체크인 날짜 연월일 분리
+        var checkInArr = $("#sdate").val().split('.'); 
+        var checkIn = new Date(checkInArr[0], checkInArr[1]-1, checkInArr[2]);
+        console.log("체크인 날짜: " + checkIn.toLocaleString());
+        // 체크아웃 날짜 연월일 분리
+        var checkOutArr = $("#edate").val().split('.'); 
+        var checkOut = new Date(checkOutArr[0], checkOutArr[1]-1, checkOutArr[2]);
+        console.log("체크아웃 날짜: " + checkOut.toLocaleString());
+        // 숙박 일수
+        var nights = (checkOut.getTime() - checkIn.getTime()) / (1000*60*60*24);
+        console.log("숙박일수: " + nights + "박");
+        // 숙박 날짜들 (체크인 날짜 ~ 체크아웃 날짜-1)
+        var nightsDate = [];
+        for(var i = 0; i < nights; i++) {
+           nightsDate[i] = checkIn.getFullYear() + "-" + (checkIn.getMonth()+1) + "-" + checkIn.getDate();
+           console.log("숙박 날짜 => " + nightsDate[i]);
+           checkIn.setDate(checkIn.getDate() + 1);
+        }
+  		
+        var token = $("meta[name='_csrf']").attr("content");
+  	    var header = $("meta[name='_csrf_header']").attr("content");
+  		$.ajax({
+  			type : "POST",
+  			url: "roomList_select",
+  			data: {"people": people,
+  				   "roomTypes": roomTypes},
+  			beforeSend : function(xhr) { 
+  	        	xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리(Spring Security CSRF)		
+  	        },
+  	        success: function(data){
+  	        	$(".roomListParent").remove();
+  	        	var people = data.people;
+  	        	var output = '<div class="row roomListParent">';
+  	        	$(data.roomList).each(function(index, item) {
+  	        		output +='<div class="col-lg-6 roomList">'
+  	        			    + '		<div class="room-box background-grey">'
+  	        		        + '			<div class="room-name">'+item.ROOM_TYPE+'</div>';
+  	        		if(item.ROOM_MAX < people) {
+  	        			output += "<img src='" + item.ROOM_IMG + "' style='opacity:0.3;'>";
+  	        		} else {
+  	        			output += "<img src='" + item.ROOM_IMG + "'>";
+  	        		}
+  	        		output += '<div class="room-box-in">'
+  	        		        + '		<h5>'+item.ROOM_TYPE+'</h5>'
+  	        		        + '		<p class="mt-3">'+item.ROOM_DETAIL+'</p>';
+  	        		if(item.ROOM_MAX < people) {        
+  	        			output += '		<a href="" style="pointer-events:none;">'
+  	        		           + '			<button type="submit" class="mt-1 btn btn-warning">'
+  	        		           + '				book from ' + item.ROOM_PRICE + '원'
+  	        		           + '			</button>'
+  	        		           + '		</a>';
+  	        		} else {
+  	        			output += '		<a href="">'
+  	        		           + '			<button type="submit" class="mt-1 btn btn-warning">'
+  	        		           + '				book from ' + item.ROOM_PRICE + '원'
+  	        		           + '			</button>'
+  	        		           + '		</a>';
+  	        		}
+  	        		
+  	        		output += '		<div class="room-icons mt-4 pt-4">'
+  	        		 	    + '			<img src="${pageContext.request.contextPath}/resources/room/img/5.svg"><img src="${pageContext.request.contextPath}/resources/room/img/6.svg">'
+  							+ '			<img src="${pageContext.request.contextPath}/resources/room/img/3.svg"><a href="roomDetail?num='+ item.ROOM_ID +'">객실정보</a>'
+  							+ '		</div>';
+  					output += "</div></div></div>";		
+  	        	}) // each end
+  	        	output += "</div>";
+  	        	//alert(output);
+  	        	$(".roomListParentP").append(output);
+  	        } // success end
+  		}) // ajax end
+  	})
+  		
 }) // ready end
 </script>
 </head>
