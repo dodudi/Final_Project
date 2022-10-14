@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -53,7 +55,6 @@ public class RoomController {
 		mv.setViewName("room/roomList");
 		return mv;
 	}
-
 	@ResponseBody
 	@RequestMapping(value = "/roomList_select")
 	public Map<String, Object> roomList_v2_select(@RequestParam(value="people", defaultValue="0", required = false) int people,
@@ -87,11 +88,13 @@ public class RoomController {
 		}
 		
 
+		
+		Set<Integer> rezRoomList2 = new TreeSet<Integer>();
 		// 숙박 불가능 날짜 계산
 		Map<String, List<Integer>> alreadyRez = new HashMap<String, List<Integer>>(); // 키:객실아이디, 값:숙박날짜
 		for(int j = 0; j < dateList.length; j++) {
 			logger.info("*** 숙박 날짜 : " +  dateList[j] + " ***");
-			List<Integer> rezYN = new ArrayList<Integer>();
+			List<Integer> rezRoomList = new ArrayList<Integer>();
 			
 			for(Rez rez : rezList) {
 				logger.info("===[객실번호 " + rez.getROOM_ID() + "] " + rez.getREZ_CHECKIN() + " ~ " + rez.getREZ_CHECKOUT() + " ===");
@@ -109,14 +112,14 @@ public class RoomController {
 					
 					// 숙박 날짜에 예약된 객실 있으면 해당 객실ID 저장
 					if(dateList[j].equals( sdf.format(checkInCal.getTime()) )) {
-						rezYN.add( rez.getROOM_ID() );
+						rezRoomList.add( rez.getROOM_ID() );
+						rezRoomList2.add(rez.getROOM_ID());
 					}
 					p = 1;
 				}
 			}
-			alreadyRez.put(dateList[j] , rezYN);
+			alreadyRez.put(dateList[j] , rezRoomList);
 		}
-		
 		logger.info("=====map 확인=====");
 		for (Entry<String, List<Integer>> entrySet : alreadyRez.entrySet()) {
 			logger.info("[숙박날짜 " + entrySet.getKey() + "] 기예약객실 : ");
@@ -124,12 +127,17 @@ public class RoomController {
 				logger.info(""+value);
 			}
 		}
+		logger.info("=====list 확인=====");
+		for(int rezRoomId : rezRoomList2) {
+			logger.info(""+rezRoomId);
+		}
 		
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("roomList", roomList);
 		map.put("roomListCount", roomListCount);
-		map.put("alreadyRez", alreadyRez);
+		//map.put("alreadyRez", alreadyRez);
+		map.put("rezRoomList2", rezRoomList2);
 		map.put("people", people);
 		return map;
 	}

@@ -260,8 +260,15 @@ $(function(){
   	        	xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리(Spring Security CSRF)		
   	        },
   	        success: function(data){
-  	        	console.log("===map 잘 왔는지 보기===");
+  	        	/* console.log("===넘어온 map 확인===");
   	        	console.log(data.alreadyRez);
+  	        	$.each(data.alreadyRez, function(nightsDate, rezRoomId) {
+  	        		console.log("nightsDate : " + nightsDate);
+					console.log("rezRoomId : " + rezRoomId);
+				}); */
+  	        	console.log("===넘어온 list 확인===");
+  	        	console.log(data.rezRoomList2);
+  	        	
   	        	
   	        	$(".roomListParent").remove();
   	        	var people = data.people;
@@ -270,11 +277,25 @@ $(function(){
   	        		output +='<div class="col-lg-6 roomList">'
   	        			    + '		<div class="room-box background-grey">'
   	        		        + '			<div class="room-name">'+item.ROOM_TYPE+'</div>';
+  	        		output += "<img id='roomImg' src='" + item.ROOM_IMG + "'>";        
+  	        		        
+  	        		// 기예약된 객실 비활성화 처리
+        			/* for(var i = 0; i<data.rezRoomList2.length; i++){
+        				if(data.rezRoomList2[i] == item.ROOM_ID) {
+        					output += "<img src='" + item.ROOM_IMG + "' style='opacity:0.3;'>";
+        				} 
+        				else {
+        					output += "<img src='" + item.ROOM_IMG + "'>";
+        				}
+        			} */
+  	        		
+  	        		        
   	        		if(item.ROOM_MAX < people) {
   	        			output += "<img src='" + item.ROOM_IMG + "' style='opacity:0.3;'>";
   	        		} else {
   	        			output += "<img src='" + item.ROOM_IMG + "'>";
   	        		}
+  	        		
   	        		output += '<div class="room-box-in">'
   	        		        + '		<h5>'+item.ROOM_TYPE+'</h5>'
   	        		        + '		<p class="mt-3">'+item.ROOM_DETAIL+'</p>';
