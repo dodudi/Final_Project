@@ -12,12 +12,13 @@
 	<insert id="insert">
 		insert into member
 		values
-		(#{MEM_ID}, #{MEM_PASS}, #{MEM_NAME}, #{MEM_EMAIL}, #{MEM_PHONE}, #{MEM_POINT},#{AUTH})
+		(#{MEM_ID}, #{MEM_PASS}, #{MEM_NAME},#{MEM_BIRTH}, #{MEM_EMAIL}, #{MEM_PHONE}, #{MEM_POINT},#{AUTH})
 	</insert>
 	
 	<update id="update">
 		update member
 		set MEM_NAME = #{MEM_NAME}, 
+			MEM_BIRTH = #{MEM_BIRTH},
 			MEM_EMAIL = #{MEM_EMAIL},
 			MEM_PHONE = #{MEM_PHONE},
 		where MEM_ID = #{MEM_ID}
