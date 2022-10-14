@@ -6,8 +6,11 @@ create table notice_board (
   NOTICE_ORIGINAL   VARCHAR2(300),
   NOTICE_FILE       VARCHAR2(300),
   NOTICE_READCOUNT  NUMBER,
-  NOTICE_DATE       DATE DEFAULT SYSDATE NOT NULL,
+  NOTICE_DATE       DATE DEFAULT SYSDATE NOT NULL
 )
 
 select * from notice_board;
 create sequence NOTICE_SEQ start with 1 increment by 1;
+
+insert into notice_board
+values (1,1,1,null,null,0,sysdate)

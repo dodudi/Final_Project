@@ -1,6 +1,6 @@
 package com.hotel.asia.dto;
 
-public class NoticeDTO {
+public class Notice {
 	
 	private int NOTICE_NUM;
 	private String NOTICE_SUBJECT;
