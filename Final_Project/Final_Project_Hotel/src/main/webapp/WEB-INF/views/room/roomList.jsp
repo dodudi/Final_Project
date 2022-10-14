@@ -222,87 +222,74 @@ color: #0099ff !important;
 </style>
 <script>
 $(function(){
-	// 조회버튼
 	$("#searchBtn").click(function(){
-		// 1. 인원 수 산정
-		var adults = $("select[name='adults']").val(); // 선택된 성인 수
-		var children = $("select[name='children']").val(); // 선택된 아동 수
-		// select 선택값이 '성인', '소아' 인 경우 0으로 처리
-		if(isNaN(adults)) {
-			adults = 0;
-		}
-		if(isNaN(children)) {
-			children = 0;
-		}
-		var people = parseInt(adults) + parseInt(children); // 총 인원 수
-		console.log("선택된 성인 수: " + adults);
-		console.log("선택된 아동 수: " + children);
-		console.log("총 인원 수: " + people);
-		
-		// 2. 선택한 객실 유형
-		var chk_arr = $(".checkbox");
+	// 1. 인원 수 산정
+      var adults = $("select[name='adults']").val(); // 선택된 성인 수
+      var children = $("select[name='children']").val(); // 선택된 아동 수
+      // select 선택값이 '성인', '소아' 인 경우 0으로 처리
+      if(isNaN(adults)) {
+         adults = 0;
+      }
+      if(isNaN(children)) {
+         children = 0;
+      }
+      var people = parseInt(adults) + parseInt(children); // 총 인원 수
+      console.log("선택된 성인 수: " + adults);
+      console.log("선택된 아동 수: " + children);
+      console.log("총 인원 수: " + people);
+      
+      // 2. 선택한 객실 유형
+      var chk_arr = $(".checkbox");
         var roomTypes = ""; // 선택된 객실 유형 담을 변수
         for( var i=0; i<chk_arr.length; i++ ) {
             if( chk_arr[i].checked == true && chk_arr[i].value != 'on') {
                 roomTypes += chk_arr[i].value + ",";
             }
         }
-		console.log("선택된 객실 유형: " +roomTypes);
+      console.log("선택된 객실 유형: " +roomTypes);
+      
+      // 3. 체크인, 체크아웃 날짜
+      // 체크인 날짜 연월일 분리
+      var checkInArr = $("#sdate").val().split('.'); 
+      var checkIn = new Date(checkInArr[0], checkInArr[1]-1, checkInArr[2]);
+      console.log("체크인 날짜: " + checkIn.toLocaleString());
+      // 체크아웃 날짜 연월일 분리
+      var checkOutArr = $("#edate").val().split('.'); 
+      var checkOut = new Date(checkOutArr[0], checkOutArr[1]-1, checkOutArr[2]);
+      console.log("체크아웃 날짜: " + checkOut.toLocaleString());
+      // 숙박 일수
+      var nights = (checkOut.getTime() - checkIn.getTime()) / (1000*60*60*24);
+      console.log("숙박일수: " + nights + "박");
+      // 숙박 날짜들 (체크인 날짜 ~ 체크아웃 날짜-1)
+      var nightsDate = [];
+      for(var i = 0; i < nights; i++) {
+         nightsDate[i] = checkIn.getFullYear() + "-" + (checkIn.getMonth()+1) + "-" + checkIn.getDate();
+         console.log("숙박 날짜 => " + nightsDate[i]);
+         checkIn.setDate(checkIn.getDate() + 1);
+      }
 		
-		// 3. 체크인, 체크아웃 날짜
-		// 체크인 날짜 연월일 분리
-		var checkInArr = $("#sdate").val().split('.'); 
-		var checkIn = new Date(checkInArr[0], checkInArr[1]-1, checkInArr[2]);
-		console.log("체크인 날짜: " + checkIn.toLocaleString());
-		// 체크아웃 날짜 연월일 분리
-		var checkOutArr = $("#edate").val().split('.'); 
-		var checkOut = new Date(checkOutArr[0], checkOutArr[1]-1, checkOutArr[2]);
-		console.log("체크아웃 날짜: " + checkOut.toLocaleString());
-		// 숙박 일수
-		var nights = (checkOut.getTime() - checkIn.getTime()) / (1000*60*60*24);
-		console.log("숙박일수: " + nights + "박");
-		// 숙박 날짜들 (체크인 날짜 ~ 체크아웃 날짜-1)
-		var nightsDate = [];
-		for(var i = 0; i < nights; i++) {
-			nightsDate[i] = checkIn.getFullYear() + "-" + (checkIn.getMonth()+1) + "-" + checkIn.getDate();
-			console.log("숙박 날짜 => " + nightsDate[i]);
-			checkIn.setDate(checkIn.getDate() + 1);
-		}
+		
+		
 		
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
 		$.ajax({
 			type : "POST",
 			url: "roomList_select",
-			data: {"people": people,
-				   "roomTypes": roomTypes},
+			data: {"people": people},
 			beforeSend : function(xhr) { 
 	        	xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리(Spring Security CSRF)		
 	        },
 	        success: function(data){
-	        	console.log(data.alreadyRez);
 	        	$(".roomListParent").remove();
 	        	var people = data.people;
 	        	var output = '<div class="row roomListParent">';
 	        	$(data.roomList).each(function(index, item) {
 	        		output +='<div class="col-lg-6 roomList">'
 	        			    + '		<div class="room-box background-grey">'
-	        		        + '			<div class="room-name">'+ item.ROOM_TYPE + '</div>';
+	        		        + '			<div class="room-name">'+item.ROOM_TYPE+'</div>';
 	        		if(item.ROOM_MAX < people) {
 	        			output += "<img src='" + item.ROOM_IMG + "' style='opacity:0.3;'>";
-	        			/* //==============================================
-	        			$(data.rezList).each(function(index, rez) {
-	        				if(item.ROOM_ID == rez.ROOM_ID) {
-	        					for(int i = 0; i < nightsDate.length; i++) {
-	        						if()
-	        						
-	        						output += "<img src='" + item.ROOM_IMG + "' style='opacity:0.3;'>";
-	        					}
-	        					
-	        					
-	        				}
-	        			}) // 예약리스트 each end=========================== */
-	        			
 	        		} else {
 	        			output += "<img src='" + item.ROOM_IMG + "'>";
 	        		}
@@ -311,7 +298,7 @@ $(function(){
 	        		        + '		<p class="mt-3">'+item.ROOM_DETAIL+'</p>';
 	        		if(item.ROOM_MAX < people) {        
 	        			output += '		<a href="" style="pointer-events:none;">'
-	        		           + '			<button type="submit" class="mt-1 btn btn-warning" style="background-color:lightgray">'
+	        		           + '			<button type="submit" class="mt-1 btn btn-warning">'
 	        		           + '				book from ' + item.ROOM_PRICE + '원'
 	        		           + '			</button>'
 	        		           + '		</a>';
@@ -324,16 +311,20 @@ $(function(){
 	        		}
 	        		
 	        		output += '		<div class="room-icons mt-4 pt-4">'
-	        		 	    + '			<img src="${pageContext.request.contextPath}/resources/room/img/5.svg"><img src="${pageContext.request.contextPath}/resources/room/img/2.svg">'
+	        		 	    + '			<img src="${pageContext.request.contextPath}/resources/room/img/5.svg"><img src="${pageContext.request.contextPath}/resources/room/img/6.svg">'
 							+ '			<img src="${pageContext.request.contextPath}/resources/room/img/3.svg"><a href="roomDetail?num='+ item.ROOM_ID +'">객실정보</a>'
 							+ '		</div>';
 					output += "</div></div></div>";		
 	        	}) // each end
 	        	output += "</div>";
+	        	//alert(output);
 	        	$(".roomListParentP").append(output);
 	        } // success end
 		}) // ajax end
-	}) // 조회버튼 end
+		
+		
+		
+	})
 	
 	
 	
@@ -365,29 +356,34 @@ $(function(){
 					<div class="col-lg-8 mt-4 mt-lg-0 roomListParentP">
 						<!-- 객실 리스트 있을 때 -->
 						<c:if test="${roomListCount > 0}">
-							<div class="row roomListParent">
+							<form class="row roomListParent" action="reservationCheck" method="POST">
 								<c:forEach var="roomList" items="${roomList}">
 									<div class="col-lg-6 roomList">
 										<div class="room-box background-grey">
+											<input type="hidden" name="room_id" value="${roomList.ROOM_ID}">
 											<div class="room-name">${roomList.ROOM_TYPE}</div>
+											<input type="hidden" name="room_type" value="${roomList.ROOM_TYPE}">
 											<img src="${roomList.ROOM_IMG}">
+											<input type="hidden" name="room_img" value="${roomList.ROOM_IMG}">
 											<div class="room-box-in">
 												<h5>${roomList.ROOM_TYPE}</h5>
 												<p class="mt-3">${roomList.ROOM_DETAIL}</p>
+												<input type="hidden" name="room_detail" value="${roomList.ROOM_DETAIL}">
 												<a href="">
 													<button type="submit" class="mt-1 btn btn-warning">
 														book from <fmt:formatNumber value="${roomList.ROOM_PRICE}" pattern="#,###"/>원
 													</button>
+													<input type="hidden" name="room_price" value="${roomList.ROOM_PRICE}">
 												</a>
 												<div class="room-icons mt-4 pt-4">
-													<img src="${pageContext.request.contextPath}/resources/room/img/5.svg"><img src="${pageContext.request.contextPath}/resources/room/img/2.svg">
-													<img src="${pageContext.request.contextPath}/resources/room/img/3.svg"><a href="roomDetail?num=${roomList.ROOM_ID}">객실정보</a>
+													<img src="${pageContext.request.contextPath}/resources/room/img/5.svg"><img src="${pageContext.request.contextPath}/resources/room/img/6.svg">
+													<img src="${pageContext.request.contextPath}/resources/room/img/2.svg"><a href="roomDetail?num=${roomList.ROOM_ID}">객실정보</a>
 												</div>
 											</div>
 										</div>
 									</div>
 								</c:forEach>
-							</div>
+							</form>
 						</c:if>
 						<!-- 객실 리스트 없을 때 -->
 						<c:if test="${roomListCount == 0}">
@@ -405,7 +401,6 @@ $(function(){
 										<div class="row">
 											<div class="col-12">
 												<div class="form-item">
-											       <form>
 											 	    <h6 class="color-white mg-6">날짜 선택</h6><br>
 											    	<div class="checkin_checkout">
 											        	<input type="text" name="d1" value="" id="sdate" class="datepicker inp" placeholder="체크인" readonly > 
@@ -413,7 +408,6 @@ $(function(){
 														<input type="text" name="d2" value="" id="edate" class="datepicker inp" placeholder="체크아웃" readonly >
 														<input type="hidden" name="hnum" value="">
 													</div>
-									     		 </form>
 									     		</div>
 									     	</div>
 										</div>
@@ -464,29 +458,14 @@ $(function(){
 										<li class="list__item"><label class="label--checkbox">
 											<input type="checkbox" id="double" class="checkbox" name="check" value="더블룸">더블룸</label></li>
 										<li class="list__item"><label class="label--checkbox">
-											<input type="checkbox" id="twin" class="checkbox" name="check" value="트리플룸">트리플룸</label></li>
+											<input type="checkbox" id="twin" class="checkbox" name="check" value="트윈룸">트윈룸</label></li>
 										<li class="list__item"><label class="label--checkbox">
 											<input type="checkbox" id="family" class="checkbox" name="check" value="패밀리룸">패밀리룸</label></li>
 									</ul>
 								</div> 
-								<!-- <div class="col-12 col-md-6 col-lg-12 pt-5">
-									<h6 class="color-white mb-3">Extra services:</h6>
-									<ul class="list">
-										<li class="list__item"><label class="label--checkbox"><input
-												type="checkbox" class="checkbox"> breakfast</label></li>
-										<li class="list__item"><label class="label--checkbox"><input
-												type="checkbox" class="checkbox"> swimming pool</label></li>
-										<li class="list__item"><label class="label--checkbox"><input
-												type="checkbox" class="checkbox"> car rental</label></li>
-										<li class="list__item"><label class="label--checkbox"><input
-												type="checkbox" class="checkbox"> sea view</label></li>
-										<li class="list__item"><label class="label--checkbox"><input
-												type="checkbox" class="checkbox"> laundry</label></li>
-									</ul>
-								</div> -->
 							</div>
 							<br>
-							<button type="submit" class="btn btn-warning float-center submit_next" id="searchBtn">조회</button>
+							<button type="submit" class="btn float-center submit_next booking-button" id="searchBtn">조회</button>
 						</div>
 					</div>
 				</div>
@@ -532,11 +511,13 @@ $('.checkbox').click(function(){
 
 	
 <!-- 캘린더 옵션  -->
-//예약된 날짜를 배열로 가져와 비활성화 시키기
+//예약 가능한 방이 0개일 때 배열로 가져와 날짜 비활성화
 var disabledDays = ["2022-10-20", "2022-10-21" , "2022-10-22"];
 console.log(disabledDays.length);
+
+//datepicker 기본 설정
      
-	 $.datepicker.setDefaults({
+	$.datepicker.setDefaults({
       closeText: "닫기",
       prevText: "이전달",
       nextText: "다음달",
