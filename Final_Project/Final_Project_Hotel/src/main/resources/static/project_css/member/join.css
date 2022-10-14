@@ -365,7 +365,7 @@ td{
 .error3{
 	margin-left:10px;
 	font-size:12px;
-	width:30%;
+	width:40%;
 }
 sup{
 	color: #f8b100;
@@ -374,14 +374,14 @@ sup{
 .email_btn {
 	position: relative;
 	height:35px;
-	width: 15%;
-	min-width:66px;
+	min-width:80px;
     margin: 10px 5px;
     border-radius: 30px;
 	background : #f3c300;
 	color: #fff;
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
+    font-size: 14px;
     letter-spacing: 2px;
      border: none;
 }
@@ -391,16 +391,17 @@ sup{
     color: #fff;
 }
 
-input[name=MEM_EMAIL] {
-	width: 50%;
+input[name=MEM_EMAIL],input[name=MEM_PHONE] {
+	width: 40%;
 }
 
-#emailConfirm{
+#emailConfirm, #phoneConfirm{
     margin-left: 140px !important;
-    width: 35%;
+    width: 40%;
 }
 
-.successEmailck{
-	width:50%;
+.successEmailck, .successPhoneck{
+	width:40%;
 	font-size:12px;
+	margin-left: 10px;
 }
