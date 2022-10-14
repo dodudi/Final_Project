@@ -27,7 +27,7 @@
 
 	<!-- 특정 객실 정보 -->
 	<select id="getRoomDetail" parameterType="int" resultType="room">
-		select * from room where ROOM_ID = #{room_ID}
+		select * from room where ROOM_ID = #{num}
  	</select>
  	
  	<!-- 객실 예약 후 해당 객실 상태 Y로 바꾸기 -->

@@ -48,8 +48,8 @@ public class RoomServiceImpl implements RoomService{
 	
 	// 특정 객실 정보
 	@Override
-	public Room getRoomDetail(int room_ID) {
-		return mapper.getRoomDetail(room_ID);
+	public Room getRoomDetail(int num) {
+		return mapper.getRoomDetail(num);
 	}
 	
 	
