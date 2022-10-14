@@ -29,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.hotel.asia.dto.MailVO;
 import com.hotel.asia.dto.Member;
 import com.hotel.asia.service.MemberService;
+import com.hotel.asia.task.NaverMessageAuth;
 import com.hotel.asia.task.SendMail;
 
 @Controller
@@ -98,7 +99,7 @@ public class MemberController {
 			MailVO vo = new MailVO();
 			vo.setTo(member.getMEM_EMAIL());
 			vo.setSubject("회원가입을 축하합니다.");
-			vo.setContent(member.getMEM_NAME() + "님 회원 가입을 축하드립니다.");
+			vo.setContent("<br><br>"+member.getMEM_NAME() + " 님 회원 가입을 축하드립니다.");
 			sendMail.sendMail(vo);
 			
 			rattr.addFlashAttribute("result", "joinSeccess");
@@ -119,7 +120,7 @@ public class MemberController {
 		MailVO vo =  new MailVO();
 		vo.setTo(member.getMEM_EMAIL());
 		vo.setSubject("회원가입시 필요한 인증번호입니다.");
-		vo.setContent("<br><br>" + "[인증번호]" + serial + "입니다.  인증번호 확인란에 기입해주세요.");
+		vo.setContent("<br><br>" + "[인증번호] " + serial + " 입니다.  인증번호 확인란에 기입해주세요.");
 		
 		sendMail.sendMail(vo);
 		
@@ -128,6 +129,7 @@ public class MemberController {
 		map.put("message", "success");
 		return map;
 	}
+	
 	
 	//회원가입폼에서 아이디 검사
 	@RequestMapping(value="/idcheck", method=RequestMethod.GET)
@@ -235,4 +237,33 @@ public class MemberController {
 		return "redirect:list";
 	}
 	
+	// ================================= 현능씨 부분! ================================
+	   // 휴대폰 번호 중복 검사 - ajax
+	   @ResponseBody
+	   @PostMapping("/phoneCheck")
+	   public int phoneCheck(int phone) {
+	      int result = memberservice.phoneCheck(phone);
+	      logger.info("*** 휴대폰 중복 검사 결과 => "+ result + " (휴대폰번호 있으면 1, 없으면 0, 뭔가 이상하면 -1)");
+	      return result;
+	   }
+	   
+	   // 휴대폰 번호 인증 문자
+	   @ResponseBody
+	   @PostMapping("/phoneAuth")
+	   public String phoneAuth(String phone) {
+	      // 인증번호 6자리 난수
+	      String random = "";
+	      int num = 0;
+	      while (num < 99999) {
+	         num = (int) (Math.random() * 1000000);
+	         random = String.valueOf(num); // 6자리 난수 발생
+	      }
+	      logger.info("*** 휴대폰번호 => " + phone);
+	      logger.info("***인증번호 => " + random);
+	      
+	      NaverMessageAuth message = new NaverMessageAuth();
+	      message.sendMessage(String. valueOf(phone), random);
+	      
+	      return random;
+	   }
 }
