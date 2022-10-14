@@ -248,48 +248,20 @@ $(function(){
         }
         console.log("선택된 객실 유형: " +roomTypes);
         
-        // 3. 체크인, 체크아웃 날짜
-        // 체크인 날짜 연월일 분리
-        var checkInArr = $("#sdate").val().split('.'); 
-        var checkIn = new Date(checkInArr[0], checkInArr[1]-1, checkInArr[2]);
-        console.log("체크인 날짜: " + checkIn.toLocaleString());
-        // 체크아웃 날짜 연월일 분리
-        var checkOutArr = $("#edate").val().split('.'); 
-        var checkOut = new Date(checkOutArr[0], checkOutArr[1]-1, checkOutArr[2]);
-        console.log("체크아웃 날짜: " + checkOut.toLocaleString());
-        // 숙박 일수
-        var nights = (checkOut.getTime() - checkIn.getTime()) / (1000*60*60*24);
-        console.log("숙박일수: " + nights + "박");
-        // 숙박 날짜들 (체크인 날짜 ~ 체크아웃 날짜-1)
-        var nightsDate = [];
-        for(var i = 0; i < nights; i++) {
-           nightsDate[i] = checkIn.getFullYear() + "-" + (checkIn.getMonth()+1) + "-" + checkIn.getDate();
-           console.log("숙박 날짜 => " + nightsDate[i]);
-           checkIn.setDate(checkIn.getDate() + 1);
-        }
-  		
         var token = $("meta[name='_csrf']").attr("content");
   	    var header = $("meta[name='_csrf_header']").attr("content");
   		$.ajax({
   			type : "POST",
   			url: "roomList_select",
   			data: {"people": people,
-  				   "roomTypes": roomTypes},
+  				   "roomTypes": roomTypes,
+  				   "checkIn":$("#sdate").val(), "checkOut":$("#edate").val()},
   			beforeSend : function(xhr) { 
   	        	xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리(Spring Security CSRF)		
   	        },
   	        success: function(data){
-  	        	console.log("===map 잘 왔는지 테스트===");
-  	        	/* for(var i=0; i<data.alreadyRez.length; i++){
-  	        		
-  	        	} */
+  	        	console.log("===map 잘 왔는지 보기===");
   	        	console.log(data.alreadyRez);
-  	        	//console.log(data.alreadyRez[key]);
-  	        	//console.log(typeof(data.alreadyRez));
-  	        	
-  	        	
-  	        	
-  	        	
   	        	
   	        	$(".roomListParent").remove();
   	        	var people = data.people;
