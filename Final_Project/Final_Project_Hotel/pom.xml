@@ -121,13 +121,6 @@
 		<version>3.3.4</version>
       </dependency>
       
-       <!-- 회원가입 sms 인증 --> 
-		  <dependency>
-			<groupId>net.nurigo</groupId>
-	        <artifactId>javaSDK</artifactId>
-		    <version>2.2</version>
-		  </dependency>
-      
    </dependencies>
 
    <build>
