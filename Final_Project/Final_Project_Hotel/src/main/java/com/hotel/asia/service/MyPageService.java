@@ -45,4 +45,13 @@ public interface MyPageService {
 	public List<String> calcBreakFastDate(String checkIn, long subDate);
 	
 	public Map<String, Map<String, Integer>> getOptPrice(List<OptionReservation> opts, List<Option> optInfo,  int opt_id);
+
+	
+	//결제 데이터 삭제!
+	public void delRezData(int rez_id, String mem_id);
+	//새로운 결제데이터 추가
+	public void addRez(Rez rez); 
+	//새로운 결제데이터 추가
+	public void addOptRez(List<OptionReservation> opt); 
+	public void addPayment(Payment payment);
 }

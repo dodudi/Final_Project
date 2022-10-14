@@ -132,7 +132,6 @@ public class ReservationController {
 					logger.info("[" + dateList2[i+1] + " | 조식 옵션 예약 성공] res=" + res);
 				}
 			}
-			
 			// 디너
 			for(int i = 0; i < dnAdult2.length; i++) {
 				if( !(dnAdult2[i].replaceAll("[^0-9]", "").equals("0") && dnChild2[i].replaceAll("[^0-9]", "").equals("0")) ) {
@@ -152,7 +151,6 @@ public class ReservationController {
 					logger.info("[" + dateList2[i] + " | 디너 옵션 예약 성공] res=" + res);
 				}
 			}
-			
 			// 수영장
 			for(int i = 0; i < spAdult2.length; i++) {
 				if( !(spAdult2[i].replaceAll("[^0-9]", "").equals("0") && spChild2[i].replaceAll("[^0-9]", "").equals("0")) ) {
@@ -179,8 +177,9 @@ public class ReservationController {
 		logger.info("***** [payment] 넘어온 정보 *****");
 		logger.info("*결제번호 : " + pm.getPAYMENT_ID());
 		logger.info("*결제금액 : " + pm.getPAYMENT_PRICE());
-		pm.setROOM_ID(rez.getROOM_ID());
-		pm.setMEM_ID((String) session.getAttribute("id"));
+		//pm.setROOM_ID(rez.getROOM_ID());
+		//pm.setMEM_ID((String) session.getAttribute("id"));
+		pm.setREZ_ID(rez.getREZ_ID());
 		int paymentResult = paymentService.payment(pm);
 		logger.info("[결제 성공 여부] paymentResult=" + paymentResult);
 

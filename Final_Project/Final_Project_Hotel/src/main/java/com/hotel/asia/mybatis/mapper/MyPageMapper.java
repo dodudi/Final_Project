@@ -21,4 +21,14 @@ public interface MyPageMapper {
 	
 	//로그인한 회원 정보 가져오기
 	public Member getMemberData(String mem_id);
+	
+	
+	//예약관련 데이터 삭제
+	public int delOptRez(int rez_id);
+	public int delRez(String mem_id);
+	public int delPayment(int rez_id);
+	
+	public int addRez(Rez rez);
+	public int addOptRez(OptionReservation opt);
+	public int addPayment(Payment payment);
 }
