@@ -277,6 +277,8 @@ $(function(){
   	        		output +='<div class="col-lg-6 roomList">'
   	        			    + '		<div class="room-box background-grey">'
   	        		        + '			<div class="room-name">'+item.ROOM_TYPE+'</div>';
+  	        		output += "<img id='roomImg' src='" + item.ROOM_IMG + "'>";        
+  	        		        
   	        		// 기예약된 객실 비활성화 처리
         			/* for(var i = 0; i<data.rezRoomList2.length; i++){
         				if(data.rezRoomList2[i] == item.ROOM_ID) {
