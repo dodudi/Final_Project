@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -50,7 +51,45 @@ public class ReservationController {
 	}
 	
 	
+	@RequestMapping(value="/reservationCheck", method = RequestMethod.POST)
+	public String reservationCheck(String room_id, String room_type, String room_price , String room_img, 
+										 String checkin, String checkout, String adult, String child, 
+										 ModelAndView mv,
+										 Rez rez,
+										 HttpSession session
+										) {
 	
+	logger.info("넘어온 방번호=" + room_id);
+	logger.info("넘어온 룸 타입=" + room_type);
+	logger.info("넘어온 가격=" + room_price);
+	logger.info("넘어온 룸 이미지=" + room_img);
+	logger.info("넘어온 체크인 날짜=" + checkin);
+	logger.info("넘어온 체크아웃 날짜=" + checkout);
+	logger.info("넘어온 인원수(성인)=" + adult);
+	logger.info("넘어온 인원수(소아)=" + child);
+	
+	return"reservation/reservationCheck";
+	
+	
+
+//	// 1. 객실 예약
+//	rez.setMEM_ID((String) session.getAttribute("id")); // 세션에 있는 아이디를 예약자 이름으로 설정
+//	int result = rezService.reservation(rez); // 객실 예약 추가
+//	
+//	// 객실 예약 실패
+//	if(result == 0) {
+//		logger.info("[객실 예약 실패] result=" + result);
+//		mv.setViewName("에러페이지 설정하기~~");
+//		return mv;
+//	} else { // 객실 예약 성공
+//		logger.info("[객실 예약 성공] result=" + result + " / 추가옵션 예약 시작");
+//		logger.info("[객실 예약 번호] REZ_ID=" + rez.getREZ_ID());
+//		logger.info("[예약된 객실 상태 변경 여부] " + roomService.updateRezState(rez.getROOM_ID()));
+//		mv.setViewName("reservation/reservationCheck");
+//	}
+//		return mv;
+	
+}
 	
 	
 	
