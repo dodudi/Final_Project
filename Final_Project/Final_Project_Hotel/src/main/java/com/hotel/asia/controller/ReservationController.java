@@ -1,5 +1,6 @@
 package com.hotel.asia.controller;
 
+import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,8 +47,6 @@ public class ReservationController {
 	@RequestMapping("/testRez")
 	public String testRoomList(HttpSession session) {
 		
-		logger.info("테스트 유저 아이디 : user01" );
-		session.setAttribute("id", "B1234");
 		return "reservation/testRez";
 	}
 	
@@ -104,10 +103,11 @@ public class ReservationController {
 	// 객실 예약, 추가옵션 예약, 결제
 	@RequestMapping("/reservationRoomOption")
 	public ModelAndView reservationRoomOption(Rez rez, Payment pm,
-											  ModelAndView mv, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws ParseException {
+											  ModelAndView mv, Principal userPrincipal, HttpServletRequest request, HttpServletResponse response) throws ParseException {
+		String loginId = userPrincipal.getName();
 		logger.info("***** [reservationRoomOption] 넘어온 정보 *****");
 		logger.info("* 객실아이디 : " + rez.getROOM_ID());
-		logger.info("* 회원아이디 : " + session.getAttribute("id"));
+		logger.info("* 회원아이디 : " + loginId);
 		logger.info("* 체크인 날짜 : " + rez.getREZ_CHECKIN());
 		logger.info("* 체크아웃 날짜 : " + rez.getREZ_CHECKOUT());
 		logger.info("* 성인 수 : " + rez.getREZ_ADULT());
@@ -138,7 +138,7 @@ public class ReservationController {
 		logger.info("* 수영장 아동 : " + spChild);
 		
 		// 1. 객실 예약
-		rez.setMEM_ID((String) session.getAttribute("id")); // 세션에 있는 아이디를 예약자 이름으로 설정
+		rez.setMEM_ID(loginId); // 세션에 있는 아이디를 예약자 이름으로 설정
 		int result = rezService.reservation(rez); // 객실 예약 추가
 		
 		// 객실 예약 실패
@@ -161,7 +161,7 @@ public class ReservationController {
 					orz.setADULT(Integer.parseInt(bfAdult2[i].replaceAll("[^0-9]", "")));
 					orz.setCHILD(Integer.parseInt(bfChild2[i].replaceAll("[^0-9]", "")));
 					orz.setROOM_ID(rez.getROOM_ID());
-					orz.setMEM_ID((String) session.getAttribute("id"));
+					orz.setMEM_ID(loginId);
 					int res = optionRezService.optReservation(orz);
 					if(res == 0) { // 옵션 예약 실패
 						logger.info("[" + dateList2[i+1] + " | 조식 옵션 예약 실패] res=" + res);
@@ -180,7 +180,7 @@ public class ReservationController {
 					orz.setADULT(Integer.parseInt(dnAdult2[i].replaceAll("[^0-9]", "")));
 					orz.setCHILD(Integer.parseInt(dnChild2[i].replaceAll("[^0-9]", "")));
 					orz.setROOM_ID(rez.getROOM_ID());
-					orz.setMEM_ID((String) session.getAttribute("id"));
+					orz.setMEM_ID(loginId);
 					int res = optionRezService.optReservation(orz);
 					if(res == 0) { // 옵션 예약 실패
 						logger.info("[" + dateList2[i] + " | 디너 옵션 예약 실패] res=" + res);
@@ -199,7 +199,7 @@ public class ReservationController {
 					orz.setADULT(Integer.parseInt(spAdult2[i].replaceAll("[^0-9]", "")));
 					orz.setCHILD(Integer.parseInt(spChild2[i].replaceAll("[^0-9]", "")));
 					orz.setROOM_ID(rez.getROOM_ID());
-					orz.setMEM_ID((String) session.getAttribute("id"));
+					orz.setMEM_ID(loginId);
 					int res = optionRezService.optReservation(orz);
 					if(res == 0) { // 옵션 예약 실패
 						logger.info("[" + dateList2[i] + " | 수영장 옵션 예약 실패] res=" + res);

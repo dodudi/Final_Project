@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -72,6 +73,7 @@ $(function(){
 	function commentList(currentPage) {
 		var token = $("meta[name='_csrf']").attr("content");
 		var header = $("meta[name='_csrf_header']").attr("content");
+		
 		$.ajax({
 			type : "POST",
 			url:"../reviewComm/reviewCommList",
@@ -142,7 +144,7 @@ $(function(){
 						       +  "			</a>"
 						       +  "			<ul class='dropdown-menu'>"		
 						       +  "				<li class='nav-item'><button class='genric-btn default-border' id='commReply'>답댓글</button></li>";
-						if("${id}" == this.MEM_ID || "${id}" == 'admin') { // 로그인 아이디가 관리자 or 댓글 작성자인 경우에만 수정, 삭제 버튼 생김
+						if("${loginId}" == this.MEM_ID || "${loginId}" == 'admin') { // 로그인 아이디가 관리자 or 댓글 작성자인 경우에만 수정, 삭제 버튼 생김
 							output += "			<li class='nav-item'><button class='genric-btn default-border' id='commModify'>수정</button></li>"
 							       +  "			<li class='nav-item'><button class='genric-btn default-border' id='commDelete'>삭제</button></li>";
 						}				
@@ -182,7 +184,7 @@ $(function(){
 			url: "../reviewComm/commWrite",
 			data: {"REVIEW_COMMENT_CONTENT": content, 
 				   "REVIEW_NUM": ${review.REVIEW_NUM}, // 리뷰글 번호
-				   "MEM_ID": "${id}"},
+				   "MEM_ID": "${loginId}"},
 			beforeSend : function(xhr) { 
 	        	xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리		
 	        },
@@ -210,7 +212,7 @@ $(function(){
 		
 		// 답댓글 작성할 입력란 생성
 		var replyTextarea = '<tr>'
-						 + '	<td><img src="${pageContext.request.contextPath}/resources/project_image/review/commReply.png" style="width:30px; height:30px">${id}</td>'
+						 + '	<td><img src="${pageContext.request.contextPath}/resources/project_image/review/commReply.png" style="width:30px; height:30px">${loginId}</td>'
 						 + '	<td>'
 						 + '		<textarea rows="2" class="form-control" maxLength="50" placeholder="총 50자까지 가능합니다."></textarea>'
 						 + '		<input type="hidden" value="' + replyRefNum + '">' // 답댓글 다는 댓글 번호를 새로 생기는 답댓글 입력란 밑에 hidden으로 저장
@@ -236,7 +238,7 @@ $(function(){
 			data: {"REVIEW_NUM": ${review.REVIEW_NUM}, // 리뷰글 번호
 				   "REVIEW_COMMENT_RE_REF": refNum, // 답댓글 다는 댓글
 				   "REVIEW_COMMENT_CONTENT": replyContent, // 답댓글 내용
-				   "MEM_ID": "${id}"},
+				   "MEM_ID": "${loginId}"},
 			beforeSend : function(xhr) { 
 	        	xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리		
 	        },
@@ -381,7 +383,7 @@ $(function(){
 			<tr>
 				<td colspan="4">
 					<!-- 로그인 아이디가 댓글 작성자인 경우에만 추천 버튼 생김 -->
-					<c:if test="${id != review.MEM_ID}">
+					<c:if test="${loginId != review.MEM_ID}">
 						<!-- 기존 추천 여부에 따라 버튼 변경 -->
 						<c:if test="${already == 0}">
 							<button type="button" class="genric-btn primary-border circle" id="recomm">추천</button>
@@ -392,7 +394,7 @@ $(function(){
 					</c:if>
 					
 					<!-- 로그인 아이디가 관리자 or 글 작성자인 경우에만 수정, 삭제 버튼 생김 -->
-					<c:if test="${id == review.MEM_ID || id == 'admin'}">
+					<c:if test="${loginId == review.MEM_ID || loginId == 'admin'}">
 						<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 삭제 모달 안 나오는거 해결 -->
 						<button class="genric-btn danger circle float-right" data-toggle="modal" data-target="#deleteReview">삭제</button>
 						<a href="reviewModifyForm?num=${review.REVIEW_NUM}" class="genric-btn info circle float-right">수정</a>
@@ -405,7 +407,7 @@ $(function(){
 		<div class="modal" id="deleteReview">
 			<div class="modal-dialog">
 				<div class="modal-content">
-					<c:if test="${id == review.MEM_ID}"> <!-- 글 작성자일 때는 비밀번호 입력받음 -->
+					<c:if test="${loginId == review.MEM_ID}"> <!-- 글 작성자일 때는 비밀번호 입력받음 -->
 						<div class="modal-header">
 							<h5>삭제를 위해 글 비밀번호를 입력해주세요.</h5>
 							<button type="button" class="close" data-dismiss="modal">&times;</button> <!-- 모달 닫는 x버튼 -->
@@ -424,7 +426,7 @@ $(function(){
 							</form>
 						</div>
 					</c:if>
-					<c:if test="${id == 'admin'}"> <!-- 관리자일 때는 비밀번호 없이 삭제 가능 -->
+					<c:if test="${loginId == 'admin'}"> <!-- 관리자일 때는 비밀번호 없이 삭제 가능 -->
 						<div class="modal-header">
 							<h5>삭제하시겠습니까?</h5>
 							<button type="button" class="close" data-dismiss="modal">&times;</button> <!-- 모달 닫는 x버튼 -->
@@ -455,7 +457,7 @@ $(function(){
 					</tr>
 					<tr>
 						<td>
-							${id} <!-- 댓글 작성자는 현재 로그인 된 계정주 -->
+							${loginId}
 						</td>
 						<td colspan="2">
 							<textarea rows="3" class="form-control" id="commContent" maxLength="50" placeholder="총 50자까지 가능합니다."></textarea> 
