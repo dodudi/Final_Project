@@ -1,12 +1,17 @@
 package com.hotel.asia.controller;
 
 import java.net.http.HttpRequest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -23,16 +28,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.hotel.asia.dto.Member;
 import com.hotel.asia.dto.Option;
 import com.hotel.asia.dto.OptionId;
 import com.hotel.asia.dto.OptionReservation;
 import com.hotel.asia.dto.Payment;
 import com.hotel.asia.dto.Rez;
 import com.hotel.asia.dto.Room;
+import com.hotel.asia.service.MemberService;
 import com.hotel.asia.service.MyPageServiceImpl;
+import com.hotel.asia.service.OptionRezService;
 import com.hotel.asia.service.OptionService;
+import com.hotel.asia.service.PaymentService;
+import com.hotel.asia.service.RezService;
 import com.hotel.asia.service.RoomService;
-
 
 /*
  * MyPage에 관한 Controller입니다.
@@ -40,14 +49,21 @@ import com.hotel.asia.service.RoomService;
 @Controller
 public class MyPageController {
 	private static final Logger log = LoggerFactory.getLogger(MyPageController.class);
-
+	@Autowired
+	private OptionRezService optionRezService;
 	@Autowired
 	private MyPageServiceImpl myPageService;
 	@Autowired
 	private OptionService optionService;
 	@Autowired
 	private RoomService roomService;
-
+	@Autowired
+	private MemberService memberService;
+	@Autowired
+	private RezService rezService; 
+	@Autowired
+	private PaymentService paymentService;
+	
 	// 객실예약확인 페이지
 	@GetMapping("/mypage/reserve")
 	public String reserve(Model model, HttpSession session) {
@@ -64,8 +80,23 @@ public class MyPageController {
 		List<OptionReservation> swimming = myPageService.getOptRezData(mem_id, OptionId.SWIMMING);
 		Payment payment = myPageService.getPayment(mem_id);
 
-		List<String> allDates = myPageService.calcBreakFastDate(rez.getREZ_CHECKIN(), day);
-		log.info(allDates + "");
+		List<String> allDates = myPageService.calcBreakFastDate(rez.getREZ_CHECKIN(), day + 1);
+
+		// 옵션 리스트 - 옵션별 가격 구하기
+		List<Option> optionInfo = optionService.getOptionList();
+		for (Option oi : optionInfo) {
+			log.info("* " + oi.getOPTION_NAME());
+			log.info("성인가격 : " + oi.getOPTION_DEFAULT_PRICE());
+			log.info("아동가격 : " + oi.getOPTION_CHILD_PRICE());
+		}
+
+		Map<String, Map<String, Integer>> ori_break_prices = myPageService.getOptPrice(breakFast, optionInfo,
+				OptionId.BREAKFAST);
+		Map<String, Map<String, Integer>> ori_dinner_prices = myPageService.getOptPrice(dinner, optionInfo,
+				OptionId.DINNER);
+		Map<String, Map<String, Integer>> ori_swim_prices = myPageService.getOptPrice(swimming, optionInfo,
+				OptionId.SWIMMING);
+
 		model.addAttribute("rezData", rez);
 		model.addAttribute("optBreakFast", breakFast);
 		model.addAttribute("optDinner", dinner);
@@ -73,6 +104,9 @@ public class MyPageController {
 		model.addAttribute("payMentData", payment);
 		model.addAttribute("subDate", day);
 		model.addAttribute("allDates", allDates);
+		model.addAttribute("break_price", ori_break_prices);
+		model.addAttribute("dinner_price", ori_dinner_prices);
+		model.addAttribute("swim_price", ori_swim_prices);
 		// 객실정보 가져오기~
 		return "mypage/mypage_reserve_check";
 	}
@@ -117,9 +151,9 @@ public class MyPageController {
 		String mem_id = session.getAttribute("id").toString();
 
 		Rez rez = myPageService.getRezData(mem_id);
-		session.setAttribute("original_rez", rez);
+		Room room = roomService.getRoomDetail(rez.getROOM_ID());
 		model.addAttribute("rezData", rez);
-
+		model.addAttribute("room_id", room.getROOM_ID());
 		return "reservation/testRezModify";
 	}
 
@@ -215,15 +249,15 @@ public class MyPageController {
 				log.info(b + "->" + a.get(b));
 			}
 		}
-		
-		//옵션아이디
-		//날짜
-		//성인
-		//아동
-		
-		//session.setAttribute("new_rez", rez);
-		//session.setAttribute("", optList)
-		
+
+		// 옵션아이디
+		// 날짜
+		// 성인
+		// 아동
+
+		// session.setAttribute("new_rez", rez);
+		// session.setAttribute("", optList)
+
 		mv.addObject("rez", rez); // 객실 예약 정보
 		mv.addObject("nights", nights); // 숙박일수
 		mv.addObject("dateList", dateList); // 날짜 리스트 (체크인 날짜 ~ 체크아웃 날짜)
@@ -269,14 +303,210 @@ public class MyPageController {
 
 	// 객실 수정 처리! mypage/rezModify.jsp
 	@PostMapping(value = "/mypage/rezModify")
-	public String rezModify(Model model, HttpSession session) {
+	public ModelAndView rezModify(Rez rez, int nights, ModelAndView mv, HttpServletRequest request,
+			HttpSession session) {
 		String mem_id = session.getAttribute("id").toString();
-		//기존예약정보들 삭제
+		// 기존예약정보들 삭제
 		Rez ori_rez = myPageService.getRezData(mem_id);
 		myPageService.delRezData(ori_rez.getREZ_ID(), mem_id);
-		
-		//새로운예약정보 추가
-		return "reservation/rezModify";
+
+		// 넘어온 옵션 예약 인원수
+		String[] dateList = request.getParameterValues("dateList"); // 체크인 날짜 ~ 체크아웃 날짜
+		String[] bfAdult = request.getParameterValues("bfAdult"); // 조식 성인
+		String[] bfChild = request.getParameterValues("bfChild"); // 조식 아동
+		String[] dnAdult = request.getParameterValues("dnAdult"); // 디너 성인
+		String[] dnChild = request.getParameterValues("dnChild"); // 디너 아동
+		String[] spAdult = request.getParameterValues("spAdult"); // 수영장 성인
+		String[] spChild = request.getParameterValues("spChild"); // 수영장 아동
+
+		// 조식
+		List<Map<String, Map<String, Integer>>> optList = new ArrayList<Map<String, Map<String, Integer>>>();
+		for (int i = 1; i <= nights; i++) {
+			Map<String, Integer> bfPeople = new HashMap<String, Integer>();
+			Map<String, Map<String, Integer>> bfDate = new HashMap<String, Map<String, Integer>>();
+			bfPeople.put("bfAdult", Integer.parseInt(bfAdult[i - 1]));
+			bfPeople.put("bfChild", Integer.parseInt(bfChild[i - 1]));
+			bfDate.put(dateList[i], bfPeople);
+			optList.add(bfDate);
+		}
+
+		// 디너
+		for (int i = 1; i <= nights; i++) {
+			Map<String, Integer> dnPeople = new HashMap<String, Integer>();
+			Map<String, Map<String, Integer>> dnDate = new HashMap<String, Map<String, Integer>>();
+			dnPeople.put("dnAdult", Integer.parseInt(dnAdult[i - 1]));
+			dnPeople.put("dnChild", Integer.parseInt(dnChild[i - 1]));
+			dnDate.put(dateList[i - 1], dnPeople);
+			optList.add(dnDate);
+		}
+
+		// 수영장
+		for (int i = 1; i <= nights + 1; i++) {
+			Map<String, Integer> spPeople = new HashMap<String, Integer>();
+			Map<String, Map<String, Integer>> spDate = new HashMap<String, Map<String, Integer>>();
+			spPeople.put("spAdult", Integer.parseInt(spAdult[i - 1]));
+			spPeople.put("spChild", Integer.parseInt(spChild[i - 1]));
+			spDate.put(dateList[i - 1], spPeople);
+			optList.add(spDate);
+		}
+
+		// 객실 정보
+		Room room = roomService.getRoomDetail(rez.getROOM_ID()); // 선택한 객실 정보 구하기 (조회되는 행은 1개)
+
+		// 회원정보
+		Member member = memberService.getMemberInfo((String) session.getAttribute("id")); // 회원 정보 구하기
+
+		// 옵션별 총금액
+		Map<String, Integer> optionPrice = new HashMap<String, Integer>();
+		optionPrice.put("bfTotal", Integer.parseInt(request.getParameter("bfTotal")));
+		optionPrice.put("dnTotal", Integer.parseInt(request.getParameter("dnTotal")));
+		optionPrice.put("spTotal", Integer.parseInt(request.getParameter("spTotal")));
+
+		// 총금액 (객실 + 옵션)
+		int totalPrice = Integer.parseInt(request.getParameter("total").replaceAll(",", ""));
+
+		mv.addObject("rez", rez); // 객실 예약 정보
+		mv.addObject("nights", nights); // 숙박일수
+		mv.addObject("optionPrice", optionPrice); // 옵션별 총금액
+		mv.addObject("room", room); // 객실 정보
+		mv.addObject("member", member); // 회원 정보
+		mv.addObject("totalPrice", totalPrice); // 총금액 (객실 + 옵션)
+
+		// 옵션 예약 인원
+		mv.addObject("dateList", Arrays.toString(dateList)); // 체크인 날짜 ~ 체크아웃 날짜
+		mv.addObject("bfAdult", Arrays.toString(bfAdult)); // 조식 성인
+		mv.addObject("bfChild", Arrays.toString(bfChild)); // 조식 아동
+		mv.addObject("dnAdult", Arrays.toString(dnAdult)); // 디너 성인
+		mv.addObject("dnChild", Arrays.toString(dnChild)); // 디너 아동
+		mv.addObject("spAdult", Arrays.toString(spAdult)); // 수영장 성인
+		mv.addObject("spChild", Arrays.toString(spChild)); // 수영장 아동
+		mv.setViewName("option/memberCheckForm");
+		return mv;
+
+	}
+
+	// ========== [현능] ==========
+	// 객실 예약, 추가옵션 예약, 결제
+	@RequestMapping("/reservationRoomOption")
+	public ModelAndView reservationRoomOption(Rez rez, Payment pm, ModelAndView mv, HttpSession session,
+			HttpServletRequest request, HttpServletResponse response) throws ParseException {
+
+		// 넘어온 옵션 예약 인원수
+		String dateList = request.getParameter("dateList"); // 체크인 날짜 ~ 체크아웃 날짜
+		String[] dateList2 = dateList.split(",");
+		String bfAdult = request.getParameter("bfAdult"); // 조식 성인
+		String[] bfAdult2 = bfAdult.split(",");
+		String bfChild = request.getParameter("bfChild"); // 조식 아동
+		String[] bfChild2 = bfChild.split(",");
+		String dnAdult = request.getParameter("dnAdult"); // 디너 성인
+		String[] dnAdult2 = dnAdult.split(",");
+		String dnChild = request.getParameter("dnChild"); // 디너 아동
+		String[] dnChild2 = dnChild.split(",");
+		String spAdult = request.getParameter("spAdult"); // 수영장 성인
+		String[] spAdult2 = spAdult.split(",");
+		String spChild = request.getParameter("spChild"); // 수영장 아동
+		String[] spChild2 = spChild.split(",");
+
+		// 1. 객실 예약
+		rez.setMEM_ID((String) session.getAttribute("id")); // 세션에 있는 아이디를 예약자 이름으로 설정
+		int result = rezService.reservation(rez); // 객실 예약 추가
+
+		// 객실 예약 실패
+		if (result == 0) {
+			mv.setViewName("에러페이지 설정하기~~");
+			return mv;
+		} else { // 객실 예약 성공
+			// 2. 옵션 예약
+			// 조식
+			for (int i = 0; i < bfAdult2.length; i++) {
+				if (!(bfAdult2[i].replaceAll("[^0-9]", "").equals("0")
+						&& bfChild2[i].replaceAll("[^0-9]", "").equals("0"))) {
+					OptionReservation orz = new OptionReservation();
+					orz.setOPTION_ID(1);
+					orz.setOPTION_RESERVATION_DATE(dateList2[i + 1].replaceAll("[\\[\\] ]", ""));
+					orz.setADULT(Integer.parseInt(bfAdult2[i].replaceAll("[^0-9]", "")));
+					orz.setCHILD(Integer.parseInt(bfChild2[i].replaceAll("[^0-9]", "")));
+					orz.setROOM_ID(rez.getROOM_ID());
+					orz.setMEM_ID((String) session.getAttribute("id"));
+					int res = optionRezService.optReservation(orz);
+					if (res == 0) { // 옵션 예약 실패
+						mv.setViewName("에러페이지 설정하기~~");
+						return mv;
+					}
+				}
+			}
+			// 디너
+			for (int i = 0; i < dnAdult2.length; i++) {
+				if (!(dnAdult2[i].replaceAll("[^0-9]", "").equals("0")
+						&& dnChild2[i].replaceAll("[^0-9]", "").equals("0"))) {
+					OptionReservation orz = new OptionReservation();
+					orz.setOPTION_ID(2);
+					orz.setOPTION_RESERVATION_DATE(dateList2[i].replaceAll("[\\[\\] ]", ""));
+					orz.setADULT(Integer.parseInt(dnAdult2[i].replaceAll("[^0-9]", "")));
+					orz.setCHILD(Integer.parseInt(dnChild2[i].replaceAll("[^0-9]", "")));
+					orz.setROOM_ID(rez.getROOM_ID());
+					orz.setMEM_ID((String) session.getAttribute("id"));
+					int res = optionRezService.optReservation(orz);
+					if (res == 0) { // 옵션 예약 실패
+						mv.setViewName("에러페이지 설정하기~~");
+						return mv;
+					}
+				}
+			}
+			// 수영장
+			for (int i = 0; i < spAdult2.length; i++) {
+				if (!(spAdult2[i].replaceAll("[^0-9]", "").equals("0")
+						&& spChild2[i].replaceAll("[^0-9]", "").equals("0"))) {
+					OptionReservation orz = new OptionReservation();
+					orz.setOPTION_ID(3);
+					orz.setOPTION_RESERVATION_DATE(dateList2[i].replaceAll("[\\[\\] ]", ""));
+					orz.setADULT(Integer.parseInt(spAdult2[i].replaceAll("[^0-9]", "")));
+					orz.setCHILD(Integer.parseInt(spChild2[i].replaceAll("[^0-9]", "")));
+					orz.setROOM_ID(rez.getROOM_ID());
+					orz.setMEM_ID((String) session.getAttribute("id"));
+					int res = optionRezService.optReservation(orz);
+					if (res == 0) { // 옵션 예약 실패
+						mv.setViewName("에러페이지 설정하기~~");
+						return mv;
+					}
+				}
+			}
+		} // 객실, 옵션 예약 end
+
+		// 3. 결제정보 DB저장
+		// pm.setROOM_ID(rez.getROOM_ID());
+		// pm.setMEM_ID((String) session.getAttribute("id"));
+		pm.setREZ_ID(rez.getREZ_ID());
+		int paymentResult = paymentService.payment(pm);
+
+		// 숙박일수 계산
+		String date1 = rez.getREZ_CHECKOUT(); // 체크아웃 날짜
+		String date2 = rez.getREZ_CHECKIN(); // 체크인 날짜
+		Date format1 = new SimpleDateFormat("yyyy-MM-dd").parse(date1);
+		Date format2 = new SimpleDateFormat("yyyy-MM-dd").parse(date2);
+		long diffSec = (format1.getTime() - format2.getTime()) / 1000; // 초 차이
+		long nights = diffSec / (24 * 60 * 60); // 일자 수 차이
+		// 체크인 날짜 ~ 체크아웃 날짜
+		List<String> dateList3 = new ArrayList<String>();
+		for (int i = 0; i < dateList2.length; i++) {
+			dateList3.add(dateList2[i].replaceAll("[\\[\\] ]", ""));
+		}
+
+		int optRezListCount = optionRezService.getOptRezListCount(rez.getREZ_ID()); // 옵션 예약 리스트 갯수
+		List<OptionReservation> optRezList = optionRezService.getOptRezList(rez.getREZ_ID()); // 옵션 예약 리스트
+		Room room = roomService.getRoomDetail(rez.getROOM_ID()); // 객실 정보
+		// Member member = memberService. // 예약자 정보 - 나중에 회원쪽 끝나면 예약자 정보 구해서 예약 확인페이지에
+		// 예약자명 이름으로 출력하기~~
+
+		mv.addObject("optRezListCount", optRezListCount); // 옵션 예약 리스트 갯수
+		mv.addObject("optRezList", optRezList); // 옵션 예약 리스트
+		mv.addObject("rez", rez); // 객실 예약 정보
+		mv.addObject("room", room); // 객실 정보
+		mv.addObject("paymentInfo", pm); // 결제 정보
+		mv.addObject("nights", nights); // 숙박일수
+		mv.addObject("dateList", dateList3); // 체크인 날짜 ~ 체크아웃 날짜 (list)
+		mv.setViewName("reservation/reservationComplete");
+		return mv;
 	}
 
 	// 질문게시판 페이지
