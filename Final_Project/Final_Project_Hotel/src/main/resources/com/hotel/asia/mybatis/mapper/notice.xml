@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--  SQL 맵퍼 파일은 xml이기 때문에 제일 먼저 xml 선언이 옵니다. -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hotel.asia.mybatis.mapper.NoticeMapper">
+
+   <select id="getListCount" resultType="int">
+       select count(*) from notice_board
+   </select>
+   
+   <insert id = "write" parameterType="notice">
+       <selectKey resultType="int"    order="BEFORE"
+                  keyProperty="NOTICE_NUM">
+          select nvl(max(NOTICE_NUM),0)+1 from notice_board        
+       </selectKey>
+       insert into notice_board
+       (NOTICE_NUM, NOTICE_SUBJECT,
+        NOTICE_CONTENT, NOTICE_ORIGINAL, NOTICE_FILE,
+        NOTICE_READCOUNT, NOTICE_DATE)
+        values
+        (#{NOTICE_NUM},#{NOTICE_SUBJECT},
+         #{NOTICE_CONTENT}, #{NOTICE_ORIGINAL, jdbcType=VARCHAR}, #{NOTICE_FILE, jdbcType=VARCHAR},
+         #{NOTICE_READCOUNT}, sysdate)
+    </insert>
+    
+    
+    <select id="getNoticeList" parameterType="java.util.Map" resultType="notice">
+		select * from 
+		  ( select rownum rnum, b.*
+		    from 
+		         (select * from notice_board
+		          order by NOTICE_NUM  desc 
+		         ) b
+		    where rownum &lt;=  #{endrow}      
+		   ) 
+	     where rnum &gt;= #{startrow} and rnum  &lt;=  #{endrow}
+	</select>
+
+
+
+    <update id="setReadCountUpdate" parameterType="int">
+       update notice_board
+       set    NOTICE_READCOUNT=NOTICE_READCOUNT+1
+       where  NOTICE_NUM=#{number}
+    </update>
+    
+    
+    
+    <select id="getDetail" parameterType="int" resultType="notice">
+       select *
+       from   notice_board
+       where  NOTICE_NUM=#{number}
+    </select>
+    
+    
+    
+    <delete id="delete" parameterType="int">
+		delete from notice_board
+		where  NOTICE_NUM = #{NOTICE_NUM}
+	</delete>
+	
+	
+	
+	<update id="modify" parameterType="notice">
+		update notice_board
+	    set    NOTICE_SUBJECT = #{NOTICE_SUBJECT},
+		       NOTICE_CONTENT = #{NOTICE_CONTENT}
+	    where  NOTICE_NUM = #{NOTICE_NUM}
+	</update>
+    
+    
+
+    
+    
+</mapper>
