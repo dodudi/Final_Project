@@ -13,6 +13,10 @@
 </style>
 <script>
 $(function(){
+	// 휴대폰번호 '-' 없애서 넣음
+	$("input[name='MEM_PHONE']").val("${member.MEM_PHONE}".replaceAll("-",""))
+	
+	
 	// 휴대폰번호 변경 여부 확인
 	var phoneAuthChk = true;
 	var originalPhone = "${member.MEM_PHONE}"; // 기존 휴대폰번호
@@ -179,7 +183,7 @@ function payment() {
 	                       			<tr>
 	                       				<th>연락처</th>
 	                       				<td>
-	                       					<input type="text" name="MEM_PHONE" value="${member.MEM_PHONE}" style="backgroundcolor:white;">
+	                       					<input type="text" name="MEM_PHONE" style="backgroundcolor:white;">
 	                       					<input type="hidden" name="phoneAuth" maxlength="6"> <!-- 인증번호 입력하는 곳 -->
 	                       					<input type="hidden" name="phoneAuthBtn" value="인증번호 확인"> <!-- 인증번호 입력 후 일치하는지 확인 버튼 -->
 	                       					<button type="button" class="genric-btn info-border circle" id="phoneChkBtn" disabled style="pointer-events: none;">인증하기</button>

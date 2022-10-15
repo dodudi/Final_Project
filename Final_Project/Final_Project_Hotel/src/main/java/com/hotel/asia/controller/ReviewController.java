@@ -3,6 +3,7 @@ package com.hotel.asia.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,7 +14,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -60,9 +60,7 @@ public class ReviewController {
 								   @RequestParam(value="sortBy", defaultValue="REVIEW_DATE", required=false) String sortBy, // 정렬기준
 								   @RequestParam(value="search_field", defaultValue="-1", required=false) int index, // 검색 기준
 								   @RequestParam(value="search_word", defaultValue="", required=false) String search_word, // 검색어
-			                       ModelAndView mv, HttpSession session) {
-		session.setAttribute("id", "B1234"); // ======임시로 id 저장 나중에 지우기!!
-		
+			                       ModelAndView mv) {
 		logger.info("=====[reviewList] 리뷰게시판 이동=====");
 		List<ReviewBoard> reviewList = new ArrayList<ReviewBoard>(); // 게시글 담을 리스트
 		int limit = 10; // 한 페이지에 보여줄 게시판 목록의 수 (한 화면에 출력할 로우 갯수)
@@ -170,7 +168,7 @@ public class ReviewController {
 	
 	// 리뷰 게시글 작성 폼
 	@RequestMapping(value="/reviewWriteForm")
-	public ModelAndView  reviewWriteForm(ModelAndView mv, HttpSession session) {
+	public ModelAndView  reviewWriteForm(ModelAndView mv) {
 		logger.info("리뷰게시글 작성 폼 이동");
 		mv.setViewName("review/reviewWriteForm");
 		return mv;
@@ -178,14 +176,14 @@ public class ReviewController {
 	
 	// 리뷰 게시글 작성
 	@RequestMapping(value="/reviewWrite")
-	public String reviewWrite(ReviewBoard rb, ModelAndView mv, HttpSession session, RedirectAttributes rattr) {
+	public String reviewWrite(ReviewBoard rb, ModelAndView mv, RedirectAttributes rattr, Principal userPrincipal) {
 		logger.info("=====[reviewWrite]=====");
 		logger.info("*제목: " + rb.getREVIEW_SUBJECT());
 		logger.info("*비번: " + rb.getREVIEW_PASS());
 		logger.info("*내용: " + rb.getREVIEW_CONTENT());
-		logger.info("*작성자: " + (String)session.getAttribute("id"));
+		logger.info("*작성자: " + userPrincipal.getName());
 		
-		rb.setMEM_ID((String)session.getAttribute("id")); // 작성자는 로그인된 계정
+		rb.setMEM_ID(userPrincipal.getName()); // 작성자는 로그인된 계정
 		int result = reviewBoardService.write(rb); // 글 작성
 		
 		if(result == 0) {
@@ -195,7 +193,7 @@ public class ReviewController {
 		} else {
 			logger.info("[글 작성 성공] result = " + result);
 			logger.info("[작성된 글의 REVIEW_NUM] " + rb.getREVIEW_NUM());
-			int ptResult = memberService.rewardPoint((String)session.getAttribute("id"), 100); // 리뷰 작성 시 포인트 적립
+			int ptResult = memberService.rewardPoint(userPrincipal.getName(), 100); // 리뷰 작성 시 포인트 적립
 			logger.info("[리뷰포인트 적립여부] ptResult = " + ptResult);
 			rattr.addAttribute("num", rb.getREVIEW_NUM());
 		}
@@ -233,7 +231,7 @@ public class ReviewController {
 	
 	// 리뷰글 보기
 	@GetMapping(value="/reviewDetail")
-	public ModelAndView reviewDetail(int num, ModelAndView mv, HttpServletRequest request, HttpSession session,
+	public ModelAndView reviewDetail(int num, ModelAndView mv, HttpServletRequest request, Principal userPrincipal,
 							         @RequestHeader(value="referer") String beforeURL) {
 		logger.info("referer:" + beforeURL);
 		if(beforeURL.endsWith("reviewList")) { // hotel/review/reviewList 에서 제목을 클릭한 경우 조회수 증가
@@ -242,7 +240,7 @@ public class ReviewController {
 		ReviewBoard review = reviewBoardService.getDetail(num);
 		
 		// 이미 추천한 사람인지 확인
-		int already = reviewBoardService.reviewRecommMem(num, (String)session.getAttribute("id"));
+		int already = reviewBoardService.reviewRecommMem(num, userPrincipal.getName());
 		logger.info("*reviewRecommMem => " + already + " (기존에 있으면 1, 없으면 0)");
 		
 		// 새 글 new 표시 하기 위한 하루 전 시각 구하기
@@ -261,6 +259,7 @@ public class ReviewController {
 			logger.info("상세보기 성공");
 			int count = reviewCommService.getCommListCount(num); // 총 댓글 수
 			mv.setViewName("review/reviewDetail");
+			mv.addObject("loginId", userPrincipal.getName()); // 현재 로그인된 아이디
 			mv.addObject("count", count);
 			mv.addObject("review", review);
 			mv.addObject("already", already); // 이미 추천한 사람인지 확인
@@ -289,13 +288,13 @@ public class ReviewController {
 	}
 	// 리뷰글 수정
 	@RequestMapping(value="/reviewModify")
-	public String reviewModify(ReviewBoard rb, ModelAndView mv, HttpSession session, RedirectAttributes rattr) {
+	public String reviewModify(ReviewBoard rb, ModelAndView mv, RedirectAttributes rattr, Principal userPrincipal) {
 		logger.info("=====[reviewModify]=====");
 		logger.info("*번호: " + rb.getREVIEW_NUM());
 		logger.info("*제목: " + rb.getREVIEW_SUBJECT());
 		logger.info("*비번: " + rb.getREVIEW_PASS());
 		logger.info("*내용: " + rb.getREVIEW_CONTENT());
-		logger.info("*작성자: " + (String)session.getAttribute("id"));
+		logger.info("*작성자: " + userPrincipal.getName());
 		
 		// 글 수정 시 비밀번호 맞는지 확인
 		boolean usercheck = reviewBoardService.isReviewWriter(rb.getREVIEW_NUM(), rb.getREVIEW_PASS());
@@ -307,7 +306,7 @@ public class ReviewController {
 			return "redirect:reviewModifyForm"; // 비밀번호 다른 경우 수정 폼으로 다시 돌아가서 alert("비밀번호가 다릅니다.");
 		}
 		
-		rb.setMEM_ID((String)session.getAttribute("id"));
+		rb.setMEM_ID(userPrincipal.getName());
 		int result = reviewBoardService.modify(rb); // 리뷰 수정
 		
 		if(result == 0) {
@@ -358,9 +357,9 @@ public class ReviewController {
 	// 리뷰 추천
 	@ResponseBody
 	@RequestMapping(value="/reviewRecomm")
-	public Map<String, Integer> reviewRecomm(int REVIEW_NUM, HttpSession session) {
+	public Map<String, Integer> reviewRecomm(int REVIEW_NUM, Principal userPrincipal) {
 		logger.info("=====[reviewRecomm] 리뷰 추천=====");
-		String id = (String)session.getAttribute("id");
+		String id = userPrincipal.getName();
 		
 		// 이미 추천한 사람인지 확인
 		int already = reviewBoardService.reviewRecommMem(REVIEW_NUM, id);

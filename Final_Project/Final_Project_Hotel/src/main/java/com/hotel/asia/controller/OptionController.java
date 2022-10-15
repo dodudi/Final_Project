@@ -1,5 +1,6 @@
 package com.hotel.asia.controller;
 
+import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,10 +43,11 @@ public class OptionController {
 	
 	// 옵션 선택 폼
 	@PostMapping("/optionForm")
-	public ModelAndView optionForm(Rez rez, ModelAndView mv, HttpSession session) throws ParseException {
+	public ModelAndView optionForm(Rez rez, ModelAndView mv, Principal userPrincipal) throws ParseException {
+		String loginId = userPrincipal.getName();
 		logger.info("***** [optionForm] 넘어온 정보 *****");
 		logger.info("* 객실아이디 : " + rez.getROOM_ID());
-		logger.info("* 회원아이디 : " + session.getAttribute("id"));
+		logger.info("* 회원아이디 : " + loginId);
 		logger.info("* 체크인 날짜 : " + rez.getREZ_CHECKIN());
 		logger.info("* 체크아웃 날짜 : " + rez.getREZ_CHECKOUT());
 		logger.info("* 성인 수 : " + rez.getREZ_ADULT());
@@ -77,10 +79,11 @@ public class OptionController {
 	
 	// 옵션 선택 후 예약정보 확인 폼
 	@PostMapping("/optionCheck")
-	public ModelAndView optionCheck(Rez rez, int nights, ModelAndView mv, HttpServletRequest request,HttpSession session) {
+	public ModelAndView optionCheck(Rez rez, int nights, ModelAndView mv, HttpServletRequest request, Principal userPrincipal) {
+		String loginId = userPrincipal.getName();
 		logger.info("***** [optionCheck] 넘어온 정보 *****");
 		logger.info("* 객실아이디 : " + rez.getROOM_ID());
-		logger.info("* 회원아이디 : " + session.getAttribute("id"));
+		logger.info("* 회원아이디 : " + loginId);
 		logger.info("* 체크인 날짜 : " + rez.getREZ_CHECKIN());
 		logger.info("* 체크아웃 날짜 : " + rez.getREZ_CHECKOUT());
 		logger.info("* 성인 수 : " + rez.getREZ_ADULT());
@@ -172,10 +175,11 @@ public class OptionController {
 	// 예약정보 확인 후 회원 정보 확인 폼
 	@PostMapping("/memberCheck")
 	public ModelAndView memberCheck(Rez rez, int nights,
-									ModelAndView mv, HttpServletRequest request, HttpSession session) {
+									ModelAndView mv, HttpServletRequest request, Principal userPrincipal) {
+		String loginId = userPrincipal.getName();
 		logger.info("***** [memberCheck] 넘어온 정보 *****");
 		logger.info("* 객실아이디 : " + rez.getROOM_ID());
-		logger.info("* 회원아이디 : " + session.getAttribute("id"));
+		logger.info("* 회원아이디 : " + loginId);
 		logger.info("* 체크인 날짜 : " + rez.getREZ_CHECKIN());
 		logger.info("* 체크아웃 날짜 : " + rez.getREZ_CHECKOUT());
 		logger.info("* 성인 수 : " + rez.getREZ_ADULT());
@@ -236,7 +240,7 @@ public class OptionController {
 		logger.info("** 선택된 객실 가격 =>" + room.getROOM_PRICE());
 		
 		// 회원정보
-		Member member = memberService.getMemberInfo((String)session.getAttribute("id")); // 회원 정보 구하기
+		Member member = memberService.getMemberInfo(loginId); // 회원 정보 구하기
 		
 		// 옵션별 총금액
 		Map<String, Integer> optionPrice = new HashMap<String, Integer>();
