@@ -407,7 +407,7 @@ $(function(){
 		<div class="modal" id="deleteReview">
 			<div class="modal-dialog">
 				<div class="modal-content">
-					<c:if test="${loginId == review.MEM_ID}"> <!-- 글 작성자일 때는 비밀번호 입력받음 -->
+					<c:if test="${loginId == review.MEM_ID && loginId != 'admin'}"> <!-- 글 작성자일 때는 비밀번호 입력받음 -->
 						<div class="modal-header">
 							<h5>삭제를 위해 글 비밀번호를 입력해주세요.</h5>
 							<button type="button" class="close" data-dismiss="modal">&times;</button> <!-- 모달 닫는 x버튼 -->
