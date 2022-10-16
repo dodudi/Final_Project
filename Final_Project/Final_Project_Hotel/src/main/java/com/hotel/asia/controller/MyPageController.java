@@ -35,6 +35,8 @@ import com.hotel.asia.dto.OptionReservation;
 import com.hotel.asia.dto.Payment;
 import com.hotel.asia.dto.Rez;
 import com.hotel.asia.dto.Room;
+import com.hotel.asia.module.PageCalc;
+import com.hotel.asia.module.PageData;
 import com.hotel.asia.service.MemberService;
 import com.hotel.asia.service.MyPageServiceImpl;
 import com.hotel.asia.service.OptionRezService;
@@ -60,10 +62,10 @@ public class MyPageController {
 	@Autowired
 	private MemberService memberService;
 	@Autowired
-	private RezService rezService; 
+	private RezService rezService;
 	@Autowired
 	private PaymentService paymentService;
-	
+
 	// 객실예약확인 페이지
 	@GetMapping("/mypage/reserve")
 	public String reserve(Model model, HttpSession session) {
@@ -385,7 +387,6 @@ public class MyPageController {
 
 	}
 
-	// ========== [현능] ==========
 	// 객실 예약, 추가옵션 예약, 결제
 	@RequestMapping("/reservationRoomOption")
 	public ModelAndView reservationRoomOption(Rez rez, Payment pm, ModelAndView mv, HttpSession session,
@@ -511,7 +512,8 @@ public class MyPageController {
 
 	// 질문게시판 페이지
 	@GetMapping("/mypage/question")
-	public String question() {
+	public String question(PageData pageData) {
+		new PageCalc(pageData.getItemLimit(), 10, pageData);
 		// 질문정보 가져오기~
 		return "mypage/mypage_question_check";
 	}
