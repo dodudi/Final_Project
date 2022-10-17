@@ -71,8 +71,8 @@ public class MyPageController {
 	public String reserve(Model model, HttpSession session) {
 
 		String mem_id = "user01";
-
-		mem_id = "user01";
+		session.setAttribute("id", mem_id);
+		
 		Rez rez = myPageService.getRezData(mem_id);
 		long day = myPageService.getDateSub(rez.getREZ_CHECKOUT(), rez.getREZ_CHECKIN());
 		log.info(day + "");
@@ -512,8 +512,14 @@ public class MyPageController {
 
 	// 질문게시판 페이지
 	@GetMapping("/mypage/question")
-	public String question(PageData pageData) {
-		new PageCalc(pageData.getItemLimit(), 10, pageData);
+	public String question(Model model, PageData pageData, HttpSession session) {
+		String mem_id =  session.getAttribute("id").toString();
+		
+		int total = myPageService.getQuestionBoardCount(mem_id);
+		
+		PageCalc pageCalc = new PageCalc(total, pageData.getItemLimit(), pageData);
+		model.addAttribute("pageCalc",pageCalc);
+		
 		// 질문정보 가져오기~
 		return "mypage/mypage_question_check";
 	}
