@@ -45,8 +45,8 @@
                      <li class="nav-item submenu dropdown">
                          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">커뮤니티</a>
                          <ul class="dropdown-menu">
-                             <li class="nav-item"><a class="nav-link" href="info">공지사항</a></li>
-                             <li class="nav-item"><a class="nav-link" href="qna">문의사항</a></li>
+                             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/notice/list">공지사항</a></li>
+                             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/question/list">문의사항</a></li>
                              <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/review/reviewList">리뷰보드</a></li> <!-- 현능: 리뷰게시판 경로 수정 -->
                          </ul>
                      </li> 
@@ -75,8 +75,8 @@
 	                     <li class="nav-item submenu dropdown">
 	                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">관리자페이지</a>
 	                         <ul class="dropdown-menu">
-	                             <li class="nav-item"><a class="nav-link" href="info">공지사항</a></li>
-	                             <li class="nav-item"><a class="nav-link" href="qna">문의사항</a></li>
+	                             <li class="nav-item"><a class="nav-link" href="notice/list">공지사항</a></li>
+	                             <li class="nav-item"><a class="nav-link" href="question/list">문의사항</a></li>
 	                             <li class="nav-item"><a class="nav-link" href="member/list">회원리스트</a></li>
 	                             <li class="nav-item"><a class="nav-link" href="member/update">정보수정</a></li>
 	                         </ul>
