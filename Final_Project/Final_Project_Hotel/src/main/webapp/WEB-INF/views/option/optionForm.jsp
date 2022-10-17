@@ -199,7 +199,6 @@ $(function(){
 	                       		<table class="table" id="bfTable">
 	                       			<caption style="caption-side:top">
 	                       				<strong>조식</strong>
-	                       				<img src="${pageContext.request.contextPath}/resources/project_image/option/question.png" style="width:20px; height:20px">
 	                       				<img src="${pageContext.request.contextPath}/resources/project_image/option/underarrow.png" id="bfHide">
 	                       			</caption>
 	                       			<c:forEach var="nights" begin="1" end="${nights}">
@@ -251,7 +250,6 @@ $(function(){
 	                       		<table class="table" id="dnTable">
 	                       			<caption style="caption-side:top">
 	                       				<strong>디너</strong>
-	                       				<img src="${pageContext.request.contextPath}/resources/project_image/option/question.png" style="width:20px; height:20px">
 	                       				<img src="${pageContext.request.contextPath}/resources/project_image/option/underarrow.png" id="dnHide">
 	                       			</caption>
 	                       			<c:forEach var="nights" begin="1" end="${nights}">
@@ -302,7 +300,6 @@ $(function(){
 	                       		<table class="table" id="spTable">
 	                       			<caption style="caption-side:top">
 	                       				<strong>수영장</strong>
-	                       				<img src="${pageContext.request.contextPath}/resources/project_image/option/question.png" style="width:20px; height:20px">
 	                       				<img src="${pageContext.request.contextPath}/resources/project_image/option/underarrow.png" id="spHide">
 	                       			</caption>
 	                       			<c:forEach var="nights" begin="1" end="${nights + 1}">
@@ -372,7 +369,11 @@ $(function(){
 	                        			<th>숙박일수</th><td><h6 style="float:left"><input type="text" name="nights" value="${nights}" onfocus="this.blur();" style="width:10px">박</h6></td>
 	                        		</tr>
 	                        		<tr>	
-	                        			<th>객실명 (or객실id)</th><td><input type="text" name="ROOM_ID" value="${rez.ROOM_ID}" onfocus="this.blur();"></td> <!-- 아이디나올지 타입나올지 상의하기 -->
+	                        			<th>객실명</th>
+	                        			<td>
+	                        				<input type="text" value="${room.ROOM_TYPE}" onfocus="this.blur();">
+	                        				<input type="hidden" name="ROOM_ID" value="${rez.ROOM_ID}">
+	                        			</td>
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>인원수</th>

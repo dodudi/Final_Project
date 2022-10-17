@@ -10,6 +10,10 @@
 <title>예약정보 확인</title>
 <style>
 	input[readonly] {border:none; width:80px}
+	
+	.imgDiv {overflow:hidden; border-radius:10%;} /* 이미지 태그 감싸고 있는 div */
+	.img {width:290px; height:194px; transition:all 0.2s linear;}
+	.img:hover {transform: scale(1.4);}
 </style>
 <script>
 $(function(){
@@ -47,26 +51,27 @@ $(function(){
     <section class="contact_area section_gap">
         <div class="container">
             <div class="row">
-                <div class="col-md-3">
-                    <div class="contact_info">
-                        <div class="info_item">
-                            <h6>객실사진넣기</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-9">
-                    <form class="row contact_form" action="" method="post">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                            	<span>객실명</span>
-                                <input type="text" class="form-control" name="ROOM_ID" value="${rez.ROOM_ID}">
-                            </div>
-                            <div class="form-group">
-                                <a class="book_now_btn button_hover" href="#">객실 상세보기</a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+            	<div class="col-md-12">
+            		<div class="contact_info">
+            			<div class="info_item">
+            				<table>
+            					<tr>
+            						<td rowspan="2" style="padding-right:20px">
+            							<div class="imgDiv">
+            								<img class="img" src="${room.ROOM_IMG}">
+            							</div>
+            						</td>
+            						<td><span style="font-size:20pt;">${room.ROOM_TYPE}</span></td>
+            					</tr>
+            					<tr>
+            						<td>
+            							<a class="btn theme_btn button_hover" href="../room/roomDetail?num=${rez.ROOM_ID}" target='_blank'><strong>객실 상세보기</strong></a>
+            						</td>
+            					</tr>
+            				</table>
+	                	</div>
+	                </div>
+	        	</div>   
             </div>
         </div>
         <br><br>
@@ -86,7 +91,10 @@ $(function(){
 	                            		<c:forEach var="dl" items="${dateList}">
 		                            		<tr>
 		                            			<th><input type="text" name="dateList" value="${dl}" onfocus="this.blur();"></th>
-		                            			<th>객실명or아이디<input type="text" name="ROOM_ID" value="${rez.ROOM_ID}" onfocus="this.blur();"></th>
+		                            			<th>객실명:
+		                            				<input type="text" value="${room.ROOM_TYPE}" onfocus="this.blur();">
+		                            				<input type="hidden" name="ROOM_ID" value="${rez.ROOM_ID}">
+		                            			</th>
 		                            			<td>
 		                            				 <!-- 체크아웃 날짜는 숙박하지 않으므로 객실 금액이 부과되지 않는다 (0원) -->
 		                            				<c:if test="${dl != rez.REZ_CHECKOUT}">
