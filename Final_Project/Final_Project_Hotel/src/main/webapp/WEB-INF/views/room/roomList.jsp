@@ -65,23 +65,17 @@ $(function(){
 		  return false;
 	  }else if($("#adult").val() == "0" && $("#adult").val() == "0"){
 		  alert("인원을 선택해주세요.");
-	  }else if($("input[name='check']:checked").length==0){
-		alert("객실 타입을 체크해주세요.");
 		  return false;
-	}
+	  }else if($("input[name='check']:checked").length==0){
+		  alert("객실 타입을 체크해주세요.");
+		  return false;
+	  }
 	
 
 
 	  // 1. 인원 수 산정
       var adults = $("select[name='adults']").val(); // 선택된 성인 수
       var children = $("select[name='children']").val(); // 선택된 아동 수
-      // select 선택값이 '성인', '소아' 인 경우 0으로 처리
-      if(isNaN(adults)) {
-         adults = 0;
-      }
-      if(isNaN(children)) {
-         children = 0;
-      }
       var people = parseInt(adults) + parseInt(children); // 총 인원 수
       console.log("선택된 성인 수: " + adults);
       console.log("선택된 아동 수: " + children);
