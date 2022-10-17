@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import com.hotel.asia.dto.Option;
 import com.hotel.asia.dto.OptionReservation;
 import com.hotel.asia.dto.Payment;
 import com.hotel.asia.dto.Rez;
+import com.hotel.asia.module.PageCalc;
 import com.hotel.asia.mybatis.mapper.MyPageMapper;
 
 @Service
@@ -54,4 +56,9 @@ public interface MyPageService {
 	//새로운 결제데이터 추가
 	public void addOptRez(List<OptionReservation> opt); 
 	public void addPayment(Payment payment);
+	
+	
+	//질문 게시판----------------------------------------
+	public int getQuestionBoardCount(String mem_id);
+	public List<Integer> getQuestionBoard(HashMap<String, Object> data);
 }

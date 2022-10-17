@@ -6,7 +6,7 @@ public class PageData {
 	//아이템 개수 제한
 	private int itemLimit;
 	
-	private final static int DEFAULT_PAGE_NUM = 1;
+	private final static int DEFAULT_PAGE_NUM =1;
 	private final static int DEFAULT_ITEM_COUNT = 10;
 	
 	public PageData() {

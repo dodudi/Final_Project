@@ -20,6 +20,7 @@ import com.hotel.asia.dto.Option;
 import com.hotel.asia.dto.OptionReservation;
 import com.hotel.asia.dto.Payment;
 import com.hotel.asia.dto.Rez;
+import com.hotel.asia.module.PageCalc;
 import com.hotel.asia.mybatis.mapper.MyPageMapper;
 
 @Service
@@ -149,7 +150,8 @@ public class MyPageServiceImpl implements MyPageService {
 		myPageMapper.delRez(mem_id);
 		log.info("<MyPageServiceImpl> 객실예약 삭제 완료");
 	}
-
+	
+	// 결제 추가
 	public void addRez(Rez rez) {
 		myPageMapper.addRez(rez);
 	}
@@ -164,5 +166,17 @@ public class MyPageServiceImpl implements MyPageService {
 	public void addPayment(Payment payment) {
 		myPageMapper.addPayment(payment);
 	}
+
+	
+	//질문게시판-------------------------------------------------------------------------
+	public int getQuestionBoardCount(String mem_id) {
+		return myPageMapper.getQuestionBoardCount(mem_id);
+	}
+
+	@Override
+	public List<Integer> getQuestionBoard(HashMap<String, Object> data) {
+		return myPageMapper.getQuestionBoard(data);
+	}
+	
 
 }
