@@ -270,7 +270,7 @@ $(function(){
 	        	$(data.roomList).each(function(index, item) {
 	        		output +='<div class="col-lg-6 roomList">'
 	        			    + '		<div class="room-box background-grey">'
-	        		        + '			<div class="room-name">'+item.ROOM_TYPE+'</div>';
+	        		        + '			<div class="room-name">' + item.ROOM_TYPE + '</div>';
 	        		
 	        		output += "<img src='" + item.ROOM_IMG + "'";
 	        		$(data.rezRoomList2).each(function(i) {
@@ -286,13 +286,14 @@ $(function(){
 	  	        	})
 	        		        
 	        		output += '<div class="room-box-in">'
-	        		        + '		<h5>'+item.ROOM_TYPE+'</h5>'
-	        		        + '		<p class="mt-3">'+item.ROOM_DETAIL+'</p>';
+	        		        + '		<h5>' + item.ROOM_TYPE + '</h5>'
+	        		        + '		<p class="mt-3">' + item.ROOM_DETAIL + '</p>';
+	        		output += "<input type='hidden' value='" + item.ROOM_ID + "'>";
 	        		       
 	        		output += '<button type="button" class="mt-1 btn btn-warning"';
 	        		$(data.rezRoomList2).each(function(i) {
 	        			if(item.ROOM_ID == data.rezRoomList2[i] || item.ROOM_MAX < people){
-	        				output += ' style="background-color:lightgray" disabled';//' style="background-color:lightgray">';
+	        				output += ' style="background-color:lightgray" disabled';
 	        			} 
 	  	        	})
 	  	        	output += '>'
@@ -565,14 +566,11 @@ $('.checkbox').click(function(){
     	 form.action = '../reservation/reservationCheck';
     	 form.method = 'POST';
 
-    	 form.innerHTML = '<input name="room_id" value=' + $(this).prev().val() + '>'
+    	 form.innerHTML = '<input name="room_id" value=' + $(this).parent().find("input[type='hidden']").val() + '>'
     	 form.innerHTML += '<input name="checkin" value=' + $('#sdate').val() + '>'
     	 form.innerHTML += '<input name="checkout" value=' + $('#edate').val() + '>'
     	 form.innerHTML += '<input name="adult" value=' + $('#adult').val() + '>'
     	 form.innerHTML += '<input name="child" value=' + $('#child').val() + '>'
-    	 form.innerHTML += '<input name="room_type" value=' + $(this).closest('.room-box').find('.room-name').text() + '>'
-    	 form.innerHTML += '<input name="room_img" value=' + $(this).closest('.room-box').find('img').attr('src') + '>'
-    	 form.innerHTML += '<input name="room_price" value=' + $(this).next().val() + '>'
     	 form.innerHTML += '<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">'
     	 
 

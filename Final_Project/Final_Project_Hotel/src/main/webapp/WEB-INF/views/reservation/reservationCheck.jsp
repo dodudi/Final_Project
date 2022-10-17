@@ -19,15 +19,15 @@
             	<div class="accomodation_item text-center">
                    	<!-- 임시 폼 -->
 				    <form action="${pageContext.request.contextPath}/reservation/reservationfinish" method="POST">
-				    	객실 번호 : <input type="text" name="ROOM_ID" value="${param.room_id}"><br>
+				    	객실 번호 : <input type="text" name="ROOM_ID" value="${room.ROOM_ID}"><br>
 				    	객실 이미지: 
-				    	<img src="${param.room_img}"><br>
-				    	객실 명: <input type="text" name="REZ_ROOM_TYPE" value="${param.room_type}"><br>
+				    	<img src="${room.ROOM_IMG}"><br>
+				    	객실 명: <input type="text" name="REZ_ROOM_TYPE" value="${room.ROOM_TYPE}"><br>
 				    	체크인 날짜 : <input type="text" name="REZ_CHECKIN" value="${param.checkin}"><br>
 				    	체크아웃 날짜 : <input type="text" name="REZ_CHECKOUT" value="${param.checkout}"><br>
 				    	성인 : <input type="text" name="REZ_ADULT" value="${param.adult}"><br>
 				    	아동 : <input type="text" name="REZ_CHILD" value="${param.child}"><br>
-				    	가격 : <input type="text" name="ROOM_PRICE" value="${param.room_price}">
+				    	가격 : <input type="text" name="ROOM_PRICE" value="${room.ROOM_PRICE}">
 				    	<button class="btn btn-warning" type="submit">예약하기</button>
 				    	<button class="btn btn-primary" type="submit"> 추가옵션 예약 </button>
 				    	
