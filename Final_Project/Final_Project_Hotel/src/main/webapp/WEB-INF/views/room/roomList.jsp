@@ -223,7 +223,14 @@ color: #0099ff !important;
 <script>
 $(function(){
 	$("#searchBtn").click(function(){
-	// 1. 인원 수 산정
+      // 하나라도 선택 안 되어 있으면 조회 못하게 막기
+      if($("#sdate").val() == "" || $("#edate").val() == ""){
+	  	  alert("날짜를 선택해주세요.");
+	  	  return false;
+	  }
+
+
+	  // 1. 인원 수 산정
       var adults = $("select[name='adults']").val(); // 선택된 성인 수
       var children = $("select[name='children']").val(); // 선택된 아동 수
       // select 선택값이 '성인', '소아' 인 경우 0으로 처리
@@ -272,15 +279,22 @@ $(function(){
 	        			    + '		<div class="room-box background-grey">'
 	        		        + '			<div class="room-name">' + item.ROOM_TYPE + '</div>';
 	        		
+	        		// 이미지
 	        		output += "<img src='" + item.ROOM_IMG + "'";
-	        		$(data.rezRoomList2).each(function(i) {
-	        			if(item.ROOM_ID == data.rezRoomList2[i] || item.ROOM_MAX < people){
+	        		if(data.rezRoomList2.length != 0) {
+	        			$(data.rezRoomList2).each(function(i) {
+		        			if(item.ROOM_ID == data.rezRoomList2[i] || item.ROOM_MAX < people){
+		        				output += " style='opacity:0.3;'";
+		        			}
+		  	        	})
+	        		} else {
+	        			if(item.ROOM_MAX < people){
 	        				output += " style='opacity:0.3;'";
 	        			}
-	  	        	})
+	        		}
         			output += '>';
         			$(data.rezRoomList2).each(function(i) {
-	        			if(item.ROOM_ID == data.rezRoomList2[i]){
+	        			if(item.ROOM_ID == data.rezRoomList2[i] || item.ROOM_MAX < people){
 	        				output += "<span style='background-color:darkgray; color:white; position:absolute; top:100px; left:110px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px; border-radius:10px; font-weight:bold;'>마감</span>";
 	        			}
 	  	        	})
@@ -289,13 +303,20 @@ $(function(){
 	        		        + '		<h5>' + item.ROOM_TYPE + '</h5>'
 	        		        + '		<p class="mt-3">' + item.ROOM_DETAIL + '</p>';
 	        		output += "<input type='hidden' value='" + item.ROOM_ID + "'>";
-	        		       
+	        		
+	        		// 버튼
 	        		output += '<button type="button" class="mt-1 btn btn-warning"';
-	        		$(data.rezRoomList2).each(function(i) {
-	        			if(item.ROOM_ID == data.rezRoomList2[i] || item.ROOM_MAX < people){
+	        		if(data.rezRoomList2.length != 0) {
+	        			$(data.rezRoomList2).each(function(i) {
+		        			if(item.ROOM_ID == data.rezRoomList2[i] || item.ROOM_MAX < people){
+		        				output += ' style="background-color:lightgray" disabled';
+		        			} 
+		  	        	})
+	        		} else {
+	        			if(item.ROOM_MAX < people){
 	        				output += ' style="background-color:lightgray" disabled';
-	        			} 
-	  	        	})
+	        			}
+	        		}
 	  	        	output += '>'
           				    + '		book from ' + item.ROOM_PRICE + '원'
        		                + '</button>';
@@ -308,15 +329,10 @@ $(function(){
 	        	}) // each end
 	        	output += '<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">'
 	        	output += "</form>";
-	        	//alert(output);
 	        	$(".roomListParentP").append(output);
 	        } // success end
 		}) // ajax end
 	})
-	
-	
-	
-	
 	
 }) // ready end
 </script>
@@ -407,6 +423,7 @@ $(function(){
 											<h6 class="color-white mg-6">인원</h6><br>
 											<select name="adults" id="adult" class="wide">
 												<option data-display="성인">성인</option>
+												<option value="0">0</option>
 												<option value="1">1</option>
 												<option value="2">2</option>
 												<option value="3">3</option>
@@ -416,6 +433,7 @@ $(function(){
 										<div class="col-12 pt-4">
 											<select name="children" id="child" class="wide">
 												<option data-display="소아">소아</option>
+												<option value="0">0</option>
 												<option value="1">1</option>
 												<option value="2">2</option>
 												<option value="3">3</option>
