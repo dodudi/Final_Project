@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +43,15 @@ public class OptionController {
 	// 옵션 선택 폼
 	@PostMapping("/optionForm")
 	public ModelAndView optionForm(Rez rez, ModelAndView mv, Principal userPrincipal) throws ParseException {
+		// 로그인하지 않거나 만료된 경우 서비스 이용 불가
+		if(userPrincipal == null) {
+			logger.info("로그인 아이디 없음");
+			mv.addObject("state", "emptyId");
+			mv.setViewName("member/login");
+			return mv;
+		}
+		
+		
 		String loginId = userPrincipal.getName();
 		logger.info("***** [optionForm] 넘어온 정보 *****");
 		logger.info("* 객실아이디 : " + rez.getROOM_ID());
@@ -80,6 +88,15 @@ public class OptionController {
 	// 옵션 선택 후 예약정보 확인 폼
 	@PostMapping("/optionCheck")
 	public ModelAndView optionCheck(Rez rez, int nights, ModelAndView mv, HttpServletRequest request, Principal userPrincipal) {
+		// 로그인하지 않거나 만료된 경우 서비스 이용 불가
+		if(userPrincipal == null) {
+			logger.info("로그인 아이디 없음");
+			mv.addObject("state", "emptyId");
+			mv.setViewName("member/login");
+			return mv;
+		}
+		
+		
 		String loginId = userPrincipal.getName();
 		logger.info("***** [optionCheck] 넘어온 정보 *****");
 		logger.info("* 객실아이디 : " + rez.getROOM_ID());
@@ -176,6 +193,14 @@ public class OptionController {
 	@PostMapping("/memberCheck")
 	public ModelAndView memberCheck(Rez rez, int nights,
 									ModelAndView mv, HttpServletRequest request, Principal userPrincipal) {
+		// 로그인하지 않거나 만료된 경우 서비스 이용 불가
+		if(userPrincipal == null) {
+			logger.info("로그인 아이디 없음");
+			mv.addObject("state", "emptyId");
+			mv.setViewName("member/login");
+			return mv;
+		}
+		
 		String loginId = userPrincipal.getName();
 		logger.info("***** [memberCheck] 넘어온 정보 *****");
 		logger.info("* 객실아이디 : " + rez.getROOM_ID());

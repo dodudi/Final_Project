@@ -233,6 +233,15 @@ public class ReviewController {
 	@GetMapping(value="/reviewDetail")
 	public ModelAndView reviewDetail(int num, ModelAndView mv, HttpServletRequest request, Principal userPrincipal,
 							         @RequestHeader(value="referer") String beforeURL) {
+		// 로그인하지 않거나 만료된 경우 리뷰 볼 수 없음
+		if(userPrincipal == null) {
+			logger.info("로그인 아이디 없음");
+			mv.addObject("state", "emptyId");
+			mv.setViewName("member/login");
+			return mv;
+		}
+		
+		
 		logger.info("referer:" + beforeURL);
 		if(beforeURL.endsWith("reviewList")) { // hotel/review/reviewList 에서 제목을 클릭한 경우 조회수 증가
 			reviewBoardService.setReadCountUpdate(num);
