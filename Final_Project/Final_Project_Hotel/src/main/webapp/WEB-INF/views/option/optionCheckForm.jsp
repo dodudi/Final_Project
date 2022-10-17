@@ -47,26 +47,23 @@ $(function(){
     <section class="contact_area section_gap">
         <div class="container">
             <div class="row">
-                <div class="col-md-3">
-                    <div class="contact_info">
-                        <div class="info_item">
-                            <h6>객실사진넣기</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-9">
-                    <form class="row contact_form" action="" method="post">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                            	<span>객실명</span>
-                                <input type="text" class="form-control" name="ROOM_ID" value="${rez.ROOM_ID}">
-                            </div>
-                            <div class="form-group">
-                                <a class="book_now_btn button_hover" href="#">객실 상세보기</a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+            	<div class="col-md-12">
+            		<div class="contact_info">
+            			<div class="info_item">
+            				<table>
+            					<tr style="height:50%">
+            						<td rowspan="2"><img src="${room.ROOM_IMG}" style="width:290px; height:194px"></td>
+            						<td>${room.ROOM_TYPE}</td>
+            					</tr>
+            					<tr style="height:50%">
+            						<td>
+            							<a class="book_now_btn button_hover" href="../room/roomDetail?num=${rez.ROOM_ID}" target='_blank'><strong>객실 상세보기</strong></a>
+            						</td>
+            					</tr>
+            				</table>
+	                	</div>
+	                </div>
+	        	</div>   
             </div>
         </div>
         <br><br>

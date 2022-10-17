@@ -261,11 +261,8 @@ $(function(){
 	        	xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리(Spring Security CSRF)		
 	        },
 	        success: function(data){
-	        	/* console.log("===map 잘 왔는지 보기===");
-  	        	console.log(data.alreadyRez); */
   	        	console.log("===넘어온 list 확인===");
   	        	console.log(data.rezRoomList2);
-
   	        	
 	        	$(".roomListParent").remove();
 	        	var people = data.people;
@@ -275,38 +272,33 @@ $(function(){
 	        			    + '		<div class="room-box background-grey">'
 	        		        + '			<div class="room-name">'+item.ROOM_TYPE+'</div>';
 	        		
-	        		// 기예약된 객실 비활성화 처리
-        			/* for(var i = 0; i<data.rezRoomList2.length; i++){
-        				if(data.rezRoomList2[i] == item.ROOM_ID) {
-        					output += "<img src='" + item.ROOM_IMG + "' style='opacity:0.3;'>";
-        				} 
-        				else {
-        					output += "<img src='" + item.ROOM_IMG + "'>";
-        				}
-        			} */
+	        		output += "<img src='" + item.ROOM_IMG + "'";
+	        		$(data.rezRoomList2).each(function(i) {
+	        			if(item.ROOM_ID == data.rezRoomList2[i] || item.ROOM_MAX < people){
+	        				output += " style='opacity:0.3;'";
+	        			}
+	  	        	})
+        			output += '>';
+        			$(data.rezRoomList2).each(function(i) {
+	        			if(item.ROOM_ID == data.rezRoomList2[i]){
+	        				output += "<span style='background-color:darkgray; color:white; position:absolute; top:100px; left:110px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px; border-radius:10px; font-weight:bold;'>마감</span>";
+	        			}
+	  	        	})
 	        		        
-	        		if(item.ROOM_MAX < people) {
-	        			output += "<img src='" + item.ROOM_IMG + "' style='opacity:0.3;'>";
-	        		} else {
-	        			output += "<img src='" + item.ROOM_IMG + "'>";
-	        		}
 	        		output += '<div class="room-box-in">'
 	        		        + '		<h5>'+item.ROOM_TYPE+'</h5>'
 	        		        + '		<p class="mt-3">'+item.ROOM_DETAIL+'</p>';
-	        		if(item.ROOM_MAX < people) {        
-	        			output += '		<a href="" style="pointer-events:none;">'
-	        		           + '			<button type="button" class="mt-1 btn btn-warning" style="background-color:lightgray">'
-	        		           + '				book from ' + item.ROOM_PRICE + '원'
-	        		           + '			</button>'
-	        		           + '		</a>';
-	        		} else {
-	        				output +=	 '<input type=hidden name=room_id value='+item.ROOM_ID + '>'
-	        		           + '			<button type="button" class="mt-1 btn btn-warning">'
-	        		           + '				book from ' + item.ROOM_PRICE + '원'
-	        		           + '			</button>'
-	        		           + '<input type=hidden name=room_price value='+item.ROOM_PRICE + '>'
-	        		}
-	        		
+	        		       
+	        		output += '<button type="button" class="mt-1 btn btn-warning"';
+	        		$(data.rezRoomList2).each(function(i) {
+	        			if(item.ROOM_ID == data.rezRoomList2[i] || item.ROOM_MAX < people){
+	        				output += ' style="background-color:lightgray" disabled';//' style="background-color:lightgray">';
+	        			} 
+	  	        	})
+	  	        	output += '>'
+          				    + '		book from ' + item.ROOM_PRICE + '원'
+       		                + '</button>';
+	  	        	
 	        		output += '		<div class="room-icons mt-4 pt-4">'
 	        		 	    + '			<img src="${pageContext.request.contextPath}/resources/room/img/5.svg"><img src="${pageContext.request.contextPath}/resources/room/img/6.svg">'
 							+ '			<img src="${pageContext.request.contextPath}/resources/room/img/3.svg"><a href="roomDetail?num='+ item.ROOM_ID +'">객실정보</a>'
@@ -319,9 +311,6 @@ $(function(){
 	        	$(".roomListParentP").append(output);
 	        } // success end
 		}) // ajax end
-		
-		
-		
 	})
 	
 	
@@ -510,8 +499,8 @@ $('.checkbox').click(function(){
 	
 <!-- 캘린더 옵션  -->
 //예약 가능한 방이 0개일 때 배열로 가져와 날짜 비활성화
-var disabledDays = ["2022-10-20", "2022-10-21" , "2022-10-22"];
-console.log(disabledDays.length);
+//var disabledDays = ["2022-10-20", "2022-10-21" , "2022-10-22"];
+//console.log(disabledDays.length);
 
 //datepicker 기본 설정
      
@@ -557,12 +546,12 @@ console.log(disabledDays.length);
         var dates = date.getDate();
         var year = date.getFullYear();
         
-        for(i=0; i<disabledDays.length;i++){
+        /* for(i=0; i<disabledDays.length;i++){
         	if($.inArray(year + '-' +(month+1) + '-' +
         	dates,disabledDays) != -1) {
         		return [false];
         	}
-        }
+        } */
         return [true];
  
      };  

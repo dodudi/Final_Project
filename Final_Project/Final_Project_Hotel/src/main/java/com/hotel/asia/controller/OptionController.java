@@ -78,7 +78,11 @@ public class OptionController {
 			logger.info("아동가격 : " + opt.getOPTION_CHILD_PRICE());
 		}
 		
+		// 객실명 구할 room 객체
+		Room room = roomService.getRoomDetail(rez.getROOM_ID());
+		
 		mv.addObject("rez", rez);
+		mv.addObject("room", room);
 		mv.addObject("nights", nights);
 		mv.addObject("optionList", optionList);
 		mv.setViewName("option/optionForm");
