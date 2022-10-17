@@ -122,7 +122,7 @@ public class MemberController {
 		
 		MailVO vo =  new MailVO();
 		vo.setTo(member.getMEM_EMAIL());
-		vo.setSubject("회원가입시 필요한 인증번호입니다.");
+		vo.setSubject("호텔 아시아에서 발송한 인증번호입니다.");
 		vo.setContent("<br><br>" + "[인증번호] " + serial + " 입니다.  인증번호 확인란에 기입해주세요.");
 		
 		sendMail.sendMail(vo);
@@ -151,9 +151,33 @@ public class MemberController {
 	public void idcheck(@RequestParam("MEM_ID")String id,
 					HttpServletResponse response) throws Exception {
 		int result = memberservice.isId(id);
-		response.setContentType("text/html; charsest=utf-8");
+		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
 		out.print(result);
+	}
+	
+	//아이디/비번찾기 폼 
+	@RequestMapping(value="/findid", method=RequestMethod.GET)
+	public String find() {
+		return "member/findid";
+	}
+	
+	//아이디 찾기 
+	@ResponseBody
+	@RequestMapping(value="/findId", method=RequestMethod.POST)
+	public Map<String, Object> findId(@RequestParam("MEM_NAME")String name, @RequestParam("MEM_EMAIL")String email
+					) throws Exception {
+		
+		String mem_id = memberservice.findId(name, email);
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(mem_id == null) {
+			logger.info("아이디 찾기 실패");
+			return null;
+		}else {
+			logger.info("아이디 찾기 성공");
+			map.put("mem_id", mem_id);
+			return map;
+		}
 	}
 	
 	//개인 정보수정 폼 

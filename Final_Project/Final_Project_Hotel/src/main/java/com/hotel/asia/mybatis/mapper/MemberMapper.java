@@ -14,6 +14,9 @@ public interface MemberMapper {
 	//존재하는 아이디인지 확인 
 	public Member isId(String id);
 	
+	//아이디찾기 
+	public String findId(String name, String email);
+	
 	//회원가입(join)
 	public int insert(Member m);
 

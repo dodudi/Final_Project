@@ -21,7 +21,7 @@ public interface MemberService {
 	
 	public int getSearchListCount(int index, String search_word);
 	
-	
+	public String findId(String id, String password);
 	
 	
 	
