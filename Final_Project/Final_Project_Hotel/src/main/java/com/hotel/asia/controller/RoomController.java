@@ -149,7 +149,6 @@ public class RoomController {
 	@GetMapping("/roomDetail")
 	public ModelAndView Detail(@RequestParam(value = "num", defaultValue = "0") int num, ModelAndView mv,
 			HttpServletRequest request) {
-
 		Room room = roomService.getRoomDetail(num);
 		if (room == null) {
 			logger.info("객실 상세보기 실패");
