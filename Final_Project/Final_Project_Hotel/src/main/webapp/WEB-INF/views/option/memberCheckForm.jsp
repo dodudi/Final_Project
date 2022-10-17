@@ -283,7 +283,8 @@ function payment() {
 	                        			<th>체크아웃</th><td><input type="text" name="REZ_CHECKOUT" value="${rez.REZ_CHECKOUT}" readonly onfocus="this.blur();"></td>
 	                        		</tr>
 	                        		<tr>	
-	                        			<th>숙박일수</th><td><input type="text" name="nights" value="${nights}" readonly onfocus="this.blur();">박</td> 
+	                        			<th>숙박일수</th>
+	                        			<td><input type="text" name="nights" value="${nights}박" readonly onfocus="this.blur();"></td> 
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>객실명</th>
@@ -316,25 +317,25 @@ function payment() {
 	                        		<tr>	
 	                        			<th>조식</th>
 	                        			<td>
-	                        				<input type="text" name="bfTotal" value="${optionPrice.bfTotal}">원
+	                        				<input type="text" value="${optionPrice.bfTotal}원" readonly onfocus="this.blur();">
 	                        			</td> 
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>디너</th>
 	                        			<td>
-	                        				<input type="text" name="dnTotal" value="${optionPrice.dnTotal}">원
+	                        				<input type="text" value="${optionPrice.dnTotal}원" readonly onfocus="this.blur();">
 	                        			</td>
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>수영장</th>
 	                        			<td>
-	                        				<input type="text" name="spTotal" value="${optionPrice.spTotal}">원
+	                        				<input type="text" value="${optionPrice.spTotal}원" readonly onfocus="this.blur();">
 	                        			</td> 
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>총 금액</th>
 	                        			<td>
-	                        				<input type="text" value="${optionPrice.bfTotal + optionPrice.dnTotal + optionPrice.spTotal}">원
+	                        				<input type="text" value="${optionPrice.bfTotal + optionPrice.dnTotal + optionPrice.spTotal}" readonly>원
 	                        			</td>
 	                        		</tr>
 	                        	</table>

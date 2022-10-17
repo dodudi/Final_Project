@@ -10,6 +10,10 @@
 <title>예약정보 확인</title>
 <style>
 	input[readonly] {border:none; width:80px}
+	
+	.imgDiv {overflow:hidden; border-radius:10%;} /* 이미지 태그 감싸고 있는 div */
+	.img {width:290px; height:194px; transition:all 0.2s linear;}
+	.img:hover {transform: scale(1.4);}
 </style>
 <script>
 $(function(){
@@ -51,13 +55,17 @@ $(function(){
             		<div class="contact_info">
             			<div class="info_item">
             				<table>
-            					<tr style="height:50%">
-            						<td rowspan="2"><img src="${room.ROOM_IMG}" style="width:290px; height:194px"></td>
-            						<td>${room.ROOM_TYPE}</td>
+            					<tr>
+            						<td rowspan="2" style="padding-right:20px">
+            							<div class="imgDiv">
+            								<img class="img" src="${room.ROOM_IMG}">
+            							</div>
+            						</td>
+            						<td><span style="font-size:20pt;">${room.ROOM_TYPE}</span></td>
             					</tr>
-            					<tr style="height:50%">
+            					<tr>
             						<td>
-            							<a class="book_now_btn button_hover" href="../room/roomDetail?num=${rez.ROOM_ID}" target='_blank'><strong>객실 상세보기</strong></a>
+            							<a class="btn theme_btn button_hover" href="../room/roomDetail?num=${rez.ROOM_ID}" target='_blank'><strong>객실 상세보기</strong></a>
             						</td>
             					</tr>
             				</table>
@@ -83,7 +91,10 @@ $(function(){
 	                            		<c:forEach var="dl" items="${dateList}">
 		                            		<tr>
 		                            			<th><input type="text" name="dateList" value="${dl}" onfocus="this.blur();"></th>
-		                            			<th>객실명or아이디<input type="text" name="ROOM_ID" value="${rez.ROOM_ID}" onfocus="this.blur();"></th>
+		                            			<th>객실명:
+		                            				<input type="text" value="${room.ROOM_TYPE}" onfocus="this.blur();">
+		                            				<input type="hidden" name="ROOM_ID" value="${rez.ROOM_ID}">
+		                            			</th>
 		                            			<td>
 		                            				 <!-- 체크아웃 날짜는 숙박하지 않으므로 객실 금액이 부과되지 않는다 (0원) -->
 		                            				<c:if test="${dl != rez.REZ_CHECKOUT}">
