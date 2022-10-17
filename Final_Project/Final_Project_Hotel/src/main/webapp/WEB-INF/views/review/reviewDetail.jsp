@@ -138,7 +138,7 @@ $(function(){
 						output += "			<textarea disabled rows='1' cols='100' style='border:none;background-color:#f9f9ff'>" + this.REVIEW_COMMENT_CONTENT + "</textarea>"
 						       +  "			<input type='hidden' value=" + this.REVIEW_COMMENT_NUM + ">" // 수정, 삭제 시 필요한 댓글 번호 hidden
 						       +  "			<span style='display:none'>"+ this.REVIEW_COMMENT_RE_LEV+"</span></td>" // 수정, 삭제 시 필요한 댓글 번호 hidden
-						output += '		<td><img src="${pageContext.request.contextPath}/resources/project_image/review/commRecomm.png" style="width:30px; height:30px"></td>'; // 좋아요(♡) 아이콘
+						output += '		<td></td>';
 						output += "		<td><a href='#' data-toggle='dropdown'>"
 						       +  '				<img src="${pageContext.request.contextPath}/resources/project_image/review/commMenu.png" style="width:30px; height:30px">' // 아이콘 모양 바꿀 수 있으면 바꾸기!!
 						       +  "			</a>"
@@ -264,8 +264,8 @@ $(function(){
 		content.attr('disabled', false).addClass('form-control'); 
 		content.focus();
 		
-		var modifyBtn = '<button type="button" class="float-right" id="commModifyCancelBtn">취소</button>'
-					  + '<button type="button" class="float-right" id="commModifyBtn">등록</button>';
+		var modifyBtn = '<button type="button" class="btn btn-danger float-right" id="commModifyCancelBtn">취소</button>'
+					  + '<button type="button" class="btn btn-info float-right" id="commModifyBtn">등록</button>';
 		content.parent().append(modifyBtn);
 	})
 	// 댓글 수정
@@ -298,6 +298,7 @@ $(function(){
 	// 댓글 수정 취소
 	$("body").on('click', '#commModifyCancelBtn', function(){
 		$(this).parent().find('textarea').removeClass('form-control').attr('disabled', true).attr('cols', '100').css('border','none');
+		$(this).parent().find('button:nth-child(5)').remove();
 		$(this).parent().find('button:nth-child(4)').remove();
 		$(this).remove();
 	}) // 댓글 수정 end
@@ -407,7 +408,7 @@ $(function(){
 		<div class="modal" id="deleteReview">
 			<div class="modal-dialog">
 				<div class="modal-content">
-					<c:if test="${loginId == review.MEM_ID}"> <!-- 글 작성자일 때는 비밀번호 입력받음 -->
+					<c:if test="${loginId == review.MEM_ID && loginId != 'admin'}"> <!-- 글 작성자일 때는 비밀번호 입력받음 -->
 						<div class="modal-header">
 							<h5>삭제를 위해 글 비밀번호를 입력해주세요.</h5>
 							<button type="button" class="close" data-dismiss="modal">&times;</button> <!-- 모달 닫는 x버튼 -->

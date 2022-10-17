@@ -81,10 +81,12 @@ public class RoomController {
 		logger.info("숙박일수 : " + nights + "일");
 		String dateList[] = new String[(int) nights];
 		checkInCal.setTime(checkInFormat);
+		int temp = 0;
 		for(int i = 0; i < nights; i++) {
-			checkInCal.add(Calendar.DATE, i);
+			checkInCal.add(Calendar.DATE, temp);
 			dateList[i] = sdf.format(checkInCal.getTime());
 			logger.info("숙박날짜 => " + dateList[i]);
+			temp = 1;
 		}
 		
 
@@ -105,21 +107,22 @@ public class RoomController {
 				nights = diffSec / (24 * 60 * 60);
 				logger.info("기예약건 숙박일수 : " + nights);
 				
-				int p = 0;
+				temp = 0;
 				for(int i = 0; i < nights; i++) {
-					checkInCal.add(Calendar.DATE, p);
+					checkInCal.add(Calendar.DATE, temp);
 					logger.info("기예약건 숙박날짜 => " + sdf.format(checkInCal.getTime()));
 					
 					// 숙박 날짜에 예약된 객실 있으면 해당 객실ID 저장
 					if(dateList[j].equals( sdf.format(checkInCal.getTime()) )) {
-						rezRoomList.add( rez.getROOM_ID() );
+						rezRoomList.add(rez.getROOM_ID());
 						rezRoomList2.add(rez.getROOM_ID());
 					}
-					p = 1;
+					temp = 1;
 				}
 			}
 			alreadyRez.put(dateList[j] , rezRoomList);
 		}
+		
 		logger.info("=====map 확인=====");
 		for (Entry<String, List<Integer>> entrySet : alreadyRez.entrySet()) {
 			logger.info("[숙박날짜 " + entrySet.getKey() + "] 기예약객실 : ");
@@ -136,7 +139,6 @@ public class RoomController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("roomList", roomList);
 		map.put("roomListCount", roomListCount);
-		//map.put("alreadyRez", alreadyRez);
 		map.put("rezRoomList2", rezRoomList2);
 		map.put("people", people);
 		return map;
@@ -147,7 +149,6 @@ public class RoomController {
 	@GetMapping("/roomDetail")
 	public ModelAndView Detail(@RequestParam(value = "num", defaultValue = "0") int num, ModelAndView mv,
 			HttpServletRequest request) {
-
 		Room room = roomService.getRoomDetail(num);
 		if (room == null) {
 			logger.info("객실 상세보기 실패");

@@ -30,7 +30,7 @@
      <div class="container">
          <nav class="navbar navbar-expand-lg navbar-light">
              <!-- Brand and toggle get grouped for better mobile display -->
-             <a class="navbar-brand logo_h" href="#"><img src="${pageContext.request.contextPath}/resources/image/logo.png" alt=""></a>
+             <a class="navbar-brand logo_h" href="${pageContext.request.contextPath }/"><img src="${pageContext.request.contextPath}/resources/image/logo.png" alt=""></a>
              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                  <span class="icon-bar"></span>
                  <span class="icon-bar"></span>
@@ -45,8 +45,8 @@
                      <li class="nav-item submenu dropdown">
                          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">커뮤니티</a>
                          <ul class="dropdown-menu">
-                             <li class="nav-item"><a class="nav-link" href="info">공지사항</a></li>
-                             <li class="nav-item"><a class="nav-link" href="qna">문의사항</a></li>
+                             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/notice/list">공지사항</a></li>
+                             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/question/list">문의사항</a></li>
                              <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/review/reviewList">리뷰보드</a></li> <!-- 현능: 리뷰게시판 경로 수정 -->
                          </ul>
                      </li> 
@@ -75,8 +75,8 @@
 	                     <li class="nav-item submenu dropdown">
 	                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">관리자페이지</a>
 	                         <ul class="dropdown-menu">
-	                             <li class="nav-item"><a class="nav-link" href="info">공지사항</a></li>
-	                             <li class="nav-item"><a class="nav-link" href="qna">문의사항</a></li>
+	                             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/notice/list">공지사항</a></li>
+	                             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/question/list">문의사항</a></li>
 	                             <li class="nav-item"><a class="nav-link" href="member/list">회원리스트</a></li>
 	                             <li class="nav-item"><a class="nav-link" href="member/update">정보수정</a></li>
 	                         </ul>
@@ -84,7 +84,7 @@
 			     	  </c:if>
 			     	  
 				      <c:if test="${pinfo.username!='admin' }">
-	                     <li class="nav-item"><a class="nav-link" href="mypage">마이페이지</a></li>
+	                     <li class="nav-item"><a href="${pageContext.request.contextPath}/mypage/reserve" class="nav-link">마이페이지</a></li>
 			     	  </c:if>
 			     	</ul>
 		     	</sec:authorize>

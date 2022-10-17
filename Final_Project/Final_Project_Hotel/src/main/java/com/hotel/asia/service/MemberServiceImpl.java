@@ -98,11 +98,11 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 	
-	
-	
-	
-	
-	
+	//아이디 찾기 
+	@Override
+	public String findId(String name, String email) {
+		return dao.findId(name, email);
+	}
 	
 	// ==========[현능] 22-10-05 수정==========
 	   // 회원 정보

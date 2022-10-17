@@ -21,10 +21,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.hotel.asia.dto.Member;
 import com.hotel.asia.dto.OptionReservation;
 import com.hotel.asia.dto.Payment;
 import com.hotel.asia.dto.Rez;
 import com.hotel.asia.dto.Room;
+import com.hotel.asia.service.MemberService;
 import com.hotel.asia.service.OptionRezService;
 import com.hotel.asia.service.PaymentService;
 import com.hotel.asia.service.RezService;
@@ -43,6 +45,8 @@ public class ReservationController {
 	private RoomService roomService;
 	@Autowired
 	private PaymentService paymentService;
+	@Autowired
+	private MemberService memberService;
 	
 	@RequestMapping("/testRez")
 	public String testRoomList(HttpSession session) {
@@ -52,23 +56,22 @@ public class ReservationController {
 	
 	
 	@RequestMapping(value="/reservationCheck", method = RequestMethod.POST)
-	public String reservationCheck(String room_id, String room_type, String room_price , String room_img, 
+	public ModelAndView reservationCheck(int room_id, 
 										 String checkin, String checkout, String adult, String child, 
 										 ModelAndView mv,
 										 Rez rez,
 										 HttpSession session
 										) {
-	
 	logger.info("넘어온 방번호=" + room_id);
-	logger.info("넘어온 룸 타입=" + room_type);
-	logger.info("넘어온 가격=" + room_price);
-	logger.info("넘어온 룸 이미지=" + room_img);
 	logger.info("넘어온 체크인 날짜=" + checkin);
 	logger.info("넘어온 체크아웃 날짜=" + checkout);
 	logger.info("넘어온 인원수(성인)=" + adult);
 	logger.info("넘어온 인원수(소아)=" + child);
+	Room room = roomService.getRoomDetail(room_id);
 	
-	return"reservation/reservationCheck";
+	mv.addObject("room", room);
+	mv.setViewName("reservation/reservationCheck");
+	return mv;
 	
 	
 
@@ -241,8 +244,9 @@ public class ReservationController {
 		int optRezListCount = optionRezService.getOptRezListCount(rez.getREZ_ID()); // 옵션 예약 리스트 갯수
 		List<OptionReservation> optRezList = optionRezService.getOptRezList(rez.getREZ_ID()); // 옵션 예약 리스트
 		Room room = roomService.getRoomDetail(rez.getROOM_ID()); // 객실 정보
-		//Member member = memberService. // 예약자 정보 - 나중에 회원쪽 끝나면 예약자 정보 구해서 예약 확인페이지에 예약자명 이름으로 출력하기~~
+		Member member = memberService.member_info(rez.getMEM_ID()); // 예약자 정보 - 나중에 회원쪽 끝나면 예약자 정보 구해서 예약 확인페이지에 예약자명 이름으로 출력하기~~
 		
+		mv.addObject("member", member); // 예약자 정보
 		mv.addObject("optRezListCount", optRezListCount); // 옵션 예약 리스트 갯수
 		mv.addObject("optRezList", optRezList); // 옵션 예약 리스트
 		mv.addObject("rez", rez); // 객실 예약 정보

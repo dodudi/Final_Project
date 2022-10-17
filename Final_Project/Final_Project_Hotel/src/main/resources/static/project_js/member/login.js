@@ -22,7 +22,16 @@ $(function(){
     	if("${loginfail}" == "loginFailMsg"){
     	alert("아이디 또는 비밀번호가 일치하지 않습니다.");
     	}
-    })
+    });
+    
+    $("#lost-password-link").click(function(){
+    	location.href="../member/findid";
+    });
+    
+    // 로그인하지 않거나 만료된 경우
+    if('${state}' == 'emptyId'){
+      alert("본 서비스는 회원만 가능합니다.");
+   }
     
 });
 	

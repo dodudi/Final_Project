@@ -4,10 +4,13 @@
 <!doctype html>
 <html lang="en">
 <head>
-<title>예약완료 - 예약확인 페이지</title>
 <jsp:include page="../main/header.jsp"/> <!-- 헤더 -->
 <script src="http://code.jquery.com/jquery-latest.js"></script> <!-- 제이쿼리 -->
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script> <!-- 결제 시스템 - 아임포트API -->
+<title>예약완료 - 예약확인 페이지</title>
+<style>
+	* {color:black}
+</style>
 <script>
 $(function(){
 	$("#cancelBtn").click(function(){
@@ -100,7 +103,7 @@ function cancelPay() {
 	        			<th>숙박일수</th><td colspan="3">${nights}박</td>
 	        		</tr>
 	        		<tr>
-	        			<th>예약자명</th><td colspan="3">${rez.MEM_ID}&nbsp;(이름으로 나오게 바꾸기)</td> <!-- 이름으로 나오게 바꾸기 -->
+	        			<th>예약자명</th><td colspan="3">${member.MEM_NAME}</td>
 	        		</tr>
 	        		<tr>
 	        			<th>인원수</th><td colspan="3">${rez.REZ_ADULT + rez.REZ_CHILD}명 (성인 ${rez.REZ_ADULT}명 / 아동 ${rez.REZ_CHILD}명)</td>
@@ -154,17 +157,22 @@ function cancelPay() {
 	        			</th>
 	        		</tr>
 	        		<tr>
-	        			<th>총금액</th><td colspan="3">${paymentInfo.PAYMENT_PRICE}원</td>
+	        			<th>총금액</th><td colspan="3">
+	        				<fmt:formatNumber value="${paymentInfo.PAYMENT_PRICE}" pattern="#,###"/>원
+	        			</td>
 	        		</tr>
 	        		<tr>
 	        			<th>할인금액</th><td colspan="3">${paymentInfo.POINT_DISCOUNT}원</td>
 	        		</tr>
 	        		<tr>
-	        			<th>최종 결제금액</th><td colspan="3">${paymentInfo.PAYMENT_PRICE - paymentInfo.POINT_DISCOUNT}원</td>
+	        			<th>최종 결제금액</th>
+	        			<td colspan="3">
+	        				<fmt:formatNumber value="${paymentInfo.PAYMENT_PRICE - paymentInfo.POINT_DISCOUNT}" pattern="#,###"/>원
+	        			</td>
 	        		</tr>
         		</tbody>
         	</table>
-        	<button type="submit" id="cancelBtn">환불테스트</button>
+        	<!-- <button type="submit" id="cancelBtn">환불테스트</button> -->
         </div>
     </section>
     <!--================Contact Area =================-->

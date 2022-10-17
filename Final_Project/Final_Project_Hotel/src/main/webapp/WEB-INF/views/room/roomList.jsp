@@ -40,6 +40,10 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/room/css/owl.transitions.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/room/css/style.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/room/css/colors/color.css" />
+
+<!-- datepicker css -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/project_css/room/datepicker.css" />
+
 <!-- Favicons	================================================== -->
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -48,191 +52,30 @@
 <link rel="apple-touch-icon" sizes="114x114"
 	href="apple-touch-icon-114x114.png">
 
-<style>
-/* datepicker css 적용 */
 
-.ui-widget-header {
-border: 0px solid #dddddd;
-background: #fff;
-}
-
-.ui-datepicker-calendar>thead>tr>th {
-font-size: 14px !important;
-}
-
-.ui-datepicker .ui-datepicker-header {
-position: relative;
-padding: 10px 0;
-}
-
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover, html .ui-button.ui-state-disabled:active {
-border: 0px solid #c5c5c5;
-background-color: transparent;
-font-weight: normal;
-color: #454545;
-text-align: center;
-}
-
-.ui-datepicker .ui-datepicker-title {
-margin: 0 0em;
-line-height: 16px;
-text-align: center;
-font-size: 14px;
-padding: 0px;
-font-weight: bold;
-}
-
-.ui-datepicker {
-display: none;
-background-color: #fff;
-border-radius: 4px;
-margin-top: 10px;
-margin-left: 0px;
-margin-right: 0px;
-padding: 20px;
-padding-bottom: 10px;
-width: 300px;
-box-shadow: 10px 10px 40px rgba(0,0,0,0.1);
-}
-    
-.ui-widget.ui-widget-content {
-    border: 1px solid #eee;
-}
-
-#datepicker:focus>.ui-datepicker {
-display: block;
-}
-
-.ui-datepicker-prev,
-.ui-datepicker-next {
-cursor: pointer;
-}
-
-.ui-datepicker-next {
-float: right;
-}
-
-.ui-state-disabled {
-cursor: auto;
-color: hsla(0, 0%, 80%, 1);
-}
-
-.ui-datepicker-title {
-text-align: center;
-padding: 10px;
-font-weight: 100;
-font-size: 20px;
-}
-
-.ui-datepicker-calendar {
-width: 100%;
-}
-
-.ui-datepicker-calendar>thead>tr>th {
-padding: 5px;
-font-size: 20px;
-font-weight: 400;
-}
-
-
-.ui-datepicker-calendar>tbody>tr>td>a {
-color: #000;
-font-size: 12px !important;
-font-weight: bold !important;
-text-decoration: none;
-    
-}
-
-
-.ui-datepicker-calendar>tbody>tr>.ui-state-disabled:hover {
-cursor: auto;
-background-color: #fff;
-}
-    
-.ui-datepicker-calendar>tbody>tr>td {
-    border-radius: 100%;
-    width: 44px;
-    height: 30px;
-    cursor: pointer;
-    padding: 5px;
-    font-weight: 100;
-    text-align: center;
-    font-size: 12px;
-}
-    
-.ui-datepicker-calendar>tbody>tr>td:hover {
-    background-color: transparent;
-    opacity: 0.6;
-}
-
-.ui-state-hover,
-.ui-widget-content .ui-state-hover,
-.ui-widget-header .ui-state-hover,
-.ui-state-focus,
-.ui-widget-content .ui-state-focus,
-.ui-widget-header .ui-state-focus,
-.ui-button:hover,
-.ui-button:focus {
-border: 0px solid #cccccc;
-background-color: transparent;
-font-weight: normal;
-color: #2b2b2b;
-}
-
-.ui-widget-header .ui-icon {
-background-image: url('../../../../resources/static/project_image/datepicker/btns.png');
-}
-.ui-icon-circle-triangle-e {
-background-position: -20px 0px;
-background-size: 36px;
-}
-
-.ui-icon-circle-triangle-w {
-background-position: -0px -0px;
-background-size: 36px;
-}
-    
-.ui-datepicker-calendar>tbody>tr>td:first-child a{
-color: red !important;
-}
-    
-.ui-datepicker-calendar>tbody>tr>td:last-child a{
-color: #0099ff !important;
-}
-    
-.ui-datepicker-calendar>thead>tr>th:first-child {
-    color: red !important;
-}
-    
-.ui-datepicker-calendar>thead>tr>th:last-child {
-    color: #0099ff !important;
-}
-
-.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
-    border: 0px;
-    background: #f1f1f1;
-    border-radius: 50%;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-
-.inp {padding:10px 10px; background-color:#f1f1f1; border-radius:4px; border:0px;}
-.inp:focus {outline:none; background-color:#eee;}
-</style>
 <script>
 $(function(){
 	$("#searchBtn").click(function(){
-	// 1. 인원 수 산정
+      // 하나라도 선택 안 되어 있으면 조회 못하게 막기
+      if($("#sdate").val() == "" || $("#edate").val() == ""){
+	  	  alert("날짜를 선택해주세요.");
+	  	  return false;
+	  }else if($("#adult").val() == "성인" || $("#child").val() == "소아"){
+		  alert("인원을 선택해주세요.");
+		  return false;
+	  }else if($("#adult").val() == "0"){
+		  alert("인원을 선택해주세요. (성인 1명 이상)");
+		  return false;
+	  }else if($("input[name='check']:checked").length==0){
+		  alert("객실 타입을 체크해주세요.");
+		  return false;
+	  }
+	
+
+
+	  // 1. 인원 수 산정
       var adults = $("select[name='adults']").val(); // 선택된 성인 수
       var children = $("select[name='children']").val(); // 선택된 아동 수
-      // select 선택값이 '성인', '소아' 인 경우 0으로 처리
-      if(isNaN(adults)) {
-         adults = 0;
-      }
-      if(isNaN(children)) {
-         children = 0;
-      }
       var people = parseInt(adults) + parseInt(children); // 총 인원 수
       console.log("선택된 성인 수: " + adults);
       console.log("선택된 아동 수: " + children);
@@ -261,11 +104,8 @@ $(function(){
 	        	xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리(Spring Security CSRF)		
 	        },
 	        success: function(data){
-	        	/* console.log("===map 잘 왔는지 보기===");
-  	        	console.log(data.alreadyRez); */
   	        	console.log("===넘어온 list 확인===");
   	        	console.log(data.rezRoomList2);
-
   	        	
 	        	$(".roomListParent").remove();
 	        	var people = data.people;
@@ -273,40 +113,50 @@ $(function(){
 	        	$(data.roomList).each(function(index, item) {
 	        		output +='<div class="col-lg-6 roomList">'
 	        			    + '		<div class="room-box background-grey">'
-	        		        + '			<div class="room-name">'+item.ROOM_TYPE+'</div>';
+	        		        + '			<div class="room-name">' + item.ROOM_TYPE + '</div>';
 	        		
-	        		// 기예약된 객실 비활성화 처리
-        			/* for(var i = 0; i<data.rezRoomList2.length; i++){
-        				if(data.rezRoomList2[i] == item.ROOM_ID) {
-        					output += "<img src='" + item.ROOM_IMG + "' style='opacity:0.3;'>";
-        				} 
-        				else {
-        					output += "<img src='" + item.ROOM_IMG + "'>";
-        				}
-        			} */
+	        		// 이미지
+	        		output += "<img src='" + item.ROOM_IMG + "'";
+	        		if(data.rezRoomList2.length != 0) {
+	        			$(data.rezRoomList2).each(function(i) {
+		        			if(item.ROOM_ID == data.rezRoomList2[i] || item.ROOM_MAX < people){
+		        				output += " style='opacity:0.3;'";
+		        			}
+		  	        	})
+	        		} else {
+	        			if(item.ROOM_MAX < people){
+	        				output += " style='opacity:0.3;'";
+	        			}
+	        		}
+        			output += '>';
+        			$(data.rezRoomList2).each(function(i) {
+	        			if(item.ROOM_ID == data.rezRoomList2[i]){
+	        				output += "<span style='background-color:darkgray; color:white; position:absolute; top:100px; left:110px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px; border-radius:10px; font-weight:bold;'>마감</span>";
+	        			}
+	  	        	})
 	        		        
-	        		if(item.ROOM_MAX < people) {
-	        			output += "<img src='" + item.ROOM_IMG + "' style='opacity:0.3;'>";
-	        		} else {
-	        			output += "<img src='" + item.ROOM_IMG + "'>";
-	        		}
 	        		output += '<div class="room-box-in">'
-	        		        + '		<h5>'+item.ROOM_TYPE+'</h5>'
-	        		        + '		<p class="mt-3">'+item.ROOM_DETAIL+'</p>';
-	        		if(item.ROOM_MAX < people) {        
-	        			output += '		<a href="" style="pointer-events:none;">'
-	        		           + '			<button type="button" class="mt-1 btn btn-warning" style="background-color:lightgray">'
-	        		           + '				book from ' + item.ROOM_PRICE + '원'
-	        		           + '			</button>'
-	        		           + '		</a>';
-	        		} else {
-	        				output +=	 '<input type=hidden name=room_id value='+item.ROOM_ID + '>'
-	        		           + '			<button type="button" class="mt-1 btn btn-warning">'
-	        		           + '				book from ' + item.ROOM_PRICE + '원'
-	        		           + '			</button>'
-	        		           + '<input type=hidden name=room_price value='+item.ROOM_PRICE + '>'
-	        		}
+	        		        + '		<h5>' + item.ROOM_TYPE + '</h5>'
+	        		        + '		<p class="mt-3">' + item.ROOM_DETAIL + '</p>';
+	        		output += "<input type='hidden' value='" + item.ROOM_ID + "'>";
 	        		
+	        		// 버튼
+	        		output += '<button type="button" class="mt-1 btn btn-warning"';
+	        		if(data.rezRoomList2.length != 0) {
+	        			$(data.rezRoomList2).each(function(i) {
+		        			if(item.ROOM_ID == data.rezRoomList2[i] || item.ROOM_MAX < people){
+		        				output += ' style="background-color:lightgray" disabled';
+		        			} 
+		  	        	})
+	        		} else {
+	        			if(item.ROOM_MAX < people){
+	        				output += ' style="background-color:lightgray" disabled';
+	        			}
+	        		}
+	  	        	output += '>'
+          				    + '		book from ' + item.ROOM_PRICE + '원'
+       		                + '</button>';
+	  	        	
 	        		output += '		<div class="room-icons mt-4 pt-4">'
 	        		 	    + '			<img src="${pageContext.request.contextPath}/resources/room/img/5.svg"><img src="${pageContext.request.contextPath}/resources/room/img/6.svg">'
 							+ '			<img src="${pageContext.request.contextPath}/resources/room/img/3.svg"><a href="roomDetail?num='+ item.ROOM_ID +'">객실정보</a>'
@@ -315,18 +165,10 @@ $(function(){
 	        	}) // each end
 	        	output += '<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">'
 	        	output += "</form>";
-	        	//alert(output);
 	        	$(".roomListParentP").append(output);
 	        } // success end
 		}) // ajax end
-		
-		
-		
 	})
-	
-	
-	
-	
 	
 }) // ready end
 </script>
@@ -354,25 +196,20 @@ $(function(){
 					<div class="col-lg-8 mt-4 mt-lg-0 roomListParentP">
 						<!-- 객실 리스트 있을 때 -->
 						<c:if test="${roomListCount > 0}">
-							<form class="row roomListParent" action="reservationCheck" method="POST">
+							<form class="row roomListParent">
 								<c:forEach var="roomList" items="${roomList}">
 									<div class="col-lg-6 roomList">
 										<div class="room-box background-grey">
-											<input type="hidden" name="room_id" value="${roomList.ROOM_ID}">
 											<div class="room-name">${roomList.ROOM_TYPE}</div>
-											<input type="hidden" name="room_type" value="${roomList.ROOM_TYPE}">
 											<img src="${roomList.ROOM_IMG}">
-											<input type="hidden" name="room_img" value="${roomList.ROOM_IMG}">
 											<div class="room-box-in">
 												<h5>${roomList.ROOM_TYPE}</h5>
 												<p class="mt-3">${roomList.ROOM_DETAIL}</p>
-												<input type="hidden" name="room_detail" value="${roomList.ROOM_DETAIL}">
-												<a href="">
-													<button type="submit" class="mt-1 btn btn-warning">
+										
+													<button type="submit" class="mt-1 btn btn-warning basicbutton">
 														book from <fmt:formatNumber value="${roomList.ROOM_PRICE}" pattern="#,###"/>원
 													</button>
-													<input type="hidden" name="room_price" value="${roomList.ROOM_PRICE}">
-												</a>
+												
 												<div class="room-icons mt-4 pt-4">
 													<img src="${pageContext.request.contextPath}/resources/room/img/5.svg"><img src="${pageContext.request.contextPath}/resources/room/img/6.svg">
 													<img src="${pageContext.request.contextPath}/resources/room/img/2.svg"><a href="roomDetail?num=${roomList.ROOM_ID}">객실정보</a>
@@ -417,6 +254,7 @@ $(function(){
 											<h6 class="color-white mg-6">인원</h6><br>
 											<select name="adults" id="adult" class="wide">
 												<option data-display="성인">성인</option>
+												<option value="0">0</option>
 												<option value="1">1</option>
 												<option value="2">2</option>
 												<option value="3">3</option>
@@ -426,6 +264,7 @@ $(function(){
 										<div class="col-12 pt-4">
 											<select name="children" id="child" class="wide">
 												<option data-display="소아">소아</option>
+												<option value="0">0</option>
 												<option value="1">1</option>
 												<option value="2">2</option>
 												<option value="3">3</option>
@@ -510,8 +349,8 @@ $('.checkbox').click(function(){
 	
 <!-- 캘린더 옵션  -->
 //예약 가능한 방이 0개일 때 배열로 가져와 날짜 비활성화
-var disabledDays = ["2022-10-20", "2022-10-21" , "2022-10-22"];
-console.log(disabledDays.length);
+//var disabledDays = ["2022-10-20", "2022-10-21" , "2022-10-22"];
+//console.log(disabledDays.length);
 
 //datepicker 기본 설정
      
@@ -557,12 +396,12 @@ console.log(disabledDays.length);
         var dates = date.getDate();
         var year = date.getFullYear();
         
-        for(i=0; i<disabledDays.length;i++){
+        /* for(i=0; i<disabledDays.length;i++){
         	if($.inArray(year + '-' +(month+1) + '-' +
         	dates,disabledDays) != -1) {
         		return [false];
         	}
-        }
+        } */
         return [true];
  
      };  
@@ -576,14 +415,11 @@ console.log(disabledDays.length);
     	 form.action = '../reservation/reservationCheck';
     	 form.method = 'POST';
 
-    	 form.innerHTML = '<input name="room_id" value=' + $(this).prev().val() + '>'
+    	 form.innerHTML = '<input name="room_id" value=' + $(this).parent().find("input[type='hidden']").val() + '>'
     	 form.innerHTML += '<input name="checkin" value=' + $('#sdate').val() + '>'
     	 form.innerHTML += '<input name="checkout" value=' + $('#edate').val() + '>'
     	 form.innerHTML += '<input name="adult" value=' + $('#adult').val() + '>'
     	 form.innerHTML += '<input name="child" value=' + $('#child').val() + '>'
-    	 form.innerHTML += '<input name="room_type" value=' + $(this).closest('.room-box').find('.room-name').text() + '>'
-    	 form.innerHTML += '<input name="room_img" value=' + $(this).closest('.room-box').find('img').attr('src') + '>'
-    	 form.innerHTML += '<input name="room_price" value=' + $(this).next().val() + '>'
     	 form.innerHTML += '<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">'
     	 
 
@@ -591,6 +427,14 @@ console.log(disabledDays.length);
     	 document.body.append(form);
     	 form.submit();
      })
+     
+     
+    
+    	 $('.basicbutton').click(function(){
+    		 alert('예약 가능한 날짜와 객실을 먼저 조회해주세요.');
+    		 return false;
+    	 });
+     
      
     
     
