@@ -294,7 +294,7 @@ $(function(){
 	        		}
         			output += '>';
         			$(data.rezRoomList2).each(function(i) {
-	        			if(item.ROOM_ID == data.rezRoomList2[i] || item.ROOM_MAX < people){
+	        			if(item.ROOM_ID == data.rezRoomList2[i]){
 	        				output += "<span style='background-color:darkgray; color:white; position:absolute; top:100px; left:110px; padding-top:10px; padding-bottom:10px; padding-left:50px; padding-right:50px; border-radius:10px; font-weight:bold;'>마감</span>";
 	        			}
 	  	        	})
