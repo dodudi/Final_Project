@@ -63,8 +63,8 @@ $(function(){
 	  }else if($("#adult").val() == "성인" || $("#child").val() == "소아"){
 		  alert("인원을 선택해주세요.");
 		  return false;
-	  }else if($("#adult").val() == "0" && $("#adult").val() == "0"){
-		  alert("인원을 선택해주세요.");
+	  }else if($("#adult").val() == "0"){
+		  alert("인원을 선택해주세요. (성인 1명 이상)");
 		  return false;
 	  }else if($("input[name='check']:checked").length==0){
 		  alert("객실 타입을 체크해주세요.");
