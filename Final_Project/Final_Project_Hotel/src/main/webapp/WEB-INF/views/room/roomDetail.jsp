@@ -132,6 +132,7 @@ $(function(){
 			alert("성인을 1명 이상 선택해주세요.");
 			return false;
 		}
+		
 		if(isNaN($("select[name='adult']").val()) || isNaN($("select[name='child']").val())){
 			alert("인원을 선택해주세요.");
 			return false;
@@ -306,16 +307,14 @@ $(function(){
 												</c:forEach>
 											</select>
 										</div>
-										<c:if test="${room.ROOM_MAX != 1}">
-											<div class="col-12 pt-4">
-												<select name="child" class="wide">
-													<option data-display="소아">소아</option>
-													<c:forEach var="child" begin="0" end="${room.ROOM_MAX - 1}" step="1">
-														<option value="${child}">${child}</option>
-													</c:forEach>
-												</select>
-											</div>
-										</c:if>
+										<div class="col-12 pt-4">
+											<select name="child" class="wide">
+												<option data-display="소아">소아</option>
+												<c:forEach var="child" begin="0" end="${room.ROOM_MAX - 1}" step="1">
+													<option value="${child}">${child}</option>
+												</c:forEach>
+											</select>
+										</div>
 									</div>
 								</div>
 								<div class="col-12 col-md-6 col-lg-12 pt-5">
