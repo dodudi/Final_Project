@@ -369,7 +369,7 @@ $(function(){
     //시작 날짜를 오늘부터 선택 가능
     $('.datepicker').datepicker({
     	minDate:0
-    }); 
+    });
     
     //시작일은 종료일 이후의 날짜 선택 불가, 종료일은 시작일 이전 날짜 선택 불가
     $('#sdate').datepicker();
