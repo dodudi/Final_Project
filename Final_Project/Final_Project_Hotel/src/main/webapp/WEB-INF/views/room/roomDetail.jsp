@@ -3,10 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en"><![endif]-->
-<!--[if gt IE 8]><!-->
 <html class="no-js" lang="en">
-<!--<![endif]-->
 <head>
 
 <jsp:include page="../main/header.jsp"/>
@@ -125,8 +122,7 @@ $(function(){
 	         data-background=""></div>
 	     <div class="container">
 	         <div class="banner_content text-center">
-	             <h6>Inspiring Senses & Touching place </h6>
-	             <h2>Relax Your Mind</h2>
+	             <h2>객실 상세 정보</h2>
 	         </div>
 	     </div>
 	 </div>
