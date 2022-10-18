@@ -9,7 +9,7 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script> <!-- 제이쿼리 -->
 <title>예약정보 확인</title>
 <style>
-	input[readonly] {border:none; width:80px}
+	input[readonly] {border:none; width:90px}
 	
 	.imgDiv {overflow:hidden; border-radius:10%;} /* 이미지 태그 감싸고 있는 div */
 	.img {width:290px; height:194px; transition:all 0.2s linear;}
