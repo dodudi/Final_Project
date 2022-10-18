@@ -33,6 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers("/member/idcheck").permitAll()
 				.antMatchers("/member/mailCheck").permitAll()	//이메일인증 추가! 
 				.antMatchers("/member/joinProcess").permitAll()
+				.antMatchers("/member/findId").permitAll()		//아이디찾기 
+				.antMatchers("/member/findPw").permitAll()		//패스워드찾기
 				.antMatchers("/member/list").access("hasRole('ROLE_ADMIN')")	//'ROLE_ADMIN'만 접근 가능 
 				.antMatchers("/member/info").access("hasRole('ROLE_ADMIN')");
 				//.antMatchers("/**").access("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')");

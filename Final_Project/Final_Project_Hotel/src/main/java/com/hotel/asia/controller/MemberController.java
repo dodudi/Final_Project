@@ -5,6 +5,7 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -155,30 +156,83 @@ public class MemberController {
 		PrintWriter out = response.getWriter();
 		out.print(result);
 	}
-	
-	//아이디/비번찾기 폼 
+
+	//아이디찾기폼 
 	@RequestMapping(value="/findid", method=RequestMethod.GET)
-	public String find() {
+	public String findid() {
 		return "member/findid";
 	}
 	
 	//아이디 찾기 
 	@ResponseBody
-	@RequestMapping(value="/findId", method=RequestMethod.POST)
-	public Map<String, Object> findId(@RequestParam("MEM_NAME")String name, @RequestParam("MEM_EMAIL")String email
-					) throws Exception {
+	@RequestMapping(value="/findidProcess", method=RequestMethod.POST)
+	public Map<String, Object> findidProcess(@RequestParam("MEM_NAME")String name,
+							@RequestParam("MEM_EMAIL")String email) throws Exception {
 		
 		String mem_id = memberservice.findId(name, email);
-		Map<String, Object> map = new HashMap<String, Object>();
-		if(mem_id == null) {
+		
+		if(mem_id != null) {
+			logger.info("아이디 찾기 성공");
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("mem_id", mem_id);
+			map.put("message", "success");
+			return map;
+		}else {
 			logger.info("아이디 찾기 실패");
 			return null;
-		}else {
-			logger.info("아이디 찾기 성공");
-			map.put("mem_id", mem_id);
-			return map;
 		}
 	}
+	
+	//패스워드 찾기폼 
+	@RequestMapping(value="/findpw", method=RequestMethod.GET)
+	public String findpw() {
+		return "member/findpw";
+	}
+		
+	//패스워드 임의값 변경 
+	@RequestMapping(value="/findpwProcess", method=RequestMethod.POST)
+	public String findChangePw(@RequestParam("MEM_ID")String id, 
+							@RequestParam("MEM_NAME")String name, 
+							@RequestParam("MEM_EMAIL")String email, Member m, Model model,
+							RedirectAttributes rattr, HttpServletRequest request) throws Exception {
+		
+		//임시비밀번호를 위한 난수 구하기 
+		int leftLimit = 48; // numeral '0'
+		int rightLimit = 122; // letter 'z'
+	    int targetStringLength = 10;
+	    Random random = new Random();
+	    String serial = random.ints(leftLimit, rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+	    
+		int mem_pw = memberservice.searchPw(name, id, email);
+		logger.info("mem_pw: "+ mem_pw);
+		
+		if(mem_pw ==1) {
+			MailVO vo =  new MailVO();
+			vo.setTo(m.getMEM_EMAIL());
+			vo.setSubject("호텔 아시아에서 발송한 임시 비밀번호입니다.");
+			vo.setContent("<br><br>" + "임시발급된 비밀번호는 " + serial + " 입니다.<br>로그인 후 비밀번호 변경해주세요");
+			sendMail.sendMail(vo);
+			
+			//비밀번호 암호화 추가 
+			String encPassword = passwordEncoder.encode(serial);
+	  		logger.info(encPassword);
+	  		
+			m.setMEM_PASS(encPassword);
+			memberservice.updatePw(m);
+			
+			rattr.addFlashAttribute("result", "updatePwSuccess");
+			return "member/login";
+		} else {
+			model.addAttribute("url", request.getRequestURL());
+			model.addAttribute("message", "passwordUpdateFail");
+			return "member/findpw";
+		}
+	}
+
 	
 	//개인 정보수정 폼 
 	@RequestMapping(value="/update", method=RequestMethod.GET)

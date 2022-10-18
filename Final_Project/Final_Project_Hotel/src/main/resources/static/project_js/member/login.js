@@ -24,8 +24,12 @@ $(function(){
     	}
     });
     
-    $("#lost-password-link").click(function(){
+    $("#lost-id-link").click(function(){
     	location.href="../member/findid";
+    });
+      
+     $("#lost-password-link").click(function(){
+    	location.href="../member/findpw";
     });
     
     // 로그인하지 않거나 만료된 경우
