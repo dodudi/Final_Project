@@ -1,5 +1,7 @@
 /* datepicker css Àû¿ë */
 
+ #flight-datepicker > div.ui-datepicker-inline.ui-datepicker.ui-widget.ui-widget-content.ui-helper-clearfix.ui-corner-all{display:none !important}
+
 .ui-widget-header {
 border: 0px solid #dddddd;
 background: #fff;

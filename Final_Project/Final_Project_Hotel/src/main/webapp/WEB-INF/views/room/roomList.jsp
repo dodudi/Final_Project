@@ -53,6 +53,7 @@
 	href="apple-touch-icon-114x114.png">
 
 
+
 <script>
 $(function(){
 	$("#searchBtn").click(function(){
@@ -154,7 +155,7 @@ $(function(){
 	        			}
 	        		}
 	  	        	output += '>'
-          				    + '		book from ' + item.ROOM_PRICE + '원'
+          				    + '		예약하기 ' + item.ROOM_PRICE + '원'
        		                + '</button>';
 	  	        	
 	        		output += '		<div class="room-icons mt-4 pt-4">'
@@ -181,8 +182,7 @@ $(function(){
 	         data-background=""></div>
 	     <div class="container">
 	         <div class="banner_content text-center">
-	             <h6>Inspiring Senses & Touching place </h6>
-	             <h2>Relax Your Mind</h2>
+	             <h2>객실 리스트</h2>
 	         </div>
 	     </div>
 	 </div>
@@ -207,7 +207,7 @@ $(function(){
 												<p class="mt-3">${roomList.ROOM_DETAIL}</p>
 										
 													<button type="submit" class="mt-1 btn btn-warning basicbutton">
-														book from <fmt:formatNumber value="${roomList.ROOM_PRICE}" pattern="#,###"/>원
+														예약하기 <fmt:formatNumber value="${roomList.ROOM_PRICE}" pattern="#,###"/>원
 													</button>
 												
 												<div class="room-icons mt-4 pt-4">
@@ -319,7 +319,8 @@ $(function(){
 <jsp:include page="../main/footer.jsp"/> 
 
 
-<!-- JAVASCRIPT    ================================================== -->
+	<script src="${pageContext.request.contextPath}/resources/room/js/plugins.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/room/js/custom.js"></script>
 <script>
 <!-- 체크박스 옵션 -->
 
@@ -429,7 +430,7 @@ $('.checkbox').click(function(){
      })
      
      
-    
+    	//조
     	 $('.basicbutton').click(function(){
     		 alert('예약 가능한 날짜와 객실을 먼저 조회해주세요.');
     		 return false;
@@ -440,7 +441,6 @@ $('.checkbox').click(function(){
     
 	</script>
 	<!-- JAVASCRIPT    ================================================== -->
-	
 	<!-- End Document================================================== -->
 
 </body>
