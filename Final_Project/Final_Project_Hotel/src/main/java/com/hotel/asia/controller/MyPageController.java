@@ -514,14 +514,34 @@ public class MyPageController {
 	@GetMapping("/mypage/question")
 	public String question(Model model, PageData pageData, HttpSession session) {
 		String mem_id =  session.getAttribute("id").toString();
+		Object itemLimitObject = session.getAttribute("itemLimit");
+		int itemLimit;
+		if(itemLimitObject == null)
+			itemLimit = 10;
+		else
+			itemLimit = Integer.parseInt(itemLimitObject.toString());
+
+		pageData.setItemLimit(itemLimit);
 		
 		int total = myPageService.getQuestionBoardCount(mem_id);
 		
-		PageCalc pageCalc = new PageCalc(total, pageData.getItemLimit(), pageData);
+		PageCalc pageCalc = new PageCalc(total, 10, pageData);
 		model.addAttribute("pageCalc",pageCalc);
-		
+		model.addAttribute("itemLimit", pageData.getItemLimit());
 		// 질문정보 가져오기~
 		return "mypage/mypage_question_check";
+	}
+	
+	@ResponseBody
+	@PostMapping(value = "/mypage/listCountSet")
+	public PageCalc listCountSet(HttpSession session, @RequestBody PageData pageData) {
+		String mem_id =  session.getAttribute("id").toString();
+		
+		int total = myPageService.getQuestionBoardCount(mem_id);
+		PageCalc pageCalc = new PageCalc(total, 10, pageData);
+		
+		session.setAttribute("itemLimit", pageData.getItemLimit());
+		return pageCalc;
 	}
 
 	// 회원정보 페이지

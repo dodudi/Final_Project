@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hotel.asia.mybatis.mapper.CouponMapper">
+
+	<select id="getCouponMember" parameterType="string"
+		resultType="CouponMemberVO">
+		SELECT * FROM TABLE_MEMBER_COUPON WHERE MEM_ID=#{MEM_ID}
+	</select>
+
+	<select id="getCouponMemberCount" parameterType="string"
+		resultType="_int">
+		SELECT COUNT(*) FROM TABLE_MEMBER_COUPON WHERE MEM_ID=#{MEM_ID}
+	</select>
+
+	<select id="getCoupon" parameterType="_int" resultType="CouponVO">
+		SELECT * FROM TABLE_COUPON WHERE  COUPON_TYPE_NUMBER =#{COUPON_TYPE_NUMBER}
+	</select>
+	
+	<delete id="useCouponMember"  parameterType="_int" >
+		DELETE FROM TABLE_MEMBER_COUPON WHERE COUPON_NUMBER = #{COUPON_NUMBER}
+	</delete>	
+</mapper>
