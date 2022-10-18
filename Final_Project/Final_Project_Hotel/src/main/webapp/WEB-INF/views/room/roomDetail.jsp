@@ -46,17 +46,79 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/room/css/owl.transitions.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/room/css/style.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/room/css/colors/color.css" />
+
+<!-- datepicker css -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/project_css/room/datepicker.css" />
+
 <!-- Favicons	================================================== -->
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="apple-touch-icon" sizes="72x72"
-	href="apple-touch-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="114x114"
-	href="apple-touch-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="72x72" href="apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon-114x114.png">
+<style>
+	#flight-datepicker > div.ui-datepicker-inline.ui-datepicker.ui-widget.ui-widget-content.ui-helper-clearfix.ui-corner-all{display:none !important}
+</style>
+<script>
+$(function(){
+	// 체크인 날짜
+	var checkInDate;
+	var checkIn;
+	$("#sdate").change(function(){
+		$("input[name='checkin']").val($(this).val())
+	})
 	
+	// 체크아웃 날짜
+	var checkOutDate;
+	var checkOut;
+	$("#edate").change(function(){
+		$("input[name='checkout']").val($(this).val())
+	})
+	
+	// 인원수
+	var people;
+	// 성인
+	$("select[name='adult']").change(function(){
+		people = parseInt($(this).val()) + parseInt($("select[name='child']").val());
+		console.log("인원수: " + people);
+		if(people > ${room.ROOM_MAX}) {
+			alert("${room.ROOM_TYPE}의 최대 인원수는 ${room.ROOM_MAX}명입니다.");
+			$("body > div > div > div > div > div.col-lg-4.order-first.order-lg-last > div > div > div:nth-child(2) > div > div:nth-child(1) > div > span").text(1);
+		}  else {
+			$("input[name='adult']").val($(this).val());
+		}
+	})
+	
+	// 아동
+	$("select[name='child']").change(function(){
+		people = parseInt($(this).val()) + parseInt($("select[name='adult']").val());
+		console.log("인원수: " + people);
+		
+		if(people > ${room.ROOM_MAX}) {
+			alert("${room.ROOM_TYPE}의 최대 인원수는 ${room.ROOM_MAX}명입니다.");
+			$("body > div > div > div > div > div.col-lg-4.order-first.order-lg-last > div > div > div:nth-child(2) > div > div:nth-child(2) > div > span").text(0);
+		}  else {
+			$("input[name='child']").val($(this).val());
+		}
+	})
+	
+	
+	// 예약하기 버튼
+	$("#rezBtn").click(function(){
+		if($("input[name='adult']").val() == 0){
+			alert("성인을 1명 이상 선택해주세요.");
+			return false;
+		}
+		if(isNaN($("select[name='adult']").val()) || isNaN($("select[name='child']").val())){
+			alert("인원을 선택해주세요.");
+			return false;
+		}
+	})
+	
+	
+}) // ready end
+</script>
 </head>
 <body>
-	
 	<section class="banner_area">
 	 <div class="booking_table d_flex align-items-center">
 	     <div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0"
@@ -191,24 +253,21 @@
 								ut aliquid ex ea commodi consequatur.</p>
 						</div>
 					</div>
-										<div class="col-lg-4 order-first order-lg-last">
+					<div class="col-lg-4 order-first order-lg-last">
 						<div class="section background-dark p-4">
 							<div class="row">
 								<div class="col-12">
-									<div class="input-daterange" id="flight-datepicker">
+									<div class="input-daterange input-group" id="flight-datepicker">
 										<div class="row">
 											<div class="col-12">
 												<div class="form-item">
-											       <form>
-											 	    <h6 class="color-white mg-6">이용안내</h6><br>
-											    	<div class="use_info">
-											    	
-											        	<button type="submit" class="btn float-center submit_next booking-button"id="searchBtn">예약하기</button><br>
-											        	<button type="submit" class="btn float-center submit_next booking-button"id="searchBtn">문의하기</button>
-											        
-														<input type="hidden" name="hnum" value="">
-													</div>
-									     		 </form>
+													<form>
+														<h6 class="color-white mg-6">날짜 선택</h6><br>
+												    	<div class="checkin_checkout">
+												        	<input type="text" name="d1" id="sdate" class="datepicker inp" placeholder="체크인" readonly> 
+															<input type="text" name="d2" id="edate" class="datepicker inp" placeholder="체크아웃" readonly>
+														</div>
+									     			</form>
 									     		</div>
 									     	</div>
 										</div>
@@ -218,36 +277,49 @@
 									<div class="row">
 										<div class="col-12 pt-4">
 											<h6 class="color-white mg-6">가능인원</h6><br>
-											<select name="adults" class="wide" disabled>
-												<option data-display="성인:${room.ROOM_MAX}">성인</option>
+											<select name="adult" class="wide">
+												<option data-display="성인">성인</option>
+												<c:forEach var="adult" begin="0" end="${room.ROOM_MAX}" step="1">
+													<option value="${adult}">${adult}</option>
+												</c:forEach>
 											</select>
 										</div>
-										<div class="col-12 pt-4">
-											<select name="children" class="wide" disabled>
-												<option data-display="소아:${room.ROOM_MAX}">소아</option>
-											</select>
-										</div>
+										<c:if test="${room.ROOM_MAX != 1}">
+											<div class="col-12 pt-4">
+												<select name="child" class="wide">
+													<option data-display="소아">소아</option>
+													<c:forEach var="child" begin="0" end="${room.ROOM_MAX - 1}" step="1">
+														<option value="${child}">${child}</option>
+													</c:forEach>
+												</select>
+											</div>
+										</c:if>
 									</div>
 								</div>
-								<!-- <div class="col-12 pt-5">
-									<h6 class="color-white mb-3">Max night price:</h6>
-									<div class="selecteurPrix">
-										<div class="range-slider">
-											<input class="input-range" type="range" value="100" min="1"
-												max="500">
-											<div class="valeurPrix">
-												<span class="range-value"></span>
-											</div>
-										</div>
-									</div>
-								</div> -->
 								<div class="col-12 col-md-6 col-lg-12 pt-5">
 									<h6 class="color-white mb-3">객실 타입</h6>
 									<ul class="list">
 										<li class="list__item"><label class="label--checkbox">
-											<input type="checkbox" id="checkall" class="checkbox" name="checkall" checked>${room.ROOM_TYPE}</label></li>
+										<input type="checkbox" id="checkall" class="checkbox" name="checkall" checked>${room.ROOM_TYPE}</label></li>
 									</ul>
-								</div> 
+								</div>
+								<div class="col-12 col-md-6 col-lg-12 pt-5">
+									<h6 class="color-white mg-6">이용안내</h6><br>
+						    		<div class="use_info">
+						    			<form action="../reservation/reservationCheck" method="post">
+						    				<input type="hidden" name="room_id" value="${room.ROOM_ID}">
+						    				<input type="hidden" name="checkin">
+						    				<input type="hidden" name="checkout">
+						    				<input type="hidden" name="adult">
+						    				<input type="hidden" name="child">
+						        			<button type="submit" class="btn float-center submit_next booking-button" id="rezBtn">예약하기</button><br>
+						        			<a class="btn float-center submit_next booking-button" href="../notice/list">문의하기</a> <!-- 문의 게시판으로 이동 경로 바꾸기 -->
+						        			
+						        			<!-- 403에러 방지 토큰 -->
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+										</form>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -264,50 +336,40 @@
 	<jsp:include page="../main/footer.jsp"/> 
 	
 	<!-- JAVASCRIPT    ================================================== -->
-	<script src="${pageContext.request.contextPath}/resources/room/js/jquery.min.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/room/js/popper.min.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/room/js/bootstrap.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/room/js/plugins.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/room/js/custom.js"></script>
 	<!-- End Document================================================== -->
 <script>
-
+	<!-- 캘린더 옵션  -->
+	// 기예약 날짜
+	let returnDate = "${rezDateList}";
+	console.log("기예약날짜: " + returnDate);
+	let rezDateList = returnDate.split(",");
 	
-<!-- 캘린더 옵션  -->
-//예약 가능한 방이 0개일 때 배열로 가져와 날짜 비활성화
-var disabledDays = ["2022-10-20", "2022-10-21" , "2022-10-22"];
-console.log(disabledDays.length);
-
-//datepicker 기본 설정
      
 	$.datepicker.setDefaults({
       closeText: "닫기",
       prevText: "이전달",
       nextText: "다음달",
       currentText: "오늘",
-      monthNames: ["1월", "2월", "3월", "4월", "5월", "6월",
-        "7월", "8월", "9월", "10월", "11월", "12월"
-      ],
-      monthNamesShort: ["1월", "2월", "3월", "4월", "5월", "6월",
-        "7월", "8월", "9월", "10월", "11월", "12월"
-      ],
+      monthNames: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+      monthNamesShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
       dayNames: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
       dayNamesShort: ["일", "월", "화", "수", "목", "금", "토"],
       dayNamesMin: ["일", "월", "화", "수", "목", "금", "토"],
       weekHeader: "주",
-      dateFormat: "yy.mm.dd", // 날짜형태 예)yy년 m월 d일
+      dateFormat: "yy-mm-dd", // 날짜형태 예)yy년 m월 d일
       firstDay: 0,
       isRTL: false,
       showMonthAfterYear: true,
       yearSuffix: "년",
       beforeShowDay: disableSomeDay
-   	 
     })
 	
     //시작 날짜를 오늘부터 선택 가능
     $('.datepicker').datepicker({
     	minDate:0
-    }); 
+    });
     
     //시작일은 종료일 이후의 날짜 선택 불가, 종료일은 시작일 이전 날짜 선택 불가
     $('#sdate').datepicker();
@@ -322,79 +384,15 @@ console.log(disabledDays.length);
         var dates = date.getDate();
         var year = date.getFullYear();
         
-        for(i=0; i<disabledDays.length;i++){
-        	if($.inArray(year + '-' +(month+1) + '-' +
-        	dates,disabledDays) != -1) {
+        for(i=0; i<rezDateList.length;i++){
+        	if($.inArray(year + '-' +(month+1) + '-' + dates,rezDateList) != -1) {
         		return [false];
         	}
         }
         return [true];
- 
      };  
      
- 
-    /*  
-     bookedDays = ["2022-10-10", "2022-10-20" , "2022-10-30"]
 
-     function disableDates(){
-     		 var m = date.getMonth() + 1;
-              var d = date.getDate();
-              var y = date.getFullYear();
-                  for (i = 0; i < bookedDays.length; i++) {
-                  if ($.inArray(y + '-' + m + '-' + d, bookedDays) != -1) {
-                  return [false];
-                  }
-                  }
-                  return [true];
-     } */
-
-    /* $('#edate').datepicker();
-    $('#edate').datepicker("option", "minDate", $("#sdate").val());
-    $('#edate').datepicker("option", "onClose", function ( selectedDate ) {
-        $("#sdate").datepicker( "option", "maxDate", selectedDate );
-    });  */
-    
-    
-   /*  $('#edate').datepicker("option", "onClose", function (selectedDate) {
-    	if(selectedDate.length==10)
-       		$("#sdate").datepicker("option", "maxDate", selectedDate);
-    	else
-    		$("#sdate").datepicker("option", "maxDate", max);
-    }); */
-    
-    
-   /*  $('#sdate').datepicker("option", "onClose", function (selectedDate) {
-    	if(selectedDate.length==10)
-            $("#edate").datepicker("option", "minDate", selectedDate);
-        else
-            $("#edate").datepicker("option", "minDate", min);
-    });  */
-    
-    
-    /* $(".datepicker").change(function(){
-	   console.log('datepicker선택');
-	   console.log($(this).val());
-	   console.log($(this).index());
-	   index = $(this).index()
-	   $("#d" +  index   ).val($(this).val());
-   }) */
-   
-   
-   
-   
-    
-    
-   
-    	
-   
-    
-    
-    
-    
-   
-  
-    
-    
 	</script>
 	<!-- JAVASCRIPT    ================================================== -->
 	<!-- End Document================================================== -->

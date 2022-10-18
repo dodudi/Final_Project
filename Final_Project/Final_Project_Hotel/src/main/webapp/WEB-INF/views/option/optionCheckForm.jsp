@@ -9,8 +9,8 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script> <!-- 제이쿼리 -->
 <title>예약정보 확인</title>
 <style>
-	input[readonly] {border:none; width:80px}
-	
+	input[readonly] {border:none; width:100px;}
+	*{color:black}
 	.imgDiv {overflow:hidden; border-radius:10%;} /* 이미지 태그 감싸고 있는 div */
 	.img {width:290px; height:194px; transition:all 0.2s linear;}
 	.img:hover {transform: scale(1.4);}
@@ -82,21 +82,21 @@ $(function(){
 	                    <div class="contact_info">
 	                        <div class="info_item">
 	                            <table class="table" id="checkTable">
-	                            	<thead class="thead-light">
+	                            	<thead style="background-color:#f5f2a3">
 	                            		<tr>
 	                            			<th>항목</th><th>선택사항</th><th>금액</th>
 	                            		</tr>
 	                            	</thead>
 	                            	<tbody>
 	                            		<c:forEach var="dl" items="${dateList}">
-		                            		<tr>
-		                            			<th><input type="text" name="dateList" value="${dl}" onfocus="this.blur();"></th>
+		                            		<tr style="background-color:#dee2e6">
+		                            			<th><input type="text" name="dateList" value="${dl}" onfocus="this.blur();" style="background-color:#dee2e6; font-weight:bold"></th>
 		                            			<th>객실명:
-		                            				<input type="text" value="${room.ROOM_TYPE}" onfocus="this.blur();">
+		                            				<c:out value="${room.ROOM_TYPE}"/>
 		                            				<input type="hidden" name="ROOM_ID" value="${rez.ROOM_ID}">
 		                            			</th>
 		                            			<td>
-		                            				 <!-- 체크아웃 날짜는 숙박하지 않으므로 객실 금액이 부과되지 않는다 (0원) -->
+		                            				<!-- 체크아웃 날짜는 숙박하지 않으므로 객실 금액이 부과되지 않는다 (0원) -->
 		                            				<c:if test="${dl != rez.REZ_CHECKOUT}">
 		                            					<span><fmt:formatNumber value="${room.ROOM_PRICE}" pattern="#,###"/>원</span>
 		                            				</c:if>
@@ -185,10 +185,11 @@ $(function(){
 	                            			</c:forEach>
 	                           			</c:forEach>
 	                            	</tbody>
-	                            	<tfoot>
+	                            	<tfoot style="text-align:left">
 								        <tr>
 								            <th colspan="3" style="text-align:right">
-								            	총 합계:&nbsp;&nbsp;&nbsp;<input type="text" name="total" onfocus="this.blur();">원
+								            	총 합계:&nbsp;&nbsp;&nbsp;
+								            	<input type="text" name="total" onfocus="this.blur();" style="width:80px">원
 								            </th>
 								        </tr>
 								    </tfoot>

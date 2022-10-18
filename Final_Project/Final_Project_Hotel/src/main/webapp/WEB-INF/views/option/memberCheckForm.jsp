@@ -9,7 +9,7 @@
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script> <!-- 결제 시스템 - 아임포트API -->
 <title>고객정보 확인</title>
 <style>
-	input[readonly] {border:none; background-color:#f9f9ff;}
+	input[name=MEM_PHONE], input[readonly] {border:none; background-color:#f9f9ff;}
 </style>
 <script>
 $(function(){
@@ -19,11 +19,11 @@ $(function(){
 	
 	// 휴대폰번호 변경 여부 확인
 	var phoneAuthChk = true;
-	var originalPhone = "${member.MEM_PHONE}"; // 기존 휴대폰번호
+	var originalPhone = "${member.MEM_PHONE}".replaceAll("-",""); // 기존 휴대폰번호
 	var input_phone = ''; //휴대폰 인증번호 검사에 사용된 휴대폰번호를 저장할 변수
 	console.log(originalPhone);
 	
-	$("input[name='MEM_PHONE']").keyup(function(){  //pointer-events : auto;
+	$("input[name='MEM_PHONE']").keyup(function(){
 		if(originalPhone == $(this).val() || input_phone == $(this).val()) {
 			$(this).parent().find('button').css({'cursor':'default','pointer-events':'none'}).attr('disabled', true).attr('class','genric-btn info-border circle');
 			$("input[name='phoneAuth']").attr('readonly', true);
@@ -129,7 +129,7 @@ function payment() {
         pay_method: "card",
         //merchant_uid : new Date().getTime(), // 가맹점에서 생성/관리하는 고유 주문번호 (중복 불가)
         name: "${room.ROOM_TYPE}", // "${room.ROOM_TYPE}" 또는 "${rez.ROOM_ID}" // 아이템 이름
-        amount: 100, // "${totalPrice}" // 아이템 가격
+        amount: 100, // "${totalPrice}".replaceAll(",", "") // 아이템 가격
         buyer_email: "${member.MEM_EMAIL}",
         buyer_name: "${member.MEM_NAME}", // 결제자 이름
         buyer_tel: "${member.MEM_PHONE}",
@@ -148,7 +148,7 @@ function payment() {
         	$("form").submit();
         } else {
         	console.log("결제 실패. 에러 내용: " +  rsp.error_msg);
-        	alert("결제에 실패하셨습니다. 관리자에게 문의해주세요."); // 나중에 이거 주석 풀기!
+        	alert("결제에 실패하셨습니다. 관리자에게 문의해주세요.");
         	$("form").submit(); // 나중에 이거 지우기!
         }
     });
@@ -175,15 +175,20 @@ function payment() {
 	                <div class="col-lg-8 posts-list">
 	                    <div class="single-post row">
 	                       <div class="col-lg-12">
-	                       		<h3>고객정보 (필수)</h3>
 	                       		<table class="table">
+	                       			<tr style="background-color:#f5f2a3;">
+	                       				<th colspan="3">
+	                       					<span style="font-size:20pt; font-weight:bold">고객정보 (필수)</span>
+	                       				</th>
+	                       			</tr>
 	                       			<tr>
-	                       				<th>성명(한글)</th><td>${member.MEM_NAME}</td>
+	                       				<th>성명(한글)</th>
+	                       				<td><c:out value="${member.MEM_NAME}"/></td>
 	                       			</tr>
 	                       			<tr>
 	                       				<th>연락처</th>
 	                       				<td>
-	                       					<input type="text" name="MEM_PHONE" style="backgroundcolor:white;">
+	                       					<input type="text" name="MEM_PHONE">
 	                       					<input type="hidden" name="phoneAuth" maxlength="6"> <!-- 인증번호 입력하는 곳 -->
 	                       					<input type="hidden" name="phoneAuthBtn" value="인증번호 확인"> <!-- 인증번호 입력 후 일치하는지 확인 버튼 -->
 	                       					<button type="button" class="genric-btn info-border circle" id="phoneChkBtn" disabled style="pointer-events: none;">인증하기</button>
@@ -191,7 +196,8 @@ function payment() {
 	                       				</td>
 	                       			</tr>
 	                       			<tr>
-	                       				<th>이메일</th><td>${member.MEM_EMAIL}</td>
+	                       				<th>이메일</th>
+	                       				<td><c:out value="${member.MEM_EMAIL}"/></td>
 	                       			</tr>
 	                       		</table>
 	                       </div>
@@ -272,7 +278,7 @@ function payment() {
 	                <div class="col-lg-4">
 	                    <div class="blog_right_sidebar">
 	                        <aside class="single_sidebar_widget author_widget">
-	                        	<table class="table" id="rezInfo">
+	                        	<table class="table" id="rezInfo" style="text-align:left; color:black">
 	                        		<tr>
 	                        			<th colspan="2">01 일정 및 객실</th>
 	                        		</tr>
@@ -289,65 +295,71 @@ function payment() {
 	                        		<tr>	
 	                        			<th>객실명</th>
 	                        			<td>
-	                        				<input type="text" value="${room.ROOM_TYPE}" readonly onfocus="this.blur();">
+	                        				<c:out value="${room.ROOM_TYPE}"/>
+	                        				<%-- <input type="text" value="${room.ROOM_TYPE}" readonly onfocus="this.blur();"> --%>
 	                        				<input type="hidden" name="ROOM_ID" value="${room.ROOM_ID}">
 	                        			</td>
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>인원수 </th>
 	                        			<td>
-	                        				<h6 style="float:left">성인:&nbsp;<input type="text" name="REZ_ADULT" value="${rez.REZ_ADULT}" readonly onfocus="this.blur();" style="width:15px">명&nbsp;&nbsp;/&nbsp;&nbsp;</h6>
-	                        				<h6 style="float:left">아동:&nbsp;<input type="text" name="REZ_CHILD" value="${rez.REZ_CHILD}" readonly onfocus="this.blur();" style="width:15px">명</h6>
+	                        				성인:&nbsp;<input type="text" name="REZ_ADULT" value="${rez.REZ_ADULT}" readonly onfocus="this.blur();" style="width:15px">명&nbsp;&nbsp;/&nbsp;&nbsp;
+	                        				아동:&nbsp;<input type="text" name="REZ_CHILD" value="${rez.REZ_CHILD}" readonly onfocus="this.blur();" style="width:15px">명
 	                        			</td>
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>총금액</th>
 	                        			<td>
-	                        				<input type="text" value="<fmt:formatNumber value="${room.ROOM_PRICE * nights}" pattern="#,###"/>" readonly onfocus="this.blur();">
+	                        				<fmt:formatNumber value="${room.ROOM_PRICE * nights}" pattern="#,###"/>원
+	                        				<%-- <input type="text" value="<fmt:formatNumber value="${room.ROOM_PRICE * nights}" pattern="#,###"/>" readonly onfocus="this.blur();">원 --%>
 	                        			</td>
 	                        		</tr>
 	                        	</table>
 	                        	<div class="br"></div>
 	                        </aside>
 	                        <aside class="single_sidebar_widget author_widget">
-	                        	<table class="table" id="optionInfo">
+	                        	<table class="table" id="optionInfo" style="text-align:left; color:black">
 	                        		<tr>
 	                        			<th colspan="2">02 옵션 선택</th>
 	                        		</tr>
 	                        		<tr>	
-	                        			<th>조식</th>
+	                        			<th style="width:80px">조식</th>
 	                        			<td>
-	                        				<input type="text" value="${optionPrice.bfTotal}원" readonly onfocus="this.blur();">
+	                        				<fmt:formatNumber value="${optionPrice.bfTotal}" pattern="#,###"/>원
+	                        				<%-- <input type="text" value="${optionPrice.bfTotal}원" readonly onfocus="this.blur();"> --%>
 	                        			</td> 
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>디너</th>
 	                        			<td>
-	                        				<input type="text" value="${optionPrice.dnTotal}원" readonly onfocus="this.blur();">
+	                        				<fmt:formatNumber value="${optionPrice.dnTotal}" pattern="#,###"/>원
+	                        				<%-- <input type="text" value="${optionPrice.dnTotal}원" readonly onfocus="this.blur();"> --%>
 	                        			</td>
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>수영장</th>
 	                        			<td>
-	                        				<input type="text" value="${optionPrice.spTotal}원" readonly onfocus="this.blur();">
+	                        				<fmt:formatNumber value="${optionPrice.spTotal}" pattern="#,###"/>원
+	                        				<%-- <input type="text" value="${optionPrice.spTotal}원" readonly onfocus="this.blur();"> --%>
 	                        			</td> 
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>총 금액</th>
 	                        			<td>
-	                        				<input type="text" value="${optionPrice.bfTotal + optionPrice.dnTotal + optionPrice.spTotal}" readonly>원
+	                        				<fmt:formatNumber value="${optionPrice.bfTotal + optionPrice.dnTotal + optionPrice.spTotal}" pattern="#,###"/>원
+	                        				<%-- <input type="text" value="${optionPrice.bfTotal + optionPrice.dnTotal + optionPrice.spTotal}" readonly>원 --%>
 	                        			</td>
 	                        		</tr>
 	                        	</table>
 	                        	<div class="br"></div>
 	                        </aside>
 	                        <aside class="single_sidebar_widget author_widget">
-	                        	<table class="table">
+	                        	<table class="table" style="text-align:left; color:black">
 	                        		<tr>
 	                        			<th colspan="2">03 할인금액</th>
 	                        		</tr>
 	                        		<tr>	
-	                        			<th>쿠폰</th>
+	                        			<th style="width:80px">쿠폰</th>
 	                        			<td>	
 	                        				<a href="#" class="genric-btn primary circle">보유쿠폰</a>
 	                        			</td> 
@@ -362,12 +374,15 @@ function payment() {
 	                        	<div class="br"></div>
 	                        </aside>
 	                        <aside class="single_sidebar_widget author_widget">
-	                        	<table class="table">
+	                        	<table class="table" style="text-align:left; color:black">
 	                        		<tr>
 	                        			<th colspan="2">04 최종 결제 금액</th>
 	                        		</tr>
 	                        		<tr>	
-	                        			<th><input type="text" name="totalPrice" value="${totalPrice}">원</th>
+	                        			<td>
+	                        				<fmt:formatNumber value="${totalPrice}" pattern="#,###"/>원
+	                        				<%-- <input type="text" name="totalPrice" value="<fmt:formatNumber value="${totalPrice}" pattern="#,###"/>" readonly>원 --%>
+	                        			</td>
 	                        		</tr>
 	                        	</table>
 	                        </aside>
