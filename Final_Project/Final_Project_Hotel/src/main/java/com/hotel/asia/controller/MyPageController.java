@@ -423,12 +423,12 @@ public class MyPageController {
 				if (!(bfAdult2[i].replaceAll("[^0-9]", "").equals("0")
 						&& bfChild2[i].replaceAll("[^0-9]", "").equals("0"))) {
 					OptionReservation orz = new OptionReservation();
-					orz.setOPTION_ID(1);
-					orz.setOPTION_RESERVATION_DATE(dateList2[i + 1].replaceAll("[\\[\\] ]", ""));
-					orz.setADULT(Integer.parseInt(bfAdult2[i].replaceAll("[^0-9]", "")));
-					orz.setCHILD(Integer.parseInt(bfChild2[i].replaceAll("[^0-9]", "")));
-					orz.setROOM_ID(rez.getROOM_ID());
-					orz.setMEM_ID((String) session.getAttribute("id"));
+//					orz.setOPTION_ID(1);
+//					orz.setOPTION_RESERVATION_DATE(dateList2[i + 1].replaceAll("[\\[\\] ]", ""));
+//					orz.setADULT(Integer.parseInt(bfAdult2[i].replaceAll("[^0-9]", "")));
+//					orz.setCHILD(Integer.parseInt(bfChild2[i].replaceAll("[^0-9]", "")));
+//					orz.setROOM_ID(rez.getROOM_ID());
+//					orz.setMEM_ID((String) session.getAttribute("id"));
 					int res = optionRezService.optReservation(orz);
 					if (res == 0) { // 옵션 예약 실패
 						mv.setViewName("에러페이지 설정하기~~");
