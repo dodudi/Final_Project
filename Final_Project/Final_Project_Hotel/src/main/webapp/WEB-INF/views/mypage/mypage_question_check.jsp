@@ -6,6 +6,8 @@
 <html lang="en">
 
 <head>
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}">
 <title>문의내역확인</title>
 
 <!-- Bootstrap CSS -->
@@ -22,6 +24,11 @@
 
 <!--mypage_question_check.css-->
 <link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_module.css">
+<style type="text/css">
+.tst {
+	margin-left: 90%;
+}
+</style>
 </head>
 
 <body>
@@ -62,10 +69,23 @@
 				<!--My Page Select Nav End-->
 
 				<div class="col-9 content-background ">
-					<div class="content-title">문의내역확인</div>
+					<div class="content-title row">문의내역확인</div>
+					<div class="tst">
+						filter :
+						<select id="itemLimitSelect">
+							<c:forEach var="i" begin="1" end="3" step="1">
+								<c:if test="${itemLimit == (2*i-1)*10 }">
+									<option selected="selected" value="${ (2*i-1)*10 }">${ (2*i-1)*10 }</option>
+								</c:if>
+								<c:if test="${itemLimit != (2*i-1)*10 }">
+									<option value="${ (2*i-1)*10 }">${ (2*i-1)*10 }</option>
+								</c:if>
+							</c:forEach>
+						</select>
+					</div>
 					<div class="content-table mb-5">
 						<table class="table">
-							<tbody>
+							<tbody id="itemBox">
 								<tr>
 									<td>글번호</td>
 									<td>글제목</td>
@@ -85,12 +105,12 @@
 
 							</tbody>
 						</table>
-				
+
 						<nav aria-label="Page navigation example">
-							<ul class="pagination justify-content-center">
+							<ul id= "pagination" class="pagination justify-content-center">
 								<!--disable-->
 								<c:if test="${pageCalc.prev == true}">
-								<fmt:parseNumber var="test" value = "${((pageCalc.startPage-1)/pageCalc.pageLimit)  }"></fmt:parseNumber>
+									<fmt:parseNumber var="test" value="${((pageCalc.startPage-1)/pageCalc.pageLimit)  }"></fmt:parseNumber>
 									<li class="page-item"><a class="page-link" href="/hotel/mypage/question?pageNum=${test}" tabindex="-1">&laquo;</a></li>
 								</c:if>
 								<!--active-->
@@ -108,7 +128,7 @@
 								</c:if>
 							</ul>
 						</nav>
-
+						<input type="hidden" id="pageNum" value="${pageCalc.pageData.pageNum}" />
 
 					</div>
 				</div>
@@ -119,4 +139,5 @@
 	<jsp:include page="../main/footer.jsp" />
 </body>
 
+<script src="/hotel/static/project_js/MyPage_Js/mypage_question_check.js"></script>
 </html>
