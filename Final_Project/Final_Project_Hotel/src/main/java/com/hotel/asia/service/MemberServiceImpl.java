@@ -104,6 +104,25 @@ public class MemberServiceImpl implements MemberService {
 		return dao.findId(name, email);
 	}
 	
+	//비밀번호 찾기 
+	@Override
+	public int searchPw(String name, String id, String email) {
+		Member member = dao.searchPw(name, id, email);
+		int result = -1;
+		if(member != null) {
+			result = 1;		//비번존재 
+		}else {
+			result = 0;		//비번무 
+		}
+		return result;		//에러 
+	}
+	
+	//비밀번호 변경 
+	@Override
+	public int updatePw(Member m) {
+		return dao.updatePw(m);
+	}
+	
 	// ==========[현능] 22-10-05 수정==========
 	   // 회원 정보
 	   @Override
@@ -130,4 +149,6 @@ public class MemberServiceImpl implements MemberService {
 	      map.put("MEM_POINT", point);
 	      return dao.rewardPoint(map);
 	   }
+
+	
 }

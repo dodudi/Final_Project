@@ -21,9 +21,13 @@ public interface MemberService {
 	
 	public int getSearchListCount(int index, String search_word);
 	
+	//아이디 찾기 
 	public String findId(String id, String password);
 	
+	//비밀번호 찾기 
+	public int searchPw(String name, String id, String email);
 	
+	public int updatePw(Member m);
 	
 	
 	
@@ -34,4 +38,6 @@ public interface MemberService {
 	   public int phoneCheck(int phone);
 	   // 포인트 적립
 	   public int rewardPoint(String id, int point);
+
+	
 }
