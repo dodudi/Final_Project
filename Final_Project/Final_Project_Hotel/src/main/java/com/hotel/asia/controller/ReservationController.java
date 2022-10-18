@@ -163,8 +163,9 @@ public class ReservationController {
 					orz.setOPTION_RESERVATION_DATE(dateList2[i+1].replaceAll("[\\[\\] ]", ""));
 					orz.setADULT(Integer.parseInt(bfAdult2[i].replaceAll("[^0-9]", "")));
 					orz.setCHILD(Integer.parseInt(bfChild2[i].replaceAll("[^0-9]", "")));
-					orz.setROOM_ID(rez.getROOM_ID());
-					orz.setMEM_ID(loginId);
+					orz.setREZ_ID(rez.getREZ_ID());
+					//orz.setROOM_ID(rez.getROOM_ID());
+					//orz.setMEM_ID(loginId);
 					int res = optionRezService.optReservation(orz);
 					if(res == 0) { // 옵션 예약 실패
 						logger.info("[" + dateList2[i+1] + " | 조식 옵션 예약 실패] res=" + res);
@@ -182,8 +183,9 @@ public class ReservationController {
 					orz.setOPTION_RESERVATION_DATE(dateList2[i].replaceAll("[\\[\\] ]", ""));
 					orz.setADULT(Integer.parseInt(dnAdult2[i].replaceAll("[^0-9]", "")));
 					orz.setCHILD(Integer.parseInt(dnChild2[i].replaceAll("[^0-9]", "")));
-					orz.setROOM_ID(rez.getROOM_ID());
-					orz.setMEM_ID(loginId);
+					orz.setREZ_ID(rez.getREZ_ID());
+					//orz.setROOM_ID(rez.getROOM_ID());
+					//orz.setMEM_ID(loginId);
 					int res = optionRezService.optReservation(orz);
 					if(res == 0) { // 옵션 예약 실패
 						logger.info("[" + dateList2[i] + " | 디너 옵션 예약 실패] res=" + res);
@@ -201,8 +203,9 @@ public class ReservationController {
 					orz.setOPTION_RESERVATION_DATE(dateList2[i].replaceAll("[\\[\\] ]", ""));
 					orz.setADULT(Integer.parseInt(spAdult2[i].replaceAll("[^0-9]", "")));
 					orz.setCHILD(Integer.parseInt(spChild2[i].replaceAll("[^0-9]", "")));
-					orz.setROOM_ID(rez.getROOM_ID());
-					orz.setMEM_ID(loginId);
+					orz.setREZ_ID(rez.getREZ_ID());
+					//orz.setROOM_ID(rez.getROOM_ID());
+					//orz.setMEM_ID(loginId);
 					int res = optionRezService.optReservation(orz);
 					if(res == 0) { // 옵션 예약 실패
 						logger.info("[" + dateList2[i] + " | 수영장 옵션 예약 실패] res=" + res);

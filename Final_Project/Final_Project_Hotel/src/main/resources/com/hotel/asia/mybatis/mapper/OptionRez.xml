@@ -8,7 +8,7 @@
 		insert into OPTION_RESERVATION
 		values
 		((select nvl(max(OPTION_RESERVATION_ID),0)+1 from OPTION_RESERVATION),		
-		 (select REZ_ID from REZ where ROOM_ID = #{ROOM_ID} and MEM_ID = #{MEM_ID}),
+		 #{REZ_ID},
 		 #{OPTION_ID}, #{OPTION_RESERVATION_DATE},
 		 #{ADULT}, #{CHILD})		
 	</insert>
