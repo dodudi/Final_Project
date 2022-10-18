@@ -17,4 +17,7 @@ public interface RezMapper {
 	
 	// 객실 예약 리스트
 	public List<Rez> getRezList();
+	
+	// 특정 객실 예약 날짜 리스트
+	public List<Rez> getRezRoomDate(int ROOM_ID);
 }

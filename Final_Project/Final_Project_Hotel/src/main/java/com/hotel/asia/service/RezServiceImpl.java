@@ -32,4 +32,10 @@ public class RezServiceImpl  implements RezService{
 		return mapper.getRezList();
 	}
 	
+	// 특정 객실 예약 날짜 리스트
+	@Override
+	public List<Rez> getRezRoomDate(int num) {
+		return mapper.getRezRoomDate(num);
+	}
+	
 }

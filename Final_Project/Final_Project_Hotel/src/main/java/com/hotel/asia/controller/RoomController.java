@@ -72,8 +72,8 @@ public class RoomController {
 		// 숙박 날짜 계산 (체크인 날짜 ~ 체크아웃 날짜)
 		Calendar checkInCal = Calendar.getInstance();
 		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // 날짜 형식 지정
-		Date checkInFormat = new SimpleDateFormat("yyyy-MM-dd").parse(checkIn.replace(".", "-"));// 체크인 날짜
-		Date checkOutFormat = new SimpleDateFormat("yyyy-MM-dd").parse(checkOut.replace(".", "-")); // 체크아웃 날짜
+		Date checkInFormat = new SimpleDateFormat("yyyy-MM-dd").parse(checkIn);// 체크인 날짜
+		Date checkOutFormat = new SimpleDateFormat("yyyy-MM-dd").parse(checkOut); // 체크아웃 날짜
 		long diffSec; // 초 차이
 		long nights; // 일자 수 차이
 		diffSec = (checkOutFormat.getTime() - checkInFormat.getTime()) / 1000;
@@ -148,8 +148,41 @@ public class RoomController {
 	
 	@GetMapping("/roomDetail")
 	public ModelAndView Detail(@RequestParam(value = "num", defaultValue = "0") int num, ModelAndView mv,
-			HttpServletRequest request) {
+			HttpServletRequest request) throws ParseException {
+		// 특정 객실 정보
 		Room room = roomService.getRoomDetail(num);
+		
+		// 특정 객실 예약 날짜 리스트
+		List<Rez> rezList = new ArrayList<Rez>(); 
+		rezList = rezService.getRezRoomDate(num);
+		
+		// 기예약 날짜 구하기
+		Calendar checkInCal = Calendar.getInstance();
+		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // 날짜 형식 지정
+		String rezDateList = ""; // 특정 객실 예약 날짜 리스트
+		logger.info("==========예약리스트 확인==========");
+		for(Rez r : rezList) {
+			logger.info("***** 예약번호: " + r.getREZ_ID());
+			logger.info("체크인 날짜: " + r.getREZ_CHECKIN());
+			logger.info("체크아웃 날짜: " + r.getREZ_CHECKOUT());
+			
+			Date format1 = new SimpleDateFormat("yyyy-MM-dd").parse(r.getREZ_CHECKIN()); // r.getREZ_CHECKIN()
+	        Date format2 = new SimpleDateFormat("yyyy-MM-dd").parse(r.getREZ_CHECKOUT()); // r.getREZ_CHECKOUT()
+	        long diffSec = (format2.getTime() - format1.getTime()) / 1000; // 초 차이
+	        long nights = diffSec / (24*60*60); // 일자 수 차이
+			logger.info("숙박일수 : " + nights);
+			
+			checkInCal.setTime(format1);
+			int temp = 0;
+			for(int i = 0; i < nights; i++) {
+				checkInCal.add(Calendar.DATE, temp);
+				rezDateList += sdf.format(checkInCal.getTime()) + ",";
+				temp = 1;
+			}
+		}
+		logger.info("==========예약날짜리스트 확인==========");
+		logger.info(rezDateList);
+		
 		if (room == null) {
 			logger.info("객실 상세보기 실패");
 			mv.setViewName("error/error");
@@ -159,6 +192,7 @@ public class RoomController {
 			logger.info("객실 상세보기 성공");
 			mv.setViewName("room/roomDetail");
 			mv.addObject("room", room);
+			mv.addObject("rezDateList", rezDateList);
 		}
 		return mv;
 	}

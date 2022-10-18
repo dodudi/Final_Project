@@ -9,8 +9,10 @@
 <title>옵션 신청 페이지</title>
 <style>
 	#bfHide, #dnHide, #spHide { width:20px; height:20px; float:right }
-	input[readonly] {border:none; background-color:#f9f9ff; width:80px}
+	input[readonly] {border:none; background-color:#f9f9ff; width:90px}
 	input[name="REZ_CHECKIN"], input[name="REZ_CHECKOUT"], input[name="ROOM_ID"] {float:left}
+	
+	*{color:black}
 	
 	select {
 	  box-sizing: border-box;
