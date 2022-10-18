@@ -130,7 +130,7 @@ $(function(){
 			xhr.setRequestHeader(header, token);
 			},
 			success:function(data){
-				console.log("data 성공(email) : " + data.message);
+				console.log("data 성공(email) : " + data.serial);
 				
 			  if(data.message == "success"){
 			 	alert("인증번호가 발송되었습니다. \n 인증번호를 확인해주세요.");

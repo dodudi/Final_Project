@@ -30,8 +30,6 @@ body {
 }
 
 
-
-
 .shadow1{
   -webkit-box-shadow:  0 20px 15px -15px rgba(119, 119, 119, 0.85);
      -moz-box-shadow:  0 20px 15px -15px rgba(119, 119, 119, 0.85);
@@ -300,4 +298,9 @@ a{
 	color: red;
 	font-size: 12px;
 	  position: relative;
+}
+
+.clearfix{
+	display:flex;
+	justify-content: center;
 }

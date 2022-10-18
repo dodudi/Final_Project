@@ -9,7 +9,7 @@
 <title>옵션 신청 페이지</title>
 <style>
 	#bfHide, #dnHide, #spHide { width:20px; height:20px; float:right }
-	input[readonly] {border:none; background-color:#f9f9ff; width:90px}
+	input[readonly] {border:none; background-color:#f9f9ff; width:95px}
 	input[name="REZ_CHECKIN"], input[name="REZ_CHECKOUT"], input[name="ROOM_ID"] {float:left}
 	
 	*{color:black}
@@ -199,15 +199,25 @@ $(function(){
 	                       <div class="col-lg-12">
 	                       		<!-- 1. 조식 -->
 	                       		<table class="table" id="bfTable">
-	                       			<caption style="caption-side:top">
-	                       				<strong>조식</strong>
-	                       				<img src="${pageContext.request.contextPath}/resources/project_image/option/underarrow.png" id="bfHide">
-	                       			</caption>
+	                       			<thead>
+		                       			<tr style="background-color:#f5f2a3">
+		                       				<td colspan="2">
+		                       					<span style="font-size:20pt; font-weight:bold">Breakfast</span>
+		                       				</td>
+		                       				<td>
+		                       					<img src="${pageContext.request.contextPath}/resources/project_image/option/underarrow.png" id="bfHide">
+		                       				</td>
+		                       			</tr>
+	                       			</thead>
 	                       			<c:forEach var="nights" begin="1" end="${nights}">
 	                       				<c:forEach var="option" items="${optionList}">
 			                       			<c:if test="${option.OPTION_NAME eq '조식'}">
 				                       			<tr>
-				                       				<td colspan="3">이용날짜 (  <input type="text" name="bfDate${nights}" id="bfDate${nights}" onfocus="this.blur();">  )</td>
+				                       				<td colspan="3">
+				                       					<h5>이용날짜 (
+				                       						<input type="text" name="bfDate${nights}" id="bfDate${nights}" onfocus="this.blur();">)
+				                       					</h5>
+				                       				</td>
 				                       			</tr>
 				                       			<tr>
 				                       				<td>성인(청소년 포함)</td>
@@ -250,15 +260,25 @@ $(function(){
 		                       		
 	                       		<!-- 2. 디너 -->
 	                       		<table class="table" id="dnTable">
-	                       			<caption style="caption-side:top">
-	                       				<strong>디너</strong>
-	                       				<img src="${pageContext.request.contextPath}/resources/project_image/option/underarrow.png" id="dnHide">
-	                       			</caption>
+	                       			<thead>
+		                       			<tr style="background-color:#f5f2a3">
+		                       				<td colspan="2">
+		                       					<span style="font-size:20pt; font-weight:bold">Dinner</span>
+		                       				</td>
+		                       				<td>
+		                       					<img src="${pageContext.request.contextPath}/resources/project_image/option/underarrow.png" id="dnHide">
+		                       				</td>
+		                       			</tr>
+	                       			</thead>
 	                       			<c:forEach var="nights" begin="1" end="${nights}">
 	                       				<c:forEach var="option" items="${optionList}">
 			                       			<c:if test="${option.OPTION_NAME eq '디너'}">
 				                       			<tr>
-				                       				<td colspan="3">이용날짜 (  <input type="text" name="dnDate${nights}" id="dnDate${nights}" onfocus="this.blur();">  )</td>
+				                       				<td colspan="3">
+				                       					<h5>이용날짜 (
+				                       						<input type="text" name="dnDate${nights}" id="dnDate${nights}" onfocus="this.blur();">)
+				                       					</h5>
+				                       				</td>
 				                       			</tr>
 				                       			<tr>
 				                       				<td>성인(청소년 포함)</td>
@@ -300,15 +320,25 @@ $(function(){
 	                       		
 	                       		<!-- 3. 수영장 -->
 	                       		<table class="table" id="spTable">
-	                       			<caption style="caption-side:top">
-	                       				<strong>수영장</strong>
-	                       				<img src="${pageContext.request.contextPath}/resources/project_image/option/underarrow.png" id="spHide">
-	                       			</caption>
+	                       			<thead>
+		                       			<tr style="background-color:#f5f2a3">
+		                       				<td colspan="2">
+		                       					<span style="font-size:20pt; font-weight:bold">Swimming Pool</span>
+		                       				</td>
+		                       				<td>
+		                       					<img src="${pageContext.request.contextPath}/resources/project_image/option/underarrow.png" id="spHide">
+		                       				</td>
+		                       			</tr>
+	                       			</thead>
 	                       			<c:forEach var="nights" begin="1" end="${nights + 1}">
 	                       				<c:forEach var="option" items="${optionList}">
 			                       			<c:if test="${option.OPTION_NAME eq '수영장'}">
 				                       			<tr>
-				                       				<td colspan="3">이용날짜 (  <input type="text" name="spDate${nights}" id="spDate${nights}" onfocus="this.blur();">  )</td>
+				                       				<td colspan="3">
+				                       					<h5>이용날짜 (
+				                       						<input type="text" name="spDate${nights}" id="spDate${nights}" onfocus="this.blur();">)
+				                       					</h5>
+				                       				</td>
 				                       			</tr>
 				                       			<tr>
 				                       				<td>성인(청소년 포함)</td>
@@ -357,63 +387,66 @@ $(function(){
 	                <div class="col-lg-4">
 	                    <div class="blog_right_sidebar">
 	                        <aside class="single_sidebar_widget author_widget">
-	                        	<table class="table" id="rezInfo">
+	                        	<table class="table" id="rezInfo" style="text-align:left">
 	                        		<tr>
-	                        			<th colspan="2">01 일정 및 객실</th>
+	                        			<th colspan="2">01&nbsp;&nbsp;&nbsp;&nbsp;일정 및 객실</th>
 	                        		</tr>
 	                        		<tr>	
-	                        			<th style="width:30%">체크인</th><td><input type="text" name="REZ_CHECKIN" value="${rez.REZ_CHECKIN}" onfocus="this.blur();"></td>
+	                        			<th style="width:30%">체크인</th>
+	                        			<td><input type="text" name="REZ_CHECKIN" value="${rez.REZ_CHECKIN}" onfocus="this.blur();"></td>
 	                        		</tr>
 	                        		<tr>	
-	                        			<th>체크아웃</th><td><input type="text" name="REZ_CHECKOUT" value="${rez.REZ_CHECKOUT}" onfocus="this.blur();"></td>
+	                        			<th>체크아웃</th>
+	                        			<td><input type="text" name="REZ_CHECKOUT" value="${rez.REZ_CHECKOUT}" onfocus="this.blur();"></td>
 	                        		</tr>
 	                        		<tr>	
-	                        			<th>숙박일수</th><td><h6 style="float:left"><input type="text" name="nights" value="${nights}" onfocus="this.blur();" style="width:10px">박</h6></td>
+	                        			<th>숙박일수</th>
+	                        			<td><input type="text" name="nights" value="${nights}" onfocus="this.blur();" style="width:10px">박</td>
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>객실명</th>
 	                        			<td>
-	                        				<input type="text" value="${room.ROOM_TYPE}" onfocus="this.blur();">
+	                        				<c:out value="${room.ROOM_TYPE}"/>
 	                        				<input type="hidden" name="ROOM_ID" value="${rez.ROOM_ID}">
 	                        			</td>
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>인원수</th>
 	                        			<td>
-	                        				<h6 style="float:left">성인:&nbsp;<input type="text" name="REZ_ADULT" value="${rez.REZ_ADULT}" onfocus="this.blur();" style="width:15px">명&nbsp;&nbsp;/&nbsp;&nbsp;</h6>
-	                        				<h6 style="float:left">아동:&nbsp;<input type="text" name="REZ_CHILD" value="${rez.REZ_CHILD}" onfocus="this.blur();" style="width:15px">명</h6>
+	                        				성인:&nbsp;<input type="text" name="REZ_ADULT" value="${rez.REZ_ADULT}" onfocus="this.blur();" style="width:15px">명&nbsp;&nbsp;/&nbsp;&nbsp;
+	                        				아동:&nbsp;<input type="text" name="REZ_CHILD" value="${rez.REZ_CHILD}" onfocus="this.blur();" style="width:15px">명
 	                        			</td>
 	                        		</tr>
 	                        	</table>
 	                        	<div class="br"></div>
 	                        </aside>
 	                        <aside class="single_sidebar_widget author_widget">
-	                        	<table class="table" id="optionInfo">
+	                        	<table class="table" id="optionInfo" style="text-align:left">
 	                        		<tr>
-	                        			<th colspan="2">02 옵션 선택</th>
+	                        			<th colspan="2">02&nbsp;&nbsp;&nbsp;&nbsp;옵션 선택</th>
 	                        		</tr>
 	                        		<tr>	
 	                        			<th style="width:30%">조식</th>
 	                        			<td>
-	                        				<h6 style="float:left"><input type="text" name="bfTotal" id="bfTotal" value="0" onfocus="this.blur();">원</h6>
+	                        				<input type="text" name="bfTotal" id="bfTotal" value="0" onfocus="this.blur();">원
 	                        			</td> 
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>디너</th>
 	                        			<td>
-	                        				<h6 style="float:left"><input type="text" name="dnTotal" id="dnTotal" value="0" onfocus="this.blur();">원</h6>
+	                        				<input type="text" name="dnTotal" id="dnTotal" value="0" onfocus="this.blur();">원
 	                        			</td>
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>수영장</th>
 	                        			<td>
-	                        				<h6 style="float:left"><input type="text" name="spTotal" id="spTotal" value="0" onfocus="this.blur();">원</h6>
+	                        				<input type="text" name="spTotal" id="spTotal" value="0" onfocus="this.blur();">원
 	                        			</td> 
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>총 금액</th>
 	                        			<td>
-	                        				<h6 style="float:left"><input type="text" id="total" value="0" onfocus="this.blur();">원</h6>
+	                        				<input type="text" id="total" value="0" onfocus="this.blur();">원
 	                        			</td>
 	                        		</tr>
 	                        	</table>

@@ -4,7 +4,25 @@
 
 	<head>
 		<title>회원정보</title>
+		<style>
+			.content-title {
+				font-family: 'Courier New', Courier, monospace;
+				color: black;
+				font-size: 2rem;
+				border-bottom: 2px solid #222222;
+			}
 
+			.point {
+				font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+				color: black;
+				font-size: 1.5rem;
+				padding: 24px 48px !important;
+			}
+
+			.point>div {
+				padding: 0 0;
+			}
+		</style>
 	</head>
 
 	<head>
@@ -12,6 +30,7 @@
 
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="/hotel/static/css/bootstrap.css">
+		<link rel="stylesheet" href="/resources/static/css/bootstrap.css">
 		<link rel="stylesheet" href="/hotel/static/vendors/linericon/style.css">
 		<link rel="stylesheet" href="/hotel/static/css/font-awesome.min.css">
 		<link rel="stylesheet" href="/hotel/static/vendors/owl-carousel/owl.carousel.min.css">
@@ -28,7 +47,7 @@
 
 	<body>
 		<jsp:include page="../main/header.jsp" />
-		
+
 		<div class="mypage">
 			<div class="container mypage_background">
 				<div class="row">
@@ -68,122 +87,61 @@
 					</div>
 					<!--My Page Select Nav End-->
 
-					<div class="col-9 content-background ">
-						<div class="content-title">객실예약정보</div>
-						<div class="content-table mb-5">
-							<table class="table">
-								<tbody>
-
-									<tr>
-										<td>객실등급</td>
-										<td>r</td>
-									</tr>
-									<tr>
-										<td>예약자명</td>
-										<td>r</td>
-									</tr>
-									<tr>
-										<td>체크인 날짜</td>
-										<td>r</td>
-									</tr>
-									<tr>
-										<td>체크아웃 날짜</td>
-										<td>r</td>
-									</tr>
-									<tr>
-										<td>총 숙박일</td>
-										<td>r</td>
-									</tr>
-									<tr>
-										<td>성인</td>
-										<td>r</td>
-									</tr>
-									<tr>
-										<td>아동</td>
-										<td>r</td>
-									</tr>
-									<tr>
-										<td>총 금액</td>
-										<td>r</td>
-									</tr>
-								</tbody>
-							</table>
-							<div class="clearfix btn-box">
-								<button type="button" class="btn btn-primary">옵션변경하기</button>
-								<button type="button" class="btn btn-danger">옵션변경하기</button>
+					<div class="col-9 mt-5">
+						<div class="card mb-3">
+							<div class="card-body row point">
+								<div class="col ml-auto">마일리지</div>
+								<div>0 Point</div>
 							</div>
 						</div>
-
-						<div class="content-title">조식|디너 예약 정보</div>
-						<div class="content-table">
-							<table class="table">
-								<tbody>
-
-									<tr>
-										<td rowspan="4">조식</td>
-										<td>날짜</td>
-										<td>1일</td>
-										<td>2일</td>
-										<td>3일</td>
-									</tr>
-									<tr>
-										<td>성인</td>
-										<td>0명</td>
-										<td>0명</td>
-										<td>0명</td>
-									</tr>
-									<tr>
-										<td>아동</td>
-										<td>0명</td>
-										<td>0명</td>
-										<td>0명</td>
-									</tr>
-									<tr>
-										<td>총금액</td>
-										<td>0원</td>
-										<td>0원</td>
-										<td>0원</td>
-									</tr>
-								</tbody>
-							</table>
-							<div class="clearfix btn-box">
-								<button type="button" class="btn btn-primary">옵션변경하기</button>
-								<button type="button" class="btn btn-danger">옵션변경하기</button>
+						<div class="card mb-3">
+							<div class="card-body row point">
+								<div class="col ml-auto">보유한 쿠폰 개수</div>
+								<div>0개</div>
 							</div>
 						</div>
-						<div class="content-table">
-							<table class="table">
+						<div class="card mb-3">
+							<div class="card-body row point">
+								<div class="col ml-auto">사용한 쿠폰 개수</div>
+								<div>0개</div>
+							</div>
+						</div>
+						<div class="card mb-3">
+							<div class="card-body row point">
+								<div class="col ml-auto">발급 받았던 쿠폰</div>
+								<div>0개</div>
+							</div>
+						</div>
+						<div>
+							<div class="content-title mb-3">쿠폰 내역 확인</div>
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th class="mw-100 text-center">쿠폰번호</th>
+										<th class="mw-100 text-center">쿠폰이름</th>
+										<th class="mw-100 text-center">쿠폰효과</th>
+										<th class="mw-100 text-center">쿠폰발급기간</th>
+										<th class="mw-100 text-center">쿠폰유효기간</th>
+									</tr>
+								</thead>
 								<tbody>
-
 									<tr>
-										<td colspan="5">석식</td>
-									</tr>
-									<tr>
-										<td rowspan="3">2022/02/22</td>
-										<td>성인</td>
-										<td>0명</td>
-									</tr>
-									<tr>
-										<td>아동</td>
-										<td>0명</td>
-									</tr>
-									<tr>
-										<td>총금액</td>
-										<td>0원</td>
+										<td>1</td>
+										<td>쿠폰이름</td>
+										<td>20% 할인</td>
+										<td>2022-10-10</td>
+										<td>2022-10-15</td>
 									</tr>
 								</tbody>
+								<tfoot></tfoot>
 							</table>
-							<div class="clearfix btn-box">
-								<button type="button" class="btn btn-primary">옵션변경하기</button>
-								<button type="button" class="btn btn-danger">옵션변경하기</button>
-							</div>
+
 						</div>
 					</div>
-				</div>
 
+				</div>
 			</div>
-		</div>
-		<jsp:include page="../main/footer.jsp" />
+			<jsp:include page="../main/footer.jsp" />
 	</body>
 
 	</html>

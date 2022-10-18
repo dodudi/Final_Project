@@ -58,24 +58,34 @@
 <script>
 $(function(){
 	// 체크인 날짜
-	var checkInDate;
-	var checkIn;
 	$("#sdate").change(function(){
 		$("input[name='checkin']").val($(this).val())
 	})
 	
 	// 체크아웃 날짜
-	var checkOutDate;
-	var checkOut;
 	$("#edate").change(function(){
 		$("input[name='checkout']").val($(this).val())
 	})
 	
+	
 	// 인원수
 	var people;
+	var adult;
+	var child;
 	// 성인
 	$("select[name='adult']").change(function(){
-		people = parseInt($(this).val()) + parseInt($("select[name='child']").val());
+		if(isNaN($(this).val())){
+			adult = 0;
+		} else {
+			adult = parseInt($(this).val());
+		}
+		if(isNaN($("select[name='child']").val())){
+			child = 0;
+		} else {
+			child = parseInt($(this).val());
+		}
+		
+		people = adult + child;
 		console.log("인원수: " + people);
 		if(people > ${room.ROOM_MAX}) {
 			alert("${room.ROOM_TYPE}의 최대 인원수는 ${room.ROOM_MAX}명입니다.");
@@ -87,7 +97,19 @@ $(function(){
 	
 	// 아동
 	$("select[name='child']").change(function(){
-		people = parseInt($(this).val()) + parseInt($("select[name='adult']").val());
+		if(isNaN($(this).val())){
+			adult = 0;
+		} else {
+			adult = parseInt($(this).val());
+		}
+		
+		if(isNaN($("select[name='adult']").val())){
+			child = 0;
+		} else {
+			child = parseInt($(this).val());
+		}
+		
+		people = adult + child;
 		console.log("인원수: " + people);
 		
 		if(people > ${room.ROOM_MAX}) {
@@ -101,7 +123,12 @@ $(function(){
 	
 	// 예약하기 버튼
 	$("#rezBtn").click(function(){
-		if($("input[name='adult']").val() == 0){
+		if($("#sdate").val() == '' || $("#edate").val() == ''){
+			alert("날짜를 선택해주세요.");
+			return false;
+		}
+		
+		if(parseInt($("input[name='adult']").val()) == 0){
 			alert("성인을 1명 이상 선택해주세요.");
 			return false;
 		}
@@ -110,7 +137,6 @@ $(function(){
 			return false;
 		}
 	})
-	
 	
 }) // ready end
 </script>
