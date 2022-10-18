@@ -6,7 +6,19 @@
 <head>
 
 <jsp:include page="../main/header.jsp"/>
-<title>Insert title here</title>
+<script>
+
+$(function(){
+	 // 추가옵션 예약 클릭
+	   $("#optionBtn").click(function(){
+	      $("form").attr("action", "${pageContext.request.contextPath}/option/optionForm");
+	        $("form").submit();
+	   })
+	
+	}) // ready end
+
+	</script>
+
 </head>
 <body>
 <!-- 선택된 날짜, 객실을 바탕으로 예약 전 확인하는 페이지 -->
@@ -29,7 +41,7 @@
 				    	아동 : <input type="text" name="REZ_CHILD" value="${param.child}"><br>
 				    	가격 : <input type="text" name="ROOM_PRICE" value="${room.ROOM_PRICE}">
 				    	<button class="btn btn-warning" type="submit">예약하기</button>
-				    	<button class="btn btn-primary" type="submit"> 추가옵션 예약 </button>
+				    	<button class="btn btn-primary" type="button" id="optionBtn"> 추가옵션 예약 </button>
 				    	
 				    	<!-- 403에러 방지 토큰 -->
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">

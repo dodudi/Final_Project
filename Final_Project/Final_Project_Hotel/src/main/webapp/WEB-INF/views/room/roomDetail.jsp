@@ -202,11 +202,10 @@
 											       <form>
 											 	    <h6 class="color-white mg-6">이용안내</h6><br>
 											    	<div class="use_info">
-											    	
+											    		
 											        	<button type="submit" class="btn float-center submit_next booking-button"id="searchBtn">예약하기</button><br>
 											        	<button type="submit" class="btn float-center submit_next booking-button"id="searchBtn">문의하기</button>
 											        
-														<input type="hidden" name="hnum" value="">
 													</div>
 									     		 </form>
 									     		</div>
@@ -295,7 +294,7 @@ console.log(disabledDays.length);
       dayNamesShort: ["일", "월", "화", "수", "목", "금", "토"],
       dayNamesMin: ["일", "월", "화", "수", "목", "금", "토"],
       weekHeader: "주",
-      dateFormat: "yy.mm.dd", // 날짜형태 예)yy년 m월 d일
+      dateFormat: "yy-mm-dd", // 날짜형태 예)yy년 m월 d일
       firstDay: 0,
       isRTL: false,
       showMonthAfterYear: true,
