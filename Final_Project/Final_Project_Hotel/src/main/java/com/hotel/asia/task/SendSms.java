@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-//import net.nurigo.java_sdk.api.Message;
-//import net.nurigo.java_sdk.exceptions.CoolsmsException;
+import net.nurigo.java_sdk.api.Message;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 
 @Component
 public class SendSms {
