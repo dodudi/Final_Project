@@ -14,8 +14,13 @@ public interface MemberMapper {
 	//존재하는 아이디인지 확인 
 	public Member isId(String id);
 	
-	//아이디찾기 
+	//아이디 찾기 
 	public String findId(String name, String email);
+	
+	//비밀번호 찾기
+	public Member searchPw(String name, String id, String email);
+
+	public int updatePw(Member m);
 	
 	//회원가입(join)
 	public int insert(Member m);
@@ -32,8 +37,6 @@ public interface MemberMapper {
 	public List<Member> getSearchList(Map<String, Object> map) ;
 	
 	
-	
-	
 	// ==========[현능] 22-10-05 수정==========
 	// 회원 정보
 	public Member getMemberInfo(String id);
@@ -41,5 +44,7 @@ public interface MemberMapper {
 	public Member phoneCheck(int phone);
 	// 포인트 적립
 	public int rewardPoint(HashMap<String, Object> map);
+
+	
 
 }

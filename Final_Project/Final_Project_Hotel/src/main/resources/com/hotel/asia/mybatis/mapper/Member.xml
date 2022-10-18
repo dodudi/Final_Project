@@ -13,6 +13,17 @@
 		select MEM_ID from member where MEM_NAME = #{name} and MEM_EMAIL = #{email}
 	</select>
 	
+	<select id="searchPw" resultType="member">
+		select MEM_PASS from member where MEM_NAME = #{name} and MEM_ID = #{id} and MEM_EMAIL = #{email}
+	</select>
+
+	<update id="updatePw">
+		update member set MEM_PASS = #{MEM_PASS}
+		where MEM_ID = #{MEM_ID}
+		and MEM_NAME = #{MEM_NAME}
+		and MEM_EMAIL = #{MEM_EMAIL}
+	</update>
+	
 	<insert id="insert">
 		insert into member
 		values
@@ -27,6 +38,8 @@
 			MEM_PHONE = #{MEM_PHONE},
 		where MEM_ID = #{MEM_ID}
 	</update>
+	
+	
 	
 	<delete id="delete">
 		delete from member where MEM_ID=#{id}

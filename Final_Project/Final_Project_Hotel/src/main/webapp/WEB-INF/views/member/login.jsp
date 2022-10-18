@@ -48,7 +48,10 @@
 				  </c:if>
 				  
                  <input type="submit" id="login-form-submit" class="login_form button animated fadeInUp animate4" value="로그인">
-                 <p><a id="lost-password-link" class="animated fadeIn animate4">아이디/비밀번호 찾기</a></p>
+                 <div class="clearfix">
+                 	  <p><a id="lost-id-link" class="animated fadeIn animate4">아이디 |</a></p>
+               		  <p><a id="lost-password-link" class="animated fadeIn animate4">비밀번호 찾기</a></p>
+                 </div>
                  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
              </form>
          </div>
