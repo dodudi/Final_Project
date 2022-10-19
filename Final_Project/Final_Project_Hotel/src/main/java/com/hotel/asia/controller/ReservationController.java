@@ -4,8 +4,11 @@ import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -59,8 +63,16 @@ public class ReservationController {
 	public ModelAndView reservationCheck(int room_id, 
 										 ModelAndView mv,
 										 Rez rez,
-										 HttpSession session
+										 HttpSession session,
+										 Principal userPrincipal
 										) throws ParseException {
+		
+		if(userPrincipal == null) {
+			logger.info("로그인 아이디 없음");
+			mv.addObject("state", "emptyId");
+			mv.setViewName("member/login");
+			return mv;
+		}
 	logger.info("넘어온 방번호=" + room_id);
 	logger.info("넘어온 체크인 날짜=" + rez.getREZ_CHECKIN());
 	logger.info("넘어온 체크아웃 날짜=" + rez.getREZ_CHECKOUT());
@@ -68,14 +80,14 @@ public class ReservationController {
 	logger.info("넘어온 인원수(소아)=" + rez.getREZ_CHILD());
 	Room room = roomService.getRoomDetail(room_id);
 	
-		// 숙박일수 계산
-		String date1 = rez.getREZ_CHECKOUT(); // 체크아웃 날짜
-		String date2 = rez.getREZ_CHECKIN(); // 체크인 날짜
-		Date format1 = new SimpleDateFormat("yyyy-MM-dd").parse(date1);
-	    Date format2 = new SimpleDateFormat("yyyy-MM-dd").parse(date2);
-	    long diffSec = (format1.getTime() - format2.getTime()) / 1000; // 초 차이
-	    long nights = diffSec / (24*60*60); // 일자 수 차이
-		logger.info("***** 숙박일수 : " + nights);
+	// 숙박일수 계산
+	String date1 = rez.getREZ_CHECKOUT(); // 체크아웃 날짜
+	String date2 = rez.getREZ_CHECKIN(); // 체크인 날짜
+	Date format1 = new SimpleDateFormat("yyyy-MM-dd").parse(date1);
+	Date format2 = new SimpleDateFormat("yyyy-MM-dd").parse(date2);
+	long diffSec = (format1.getTime() - format2.getTime()) / 1000; // 초 차이
+	long nights = diffSec / (24*60*60); // 일자 수 차이
+	logger.info("***** 숙박일수 : " + nights);
 	
 	mv.addObject("room", room);
 	mv.addObject("rez", rez);
@@ -85,27 +97,55 @@ public class ReservationController {
 	
 	
 
-//	// 1. 객실 예약
-//	rez.setMEM_ID((String) session.getAttribute("id")); // 세션에 있는 아이디를 예약자 이름으로 설정
-//	int result = rezService.reservation(rez); // 객실 예약 추가
-//	
-//	// 객실 예약 실패
-//	if(result == 0) {
-//		logger.info("[객실 예약 실패] result=" + result);
-//		mv.setViewName("에러페이지 설정하기~~");
-//		return mv;
-//	} else { // 객실 예약 성공
-//		logger.info("[객실 예약 성공] result=" + result + " / 추가옵션 예약 시작");
-//		logger.info("[객실 예약 번호] REZ_ID=" + rez.getREZ_ID());
-//		logger.info("[예약된 객실 상태 변경 여부] " + roomService.updateRezState(rez.getROOM_ID()));
-//		mv.setViewName("reservation/reservationCheck");
-//	}
-//		return mv;
-	
+
 }
 	
 	
-	
+	// 예약정보 확인 후 회원 정보 확인 폼
+		@PostMapping("/memberCheck0")
+		public ModelAndView memberCheck(Rez rez, int nights,
+										ModelAndView mv, HttpServletRequest request, Principal userPrincipal) {
+			// 로그인하지 않거나 만료된 경우 서비스 이용 불가
+			if(userPrincipal == null) {
+				logger.info("로그인 아이디 없음");
+				mv.addObject("state", "emptyId");
+				mv.setViewName("member/login");
+				return mv;
+			}
+			
+			String loginId = userPrincipal.getName();
+			logger.info("***** [memberCheck] 넘어온 정보 *****");
+			logger.info("* 객실번호 : " + rez.getROOM_ID());
+			logger.info("* 회원아이디 : " + loginId);
+			logger.info("* 체크인 날짜 : " + rez.getREZ_CHECKIN());
+			logger.info("* 체크아웃 날짜 : " + rez.getREZ_CHECKOUT());
+			logger.info("* 성인 수 : " + rez.getREZ_ADULT());
+			logger.info("* 아동 수 : " + rez.getREZ_CHILD());
+			logger.info("* 숙박일수 : " + nights);
+			logger.info("==========================================");
+			
+
+			
+			// 객실 정보
+			Room room = roomService.getRoomDetail(rez.getROOM_ID()); // 선택한 객실 정보 구하기 (조회되는 행은 1개)
+			logger.info("** 선택된 객실 가격 =>" + room.getROOM_PRICE());
+			
+			// 회원정보
+			Member member = memberService.member_info(loginId); // 회원 정보 구하기
+			
+			// 총금액 (객실 + 옵션)
+			int totalPrice = Integer.parseInt(request.getParameter("total").replaceAll(",", ""));
+			
+			
+			mv.addObject("rez", rez); // 객실 예약 정보
+			mv.addObject("nights", nights); // 숙박일수
+			mv.addObject("room", room); // 객실 정보
+			mv.addObject("member", member); // 회원 정보
+			mv.addObject("totalPrice", totalPrice); // 총금액 (객실 + 옵션(옵션은 체크x)) 
+			
+			mv.setViewName("reservation/memberCheckForm");
+			return mv;
+		}
 	
 	
 	

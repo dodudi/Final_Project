@@ -8,22 +8,15 @@ create table room (
 	--ROOM_STATE	VARCHAR2(10) check (ROOM_STATE in ('N', 'Y')) -- 없어도 됨 삭제하기
 );
 
-<<<<<<< HEAD
-insert into room values(1, '싱글룸', 100000, '', 1, '혼자 머무는 편안한 객실','N');
-insert into room values(2, '싱글룸', 100000, '', 1, '혼자 머무는 편안한 객실','N');
-insert into room values(3, '더블룸', 200000, '', 2, '둘이 머무는 편안한 객실','N');
-insert into room values(4, '더블룸', 200000, '', 2, '둘이 머무는 편안한 객실','N');
-insert into room values(5, '트리플룸', 400000, '', 3, '넓은 공간의 편안한 객실','N');
-insert into room values(6, '패밀리룸', 700000, '', 4, '최대 4인 최고급 객실', 'N');
-=======
-insert into room values(1, '싱글룸', 100000, '/hotel/resources/room/img/room3.jpg', 1, '혼자 머무는 편안한 객실','N');
-insert into room values(2, '싱글룸', 100000, '/hotel/resources/room/img/room4.jpg', 1, '혼자 머무는 편안한 객실','N');
-insert into room values(3, '싱글룸', 100000, '/hotel/resources/room/img/room6.jpg', 1, '혼자 머무는 편안한 객실','N');
-insert into room values(4, '더블룸', 200000, '/hotel/resources/room/img/room5.jpg', 2, '둘이 머무는 편안한 객실','N');
-insert into room values(5, '더블룸', 200000, '/hotel/resources/room/img/room6.jpg', 2, '둘이 머무는 편안한 객실','N');
-insert into room values(6, '더블룸', 200000, '/hotel/resources/room/img/room5.jpg', 2, '둘이 머무는 편안한 객실','N');
-insert into room values(7, '트리플룸', 400000, '/hotel/resources/room/img/room6.jpg', 3, '넓은 공간의 편안한 객실','N');
-insert into room values(8, '패밀리룸', 700000, '/hotel/resources/room/img/room5.jpg', 4, '최대 4인 최고급 객실', 'N');
+
+insert into room values(1, '싱글룸', 100000, '/hotel/resources/room/img/singleroom.jpg', 1, '혼자 머무는 편안한 객실','N');
+insert into room values(2, '싱글룸', 100000, '/hotel/resources/room/img/singleroom.jpg', 1, '혼자 머무는 편안한 객실','N');
+insert into room values(3, '싱글룸', 100000, '/hotel/resources/room/img/singleroom.jpg', 1, '혼자 머무는 편안한 객실','N');
+insert into room values(4, '더블룸', 200000, '/hotel/resources/room/img/doubleroom.jpg', 2, '둘이 머무는 편안한 객실','N');
+insert into room values(5, '더블룸', 200000, '/hotel/resources/room/img/doubleroom.jpg', 2, '둘이 머무는 편안한 객실','N');
+insert into room values(6, '더블룸', 200000, '/hotel/resources/room/img/doubleroom.jpg', 2, '둘이 머무는 편안한 객실','N');
+insert into room values(7, '트리플룸', 400000, '/hotel/resources/room/img/tripleroom.jpg', 3, '3인 침대 제공하는 고급 객실','N');
+insert into room values(8, '패밀리룸', 700000, '/hotel/resources/room/img/familyroom.jpg', 4, '최대 4인 최고급 객실', 'N');
 
 
 
