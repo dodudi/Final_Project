@@ -15,5 +15,9 @@ public interface CouponService {
 	
 	
 	// ==========[현능] 22-10-19 추가==========
+	// 특정회원이 가진 쿠폰 리스트
 	public List<CouponVO> getCouponList(String loginId);
+	
+	// 사용된 쿠폰 삭제
+	public int useCoupon(int useCouponNum);
 }

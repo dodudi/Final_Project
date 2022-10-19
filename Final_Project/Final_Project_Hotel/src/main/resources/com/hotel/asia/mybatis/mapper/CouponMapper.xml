@@ -25,10 +25,18 @@
 	
 	<!-- ==========[현능] 22-10-19 추가========== -->
 	<select id="getCouponList" resultType="couponVO">
-		select *
+		<!-- select *
 		from TABLE_COUPON
 		where COUPON_TYPE_NUMBER in (select COUPON_TYPE_NUMBER
 									 from TABLE_MEMBER_COUPON
-									 where MEM_ID = #{MEM_ID})
+									 where MEM_ID = #{MEM_ID}) -->
+		select TABLE_MEMBER_COUPON.COUPON_NUMBER, TABLE_COUPON.COUPON_TYPE_NUMBER, TABLE_COUPON.COUPON_NAME, TABLE_COUPON.COUPON_PRICE, TABLE_COUPON.COUPON_COMMENT
+		from   TABLE_MEMBER_COUPON join TABLE_COUPON
+		on     TABLE_MEMBER_COUPON.COUPON_TYPE_NUMBER = TABLE_COUPON.COUPON_TYPE_NUMBER
+		where  TABLE_MEMBER_COUPON.MEM_ID = #{MEM_ID}
 	</select>
+	<delete id="useCoupon" parameterType="map">
+		delete from TABLE_MEMBER_COUPON
+		where COUPON_NUMBER = #{COUPON_NUMBER}
+	</delete>
 </mapper>

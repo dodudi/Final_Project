@@ -42,9 +42,15 @@ public class CouponServiceImpl implements CouponService{
 	
 	
 	// ==========[현능] 22-10-19 추가==========
+	// 특정회원이 가진 쿠폰 리스트
 	@Override
 	public List<CouponVO> getCouponList(String loginId) {
 		return mapper.getCouponList(loginId);
+	}
+	// 사용된 쿠폰 삭제
+	@Override
+	public int useCoupon(int useCouponNum) {
+		return mapper.useCoupon(useCouponNum);
 	}
 
 }

@@ -144,32 +144,17 @@ $(function(){
 	})
 	
 	// 쿠폰 사용
-	$(".useCoupon").click(function(){
-		var couponNum = $(this).parent().parent().find('input[type=hidden]:nth-child(1)').val();
-		var couponDiscountPercent = $(this).parent().parent().find('input[type=hidden]:nth-child(2)').val();
+	$("input[name='couponName']").click(function(){
+		var couponNum = $(this).prev().prev().val();
+		var couponDiscountPercent = $(this).prev().val();
 		console.log("쿠폰번호: " + couponNum);
 		console.log("쿠폰할인: " + couponDiscountPercent);
 		console.log("============");
 		$("input[name='usePoint']").val('0'); // 마일리지 먼저 사용했었다면 0 된다
 		
-		// 쿠폰 사용
-		if($(this).text('사용')){
-			$(this).removeClass('info');
-			$(this).addClass('info-border');
-			$(this).text('사용해제');
-			
-			
-			discountPrice = originalPrice * (100-couponDiscountPercent) / 100;
-			$("#totalPrice").val(discountPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
-		}
-		
-		// 쿠폰 사용 해제
-		if($(this).text('사용해제')){
-			$(this).removeClass('info-border');
-			$(this).addClass('info');
-			$(this).text('사용');
-		}
-		
+		discountPrice = originalPrice * (100 - couponDiscountPercent) / 100;
+		$("#totalPrice").val(discountPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+		$("input[name='COUPON_NUMBER']").val(couponNum);
 	})
 	
 	
@@ -273,7 +258,7 @@ function payment() {
 	                       		</table>
 	                       </div>
 	                       <div class="col-lg-12" style="margin-top:40px">
-	                       		<h3>취소 정책 (필수 확인)</h3>
+	                       		<h3 style="background-color:#f5f2a3; padding:9px">취소 정책 (필수 확인)</h3>
 	                       		<p class="cancel_stxt">예약취소 및 미입실(No Show)에 관한 위약금 규정에 관하여 <span class="pTxt">공정거래위 산하 소비자 보호원 기준에 따라 아래와 같이 위약금 부과 처리에 관해 안내</span> 하오니, 이용에 유의 하시기 바랍니다.</p>
 					            <!-- 예약취소/환불 규정 참고: https://www.nesthotel.co.kr/privacy/cancellation_policy.asp -->
 					            <div class="cancel">
@@ -338,7 +323,7 @@ function payment() {
 										</dl>
 									</div>
 									<input type="checkbox">예약취소 및 미입실 관련 위약금 규정’과 취소 정책을 확인하고 동의합니다.
-									<button type="button" class="genric-btn primary circle" id="paymentBtn">결제하기</button>
+									<button type="button" class="genric-btn primary circle" id="paymentBtn" style="margin:10px">결제하기</button>
 					            </div>
 	                       </div>
 	                    </div>
@@ -350,7 +335,7 @@ function payment() {
 	                    <div class="blog_right_sidebar">
 	                        <aside class="single_sidebar_widget author_widget">
 	                        	<table class="table" id="rezInfo" style="text-align:left;">
-	                        		<tr>
+	                        		<tr class="table-secondary">
 	                        			<th colspan="2">01 일정 및 객실</th>
 	                        		</tr>
 	                        		<tr>	
@@ -389,7 +374,7 @@ function payment() {
 	                        </aside>
 	                        <aside class="single_sidebar_widget author_widget">
 	                        	<table class="table" id="optionInfo" style="text-align:left;">
-	                        		<tr>
+	                        		<tr class="table-secondary">
 	                        			<th colspan="2">02 옵션 선택</th>
 	                        		</tr>
 	                        		<tr>	
@@ -418,24 +403,28 @@ function payment() {
 	                        		</tr>
 	                        	</table>
 	                        	<div class="br"></div>
-	                        </aside>
+	                        </aside>	                        
 	                        <aside class="single_sidebar_widget author_widget">
 	                        	<table class="table" style="text-align:left;">
-	                        		<tr>
+	                        		<tr class="table-secondary">
 	                        			<th colspan="2">03 할인금액</th>
 	                        		</tr>
 	                        		<tr>	
-	                        			<th colspan="2" style="width:80px">쿠폰 <small>(모든 쿠폰은 중복 사용할 수 없습니다)</small></th>
+	                        			<th colspan="2">쿠폰 <small>(모든 쿠폰은 중복 사용할 수 없습니다)</small></th>
+	                        		</tr>
+	                        		<tr>	
+	                        			<td colspan="2">
+	                        				<input type="hidden" value="0">
+                        					<input type="hidden" value="0">
+	                        				<input type="radio" name="couponName">&nbsp;사용하지 않음
+	                        			</td>
 	                        		</tr>
 	                        		<c:forEach var="coupon" items="${couponList}">
                         				<tr>
-                        					<td>
-                        						<input type="hidden" value="${coupon.COUPON_TYPE_NUMBER}">
+                        					<td colspan="2">
+                        						<input type="hidden" value="${coupon.COUPON_NUMBER}"> <!-- 회원 쿠폰 발급 번호 -->
                         						<input type="hidden" value="${coupon.COUPON_PRICE}">
-                        						<c:out value="${coupon.COUPON_NAME}"/>
-                        					</td>
-                        					<td>
-                        						<a href="#" class="useCoupon genric-btn info circle">사용</a>
+                        						<input type="radio" name="couponName">&nbsp;<c:out value="${coupon.COUPON_NAME}"/>
                         					</td>
                         				</tr>
                         			</c:forEach>
@@ -453,7 +442,7 @@ function payment() {
 	                        <aside class="single_sidebar_widget author_widget">
 	                        	<table class="table" style="text-align:left;">
 	                        		<tr>
-	                        			<th colspan="2">04 최종 결제 금액</th>
+	                        			<th colspan="2" class="table-secondary">04 최종 결제 금액</th>
 	                        		</tr>
 	                        		<tr>	
 	                        			<td>
@@ -478,6 +467,7 @@ function payment() {
 				<input type="hidden" name="dnChild" value="${dnChild}">   <!-- 디너 아동 -->
 				<input type="hidden" name="spAdult" value="${spAdult}">   <!-- 수영장 성인 -->
 				<input type="hidden" name="spChild" value="${spChild}">   <!-- 수영장 아동 -->
+				<input type="hidden" name="COUPON_NUMBER">    <!-- 사용한 쿠폰 번호 -->
 				<input type="hidden" name="PAYMENT_ID">    <!-- 결제 번호 -->
 				<input type="hidden" name="PAYMENT_PRICE"> <!-- 결제 금액 -->
             </form>
