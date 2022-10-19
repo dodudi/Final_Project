@@ -32,8 +32,6 @@ public interface MemberService {
 	
 	
 	// ==========[현능] 22-10-05 수정==========
-	// 회원 정보
-	public Member getMemberInfo(String id);
 	// 휴대폰 번호 중복 검사 
 	public int phoneCheck(int phone);
 	// 포인트 적립

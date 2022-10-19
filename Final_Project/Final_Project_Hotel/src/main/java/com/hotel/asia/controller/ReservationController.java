@@ -249,7 +249,7 @@ public class ReservationController {
 		int optRezListCount = optionRezService.getOptRezListCount(rez.getREZ_ID()); // 옵션 예약 리스트 갯수
 		List<OptionReservation> optRezList = optionRezService.getOptRezList(rez.getREZ_ID()); // 옵션 예약 리스트
 		Room room = roomService.getRoomDetail(rez.getROOM_ID()); // 객실 정보
-		Member member = memberService.member_info(rez.getMEM_ID()); // 예약자 정보 - 나중에 회원쪽 끝나면 예약자 정보 구해서 예약 확인페이지에 예약자명 이름으로 출력하기~~
+		Member member = memberService.member_info(rez.getMEM_ID()); // 예약자 정보
 		
 		mv.addObject("member", member); // 예약자 정보
 		mv.addObject("optRezListCount", optRezListCount); // 옵션 예약 리스트 갯수

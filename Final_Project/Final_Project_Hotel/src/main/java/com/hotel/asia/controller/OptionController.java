@@ -269,7 +269,7 @@ public class OptionController {
 		logger.info("** 선택된 객실 가격 =>" + room.getROOM_PRICE());
 		
 		// 회원정보
-		Member member = memberService.getMemberInfo(loginId); // 회원 정보 구하기
+		Member member = memberService.member_info(loginId); // 회원 정보 구하기
 		
 		// 옵션별 총금액
 		Map<String, Integer> optionPrice = new HashMap<String, Integer>();

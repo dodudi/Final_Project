@@ -126,11 +126,6 @@ public class MemberServiceImpl implements MemberService {
 	
 	
 	// ==========[현능] 22-10-05 수정==========
-	   // 회원 정보
-	   @Override
-	   public Member getMemberInfo(String id) {
-	      return dao.getMemberInfo(id);
-	   }
 	   // 휴대폰 번호 중복 검사 
 	   @Override
 	   public int phoneCheck(int phone) {
