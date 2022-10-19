@@ -32,11 +32,6 @@ $(function(){
     	location.href="../member/findpw";
     });
     
-    // 로그인하지 않거나 만료된 경우
-    if('${state}' == 'emptyId'){
-      alert("본 서비스는 회원만 가능합니다.");
-   }
-    
 });
 	
 	
