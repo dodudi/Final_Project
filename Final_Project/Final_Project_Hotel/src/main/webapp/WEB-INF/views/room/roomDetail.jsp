@@ -82,11 +82,15 @@ $(function(){
 		if(isNaN($("select[name='child']").val())){
 			child = 0;
 		} else {
-			child = parseInt($(this).val());
+			child = parseInt($("select[name='child']").val());
 		}
 		
 		people = adult + child;
-		console.log("인원수: " + people);
+		console.log("성인: " + adult);
+		console.log("소아: " + child);
+		console.log("=>인원수: " + people);
+		console.log("===============");
+		
 		if(people > ${room.ROOM_MAX}) {
 			alert("${room.ROOM_TYPE}의 최대 인원수는 ${room.ROOM_MAX}명입니다.");
 			$("body > div > div > div > div > div.col-lg-4.order-first.order-lg-last > div > div > div:nth-child(2) > div > div:nth-child(1) > div > span").text(1);
@@ -97,20 +101,22 @@ $(function(){
 	
 	// 아동
 	$("select[name='child']").change(function(){
-		if(isNaN($(this).val())){
+		if(isNaN($("select[name='adult']").val())){
 			adult = 0;
 		} else {
-			adult = parseInt($(this).val());
+			adult = parseInt($("select[name='adult']").val());
 		}
-		
-		if(isNaN($("select[name='adult']").val())){
+		if(isNaN($(this).val())){
 			child = 0;
 		} else {
 			child = parseInt($(this).val());
 		}
 		
 		people = adult + child;
-		console.log("인원수: " + people);
+		console.log("성인: " + adult);
+		console.log("소아: " + child);
+		console.log("=>인원수: " + people);
+		console.log("===============");
 		
 		if(people > ${room.ROOM_MAX}) {
 			alert("${room.ROOM_TYPE}의 최대 인원수는 ${room.ROOM_MAX}명입니다.");
@@ -132,18 +138,11 @@ $(function(){
 			alert("성인을 1명 이상 선택해주세요.");
 			return false;
 		}
-		if(${room.ROOM_TYPE} == "싱글룸") {
-	         if(isNaN($("select[name='adult']").val())){
-	            alert("인원을 선택해주세요.");
-	            return false;
-	         }
-	      } else {
-	         if(isNaN($("select[name='adult']").val()) || isNaN($("select[name='child']").val())){
-	            alert("인원을 선택해주세요.");
-	            return false;
-	         }
-	      }
-	      
+		
+		if(isNaN($("select[name='adult']").val()) || isNaN($("select[name='child']").val())){
+			alert("인원을 선택해주세요.");
+			return false;
+		}
 	})
 	
 }) // ready end
@@ -314,16 +313,14 @@ $(function(){
 												</c:forEach>
 											</select>
 										</div>
-										<c:if test="${room.ROOM_MAX != 1}">
-											<div class="col-12 pt-4">
-												<select name="child" class="wide">
-													<option data-display="소아">소아</option>
-													<c:forEach var="child" begin="0" end="${room.ROOM_MAX - 1}" step="1">
-														<option value="${child}">${child}</option>
-													</c:forEach>
-												</select>
-											</div>
-										</c:if>
+										<div class="col-12 pt-4">
+											<select name="child" class="wide">
+												<option data-display="소아">소아</option>
+												<c:forEach var="child" begin="0" end="${room.ROOM_MAX - 1}" step="1">
+													<option value="${child}">${child}</option>
+												</c:forEach>
+											</select>
+										</div>
 									</div>
 								</div>
 								<div class="col-12 col-md-6 col-lg-12 pt-5">
