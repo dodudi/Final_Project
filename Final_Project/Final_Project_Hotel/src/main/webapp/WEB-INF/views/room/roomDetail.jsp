@@ -132,10 +132,18 @@ $(function(){
 			alert("성인을 1명 이상 선택해주세요.");
 			return false;
 		}
-		if(isNaN($("select[name='adult']").val()) || isNaN($("select[name='child']").val())){
-			alert("인원을 선택해주세요.");
-			return false;
-		}
+		if(${room.ROOM_TYPE} == "싱글룸") {
+	         if(isNaN($("select[name='adult']").val())){
+	            alert("인원을 선택해주세요.");
+	            return false;
+	         }
+	      } else {
+	         if(isNaN($("select[name='adult']").val()) || isNaN($("select[name='child']").val())){
+	            alert("인원을 선택해주세요.");
+	            return false;
+	         }
+	      }
+	      
 	})
 	
 }) // ready end

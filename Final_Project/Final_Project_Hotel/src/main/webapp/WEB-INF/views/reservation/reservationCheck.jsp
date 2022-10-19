@@ -117,7 +117,7 @@ $(function(){
 		                            		</tr>
 		                            		<tr>
 		                            			<th>인원</th>
-		                            				<td>성인 : ${param.adult} / 아동 : ${param.child} 
+		                            				<td>성인 : ${param.adult} / 소아 : ${param.child} 
 		                            				<input type="hidden" name="ADULT" value="${param.adult}">
 		                            				<input type="hidden" name="ROOM_ID" value="${room.ROOM_ID}"></td>
 		                            				<td></td>
