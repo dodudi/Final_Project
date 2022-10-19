@@ -171,7 +171,7 @@ function payment() {
         pay_method: "card",
         //merchant_uid : new Date().getTime(), // 가맹점에서 생성/관리하는 고유 주문번호 (중복 불가)
         name: "${room.ROOM_TYPE}", // "${room.ROOM_TYPE}" 또는 "${rez.ROOM_ID}" // 아이템 이름
-        amount: 100, // $("#totalPrice").val().replace(",", ""), // 실제 결제 금액
+        amount: 100, // $("#totalPrice").val().replaceAll(",", ""), // 실제 결제 금액
         buyer_email: "${member.MEM_EMAIL}",
         buyer_name: "${member.MEM_NAME}", // 결제자 이름
         buyer_tel: "${member.MEM_PHONE}",
@@ -180,7 +180,7 @@ function payment() {
     }, function (rsp) {
     	$("input[name='PAYMENT_ID']").val(rsp.imp_uid); // rsp.merchant_uid: 주문번호 / rsp.imp_uid: 결제번호
     	//$("input[name='PAYMENT_PRICE']").val(rsp.paid_amount); // 실제 결제 금액
-    	$("input[name='PAYMENT_PRICE']").val($("#totalPrice").val().replace(",", "")); // 시스템상 결제 금액
+    	$("input[name='PAYMENT_PRICE']").val( $("#totalPrice").val().replaceAll(",", "") ); // 시스템상 결제 금액
     	console.log("결제 번호(imp_uid) => " + rsp.imp_uid);
     	console.log("결제 금액 => " + rsp.paid_amount);
         console.log("[결제 상태] rsp.status=" + rsp.status);
