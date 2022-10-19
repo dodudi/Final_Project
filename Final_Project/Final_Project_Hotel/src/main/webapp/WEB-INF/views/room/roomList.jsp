@@ -155,7 +155,8 @@ $(function(){
 	        			}
 	        		}
 	  	        	output += '>'
-          				    + '		예약하기 ' + item.ROOM_PRICE + '원'
+          				    + '	<div style=font-size:15px>	예약하기 ' + item.ROOM_PRICE.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + '원</div><br>'
+          				    + ' <div style=font-size:15px; text-align:center> (1박) 옵션 별도</div>'
        		                + '</button>';
 	  	        	
 	        		output += '		<div class="room-icons mt-4 pt-4">'
@@ -175,7 +176,7 @@ $(function(){
 </script>
 </head>
 <body>
-
+ 
  <section class="banner_area">
 	 <div class="booking_table d_flex align-items-center">
 	     <div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0"
@@ -207,7 +208,8 @@ $(function(){
 												<p class="mt-3">${roomList.ROOM_DETAIL}</p>
 										
 													<button type="submit" class="mt-1 btn btn-warning basicbutton">
-														예약하기 <fmt:formatNumber value="${roomList.ROOM_PRICE}" pattern="#,###"/>원
+														<div style="font-size:15px">예약하기 <fmt:formatNumber value="${roomList.ROOM_PRICE}" pattern="#,###"/>원</div><br>
+														<div style="font-size:15px; text-align:left">(1박) 옵션 별도</div>
 													</button>
 												
 												<div class="room-icons mt-4 pt-4">
@@ -417,10 +419,10 @@ $('.checkbox').click(function(){
     	 form.method = 'POST';
 
     	 form.innerHTML = '<input name="room_id" value=' + $(this).parent().find("input[type='hidden']").val() + '>'
-    	 form.innerHTML += '<input name="checkin" value=' + $('#sdate').val() + '>'
-    	 form.innerHTML += '<input name="checkout" value=' + $('#edate').val() + '>'
-    	 form.innerHTML += '<input name="adult" value=' + $('#adult').val() + '>'
-    	 form.innerHTML += '<input name="child" value=' + $('#child').val() + '>'
+    	 form.innerHTML += '<input name="REZ_CHECKIN" value=' + $('#sdate').val() + '>'
+    	 form.innerHTML += '<input name="REZ_CHECKOUT" value=' + $('#edate').val() + '>'
+    	 form.innerHTML += '<input name="REZ_ADULT" value=' + $('#adult').val() + '>'
+    	 form.innerHTML += '<input name="REZ_CHILD" value=' + $('#child').val() + '>'
     	 form.innerHTML += '<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">'
     	 
 
