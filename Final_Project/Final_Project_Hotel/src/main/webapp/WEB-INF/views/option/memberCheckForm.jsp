@@ -467,7 +467,7 @@ function payment() {
 				<input type="hidden" name="dnChild" value="${dnChild}">   <!-- 디너 아동 -->
 				<input type="hidden" name="spAdult" value="${spAdult}">   <!-- 수영장 성인 -->
 				<input type="hidden" name="spChild" value="${spChild}">   <!-- 수영장 아동 -->
-				<input type="hidden" name="COUPON_NUMBER">    <!-- 사용한 쿠폰 번호 -->
+				<input type="hidden" name="COUPON_NUMBER" value="0">    <!-- 사용한 쿠폰 번호 -->
 				<input type="hidden" name="PAYMENT_ID">    <!-- 결제 번호 -->
 				<input type="hidden" name="PAYMENT_PRICE"> <!-- 결제 금액 -->
             </form>
