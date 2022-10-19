@@ -14,4 +14,8 @@ public interface CouponMapper {
 	public CouponVO getCoupon(int COUPON_TYPE_NUMBER);
 	public int useCouponMember(int COUPON_NUMBER);
 	public int saveUseCoupon();
+	
+	
+	// ==========[현능] 22-10-19 추가==========
+	public List<CouponVO> getCouponList(String MEM_ID);
 }

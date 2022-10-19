@@ -21,4 +21,14 @@
 	<delete id="useCouponMember"  parameterType="_int" >
 		DELETE FROM TABLE_MEMBER_COUPON WHERE COUPON_NUMBER = #{COUPON_NUMBER}
 	</delete>	
+	
+	
+	<!-- ==========[현능] 22-10-19 추가========== -->
+	<select id="getCouponList" resultType="couponVO">
+		select *
+		from TABLE_COUPON
+		where COUPON_TYPE_NUMBER in (select COUPON_TYPE_NUMBER
+									 from TABLE_MEMBER_COUPON
+									 where MEM_ID = #{MEM_ID})
+	</select>
 </mapper>

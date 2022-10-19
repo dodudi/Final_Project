@@ -37,5 +37,14 @@ public class CouponServiceImpl implements CouponService{
 		// TODO Auto-generated method stub
 		return mapper.useCouponMember(COUPON_NUMBER);
 	}
+	
+	
+	
+	
+	// ==========[현능] 22-10-19 추가==========
+	@Override
+	public List<CouponVO> getCouponList(String loginId) {
+		return mapper.getCouponList(loginId);
+	}
 
 }

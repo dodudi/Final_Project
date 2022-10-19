@@ -12,4 +12,8 @@ public interface CouponService {
 	public int getCouponMemberCount(String mem_id);
 	public CouponVO getCoupon(int COUPON_TYPE_NUMBER);
 	public int useCouponMember(int COUPON_NUMBER);
+	
+	
+	// ==========[현능] 22-10-19 추가==========
+	public List<CouponVO> getCouponList(String loginId);
 }

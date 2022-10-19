@@ -40,3 +40,14 @@ CREATE TABLE TABLE_COUPON_DEL(
 );
 INSERT INTO TABLE_COUPON_DEL (SELECT * FROM  TABLE_MEMBER_COUPON WHERE COUPON_NUMBER = 1);
 commit;
+
+
+---------------------------[현능]---------------------------
+select *
+from TABLE_COUPON
+where COUPON_TYPE_NUMBER in (select COUPON_TYPE_NUMBER
+							 from TABLE_MEMBER_COUPON
+							 where MEM_ID = 'A1234')
+
+update TABLE_COUPON set COUPON_COMMENT = '전체금액 20% 할인 쿠폰' where COUPON_PRICE = 20;
+update TABLE_COUPON set COUPON_COMMENT = '전체금액 50% 할인 쿠폰' where COUPON_PRICE = 50;
