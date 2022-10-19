@@ -44,6 +44,10 @@ public interface MemberMapper {
 	public Member phoneCheck(int phone);
 	// 포인트 적립
 	public int rewardPoint(HashMap<String, Object> map);
+	
+	// ==========[현능] 22-10-19 추가==========
+	// 포인트 사용
+	public int usePoint(HashMap<String, Object> map);
 
 	
 

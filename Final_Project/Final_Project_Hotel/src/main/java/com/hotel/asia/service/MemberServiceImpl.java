@@ -123,6 +123,8 @@ public class MemberServiceImpl implements MemberService {
 		return dao.updatePw(m);
 	}
 	
+	
+	
 	// ==========[현능] 22-10-05 수정==========
 	   // 회원 정보
 	   @Override
@@ -149,6 +151,16 @@ public class MemberServiceImpl implements MemberService {
 	      map.put("MEM_POINT", point);
 	      return dao.rewardPoint(map);
 	   }
+	   
+	// ==========[현능] 22-10-19 추가==========
+	// 포인트 사용
+	@Override
+	public int usePoint(String id, int point) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+	    map.put("MEM_ID", id);
+	    map.put("MEM_POINT", point);
+		return dao.usePoint(map);
+	}
 
 	
 }

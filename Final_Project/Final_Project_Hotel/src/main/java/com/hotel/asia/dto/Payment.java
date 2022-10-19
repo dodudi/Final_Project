@@ -8,10 +8,6 @@ public class Payment {
 	private int COUPON_HISTORY_ID;
 	private int POINT_DISCOUNT;
 	
-	// REZ_ID(예약번호) 구하기 위한 필드
-	//private int ROOM_ID;
-	//private String MEM_ID;
-	
 	
 	// getter, setter
 	public String getPAYMENT_ID() {

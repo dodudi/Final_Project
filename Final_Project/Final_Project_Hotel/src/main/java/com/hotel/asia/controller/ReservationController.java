@@ -222,12 +222,14 @@ public class ReservationController {
 		logger.info("***** [payment] 넘어온 정보 *****");
 		logger.info("*결제번호 : " + pm.getPAYMENT_ID());
 		logger.info("*결제금액 : " + pm.getPAYMENT_PRICE());
-		//pm.setROOM_ID(rez.getROOM_ID());
-		//pm.setMEM_ID((String) session.getAttribute("id"));
 		pm.setREZ_ID(rez.getREZ_ID());
 		int paymentResult = paymentService.payment(pm);
 		logger.info("[결제 성공 여부] paymentResult=" + paymentResult);
-
+		
+		// 4. 기존포인트에서 사용포인트 차감
+		int usePoint = Integer.parseInt(request.getParameter("usePoint")); // 사용 포인트
+		int usePointResult = memberService.usePoint(loginId, usePoint);
+		logger.info("[포인트 사용 여부] " + usePointResult + " (" + usePoint + "point 사용)");
 		
 		// 숙박일수 계산
 		String date1 = rez.getREZ_CHECKOUT(); // 체크아웃 날짜
