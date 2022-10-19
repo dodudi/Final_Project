@@ -59,12 +59,12 @@
 $(function(){
 	// 체크인 날짜
 	$("#sdate").change(function(){
-		$("input[name='checkin']").val($(this).val())
+		$("input[name='REZ_CHECKIN']").val($(this).val())
 	})
 	
 	// 체크아웃 날짜
 	$("#edate").change(function(){
-		$("input[name='checkout']").val($(this).val())
+		$("input[name='REZ_CHECKOUT']").val($(this).val())
 	})
 	
 	
@@ -95,7 +95,7 @@ $(function(){
 			alert("${room.ROOM_TYPE}의 최대 인원수는 ${room.ROOM_MAX}명입니다.");
 			$("body > div > div > div > div > div.col-lg-4.order-first.order-lg-last > div > div > div:nth-child(2) > div > div:nth-child(1) > div > span").text(1);
 		}  else {
-			$("input[name='adult']").val($(this).val());
+			$("input[name='REZ_ADULT']").val($(this).val());
 		}
 	})
 	
@@ -122,7 +122,7 @@ $(function(){
 			alert("${room.ROOM_TYPE}의 최대 인원수는 ${room.ROOM_MAX}명입니다.");
 			$("body > div > div > div > div > div.col-lg-4.order-first.order-lg-last > div > div > div:nth-child(2) > div > div:nth-child(2) > div > span").text(0);
 		}  else {
-			$("input[name='child']").val($(this).val());
+			$("input[name='REZ_CHILD']").val($(this).val());
 		}
 	})
 	
@@ -335,10 +335,10 @@ $(function(){
 						    		<div class="use_info">
 						    			<form action="../reservation/reservationCheck" method="post">
 						    				<input type="hidden" name="room_id" value="${room.ROOM_ID}">
-						    				<input type="hidden" name="checkin">
-						    				<input type="hidden" name="checkout">
-						    				<input type="hidden" name="adult">
-						    				<input type="hidden" name="child">
+						    				<input type="hidden" name="REZ_CHECKIN">
+						    				<input type="hidden" name="REZ_CHECKOUT">
+						    				<input type="hidden" name="REZ_ADULT">
+						    				<input type="hidden" name="REZ_CHILD">
 						        			<button type="submit" class="btn float-center submit_next booking-button" id="rezBtn">예약하기</button><br>
 						        			<a class="btn float-center submit_next booking-button" href="../notice/list">문의하기</a> <!-- 문의 게시판으로 이동 경로 바꾸기 -->
 						        			

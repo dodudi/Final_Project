@@ -232,12 +232,14 @@ public class ReservationController {
 		logger.info("***** [payment] 넘어온 정보 *****");
 		logger.info("*결제번호 : " + pm.getPAYMENT_ID());
 		logger.info("*결제금액 : " + pm.getPAYMENT_PRICE());
-		//pm.setROOM_ID(rez.getROOM_ID());
-		//pm.setMEM_ID((String) session.getAttribute("id"));
 		pm.setREZ_ID(rez.getREZ_ID());
 		int paymentResult = paymentService.payment(pm);
 		logger.info("[결제 성공 여부] paymentResult=" + paymentResult);
-
+		
+		// 4. 기존포인트에서 사용포인트 차감
+		int usePoint = Integer.parseInt(request.getParameter("usePoint")); // 사용 포인트
+		int usePointResult = memberService.usePoint(loginId, usePoint);
+		logger.info("[포인트 사용 여부] " + usePointResult + " (" + usePoint + "point 사용)");
 		
 		// 숙박일수 계산
 		String date1 = rez.getREZ_CHECKOUT(); // 체크아웃 날짜
@@ -257,7 +259,7 @@ public class ReservationController {
 		int optRezListCount = optionRezService.getOptRezListCount(rez.getREZ_ID()); // 옵션 예약 리스트 갯수
 		List<OptionReservation> optRezList = optionRezService.getOptRezList(rez.getREZ_ID()); // 옵션 예약 리스트
 		Room room = roomService.getRoomDetail(rez.getROOM_ID()); // 객실 정보
-		Member member = memberService.member_info(rez.getMEM_ID()); // 예약자 정보 - 나중에 회원쪽 끝나면 예약자 정보 구해서 예약 확인페이지에 예약자명 이름으로 출력하기~~
+		Member member = memberService.member_info(rez.getMEM_ID()); // 예약자 정보
 		
 		mv.addObject("member", member); // 예약자 정보
 		mv.addObject("optRezListCount", optRezListCount); // 옵션 예약 리스트 갯수

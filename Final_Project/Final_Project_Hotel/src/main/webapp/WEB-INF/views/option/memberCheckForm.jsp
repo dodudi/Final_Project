@@ -9,7 +9,21 @@
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script> <!-- 결제 시스템 - 아임포트API -->
 <title>고객정보 확인</title>
 <style>
-	input[name=MEM_PHONE], input[readonly] {border:none; background-color:#f9f9ff;}
+	input[readonly] {border:none; background-color:#f9f9ff;}
+	
+	*{color:black}
+	
+	.glowing-border {
+	    border: 2px solid #dadada;
+	    border-radius: 7px;
+	}
+	
+	.glowing-border:focus {
+	    outline: none;
+	    border-color: #9ecaed;
+	    box-shadow: 0 0 10px #9ecaed;
+	}
+	
 </style>
 <script>
 $(function(){
@@ -103,12 +117,39 @@ $(function(){
 		}
 	})
 	
+	// 포인트 사용
+	var originalPrice = $("#totalPrice").val().replaceAll(',', '');
+	var discountPrice;
+	$("input[name='usePoint']").change(function(){
+		var usePoint = $(this).val();
+		if( usePoint > ${member.MEM_POINT} ){ // 가용 포인트보다 많은 포인트 입력한 경우
+			alert("가용포인트보다 많은 포인트를 입력할 수 없습니다.");
+			$(this).val(${member.MEM_POINT});
+			discountPrice = originalPrice - ${member.MEM_POINT};
+			$("#totalPrice").val(discountPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+		} else if(usePoint < 1000 && usePoint != 0){ // 1000point 이하 이력한 경우
+			alert("포인트는 1000point 이상부터 사용 가능합니다.");
+			$(this).val("0");
+			$(this).focus;
+			$("#totalPrice").val("${totalPrice}".replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+		} else {
+			discountPrice = originalPrice - usePoint;
+			console.log("기존금액 = " + originalPrice);
+			console.log("차감금액 = " + usePoint);
+			console.log("최종금액 = " + discountPrice);
+			console.log("====================");
+			$("#totalPrice").val(discountPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+		}
+	})
+	
+	
+	
 	
 	// 결제하기 버튼 클릭
 	$("#paymentBtn").click(function() {
 		// 휴대폰 중복검사 확인 
 		var submit_phone_value = $.trim($("input[name='MEM_PHONE']").val());
-		if (phoneAuthChk == false ) {
+		if (phoneAuthChk == false) {
 			alert("변경된 휴대폰번호를 인증해주세요.");
 			return false;
 		}
@@ -121,6 +162,7 @@ $(function(){
     });
 }) // ready end
 
+
 // 결제 함수
 function payment() {
     IMP.init('imp83310785');
@@ -129,7 +171,7 @@ function payment() {
         pay_method: "card",
         //merchant_uid : new Date().getTime(), // 가맹점에서 생성/관리하는 고유 주문번호 (중복 불가)
         name: "${room.ROOM_TYPE}", // "${room.ROOM_TYPE}" 또는 "${rez.ROOM_ID}" // 아이템 이름
-        amount: 100, // "${totalPrice}".replaceAll(",", "") // 아이템 가격
+        amount: 100, // $("#totalPrice").val().replaceAll(",", ""), // 실제 결제 금액
         buyer_email: "${member.MEM_EMAIL}",
         buyer_name: "${member.MEM_NAME}", // 결제자 이름
         buyer_tel: "${member.MEM_PHONE}",
@@ -138,8 +180,7 @@ function payment() {
     }, function (rsp) {
     	$("input[name='PAYMENT_ID']").val(rsp.imp_uid); // rsp.merchant_uid: 주문번호 / rsp.imp_uid: 결제번호
     	//$("input[name='PAYMENT_PRICE']").val(rsp.paid_amount); // 실제 결제 금액
-    	$("input[name='PAYMENT_PRICE']").val("${totalPrice}"); // 시스템상 결제 금액
-    	//console.log("결제 번호 => " + rsp.merchant_uid);
+    	$("input[name='PAYMENT_PRICE']").val( $("#totalPrice").val().replaceAll(",", "") ); // 시스템상 결제 금액
     	console.log("결제 번호(imp_uid) => " + rsp.imp_uid);
     	console.log("결제 금액 => " + rsp.paid_amount);
         console.log("[결제 상태] rsp.status=" + rsp.status);
@@ -188,8 +229,8 @@ function payment() {
 	                       			<tr>
 	                       				<th>연락처</th>
 	                       				<td>
-	                       					<input type="text" name="MEM_PHONE">
-	                       					<input type="hidden" name="phoneAuth" maxlength="6"> <!-- 인증번호 입력하는 곳 -->
+	                       					<input type="text" name="MEM_PHONE" class="glowing-border" style="width:150px">
+	                       					<input type="hidden" name="phoneAuth" class="glowing-border" maxlength="6" style="width:100px"> <!-- 인증번호 입력하는 곳 -->
 	                       					<input type="hidden" name="phoneAuthBtn" value="인증번호 확인"> <!-- 인증번호 입력 후 일치하는지 확인 버튼 -->
 	                       					<button type="button" class="genric-btn info-border circle" id="phoneChkBtn" disabled style="pointer-events: none;">인증하기</button>
 	                       					<input type="hidden" name="phoneAuthNum"> <!-- 인증번호 저장되는 곳 -->
@@ -278,7 +319,7 @@ function payment() {
 	                <div class="col-lg-4">
 	                    <div class="blog_right_sidebar">
 	                        <aside class="single_sidebar_widget author_widget">
-	                        	<table class="table" id="rezInfo" style="text-align:left; color:black">
+	                        	<table class="table" id="rezInfo" style="text-align:left;">
 	                        		<tr>
 	                        			<th colspan="2">01 일정 및 객실</th>
 	                        		</tr>
@@ -318,7 +359,7 @@ function payment() {
 	                        	<div class="br"></div>
 	                        </aside>
 	                        <aside class="single_sidebar_widget author_widget">
-	                        	<table class="table" id="optionInfo" style="text-align:left; color:black">
+	                        	<table class="table" id="optionInfo" style="text-align:left;">
 	                        		<tr>
 	                        			<th colspan="2">02 옵션 선택</th>
 	                        		</tr>
@@ -354,7 +395,7 @@ function payment() {
 	                        	<div class="br"></div>
 	                        </aside>
 	                        <aside class="single_sidebar_widget author_widget">
-	                        	<table class="table" style="text-align:left; color:black">
+	                        	<table class="table" style="text-align:left;">
 	                        		<tr>
 	                        			<th colspan="2">03 할인금액</th>
 	                        		</tr>
@@ -367,21 +408,22 @@ function payment() {
 	                        		<tr>	
 	                        			<th>마일리지</th>
 	                        			<td>
-	                        				0 / ${member.MEM_POINT} point
+	                        				<input type="text" class="glowing-border" name="usePoint" value="0" style="width:80px;">
+	                        				&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;${member.MEM_POINT} point
 	                        			</td>
 	                        		</tr>
 	                        	</table>
 	                        	<div class="br"></div>
 	                        </aside>
 	                        <aside class="single_sidebar_widget author_widget">
-	                        	<table class="table" style="text-align:left; color:black">
+	                        	<table class="table" style="text-align:left;">
 	                        		<tr>
 	                        			<th colspan="2">04 최종 결제 금액</th>
 	                        		</tr>
 	                        		<tr>	
 	                        			<td>
-	                        				<fmt:formatNumber value="${totalPrice}" pattern="#,###"/>원
-	                        				<%-- <input type="text" name="totalPrice" value="<fmt:formatNumber value="${totalPrice}" pattern="#,###"/>" readonly>원 --%>
+	                        				<%-- <fmt:formatNumber value="${totalPrice}" pattern="#,###"/>원 --%>
+	                        				<input type="text" id="totalPrice" value="<fmt:formatNumber value="${totalPrice}" pattern="#,###"/>" readonly>원
 	                        			</td>
 	                        		</tr>
 	                        	</table>

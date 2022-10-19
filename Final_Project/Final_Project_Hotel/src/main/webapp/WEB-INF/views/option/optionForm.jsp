@@ -401,7 +401,7 @@ $(function(){
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>숙박일수</th>
-	                        			<td><input type="text" name="nights" value="${nights}" onfocus="this.blur();" style="width:10px">박</td>
+	                        			<td><input type="text" name="nights" value="${nights}" onfocus="this.blur();" style="width:15px">박</td>
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>객실명</th>

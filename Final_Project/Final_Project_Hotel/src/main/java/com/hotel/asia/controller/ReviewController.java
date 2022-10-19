@@ -193,7 +193,7 @@ public class ReviewController {
 		} else {
 			logger.info("[글 작성 성공] result = " + result);
 			logger.info("[작성된 글의 REVIEW_NUM] " + rb.getREVIEW_NUM());
-			int ptResult = memberService.rewardPoint(userPrincipal.getName(), 100); // 리뷰 작성 시 포인트 적립
+			int ptResult = memberService.rewardPoint(userPrincipal.getName(), 500); // 리뷰 작성 시 포인트 적립
 			logger.info("[리뷰포인트 적립여부] ptResult = " + ptResult);
 			rattr.addAttribute("num", rb.getREVIEW_NUM());
 		}
