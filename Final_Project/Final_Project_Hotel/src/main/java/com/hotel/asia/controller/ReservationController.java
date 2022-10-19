@@ -57,19 +57,29 @@ public class ReservationController {
 	
 	@RequestMapping(value="/reservationCheck", method = RequestMethod.POST)
 	public ModelAndView reservationCheck(int room_id, 
-										 String checkin, String checkout, String adult, String child, 
 										 ModelAndView mv,
 										 Rez rez,
 										 HttpSession session
-										) {
+										) throws ParseException {
 	logger.info("넘어온 방번호=" + room_id);
-	logger.info("넘어온 체크인 날짜=" + checkin);
-	logger.info("넘어온 체크아웃 날짜=" + checkout);
-	logger.info("넘어온 인원수(성인)=" + adult);
-	logger.info("넘어온 인원수(소아)=" + child);
+	logger.info("넘어온 체크인 날짜=" + rez.getREZ_CHECKIN());
+	logger.info("넘어온 체크아웃 날짜=" + rez.getREZ_CHECKOUT());
+	logger.info("넘어온 인원수(성인)=" + rez.getREZ_ADULT());
+	logger.info("넘어온 인원수(소아)=" + rez.getREZ_CHILD());
 	Room room = roomService.getRoomDetail(room_id);
 	
+		// 숙박일수 계산
+		String date1 = rez.getREZ_CHECKOUT(); // 체크아웃 날짜
+		String date2 = rez.getREZ_CHECKIN(); // 체크인 날짜
+		Date format1 = new SimpleDateFormat("yyyy-MM-dd").parse(date1);
+	    Date format2 = new SimpleDateFormat("yyyy-MM-dd").parse(date2);
+	    long diffSec = (format1.getTime() - format2.getTime()) / 1000; // 초 차이
+	    long nights = diffSec / (24*60*60); // 일자 수 차이
+		logger.info("***** 숙박일수 : " + nights);
+	
 	mv.addObject("room", room);
+	mv.addObject("rez", rez);
+	mv.addObject("nights", nights);
 	mv.setViewName("reservation/reservationCheck");
 	return mv;
 	

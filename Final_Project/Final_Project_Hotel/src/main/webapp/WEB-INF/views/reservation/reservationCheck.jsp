@@ -5,9 +5,11 @@
 <html>
 <head>
 <style>
-.imgDiv {overflow:hidden; border-radius:10%;} /* 이미지 태그 감싸고 있는 div */
-   .img {width:290px; height:194px; transition:all 0.2s linear;}
-   .img:hover {transform: scale(1.4);}
+	input[readonly] {border:none; width:100px;}
+	*{color:black}
+	.imgDiv {overflow:hidden; border-radius:10%;} /* 이미지 태그 감싸고 있는 div */
+	.img {width:290px; height:194px; transition:all 0.2s linear;}
+	.img:hover {transform: scale(1.4);}
 </style>
 <script src="http://code.jquery.com/jquery-latest.js"></script> <!-- 제이쿼리 -->
 <jsp:include page="../main/header.jsp"/>
@@ -20,7 +22,19 @@ $(function(){
 	        $("form").submit();
 	   })
 	   
-	   $("")
+	   
+	   
+	// 모든 input태그 readonly
+	$("input").attr("readonly", true);
+	
+	
+	// 총금액 계산	
+	var price = $(".price").text().replace(/,/g, '').split('원');
+	var total = ${nights} * parseInt(price);
+	console.log( total );
+	$("input[name='total']").val(total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+	
+	
 	
 	}) // ready end
 
@@ -103,25 +117,30 @@ $(function(){
 	                            	<tbody>
 		                            		<tr>
 		                       					<th>날짜</th>
-		                       					<td>${param.checkin} ~ ${param.checkout}
-		                       						<input type="hidden" name="CHECKIN" value="${param.checkin}">
-		                       						<input type="hidden" name="CHECKOUT" value="${param.checkout}"></td>
-		                       					<td>${room.ROOM_PRICE} 원</td>
+		                       					<td>${rez.REZ_CHECKIN} ~ ${rez.REZ_CHECKOUT}
+		                       						<input type="hidden" name="REZ_CHECKIN" value="${rez.REZ_CHECKIN}">
+		                       						<input type="hidden" name="REZ_CHECKOUT" value="${rez.REZ_CHECKOUT}"></td>
+		                            			<td></td>
 		                            		</tr>
 		                       				<tr>
 		                            			<th>객실명</th>
 		                            				<td>${room.ROOM_TYPE}
 		                            				<input type="hidden" name="ROOM_ID" value="${room.ROOM_ID}">
 		                            				</td>
-		                            			<td></td>
+			                       					<td class="price"><fmt:formatNumber value="${room.ROOM_PRICE}" pattern="#,###"/>원</td>
 		                            		</tr>
 		                            		<tr>
 		                            			<th>인원</th>
-		                            				<td>성인 : ${param.adult} / 소아 : ${param.child} 
-		                            				<input type="hidden" name="ADULT" value="${param.adult}">
-		                            				<input type="hidden" name="ROOM_ID" value="${room.ROOM_ID}"></td>
+		                            				<td>성인 : ${rez.REZ_ADULT} / 소아 : ${rez.REZ_CHILD} 
+		                            				<input type="hidden" name="REZ_ADULT" value="${rez.REZ_ADULT}">
+		                            				<input type="hidden" name="REZ_CHILD" value="${rez.REZ_CHILD}"></td>
 		                            				<td></td>
 		                            		</tr>
+		                            		<tr>
+		                            			<th>숙박일수</th>
+		                            				<td>${nights}박
+		                            				<input type="hidden" name="nights" value="${nights}"></td>
+		                            				<td><fmt:formatNumber value="${room.ROOM_PRICE}" pattern="#,###"/>원 X ${nights}박</td>
 		                            		<tr>
 		                            			<th>추가옵션</th>		                            	
 		                            				<td>X</td>
@@ -131,7 +150,7 @@ $(function(){
 	                            	<tfoot>
 								        <tr>
 								            <th colspan="3" style="text-align:right">
-								            	총 합계:&nbsp;&nbsp;&nbsp;<input type="text" name="total" onfocus="this.blur();">원
+								            	총 합계:&nbsp;&nbsp;&nbsp;<input type="text" name="total">원
 								            </th>
 								        </tr>
 								    </tfoot>
@@ -140,7 +159,7 @@ $(function(){
 	                    </div>
 	                </div>
 	                <div class="col-md-12 text-right">
-	                    <button class="genric-btn primary circle" id="reservationBtn" type="submit" value="submit">회원예약</button>
+	                    <button class="btn btn-warning circle" id="reservationBtn" type="submit" value="submit">회원예약</button>
 	                	<button class="btn btn-primary circle" type="button" id="optionBtn"> 추가옵션 예약 </button>
 	                </div>
 	                
@@ -150,7 +169,7 @@ $(function(){
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 				
 				<!-- 예약 시 필요한 값들을 hidden 으로 넘긴다 -->
-				<input type="hidden" name="nights" value=""> <!-- 숙박일수 -->
+				<input type="hidden" name="nights" value="${nights}"> <!-- 숙박일수 -->
 				<input type="hidden" name="REZ_CHECKIN" value="${param.checkin}"> <!-- 체크인 날짜 -->
 				<input type="hidden" name="REZ_CHECKOUT" value="${param.checkout}"> <!-- 체크아웃 날짜 -->
 				<input type="hidden" name="REZ_ADULT" value="${param.adult}"> <!-- 성인 수 -->
