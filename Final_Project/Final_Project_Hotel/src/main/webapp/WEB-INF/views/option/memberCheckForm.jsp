@@ -118,7 +118,7 @@ $(function(){
 	})
 	
 	// 포인트 사용
-	var originalPrice = $("#totalPrice").val().replace(',', '');
+	var originalPrice = $("#totalPrice").val().replaceAll(',', '');
 	var discountPrice;
 	$("input[name='usePoint']").change(function(){
 		var usePoint = $(this).val();
