@@ -1,7 +1,7 @@
 --예약 테스트시 delete 필요
 create table OPTION_RESERVATION(
 	OPTION_RESERVATION_ID   NUMBER primary key,
-	REZ_ID 				    NUMBER references ROOM(ROOM_ID) on delete cascade, -- on delete cascade 추가
+	REZ_ID 				    NUMBER references REZ(REZ_ID) on delete cascade, -- on delete cascade 추가
 	OPTION_ID 			    NUMBER references OPTIONS(OPTION_ID),
 	OPTION_RESERVATION_DATE DATE,
 	ADULT 					NUMBER,
@@ -16,6 +16,9 @@ create table OPTION_RESERVATION(
 select * from OPTION_RESERVATION order by OPTION_RESERVATION_DATE, OPTION_ID;
 select * from OPTION_RESERVATION where REZ_ID = 1 order by OPTION_RESERVATION_DATE, OPTION_ID;
 delete from OPTION_RESERVATION;
+
+
+
 drop table OPTION_RESERVATION
 
 

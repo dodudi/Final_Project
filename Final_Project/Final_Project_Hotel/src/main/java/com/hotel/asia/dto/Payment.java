@@ -5,12 +5,7 @@ public class Payment {
 	private int REZ_ID;
 	private String PAYMENT_PRICE; // jsp에서 넘어오는 값을 바로 받기 위해 문자형으로 지정
 	private String PAYMENT_DATE;
-	private int COUPON_HISTORY_ID;
 	private int POINT_DISCOUNT;
-	
-	// REZ_ID(예약번호) 구하기 위한 필드
-	//private int ROOM_ID;
-	//private String MEM_ID;
 	
 	
 	// getter, setter
@@ -37,12 +32,6 @@ public class Payment {
 	}
 	public void setPAYMENT_DATE(String pAYMENT_DATE) {
 		PAYMENT_DATE = pAYMENT_DATE;
-	}
-	public int getCOUPON_HISTORY_ID() {
-		return COUPON_HISTORY_ID;
-	}
-	public void setCOUPON_HISTORY_ID(int cOUPON_HISTORY_ID) {
-		COUPON_HISTORY_ID = cOUPON_HISTORY_ID;
 	}
 	public int getPOINT_DISCOUNT() {
 		return POINT_DISCOUNT;

@@ -26,7 +26,7 @@
 	})
 	</script>
 <!--================Header Area =================-->
- <header class="header_area">
+ <header class="header_area navbar_fixed ">
      <div class="container">
          <nav class="navbar navbar-expand-lg navbar-light">
              <!-- Brand and toggle get grouped for better mobile display -->
@@ -39,9 +39,9 @@
              <!-- Collect the nav links, forms, and other content for toggling -->
              <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                  <ul class="nav navbar-nav menu_nav ml-auto">
-                     <li class="nav-item active"><a class="nav-link" href="home">소  개</a></li>
+                     <li class="nav-item active"><a class="nav-link" href="${pageContext.request.contextPath}/">Home</a></li>
+                     <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/intro/intro">소  개</a></li>
                      <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/room/roomList">객  실</a></li>
-                     <li class="nav-item"><a class="nav-link" href="promotion">프로모션</a></li>
                      <li class="nav-item submenu dropdown">
                          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">커뮤니티</a>
                          <ul class="dropdown-menu">

@@ -116,76 +116,32 @@ $(function(){
 			console.log("phoneAuthChk = " + phoneAuthChk);
 		}
 	})
-
 	
 	// 포인트 사용
 	var originalPrice = $("#totalPrice").val().replaceAll(',', '');
 	var discountPrice;
-	$("input[name='POINT_DISCOUNT']").change(function(){
+	$("input[name='usePoint']").change(function(){
 		var usePoint = $(this).val();
-		if(couponAfterPrice == 0) {
-			if( usePoint > ${member.MEM_POINT} ){ // 가용 포인트보다 많은 포인트 입력한 경우
-				alert("가용포인트보다 많은 포인트를 입력할 수 없습니다.");
-				$(this).val(${member.MEM_POINT});
-				discountPrice = originalPrice - ${member.MEM_POINT};
-				$("#totalPrice").val(discountPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
-			} else if(usePoint < 1000 && usePoint != 0){ // 1000point 이하 입력한 경우
-				alert("포인트는 1000point 이상부터 사용 가능합니다.");
-				$(this).val("0");
-				$(this).focus;
-				$("#totalPrice").val("${totalPrice}".replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
-			} else {
-				discountPrice = originalPrice - usePoint;
-				console.log("기존금액 = " + originalPrice);
-				console.log("차감금액 = " + usePoint);
-				console.log("최종금액 = " + discountPrice);
-				console.log("====================");
-				$("#totalPrice").val(discountPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
-			}
+		if( usePoint > ${member.MEM_POINT} ){ // 가용 포인트보다 많은 포인트 입력한 경우
+			alert("가용포인트보다 많은 포인트를 입력할 수 없습니다.");
+			$(this).val(${member.MEM_POINT});
+			discountPrice = originalPrice - ${member.MEM_POINT};
+			$("#totalPrice").val(discountPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+		} else if(usePoint < 1000 && usePoint != 0){ // 1000point 이하 이력한 경우
+			alert("포인트는 1000point 이상부터 사용 가능합니다.");
+			$(this).val("0");
+			$(this).focus;
+			$("#totalPrice").val("${totalPrice}".replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
 		} else {
-			if( usePoint > ${member.MEM_POINT} ){ // 가용 포인트보다 많은 포인트 입력한 경우
-				alert("가용포인트보다 많은 포인트를 입력할 수 없습니다.");
-				$(this).val(${member.MEM_POINT});
-				discountPrice = couponAfterPrice - ${member.MEM_POINT};
-				$("#totalPrice").val(discountPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
-			} else if(usePoint < 1000 && usePoint != 0){ // 1000point 이하 입력한 경우
-				alert("포인트는 1000point 이상부터 사용 가능합니다.");
-				$(this).val("0");
-				$(this).focus;
-				$("#totalPrice").val("${totalPrice}".replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
-			} else {
-				discountPrice = couponAfterPrice - usePoint;
-				console.log("기존금액 = " + couponAfterPrice);
-				console.log("차감금액 = " + usePoint);
-				console.log("최종금액 = " + discountPrice);
-				console.log("====================");
-				$("#totalPrice").val(discountPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
-			}
+			discountPrice = originalPrice - usePoint;
+			console.log("기존금액 = " + originalPrice);
+			console.log("차감금액 = " + usePoint);
+			console.log("최종금액 = " + discountPrice);
+			console.log("====================");
+			$("#totalPrice").val(discountPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
 		}
-	}) // 포인트 사용 end
+	})
 	
-	// 쿠폰 사용
-	var couponAfterPrice = 0;
-	$("input[name='couponName']").click(function(){
-		var couponNum = $(this).prev().prev().val();
-		var couponDiscountPercent = $(this).prev().val();
-		console.log("쿠폰번호: " + couponNum);
-		console.log("쿠폰할인: " + couponDiscountPercent);
-		console.log("============");
-		$("input[name='POINT_DISCOUNT']").val('0'); // 마일리지 먼저 사용했었다면 0 된다
-		
-		discountPrice = originalPrice * (100 - couponDiscountPercent) / 100;
-		couponAfterPrice = discountPrice;
-		$("#totalPrice").val(discountPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
-		$("input[name='COUPON_NUMBER']").val(couponNum);
-	}) // 쿠폰 사용 end
-	
-	
-	// 추가옵션 예약 클릭
-   	$(".opp").click(function(){
-   		$("form").attr("action", "${pageContext.request.contextPath}/option/optionForm");
-        $("form").submit();
-    })
 	
 	
 	
@@ -203,30 +159,15 @@ $(function(){
 			return false;
 		}
         payment(); // 결제 함수 호출
-        
-        
-        // 옵션 정보 없을 때 폼 액션 주소
-        if($("#optionBtn").text() != "") {
-            $("form").attr("action", "reservationroomOption0");
-            
-            
-         } else {
-            // 휴대폰 중복검사 확인 
-            var submit_phone_value = $.trim($("input[name='MEM_PHONE']").val());
-            if (phoneAuthChk == false) {
-               alert("변경된 휴대폰번호를 인증해주세요.");
-               return false;
-            }
-            // 취소정책 확인 - 체크박스 체크 여부
-            if ( !$("input[type='checkbox']").is(":checked")) {
-               alert("취소 정책을 확인해주세요.");
-               return false;
-            }
-              payment(); // 결제 함수 호출
-         }
     });
+	
+	
+		 // 추가옵션 예약 클릭
+		   $(".opp").click(function(){
+		      $("form").attr("action", "${pageContext.request.contextPath}/option/optionForm");
+		        $("form").submit();
+		   })
 }) // ready end
-
 
 
 // 결제 함수
@@ -309,7 +250,7 @@ function payment() {
 	                       		</table>
 	                       </div>
 	                       <div class="col-lg-12" style="margin-top:40px">
-	                       		<h3 style="background-color:#f5f2a3; padding:9px">취소 정책 (필수 확인)</h3>
+	                       		<h3>취소 정책 (필수 확인)</h3>
 	                       		<p class="cancel_stxt">예약취소 및 미입실(No Show)에 관한 위약금 규정에 관하여 <span class="pTxt">공정거래위 산하 소비자 보호원 기준에 따라 아래와 같이 위약금 부과 처리에 관해 안내</span> 하오니, 이용에 유의 하시기 바랍니다.</p>
 					            <!-- 예약취소/환불 규정 참고: https://www.nesthotel.co.kr/privacy/cancellation_policy.asp -->
 					            <div class="cancel">
@@ -335,7 +276,7 @@ function payment() {
 													V. 징검다리 연휴인 경우에 중간날짜에 있는 샌드위치 데이(평일과 일요일)의 경우도 모두 성수기에 해당</span>
 												</td>
 												<td>
-													<span class="bTxt">Ⅰ. 1월, 2월, 3월, 4월, 6월, 11월<br/>
+													<span class="bTxt">Ⅰ. 1월, 2월, 3월, 4월, 6월, 11월 (일요일 ~ 금요일에 해당)<br/>
 													Ⅱ. 연휴 마지막 날 (일요일 및 국, 공휴일과 대체 휴무일 포함)</span><br/>
 													<span class="iTxt">※ 비수기 6개월 중 모든 토요일 및 국, 공휴일 또는 대체 휴무일 하루 전날, 연휴시작 하루 전날부터 마지막 연휴 전날까지는 모두 성수기에 해당됩니다.<br/>
 													※ 샌드위치 데이와 징검다리 연휴인 경우의 중간 날짜가 평일이나 일요일이어도 모두 성수기에 해당됩니다.</span>
@@ -344,16 +285,16 @@ function payment() {
 											<tr>
 												<th rowspan="2">위약금 규정</th>
 												<td>
-													<span class="bTxt2">사용 예정일(체크인) <strong>3일 전 15시 이후</strong> 예약취소 시<br/> - 하루 숙박 총 요금의 <strong>50%</strong> 부과</span><br/><br/>	
-													<span class="bTxt2">사용 예정일(체크인) <strong>1일 전 15시 이후</strong> 예약취소 시<br/> - 하루 숙박 총 요금의 <strong>90%</strong> 부과</span><br/>
+													<span class="bTxt2">사용 예정일(체크인 날짜) <strong>3일 전 15시 이후</strong> 예약취소 시<br/> - 하루 숙박 총 요금의 <strong>50%</strong> 부과</span><br/><br/>	
+													<span class="bTxt2">사용 예정일(체크인 날짜) <strong>1일 전 15시 이후</strong> 예약취소 시<br/> - 하루 숙박 총 요금의 <strong>90%</strong> 부과</span><br/>
 													(당일 숙박을 위한 당일예약 후, 예약 취소의 경우도 위약금 규정이 동일하게 적용됩니다.)<br/>
-													<span class="bTxt2">* 사용 예정일(체크인) 3일 전 15시 이전 예약취소 시 무료취소 가능합니다.</span>
+													<span class="bTxt2">* 사용 예정일(체크인 날짜) 3일 전 15시 이전 예약취소 시 무료취소 가능합니다.</span>
 												</td>
 												<td>
-													<span class="bTxt2">사용 예정일(체크인) <strong>1일 전 15시 이후</strong> 예약취소 시<br/> - 하루 숙박 총 요금의 <strong>10%</strong> 부과	<br/></span><br/>
-													<span class="bTxt2">사용 예정일(체크인) <strong>당일 15시 이후</strong> 예약취소 및 미입실(No Show)시<br/> - 하루 숙박 총 요금의 <strong>20%</strong> 부과</span><br/>
+													<span class="bTxt2">사용 예정일(체크인 날짜) <strong>1일 전 15시 이후</strong> 예약취소 시<br/> - 하루 숙박 총 요금의 <strong>10%</strong> 부과	<br/></span><br/>
+													<span class="bTxt2">사용 예정일(체크인 날짜) <strong>당일 15시 이후</strong> 예약취소 및 미입실(No Show)시<br/> - 하루 숙박 총 요금의 <strong>20%</strong> 부과</span><br/>
 													(당일 숙박을 위한 당일예약 후, 예약 취소의 경우도 위약금 규정이 동일하게 적용됩니다)<br/>
-													<span class="bTxt2">* 사용 예정일(체크인) 1일 전 15시 이전 예약취소 시 무료취소 가능합니다.</span>
+													<span class="bTxt2">* 사용 예정일(체크인 날짜) 1일 전 15시 이전 예약취소 시 무료취소 가능합니다.</span>
 												</td>
 											</tr>					
 										</tbody>
@@ -374,7 +315,7 @@ function payment() {
 										</dl>
 									</div>
 									<input type="checkbox">예약취소 및 미입실 관련 위약금 규정’과 취소 정책을 확인하고 동의합니다.
-									<button type="button" class="genric-btn primary circle" id="paymentBtn" style="margin:10px">결제하기</button>
+									<button type="button" class="genric-btn primary circle" id="paymentBtn">결제하기</button>
 					            </div>
 	                       </div>
 	                    </div>
@@ -386,7 +327,7 @@ function payment() {
 	                    <div class="blog_right_sidebar">
 	                        <aside class="single_sidebar_widget author_widget">
 	                        	<table class="table" id="rezInfo" style="text-align:left;">
-	                        		<tr class="table-secondary">
+	                        		<tr>
 	                        			<th colspan="2">01 일정 및 객실</th>
 	                        		</tr>
 	                        		<tr>	
@@ -403,6 +344,7 @@ function payment() {
 	                        			<th>객실명</th>
 	                        			<td>
 	                        				<c:out value="${room.ROOM_TYPE}"/>
+	                        				<%-- <input type="text" value="${room.ROOM_TYPE}" readonly onfocus="this.blur();"> --%>
 	                        				<input type="hidden" name="ROOM_ID" value="${room.ROOM_ID}">
 	                        			</td>
 	                        		</tr>
@@ -425,77 +367,64 @@ function payment() {
 	                        </aside>
 	                        <aside class="single_sidebar_widget author_widget">
 	                        	<table class="table" id="optionInfo" style="text-align:left;">
-	                        		<tr class="table-secondary">
+	                        		<tr>
 	                        			<th colspan="2">02 옵션 선택</th>
 	                        		</tr>
-	                        		<!-- 옵션 있을 때  -->
-	                        		<c:if test="${!empty optionPrice}">
-		                        		<tr>	
-		                        			<th style="width:80px">조식</th>
-		                        			<td>
-		                        				<fmt:formatNumber value="${optionPrice.bfTotal}" pattern="#,###"/>원
-		                        			</td> 
-		                        		</tr>
-		                        		<tr>	
-		                        			<th>디너</th>
-		                        			<td>
-		                        				<fmt:formatNumber value="${optionPrice.dnTotal}" pattern="#,###"/>원
-		                        			</td>
-		                        		</tr>
-		                        		<tr>	
-		                        			<th>수영장</th>
-		                        			<td>
-		                        				<fmt:formatNumber value="${optionPrice.spTotal}" pattern="#,###"/>원
-		                        			</td> 
-		                        		</tr>
-		                        		<tr>	
-		                        			<th>총 금액</th>
-		                        			<td>
-		                        				<fmt:formatNumber value="${optionPrice.bfTotal + optionPrice.dnTotal + optionPrice.spTotal}" pattern="#,###"/>원
-		                        			</td>
-		                        		</tr>
-	                        		</c:if>
-	                        		
-	                        		<!-- 옵션 없을 때 -->
+	                        		<c:set var="optionPrice" value="${optionPrice}"/>
 	                        		<c:if test="${empty optionPrice}">
-	                        			<tr>
-		                        			<td>선택된 옵션이 없습니다.<br><br>
-		                        				<button type="button" class="genric-btn info circle opp" id="optionBtn">추가 옵션 선택하러 가기</button>
-		                        			</td>
-	                        			</tr>
+	                        		<tr>
+	                        			<td>선택된 옵션이 없습니다.<br><br>
+	                        			<button type="button" class="genric-btn info circle opp">추가 옵션 선택하러 가기</button></td>
+	                        		</tr>
 	                        		</c:if>
+	                        		<c:if test="${!empty optionPrice}">
+	                        		<tr>	
+	                        			<th style="width:80px">조식</th>
+	                        			<td>
+	                        				<fmt:formatNumber value="${optionPrice.bfTotal}" pattern="#,###"/>원
+	                        				<%-- <input type="text" value="${optionPrice.bfTotal}원" readonly onfocus="this.blur();"> --%>
+	                        			</td> 
+	                        		</tr>
+	                        		<tr>	
+	                        			<th>디너</th>
+	                        			<td>
+	                        				<fmt:formatNumber value="${optionPrice.dnTotal}" pattern="#,###"/>원
+	                        				<%-- <input type="text" value="${optionPrice.dnTotal}원" readonly onfocus="this.blur();"> --%>
+	                        			</td>
+	                        		</tr>
+	                        		<tr>	
+	                        			<th>수영장</th>
+	                        			<td>
+	                        				<fmt:formatNumber value="${optionPrice.spTotal}" pattern="#,###"/>원
+	                        				<%-- <input type="text" value="${optionPrice.spTotal}원" readonly onfocus="this.blur();"> --%>
+	                        			</td> 
+	                        		</tr>
+	                        		</c:if>
+	                        		<tr>	
+	                        			<th>총 금액</th>
+	                        			<td>
+	                        				<fmt:formatNumber value="${optionPrice.bfTotal + optionPrice.dnTotal + optionPrice.spTotal}" pattern="#,###"/>원
+	                        				<%-- <input type="text" value="${optionPrice.bfTotal + optionPrice.dnTotal + optionPrice.spTotal}" readonly>원 --%>
+	                        			</td>
+	                        		</tr>
 	                        	</table>
 	                        	<div class="br"></div>
-	                        </aside>	                        
+	                        </aside>
 	                        <aside class="single_sidebar_widget author_widget">
 	                        	<table class="table" style="text-align:left;">
-	                        		<tr class="table-secondary">
+	                        		<tr>
 	                        			<th colspan="2">03 할인금액</th>
 	                        		</tr>
 	                        		<tr>	
-	                        			<th colspan="2">쿠폰 <small>(모든 쿠폰은 중복 사용할 수 없습니다)</small></th>
+	                        			<th style="width:80px">쿠폰</th>
+	                        			<td>	
+	                        				<a href="#" class="genric-btn primary circle">보유쿠폰</a>
+	                        			</td> 
 	                        		</tr>
-	                        		<tr>	
-	                        			<td colspan="2">
-	                        				<input type="hidden" value="0">
-                        					<input type="hidden" value="0">
-	                        				<input type="radio" name="couponName" checked>&nbsp;사용하지 않음
-	                        			</td>
-	                        		</tr>
-	                        		<c:forEach var="coupon" items="${couponList}">
-                        				<tr>
-                        					<td colspan="2">
-                        						<input type="hidden" value="${coupon.COUPON_NUMBER}"> <!-- 회원 쿠폰 발급 번호 -->
-                        						<input type="hidden" value="${coupon.COUPON_PRICE}">
-                        						<input type="radio" name="couponName">&nbsp;<c:out value="${coupon.COUPON_NAME}"/>
-                        					</td>
-                        				</tr>
-                        			</c:forEach>
-	                        		
 	                        		<tr>	
 	                        			<th>마일리지</th>
 	                        			<td>
-	                        				<input type="text" class="glowing-border" name="POINT_DISCOUNT" value="0" style="width:50px;">
+	                        				<input type="text" class="glowing-border" name="usePoint" value="0" style="width:80px;">
 	                        				&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;${member.MEM_POINT} point
 	                        			</td>
 	                        		</tr>
@@ -505,12 +434,12 @@ function payment() {
 	                        <aside class="single_sidebar_widget author_widget">
 	                        	<table class="table" style="text-align:left;">
 	                        		<tr>
-	                        			<th colspan="2" class="table-secondary">04 최종 결제 금액</th>
+	                        			<th colspan="2">04 최종 결제 금액</th>
 	                        		</tr>
 	                        		<tr>	
 	                        			<td>
 	                        				<%-- <fmt:formatNumber value="${totalPrice}" pattern="#,###"/>원 --%>
-	                        				<input type="text" id="totalPrice" value="<fmt:formatNumber value="${totalPrice}" pattern="#,###"/>" readonly style="width:70px" onfocus="this.blur();">원
+	                        				<input type="text" id="totalPrice" value="<fmt:formatNumber value="${totalPrice}" pattern="#,###"/>" readonly>원
 	                        			</td>
 	                        		</tr>
 	                        	</table>
@@ -524,13 +453,6 @@ function payment() {
 				
 				<!-- 예약에 넘길 데이터 -->
 				<input type="hidden" name="dateList" value="${dateList}"> <!-- 체크인 날짜 ~ 체크아웃 날짜 -->
-				<input type="hidden" name="bfAdult" value="${bfAdult}">   <!-- 조식 성인 -->
-				<input type="hidden" name="bfChild" value="${bfChild}">   <!-- 조식 아동 -->
-				<input type="hidden" name="dnAdult" value="${dnAdult}">   <!-- 디너 성인 -->
-				<input type="hidden" name="dnChild" value="${dnChild}">   <!-- 디너 아동 -->
-				<input type="hidden" name="spAdult" value="${spAdult}">   <!-- 수영장 성인 -->
-				<input type="hidden" name="spChild" value="${spChild}">   <!-- 수영장 아동 -->
-				<input type="hidden" name="COUPON_NUMBER" value="0">    <!-- 사용한 쿠폰 번호 -->
 				<input type="hidden" name="PAYMENT_ID">    <!-- 결제 번호 -->
 				<input type="hidden" name="PAYMENT_PRICE"> <!-- 결제 금액 -->
             </form>

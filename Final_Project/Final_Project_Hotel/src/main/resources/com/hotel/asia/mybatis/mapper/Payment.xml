@@ -8,11 +8,13 @@
 		insert into payment
 		(PAYMENT_ID,
 		 REZ_ID,
-		 PAYMENT_PRICE, PAYMENT_DATE)
+		 PAYMENT_PRICE, PAYMENT_DATE,
+		 POINT_DISCOUNT)
 		values
 		(#{PAYMENT_ID},
 		 #{REZ_ID},
-		 #{PAYMENT_PRICE}, sysdate)
+		 #{PAYMENT_PRICE}, sysdate,
+		 #{POINT_DISCOUNT})
 	</insert>
 	
 	
