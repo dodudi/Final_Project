@@ -74,6 +74,7 @@
 	</script>
 	<style>
 	label{font-size:15px; font-weight:bold}
+	.navbar-collapse.collapse { display: flex !important; } .navbar{ margin-bottom: 0px } 
 	</style>
 </head>
 <body>
@@ -96,7 +97,7 @@
    <h1 class="title_color" style="margin-top:7rem; text-align:center">공지사항 게시판 - 글쓰기</h1>
    
      <div class="form-group" style="margin-top:7rem">
-        <label for="NOTICE_NAME">글쓴이</label>
+        <label for="NOTICE_NAME">작성자</label>
         <input name="NOTICE_NAME" id="NOTICE_NAME" value="admin" readOnly
                type="text"    class="form-control"
                placeholder="Enter notice_name">

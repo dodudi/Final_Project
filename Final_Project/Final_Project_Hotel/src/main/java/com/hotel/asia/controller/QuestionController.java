@@ -3,6 +3,7 @@ package com.hotel.asia.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -86,8 +87,9 @@ public class QuestionController {
 		//글쓰기
 		@RequestMapping(value="/write")
 		public String QuestionWrite(Question question, ModelAndView mv,
-				 HttpSession session, RedirectAttributes rattr) {
+				 HttpSession session, RedirectAttributes rattr, Principal userPrincipal) {
 				
+			    question.setMEM_ID(userPrincipal.getName());
 				int result = questionboardservice.write(question); // 글 작성
 				
 				if(result == 0) {
