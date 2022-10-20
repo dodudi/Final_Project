@@ -89,7 +89,7 @@
 					<div class="card mb-3">
 						<div class="card-body row point">
 							<div class="col ml-auto">마일리지</div>
-							<div>0 Point</div>
+							<div>${point}Point</div>
 						</div>
 					</div>
 					<div class="card mb-3">
@@ -111,6 +111,9 @@
 						</div>
 					</div>
 					<div class="mb-5">
+						<c:if test="${empty memberCoupons }">
+							<div class="content-title mb-3">보유하신 쿠폰이 없습니다.</div>
+						</c:if>
 						<c:if test="${not empty memberCoupons }">
 							<div class="content-title mb-3">쿠폰 내역 확인</div>
 							<table class="table table-bordered text-center">
@@ -148,6 +151,9 @@
 
 					<!-- 사용 내역 -->
 					<div class="mb-5">
+						<c:if test="${empty memberCoupons }">
+							<div class="content-title mb-3">사용하신 쿠폰이 없습니다.</div>
+						</c:if>
 						<c:if test="${not empty useCoupons }">
 							<div class="content-title mb-3">쿠폰 사용 내역 확인</div>
 							<table class="table table-bordered  text-center">
@@ -182,8 +188,8 @@
 
 					</div>
 					<!-- 사용 내역 끝 -->
-					
-						
+
+
 				</div>
 
 			</div>

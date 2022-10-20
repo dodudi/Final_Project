@@ -20,7 +20,6 @@ import com.hotel.asia.dto.Option;
 import com.hotel.asia.dto.OptionReservation;
 import com.hotel.asia.dto.Payment;
 import com.hotel.asia.dto.Rez;
-import com.hotel.asia.module.PageCalc;
 import com.hotel.asia.mybatis.mapper.MyPageMapper;
 
 @Service
@@ -139,32 +138,6 @@ public class MyPageServiceImpl implements MyPageService {
 		}
 		log.info("<MyPageService> : " + opt_price);
 		return opt_price;
-	}
-
-	// 결제 초기화
-	public void delRezData(int rez_id, String mem_id) {
-		myPageMapper.delOptRez(rez_id);
-		log.info("<MyPageServiceImpl> 객실예약 돕션 삭제 완료");
-		myPageMapper.delPayment(rez_id);
-		log.info("<MyPageServiceImpl> 객실예약 결제 데이터 삭제 완료");
-		myPageMapper.delRez(mem_id);
-		log.info("<MyPageServiceImpl> 객실예약 삭제 완료");
-	}
-	
-	// 결제 추가
-	public void addRez(Rez rez) {
-		myPageMapper.addRez(rez);
-	}
-
-	public void addOptRez(List<OptionReservation> opt) {
-		for (int i = 0; i < opt.size(); i++) {
-			myPageMapper.addOptRez(opt.get(i));
-		}
-
-	}
-
-	public void addPayment(Payment payment) {
-		myPageMapper.addPayment(payment);
 	}
 
 	

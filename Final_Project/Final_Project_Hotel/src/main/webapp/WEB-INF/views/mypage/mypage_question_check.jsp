@@ -64,74 +64,85 @@
 				</div>
 				<!--My Page Select Nav End-->
 
-				<div class="col-9 content-background ">
+				<div class="col-9 content-background">
 					<div class="content-title row">문의내역확인</div>
-					<div class="tst">
-						filter :
-						<select id="itemLimitSelect">
-							<c:forEach var="i" begin="1" end="3" step="1">
-								<c:if test="${itemLimit == (2*i-1)*10 }">
-									<option selected="selected" value="${ (2*i-1)*10 }">${ (2*i-1)*10 }</option>
-								</c:if>
-								<c:if test="${itemLimit != (2*i-1)*10 }">
-									<option value="${ (2*i-1)*10 }">${ (2*i-1)*10 }</option>
-								</c:if>
-							</c:forEach>
-						</select>
-					</div>
-					<div class="content-table mb-5">
-						<table class="table">
-							<tbody id="itemBox">
-								<tr>
-									<td>글 번호</td>
-									<td>카테고리</td>
-									<td>제목</td>
-									<td>작성자</td>
-									<td>날짜</td>
-									<td>조회수</td>
-									<td>문의상태</td>
-								</tr>
-								<c:forEach var="i" begin="1" end="${questions.size()}" step="1">
-									<tr>
-										<td>${i}</td>
-										<td>${ questions[i-1].QUESTIONS_CATEGORY}</td>
-										<td>${questions[i-1].QUESTIONS_SUBJECT}</td>
-										<td>${questions[i-1].MEM_ID}</td>
-										<td>${questions[i-1].QUESTIONS_DATE}</td>
-										<td>${questions[i-1].QUESTIONS_READCOUNT}</td>
-										<c:if test="${empty questions[i-1].QUESTIONS_ANSWER}"><td>처리중</td></c:if>
-										<c:if test="${not empty questions[i-1].QUESTIONS_ANSWER}"><td>처리완료</td></c:if>
+					<c:if test="${total == 0 }">
+						<div>작성하신 글이 존재하지 않습니다.</div>
+					</c:if>
+					<c:if test="${total!=0 }">
+						<div class="tst">
+							filter :
+							<select id="itemLimitSelect">
+								<c:forEach var="i" begin="1" end="3" step="1">
+									<c:if test="${itemLimit == (2*i-1)*10 }">
+										<option selected="selected" value="${ (2*i-1)*10 }">${ (2*i-1)*10 }</option>
+									</c:if>
+									<c:if test="${itemLimit != (2*i-1)*10 }">
+										<option value="${ (2*i-1)*10 }">${ (2*i-1)*10 }</option>
+									</c:if>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="content-table mb-5">
+							<table class="table">
+								<tbody id="itemBox">
+									<tr class="table-active">
+										<td>글 번호</td>
+										<td>카테고리</td>
+										<td>제목</td>
+										<td>작성자</td>
+										<td>날짜</td>
+										<td>조회수</td>
+										<td>문의상태</td>
 									</tr>
-								</c:forEach>
+									<c:forEach var="i" begin="1" end="${questions.size()}" step="1">
+										<tr>
+											<td>${questions[i-1].QUESTIONS_NUM}</td>
+											<td>${ questions[i-1].QUESTIONS_CATEGORY}</td>
+											<td>
+												<a href="/hotel/question/detail?num=${questions[i-1].QUESTIONS_NUM }">${questions[i-1].QUESTIONS_SUBJECT}</a>
+											</td>
+											<td>${questions[i-1].MEM_ID}</td>
+											<td>${questions[i-1].QUESTIONS_DATE}</td>
+											<td>${questions[i-1].QUESTIONS_READCOUNT}</td>
+											<c:if test="${empty questions[i-1].QUESTIONS_ANSWER}">
+												<td>처리중</td>
+											</c:if>
+											<c:if test="${not empty questions[i-1].QUESTIONS_ANSWER}">
+												<td>처리완료</td>
+											</c:if>
+										</tr>
+									</c:forEach>
 
-							</tbody>
-						</table>
+								</tbody>
+							</table>
 
-						<nav aria-label="Page navigation example">
-							<ul id="pagination" class="pagination justify-content-center">
-								<!--disable-->
-								<c:if test="${pageCalc.prev == true}">
-									<fmt:parseNumber var="test" value="${((pageCalc.startPage-1)/pageCalc.pageLimit)  }"></fmt:parseNumber>
-									<li class="page-item"><a class="page-link" href="/hotel/mypage/question?pageNum=${test}" tabindex="-1">&laquo;</a></li>
-								</c:if>
-								<!--active-->
-								<c:forEach var="i" begin="${pageCalc.startPage }" end="${pageCalc.endPage }" step="1">
-									<c:if test="${i == pageCalc.pageData.pageNum}">
-										<li class="page-item active"><a class="page-link" href="/hotel/mypage/question?pageNum=${i}">${i}</a></li>
+							<nav aria-label="Page navigation example">
+								<ul id="pagination" class="pagination justify-content-center">
+									<!--disable-->
+									<c:if test="${pageCalc.prev == true}">
+										<fmt:parseNumber var="test" value="${((pageCalc.startPage-1)/pageCalc.pageLimit)  }"></fmt:parseNumber>
+										<li class="page-item"><a class="page-link" href="/hotel/mypage/question?pageNum=${test}" tabindex="-1">&laquo;</a></li>
 									</c:if>
-									<c:if test="${i!=pageCalc.pageData.pageNum }">
-										<li class="page-item"><a class="page-link" href="/hotel/mypage/question?pageNum=${i}">${i}</a></li>
+									<!--active-->
+									<c:forEach var="i" begin="${pageCalc.startPage }" end="${pageCalc.endPage}" step="1">
+										<c:if test="${i == pageCalc.pageData.pageNum}">
+											<li class="page-item active"><a class="page-link" href="/hotel/mypage/question?pageNum=${i}">${i}</a></li>
+										</c:if>
+										<c:if test="${i!=pageCalc.pageData.pageNum }">
+											<li class="page-item"><a class="page-link" href="/hotel/mypage/question?pageNum=${i}">${i}</a></li>
+										</c:if>
+									</c:forEach>
+
+									<c:if test="${pageCalc.next == true}">
+										<li class="page-item"><a class="page-link" href="/hotel/mypage/question?pageNum=${(pageCalc.startPage*10)+1}">&raquo; </a></li>
 									</c:if>
-								</c:forEach>
+								</ul>
+							</nav>
+							<input type="hidden" id="pageNum" value="${pageCalc.pageData.pageNum}" />
 
-								<c:if test="${pageCalc.next == true}">
-									<li class="page-item"><a class="page-link" href="/hotel/mypage/question?pageNum=${(pageCalc.startPage*10)+1}">&raquo; </a></li>
-								</c:if>
-							</ul>
-						</nav>
-						<input type="hidden" id="pageNum" value="${pageCalc.pageData.pageNum}" />
-
-					</div>
+						</div>
+					</c:if>
 				</div>
 			</div>
 
