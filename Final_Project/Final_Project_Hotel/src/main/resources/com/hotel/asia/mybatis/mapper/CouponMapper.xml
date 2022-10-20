@@ -71,10 +71,7 @@
 		SELECT COUNT(*) FROM TABLE_COUPON_DEL
 		WHERE MEM_ID = #{MEM_ID}
 	</select>
-	
-	<delete id="useCouponMember"  parameterType="_int" >
-		DELETE FROM TABLE_MEMBER_COUPON WHERE COUPON_NUMBER = #{COUPON_NUMBER}
-	</delete>	
+
 	
 	
 	<!-- ==========[현능] 22-10-19 추가========== -->
