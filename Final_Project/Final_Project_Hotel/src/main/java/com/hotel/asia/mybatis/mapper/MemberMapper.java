@@ -47,6 +47,12 @@ public interface MemberMapper {
 	// 포인트 사용
 	public int usePoint(HashMap<String, Object> map);
 
+	public int getListCount();
+
+	public List<Member> getUserList(HashMap<String, Object> map);
+
+	public int UserDelete(String id);
+
 	
 
 }
