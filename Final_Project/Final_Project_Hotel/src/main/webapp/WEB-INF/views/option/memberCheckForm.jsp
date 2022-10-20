@@ -158,6 +158,13 @@ $(function(){
 	})
 	
 	
+	// 추가옵션 예약 클릭
+   	$(".opp").click(function(){
+   		$("form").attr("action", "${pageContext.request.contextPath}/option/optionForm");
+        $("form").submit();
+    })
+	
+	
 	
 	// 결제하기 버튼 클릭
 	$("#paymentBtn").click(function() {
@@ -377,30 +384,42 @@ function payment() {
 	                        		<tr class="table-secondary">
 	                        			<th colspan="2">02 옵션 선택</th>
 	                        		</tr>
-	                        		<tr>	
-	                        			<th style="width:80px">조식</th>
-	                        			<td>
-	                        				<fmt:formatNumber value="${optionPrice.bfTotal}" pattern="#,###"/>원
-	                        			</td> 
-	                        		</tr>
-	                        		<tr>	
-	                        			<th>디너</th>
-	                        			<td>
-	                        				<fmt:formatNumber value="${optionPrice.dnTotal}" pattern="#,###"/>원
-	                        			</td>
-	                        		</tr>
-	                        		<tr>	
-	                        			<th>수영장</th>
-	                        			<td>
-	                        				<fmt:formatNumber value="${optionPrice.spTotal}" pattern="#,###"/>원
-	                        			</td> 
-	                        		</tr>
-	                        		<tr>	
-	                        			<th>총 금액</th>
-	                        			<td>
-	                        				<fmt:formatNumber value="${optionPrice.bfTotal + optionPrice.dnTotal + optionPrice.spTotal}" pattern="#,###"/>원
-	                        			</td>
-	                        		</tr>
+	                        		<!-- 옵션 있을 때  -->
+	                        		<c:if test="${!empty optionPrice}">
+		                        		<tr>	
+		                        			<th style="width:80px">조식</th>
+		                        			<td>
+		                        				<fmt:formatNumber value="${optionPrice.bfTotal}" pattern="#,###"/>원
+		                        			</td> 
+		                        		</tr>
+		                        		<tr>	
+		                        			<th>디너</th>
+		                        			<td>
+		                        				<fmt:formatNumber value="${optionPrice.dnTotal}" pattern="#,###"/>원
+		                        			</td>
+		                        		</tr>
+		                        		<tr>	
+		                        			<th>수영장</th>
+		                        			<td>
+		                        				<fmt:formatNumber value="${optionPrice.spTotal}" pattern="#,###"/>원
+		                        			</td> 
+		                        		</tr>
+		                        		<tr>	
+		                        			<th>총 금액</th>
+		                        			<td>
+		                        				<fmt:formatNumber value="${optionPrice.bfTotal + optionPrice.dnTotal + optionPrice.spTotal}" pattern="#,###"/>원
+		                        			</td>
+		                        		</tr>
+	                        		</c:if>
+	                        		
+	                        		<!-- 옵션 없을 때 -->
+	                        		<c:if test="${empty optionPrice}">
+	                        			<tr>
+		                        			<td>선택된 옵션이 없습니다.<br><br>
+		                        				<button type="button" class="genric-btn info circle opp">추가 옵션 선택하러 가기</button>
+		                        			</td>
+	                        			</tr>
+	                        		</c:if>
 	                        	</table>
 	                        	<div class="br"></div>
 	                        </aside>	                        

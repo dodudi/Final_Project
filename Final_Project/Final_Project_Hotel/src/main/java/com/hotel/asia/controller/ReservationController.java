@@ -147,7 +147,7 @@ public class ReservationController {
 			mv.addObject("member", member); // 회원 정보
 			mv.addObject("totalPrice", totalPrice); // 총금액 (객실 + 옵션(옵션은 체크x)) 
 			
-			mv.setViewName("reservation/memberCheckForm");
+			mv.setViewName("option/memberCheckForm");
 			return mv;
 		}
 	
