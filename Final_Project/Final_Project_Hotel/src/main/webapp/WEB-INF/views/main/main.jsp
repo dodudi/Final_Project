@@ -21,7 +21,7 @@
                 <div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0"
                     data-background=""></div>
                 <div class="container">
-                    <div class="banner_content text-center">
+                    <div class="banner_content text-center" style="margin-bottom:0px;">
                         <h6>Inspiring Senses & Touching place </h6>
                         <h2>Relax Your Mind</h2>
                     </div>
