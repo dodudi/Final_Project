@@ -63,7 +63,13 @@
 
 				<!--Main Content-->
 				<div class="col-9 content-background ">
-
+					
+					<c:if test="${empty rezData }">
+											<div class="content-title">Reservation information</div>
+											<div>객실 예약 정보가 없습니다.</div>
+									
+					</c:if>
+					<c:if test="${not empty rezData }">
 					<!--Filter-->
 					<div>
 						filter
@@ -75,9 +81,9 @@
 						</select>
 					</div>
 					<!--Filter End-->
-
-
 					<div class="content-title">Reservation information</div>
+
+				
 
 					<!-- Table content Reservation-->
 					<div class="content-table mb-5">
@@ -240,15 +246,7 @@
 						</table>
 
 					</div>
-					<div class="clearfix btn-box">
-						<form action="/hotel/mypage/testRezModify" id="optModify" method="post">
-							<!-- 403에러 방지 토큰 -->
-							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-							<button type="submit" class="btn btn-primary">객실예약변경하기</button>
-						</form>
-
-						<button type="button" class="btn btn-danger">객실예약취소하기</button>
-					</div>
+					</c:if>
 				</div>
 
 			</div>

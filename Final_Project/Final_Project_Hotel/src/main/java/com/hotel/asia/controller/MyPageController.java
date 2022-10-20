@@ -26,13 +26,9 @@ import com.hotel.asia.dto.Rez;
 import com.hotel.asia.module.PageCalc;
 import com.hotel.asia.module.PageData;
 import com.hotel.asia.service.CouponService;
-import com.hotel.asia.service.MemberService;
+import com.hotel.asia.service.MemberServiceImpl;
 import com.hotel.asia.service.MyPageServiceImpl;
-import com.hotel.asia.service.OptionRezService;
 import com.hotel.asia.service.OptionService;
-import com.hotel.asia.service.PaymentService;
-import com.hotel.asia.service.RezService;
-import com.hotel.asia.service.RoomService;
 
 /*
  * MyPage에 관한 Controller입니다.
@@ -47,14 +43,18 @@ public class MyPageController {
 	@Autowired
 	private CouponService couponService;
 
+	@Autowired
+	private MemberServiceImpl memberService;
 	// 객실예약확인 페이지
 	@GetMapping("/mypage/reserve")
 	public String reserve(Model model, HttpSession session) {
 
-		String mem_id = "user01";
+		String mem_id = "user02";
 		session.setAttribute("id", mem_id);
 
 		Rez rez = myPageService.getRezData(mem_id);
+		if(rez == null)
+			return "mypage/mypage_reserve_check";
 		long day = myPageService.getDateSub(rez.getREZ_CHECKOUT(), rez.getREZ_CHECKIN());
 		log.info(day + "");
 		// Option Data -> 조식, 디너, 수영
@@ -90,6 +90,8 @@ public class MyPageController {
 		model.addAttribute("break_price", ori_break_prices);
 		model.addAttribute("dinner_price", ori_dinner_prices);
 		model.addAttribute("swim_price", ori_swim_prices);
+		
+		log.info("성공");
 		// 객실정보 가져오기~
 		return "mypage/mypage_reserve_check";
 	}
@@ -97,9 +99,9 @@ public class MyPageController {
 	// 날짜 별로 객실정보 가져오기 Ajax
 	@ResponseBody
 	@PostMapping(value = "/mypage/dateCheck")
-	public HashMap<String, OptionReservation> rezCheckDate(Model model, @RequestBody HashMap<String, Object> date) {
+	public HashMap<String, OptionReservation> rezCheckDate(Model model, @RequestBody HashMap<String, Object> date, HttpSession session) {
 
-		String mem_id = "user01";
+		String mem_id = session.getAttribute("id").toString();
 		String getDate = date.get("date").toString();
 
 		OptionReservation breakFast = null;
@@ -160,7 +162,9 @@ public class MyPageController {
 
 	// 회원정보 페이지
 	@GetMapping("/mypage/member")
-	public String member() {
+	public String member(Model model, HttpSession session) {
+		String mem_id= session.getAttribute("id").toString();
+		Member member = memberService.member_info(mem_id);
 		return "mypage/mypage_member_check";
 	}
 
