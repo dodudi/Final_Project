@@ -137,7 +137,7 @@ public class QuestionController {
 				HttpServletRequest request,
 				@RequestHeader(value="referer")String beforeURL) {
 			logger.info("referer:"+beforeURL);
-			if(beforeURL.endsWith("questionlist")) {
+			if(beforeURL.endsWith("list")) {
 				questionboardservice.setReadCountUpdate(num);
 			}
 				

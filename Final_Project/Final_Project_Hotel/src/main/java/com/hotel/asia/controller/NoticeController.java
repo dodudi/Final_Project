@@ -180,7 +180,7 @@ public class NoticeController {
 			HttpServletRequest request,
 			@RequestHeader(value="referer")String beforeURL) {
 		logger.info("referer:"+beforeURL);
-		if(beforeURL.endsWith("noticelist")) {
+		if(beforeURL.endsWith("list")) {
 			noticeboardservice.setReadCountUpdate(num);
 		}
 			
