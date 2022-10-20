@@ -27,7 +27,6 @@
                              <ul class="list_style">
                                  <li><a href="${pageContext.request.contextPath}/intro/intro">Home</a></li>
                                  <li><a href="${pageContext.request.contextPath}/room/roomList">Accomodation</a></li>
-                                 <li><a href="#">Promotion</a></li>
                                  <li><a href="${pageContext.request.contextPath}/notice/list">Community</a></li>
                              </ul>
                          </div>									

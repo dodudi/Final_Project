@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
     <!DOCTYPE html>
     <html>
     <head>
@@ -15,76 +16,14 @@
         <!-- Header/Nav -->
         <jsp:include page="header.jsp" />
         <!--================Banner Area =================-->
-        <section class="banner_area">
-            <div class="booking_table d_flex align-items-center">
+        <section class="banner_area" >
+            <div class="booking_table d_flex align-items-center" style="min-height:600px">
                 <div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0"
                     data-background=""></div>
                 <div class="container">
                     <div class="banner_content text-center">
                         <h6>Inspiring Senses & Touching place </h6>
                         <h2>Relax Your Mind</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="hotel_booking_area position">
-                <div class="container">
-                    <div class="hotel_booking_table">
-                        <div class="col-md-3">
-                            <h2>객실 예약</h2>
-                        </div>
-                        <div class="col-md-9">
-                            <div class="boking_table">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="book_tabel_item">
-                                            <div class="form-group">
-                                                <div class='input-group date' id='datetimepicker11'>
-                                                    <input type='text' class="form-control" placeholder="체크인" />
-                                                    <span class="input-group-addon">
-                                                        <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class='input-group date' id='datetimepicker1'>
-                                                    <input type='text' class="form-control" placeholder="체크아웃" />
-                                                    <span class="input-group-addon">
-                                                        <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="book_tabel_item">
-                                            <div class="input-group">
-                                                <select class="wide">
-                                                    <option data-display="성인">성인</option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                </select>
-                                            </div>
-                                            <div class="input-group">
-                                                <select class="wide">
-                                                    <option data-display="소아">소아</option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="book_tabel_item">
-                                            <a class="book_now_btn button_hover" href="#">예약하기</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -112,7 +51,8 @@
 		                            <a href="room/roomDetail?num=${i.ROOM_ID}">
 		                                <h4 class="sec_h4">${i.ROOM_TYPE}</h4>
 		                            </a>
-		                              <h5><small>KRW</small> ${i.ROOM_PRICE } </h5>
+		                              <h5><small>KRW</small> <fmt:formatNumber value="${i.ROOM_PRICE }" pattern="#,###"/> </h5>
+		                              
 		                        </div>
 		                    </div>
                			
