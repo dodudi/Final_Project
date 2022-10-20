@@ -176,17 +176,16 @@ $(function(){
 </head>
 <body>
  
- <section class="banner_area">
-	 <div class="booking_table d_flex align-items-center">
-	     <div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0"
-	         data-background=""></div>
-	     <div class="container">
-	         <div class="banner_content text-center">
-	             <h2>객실 리스트</h2>
-	         </div>
-	     </div>
-	 </div>
-  </section>
+<!--================Breadcrumb Area =================-->
+    <section class="breadcrumb_area">
+        <div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
+        <div class="container">
+            <div class="page-cover text-center">
+                <h2 class="page-cover-tittle">객실 리스트</h2>
+            </div>
+        </div>
+    </section>
+    <!--================Breadcrumb Area =================-->
   
   	<div class="section padding-top-bottom z-bigger">
 		<div class="section z-bigger">
