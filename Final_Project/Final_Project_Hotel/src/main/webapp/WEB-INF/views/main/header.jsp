@@ -77,7 +77,7 @@
 	                         <ul class="dropdown-menu">
 	                             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/notice/list">공지사항</a></li>
 	                             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/question/list">문의사항</a></li>
-	                             <li class="nav-item"><a class="nav-link" href="member/list">회원리스트</a></li>
+	                             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/userlist">회원리스트</a></li>
 	                             <li class="nav-item"><a class="nav-link" href="member/update">정보수정</a></li>
 	                         </ul>
 	                     </li> 

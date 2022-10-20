@@ -29,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hotel.asia.dto.MailVO;
 import com.hotel.asia.dto.Member;
+import com.hotel.asia.dto.Notice;
 import com.hotel.asia.service.MemberService;
 import com.hotel.asia.task.NaverMessageAuth;
 import com.hotel.asia.task.SendMail;
@@ -358,5 +359,60 @@ public class MemberController {
 	      
 	      return random;
 	   }
-	
+	   
+	   @RequestMapping(value="/userlist")
+		public ModelAndView MemberList(
+				@RequestParam(value="page", defaultValue="1", required=false)int page,
+				ModelAndView mv) {
+			
+			// 한 화면에 출력할 로우 갯수
+			int limit = 10; 
+					
+			// 총 리스트 수를 받아옴
+			int listcount = memberservice.getListCount();
+					
+			//총 페이지 수
+			int maxpage = (listcount + limit - 1) / limit;
+			
+			//현재 페이지에 보여줄 시작 페이지 수
+			int startpage = ((page-1)/10) * 10 + 1;
+			
+			//현재 페이지에 보여줄 마지막 페이지 수(10, 20, 30..)
+			int endpage = startpage + 10 - 1;
+					
+			if(endpage > maxpage)
+				endpage = maxpage;
+					
+			//리스트를 받아옴
+			List<Member> userlist = memberservice.getUserList(page, limit);
+				
+			mv.setViewName("admin/user_list");
+			mv.addObject("page", page);
+			mv.addObject("maxpage", maxpage);
+			mv.addObject("startpage", startpage);
+			mv.addObject("endpage", endpage);
+			mv.addObject("listcount", listcount);
+			mv.addObject("userlist", userlist);
+			mv.addObject("limit", limit);
+			return mv;
+	   }
+	   
+	   @PostMapping("/userdelete")
+		public String UserDelete(
+				String id, Model mv, HttpServletRequest request,
+				RedirectAttributes rattr)	{
+		    
+			int result = memberservice.Userdelete(id);
+			
+			if (result == 0) {
+				logger.info("회원 정보 삭제 실패");
+				mv.addAttribute("url", request.getRequestURL());
+				mv.addAttribute("message", "삭제 실패");
+				return "error/error";
+			}
+			
+			logger.info("회원 정보 삭제 성공");
+			rattr.addFlashAttribute("result", "deleteSuccess");
+			return "redirect:userlist";
+		}
 }
