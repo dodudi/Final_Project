@@ -61,7 +61,7 @@ $(function(){
       if($("#sdate").val() == "" || $("#edate").val() == ""){
 	  	  alert("날짜를 선택해주세요.");
 	  	  return false;
-	  }else if($("#adult").val() == "성인" || $("#child").val() == "소아"){
+	  }else if($("#adult").val() == "성인" || $("#child").val() == "아동"){
 		  alert("인원을 선택해주세요.");
 		  return false;
 	  }else if($("#adult").val() == "0"){
