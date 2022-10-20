@@ -1,10 +1,3 @@
-.nav-title, .content-title{
-    text-align: center;
-    font-size: 2rem;
-    font-weight: bold;
-    border-bottom: 2px solid black;
-}
-
 .btn-box{
     margin-top:10px;
     text-align: right;

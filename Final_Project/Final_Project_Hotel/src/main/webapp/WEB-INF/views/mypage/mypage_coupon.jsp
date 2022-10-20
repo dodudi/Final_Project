@@ -49,7 +49,18 @@
 
 <body>
 	<jsp:include page="../main/header.jsp" />
-
+	<section class="breadcrumb_area">
+		<div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
+		<div class="container">
+			<div class="page-cover text-center">
+				<h2 class="page-cover-tittle">쿠폰확인</h2>
+				<ol class="breadcrumb">
+					<li class="active">마이페이지</li>
+					<li><a href="list">쿠폰확인</a></li>
+				</ol>
+			</div>
+		</div>
+	</section>
 	<div class="mypage">
 		<div class="container mypage_background">
 			<div class="row">
@@ -58,7 +69,7 @@
 					<div class="nav-title">마이페이지</div>
 					<div class="list-group">
 						<!--reserve-->
-						<a href="/hotel/mypage/reserve" class="list-group-item list-group-item-action active">
+						<a href="/hotel/mypage/reserve" class="list-group-item list-group-item-action">
 							<img src="/hotel/static/project_image/mypage_icon/ReservationCheckIcon.png" width="25px" alt="" />
 							객실예약확인
 						</a>
@@ -68,7 +79,7 @@
 							문의내역확인
 						</a>
 						<!--Coupon-->
-						<a href="/hotel/mypage/coupon" class="list-group-item list-group-item-action">
+						<a href="/hotel/mypage/coupon" class="list-group-item list-group-item-action active">
 							<img src="/hotel/static/project_image/mypage_icon/Coupon.png" width="25px" alt="" />
 							마일리지 | 쿠폰
 						</a>

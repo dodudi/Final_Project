@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hotel.asia.dto.Rez;
 import com.hotel.asia.dto.Room;
 import com.hotel.asia.mybatis.mapper.RoomMapper;
 
@@ -52,6 +53,16 @@ public class RoomServiceImpl implements RoomService{
 		return mapper.getRoomDetail(num);
 	}
 	
+	//객실정보에 대한 룸정보들을 가져옵니다.
+	public List<Room> getRoomDetails(List<Rez> rezs){
+		List<Room> rooms = new ArrayList<Room>();
+		for(int i = 0 ; i < rezs.size(); i++) {
+			int room_id = rezs.get(i).getROOM_ID();
+			Room room = mapper.getRoomDetail(room_id);
+			rooms.add(room);
+		}
+		return rooms;
+	}
 	
 	// 객실 예약 후 해당 객실 상태 Y로 바꾸기
 	@Override

@@ -1,6 +1,7 @@
 package com.hotel.asia.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import com.hotel.asia.dto.OptionReservation;
 import com.hotel.asia.dto.Payment;
 import com.hotel.asia.dto.Question;
 import com.hotel.asia.dto.Rez;
+import com.hotel.asia.dto.Room;
 import com.hotel.asia.module.PageCalc;
 import com.hotel.asia.module.PageData;
 import com.hotel.asia.service.CouponService;
@@ -34,6 +36,7 @@ import com.hotel.asia.service.MemberServiceImpl;
 import com.hotel.asia.service.MyPageServiceImpl;
 import com.hotel.asia.service.OptionService;
 import com.hotel.asia.service.QuestionboardService;
+import com.hotel.asia.service.RoomServiceImpl;
 
 /*
  * MyPage에 관한 Controller입니다.
@@ -52,22 +55,24 @@ public class MyPageController {
 	@Autowired
 	private QuestionboardService questService;
 	@Autowired
+	private RoomServiceImpl roomService;
+	@Autowired
 	private PasswordEncoder passwordEncoder;
-
 	// 객실예약확인 페이지
 	@GetMapping("/mypage/reserve")
 	public String reserve(Model model, Principal princiPal, HttpSession session) {
 		String mem_id = princiPal.getName();
 		session.setAttribute("id", mem_id);
-		log.info(mem_id);
-		List<Rez> rezs = myPageService.getRezDatas(mem_id);
-		log.info(rezs.size() + "");
 
+		List<Rez> rezs = myPageService.getRezDatas(mem_id);
+		List<Room> rooms = roomService.getRoomDetails(rezs);
+		
 		model.addAttribute("rezData", rezs);
+		model.addAttribute("roomData", rooms);
 		return "mypage/mypage_reserve_check";
 	}
 
-	// 질문게시판 페이지
+	//질문게시판 페이지
 	@GetMapping("/mypage/question")
 	public String question(Model model, PageData pageData, HttpSession session) {
 

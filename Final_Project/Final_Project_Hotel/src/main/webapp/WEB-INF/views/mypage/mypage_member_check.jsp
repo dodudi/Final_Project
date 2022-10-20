@@ -21,12 +21,24 @@
 
 		<!--mypage_member_check.css-->
 		<link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_module.css">
-		<link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_member_check.css">
+		<!--<link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_member_check.css">-->
 
 	</head>
 
 	<body>
 		<jsp:include page="../main/header.jsp" />
+		<section class="breadcrumb_area">
+			<div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
+			<div class="container">
+				<div class="page-cover text-center">
+					<h2 class="page-cover-tittle">회원정보</h2>
+					<ol class="breadcrumb">
+						<li class="active">마이페이지</li>
+						<li><a href="list">회원정보</a></li>
+					</ol>
+				</div>
+			</div>
+		</section>
 		<div class="mypage">
 
 			<div class="container mypage_background">
@@ -36,7 +48,7 @@
 						<div class="nav-title">마이페이지</div>
 						<div class="list-group">
 							<!--reserve-->
-							<a href="/hotel/mypage/reserve" class="list-group-item list-group-item-action active">
+							<a href="/hotel/mypage/reserve" class="list-group-item list-group-item-action">
 								<img src="/hotel/static/project_image/mypage_icon/ReservationCheckIcon.png" width="25px"
 									alt="" />
 								객실예약확인
@@ -53,7 +65,7 @@
 								마일리지 | 쿠폰
 							</a>
 							<!--member-->
-							<a href="/hotel/mypage/member" class="list-group-item list-group-item-action">
+							<a href="/hotel/mypage/member" class="list-group-item list-group-item-action active">
 								<img src="/hotel/static/project_image/mypage_icon/MemberCheck2.png" width="25px"
 									alt="" />
 								회원정보
@@ -65,7 +77,7 @@
 
 
 					<div class="col content-background">
-						<div class="title-font-l mt-3 mb-3 bottom-border p-2">회원 정보 수정</div>
+						<div class="nav-title">회원 정보 수정</div>
 						<form action="/hotel/mypage/member" method="post">
 							<div class="mb-3">
 								<label for="MEM_NAME" class="form-label">이름</label>

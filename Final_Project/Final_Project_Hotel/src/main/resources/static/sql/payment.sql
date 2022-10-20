@@ -15,19 +15,3 @@ drop table PAYMENT;
 drop table OPTION_RESERVATION;
 drop table REZ;
 
-
-create table MEMBER(
-    MEM_ID          varchar2(30) CONSTRAINT MEMBER_PK PRIMARY KEY,
-	MEM_PASS        varchar2(30),
-	MEM_NAME	    varchar2(60),	 
-	MEM_EMAIL	    varchar2(1000),
-    MEM_PHONE       NUMBER,
-	MEM_ADDRESS	    varchar2(30),
-    MEM_ADDRESS2   varchar2(30),
-	MEM_POINT       NUMBER
-);
-drop table MEMBER;
-SELECT * FROM MEMBER WHERE MEM_ID = 'user01';
-SELECT * FROM MEMBER;
-INSERT INTO MEMBER VALUES('user01', '1234', '김길동', 'user01@naver.com', 01011111111, 'ADDRESS1','ADDRESS2', 1000);
-commit;

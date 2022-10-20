@@ -1,103 +1,115 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
-	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-		<!-- core 라이브러리 -->
-		<!DOCTYPE html>
-		<html lang="en">
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!-- core 라이브러리 -->
+<!DOCTYPE html>
+<html lang="en">
 
-		<head>
-			<meta name="_csrf_header" th:content="${_csrf.headerName}">
-			<meta id="_csrf" name="_csrf" th:content="${_csrf.token}">
-			<title>객실예약확인페이지</title>
+<head>
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}">
+<title>객실예약확인페이지</title>
 
-			<!-- Bootstrap CSS -->
-			<link rel="stylesheet" href="/hotel/static/css/bootstrap.css">
-			<link rel="stylesheet" href="/hotel/static/vendors/linericon/style.css">
-			<link rel="stylesheet" href="/hotel/static/css/font-awesome.min.css">
-			<link rel="stylesheet" href="/hotel/static/vendors/owl-carousel/owl.carousel.min.css">
-			<link rel="stylesheet" href="/hotel/static/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
-			<link rel="stylesheet" href="/hotel/static/vendors/nice-select/css/nice-select.css">
-			<link rel="stylesheet" href="/hotel/static/vendors/owl-carousel/owl.carousel.min.css">
-			<!-- main css -->
-			<link rel="stylesheet" href="/hotel/static/css/style.css">
-			<link rel="stylesheet" href="/hotel/static/css/responsive.css">
-			<link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_module.css">
-			<link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_reserve_check.css">
-		</head>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="/hotel/static/css/bootstrap.css">
+<link rel="stylesheet" href="/hotel/static/vendors/linericon/style.css">
+<link rel="stylesheet" href="/hotel/static/css/font-awesome.min.css">
+<link rel="stylesheet" href="/hotel/static/vendors/owl-carousel/owl.carousel.min.css">
+<link rel="stylesheet" href="/hotel/static/vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="/hotel/static/vendors/nice-select/css/nice-select.css">
+<link rel="stylesheet" href="/hotel/static/vendors/owl-carousel/owl.carousel.min.css">
+<!-- main css -->
+<link rel="stylesheet" href="/hotel/static/css/style.css">
+<link rel="stylesheet" href="/hotel/static/css/responsive.css">
 
-		<body>
-			<jsp:include page="../main/header.jsp" />
-			<div class="mypage">
-				<div class="container mypage_background">
-					<div class="row">
-						<!--My Page Select Nav-->
-						<div class="col-3 nav-background">
-							<div class="list-group">
-								<div class="nav-title">마이페이지</div>
-								<!--reserve-->
-								<a href="/hotel/mypage/reserve" class="list-group-item list-group-item-action active">
-									<img src="/hotel/static/project_image/mypage_icon/ReservationCheckIcon.png"
-										width="25px" alt="" />
-									객실예약확인
-								</a>
-								<!--question-->
-								<a href="/hotel/mypage/question" class="list-group-item list-group-item-action">
-									<img src="/hotel/static/project_image/mypage_icon/QuestionCheck.png" width="25px"
-										alt="" />
-									문의내역확인
-								</a>
-								<!--Coupon-->
-								<a href="/hotel/mypage/coupon" class="list-group-item list-group-item-action">
-									<img src="/hotel/static/project_image/mypage_icon/Coupon.png" width="25px" alt="" />
-									마일리지 | 쿠폰
-								</a>
-								<!--member-->
-								<a href="/hotel/mypage/member" class="list-group-item list-group-item-action">
-									<img src="/hotel/static/project_image/mypage_icon/MemberCheck2.png" width="25px"
-										alt="" />
-									회원정보
-								</a>
-				
-							</div>
+<link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_module.css">
+<!--<link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_reserve_check.css">-->
+</head>
+
+<body>
+	<jsp:include page="../main/header.jsp" />
+	<section class="breadcrumb_area">
+		<div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
+		<div class="container">
+			<div class="page-cover text-center">
+				<h2 class="page-cover-tittle">객실예약확인</h2>
+				<ol class="breadcrumb">
+					<li class="active">마이페이지</li>
+					<li><a href="list">객실예약확인</a></li>
+				</ol>
+			</div>
+		</div>
+	</section>
+	<div class="mypage">
+		<div class="container mypage_background">
+			<div class="row">
+				<!--My Page Select Nav-->
+				<div class="col-3 nav-background">
+					<div class="list-group">
+						<div class="nav-title">마이페이지</div>
+						<!--reserve-->
+						<a href="/hotel/mypage/reserve" class="list-group-item list-group-item-action active">
+							<img src="/hotel/static/project_image/mypage_icon/ReservationCheckIcon.png" width="25px" alt="" />
+							객실예약확인
+						</a>
+						<!--question-->
+						<a href="/hotel/mypage/question" class="list-group-item list-group-item-action">
+							<img src="/hotel/static/project_image/mypage_icon/QuestionCheck.png" width="25px" alt="" />
+							문의내역확인
+						</a>
+						<!--Coupon-->
+						<a href="/hotel/mypage/coupon" class="list-group-item list-group-item-action">
+							<img src="/hotel/static/project_image/mypage_icon/Coupon.png" width="25px" alt="" />
+							마일리지 | 쿠폰
+						</a>
+						<!--member-->
+						<a href="/hotel/mypage/member" class="list-group-item list-group-item-action">
+							<img src="/hotel/static/project_image/mypage_icon/MemberCheck2.png" width="25px" alt="" />
+							회원정보
+						</a>
+
+					</div>
+				</div>
+				<!--My Page Select Nav End-->
+
+				<!--Main Content-->
+				<div class="col-9 content-background ">
+
+					<div class="content-title">객실예약확인</div>
+					<c:if test="${empty rezData }">
+						<div>객실 예약 정보가 없습니다.</div>
+
+					</c:if>
+					<c:if test="${not empty rezData }">
+
+						<!-- Table content Reservation -->
+						<div class="content-table mb-5">
+							<table class="table table-bordered">
+								<tbody>
+									<tr class="table-active">
+										<td>등급</td>
+										<td>예약자명</td>
+										<td>체크인 날짜</td>
+										<td>체크아웃 날짜</td>
+										<td>성인</td>
+										<td>아동</td>
+									</tr>
+									<c:forEach var="rez" items="${rezData}" varStatus="status">
+										<tr>
+											<td>${roomData[status.index].ROOM_TYPE}</td>
+											<td>${rez.MEM_ID }</td>
+											<td>${rez.REZ_CHECKIN }</td>
+											<td>${rez.REZ_CHECKOUT }</td>
+											<td>${rez.REZ_ADULT }</td>
+											<td>${rez.REZ_CHILD }</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+
 						</div>
-						<!--My Page Select Nav End-->
+						<!--Table content Reservation End-->
 
-						<!--Main Content-->
-						<div class="col-9 content-background ">
-
-							<div class="content-title">객실예약확인</div>
-							<c:if test="${empty rezData }">
-								<div>객실 예약 정보가 없습니다.</div>
-
-							</c:if>
-							<c:if test="${not empty rezData }">
-
-								<!-- Table content Reservation -->
-								<div class="content-table mb-5">
-									<table class="table table-bordered">
-										<tbody>
-											<tr class="table-active">
-												<td>예약자명</td>
-												<td>체크인 날짜</td>
-												<td>체크아웃 날짜</td>
-												<td>성인</td>
-												<td>아동</td>
-											</tr>
-											<c:forEach var="rez" items="${rezData}">
-												<tr>
-													<td>${rez.MEM_ID }</td>
-													<td>${rez.REZ_CHECKIN }</td>
-													<td>${rez.REZ_CHECKOUT }</td>
-													<td>${rez.REZ_ADULT }</td>
-													<td>${rez.REZ_CHILD }</td>
-												</tr>
-											</c:forEach>
-										</tbody>
-									</table>
-
-								</div>
-								<!--Table content Reservation End-->
-
-								<!-- 
+						<!-- 
 					<div class="content-title">Breakfast | Dinner Information</div>
 					<div class="content-table mb-4">
 						<table id="optBreakFast" class="table table-bordered table-hover">
@@ -218,16 +230,16 @@
 
 					</div>
 					 -->
-							</c:if>
-						</div>
-
-					</div>
-					<!-- 403에러 방지 토큰 -->
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+					</c:if>
 				</div>
+
 			</div>
+			<!-- 403에러 방지 토큰 -->
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+		</div>
+	</div>
 
-			<jsp:include page="../main/footer.jsp" />
-		</body>
+	<jsp:include page="../main/footer.jsp" />
+</body>
 
-		</html>
+</html>
