@@ -216,7 +216,6 @@ public class MemberController {
 			vo.setSubject("호텔 아시아에서 발송한 임시 비밀번호입니다.");
 			vo.setContent("<br><br>" + "임시발급된 비밀번호는 " + serial + " 입니다.<br>로그인 후 비밀번호 변경해주세요");
 			sendMail.sendMail(vo);
-			
 			//비밀번호 암호화 추가 
 			String encPassword = passwordEncoder.encode(serial);
 	  		logger.info(encPassword);

@@ -71,13 +71,11 @@
 						<form>
 							<div class="mb-3">
 								<label for="email" class="form-label">이름</label>
-								<input type="email" class="form-control" id="email" aria-describedby="emailHelp">
-								<div id="emailHelp" class="form-text">We'll never share your email with anyone else.
-								</div>
+								<input type="email" class="form-control" id="email" aria-describedby="emailHelp" value="${member.MEM_NAME }">
 							</div>
 							<div class="mb-3">
 								<label for="password" class="form-label">비밀번호</label>
-								<input type="password" class="form-control" id="password">
+								<input type="password" class="form-control" id="password" >
 							</div>
 							<div class="mb-3">
 								<label for="password_check" class="form-label">비밀번호확인</label>
@@ -85,15 +83,15 @@
 							</div>
 							<div class="mb-3">
 								<label for="name" class="form-label">생일</label>
-								<input type="text" class="form-control" id="name">
+								<input type="text" class="form-control" id="name" value="${member.MEM_BIRTH }">
 							</div>
 							<div class="mb-3">
-								<label for="phone" class="form-label">이메일</label>
-								<input type="text" class="form-control" id="phone">
+								<label for="email" class="form-label">이메일</label>
+								<input type="text" class="form-control" id="email"  value="${member.MEM_EMAIL }">
 							</div>
 							<div class="mb-3">
 								<label for="phone" class="form-label">전화번호</label>
-								<input type="text" class="form-control" id="phone">
+								<input type="text" class="form-control" id="phone"  value="${member.MEM_PHONE }">
 							</div>
 							<button type="submit" class="btn btn-primary">Submit</button>
 						</form>

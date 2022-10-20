@@ -166,6 +166,7 @@ public class MyPageController {
 	public String member(Model model, HttpSession session) {
 		String mem_id= session.getAttribute("id").toString();
 		Member member = memberService.member_info(mem_id);
+		model.addAttribute("member",member);
 		return "mypage/mypage_member_check";
 	}
 
