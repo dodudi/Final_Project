@@ -59,9 +59,6 @@ CREATE TABLE TABLE_COUPON_USE(
 SELECT * FROM TABLE_COUPON_USE;
 DELETE  FROM TABLE_COUPON_USE;
 commit;
-=======
-commit;
-
 
 ---------------------------[현능]---------------------------
 select *
