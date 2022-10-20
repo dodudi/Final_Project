@@ -13,7 +13,14 @@
 <link  href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-ko-KR.js"></script>
-
+<style>
+	.navbar-collapse.collapse {
+	    display: flex !important;
+	}
+	.navbar{
+		margin-bottom: 0px
+	}
+</style>
 <title> 후기 게시글 수정 </title>
 <script>
 $(function(){

@@ -315,7 +315,7 @@ $(function(){
 			<div class="col-lg-2">
 				<div class="blog_right_sidebar">
 					<aside class="single_sidebar_widget post_category_widget">
-	                    <h4 class="widget_title">인기 검색어</h4>
+	                    <h4 class="widget_title" style="border-radius:10px;">인기 검색어</h4>
 	                    <ol class="list_style cat-list">
 	                    	<!-- 인기검색어 있을 떄 -->
 	                    	<c:if test="${!empty topSearchWordList}">
