@@ -88,4 +88,25 @@
  		set    MEM_POINT = MEM_POINT - #{MEM_POINT}
  		where  MEM_ID = #{MEM_ID}
  	</update>
+ 	
+ 	<select id="getListCount" resultType="int">
+       select count(*) from MEMBER
+   </select>
+   
+   <select id="getUserList" parameterType="java.util.Map" resultType="member">
+		select * from 
+		  ( select rownum rnum, b.*
+		    from 
+		         (select * from MEMBER
+		          order by MEM_NAME  desc 
+		         ) b
+		    where rownum &lt;=  #{endrow}      
+		   ) 
+	     where rnum &gt;= #{startrow} and rnum  &lt;=  #{endrow}
+	</select>
+	
+	<delete id="UserDelete" parameterType="String">
+		delete from MEMBER
+		where  MEM_ID = #{MEM_ID}
+	</delete>
 </mapper>

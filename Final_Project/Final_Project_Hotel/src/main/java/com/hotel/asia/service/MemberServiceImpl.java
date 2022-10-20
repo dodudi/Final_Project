@@ -157,5 +157,26 @@ public class MemberServiceImpl implements MemberService {
 		return dao.usePoint(map);
 	}
 
+	@Override
+	public int getListCount() {
+		return dao.getListCount();
+	}
+
+	@Override
+	public List<Member> getUserList(int page, int limit) {
+		HashMap<String, Object> map = new HashMap<String, Object>();		
+		int startrow = (page-1) * limit + 1; 
+		int endrow = startrow + limit - 1; 		
+		
+		map.put("startrow", startrow);
+		map.put("endrow", endrow);
+		return dao.getUserList(map);
+	}
+
+	@Override
+	public int Userdelete(String id) {
+		return dao.UserDelete(id);
+	}
+
 	
 }

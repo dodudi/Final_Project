@@ -71,6 +71,7 @@
 	</script>
 	<style>
 	label{font-size:15px; font-weight:bold}
+	.navbar-collapse.collapse { display: flex !important; } .navbar{ margin-bottom: 0px }
 	</style>
 </head>
 <body>

@@ -40,5 +40,11 @@ public interface MemberService {
 	// ==========[현능] 22-10-19 추가==========
 	// 포인트 사용
 	public int usePoint(String id, int point);
+
+	public int getListCount();
+
+	public List<Member> getUserList(int page, int limit);
+
+	public int Userdelete(String id);
 	
 }
