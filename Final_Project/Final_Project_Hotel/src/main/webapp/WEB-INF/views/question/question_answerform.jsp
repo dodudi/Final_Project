@@ -96,7 +96,7 @@
      <h1 class="title_color" style="margin-top:7rem; text-align:center">문의사항 게시판 - 답변</h1>
      
      <div class="form-group" style="margin-top:5rem;">
-        <label for="QUESTIONS_NAME">글쓴이</label>
+        <label for="QUESTIONS_NAME">작성자</label>
         <input name="QUESTIONS_NAME" type="text"    class="form-control"
                value="${question.MEM_ID}" readOnly>
      </div>

@@ -35,13 +35,10 @@
           select nvl(max(QUESTIONS_NUM),0)+1 from question_board        
        </selectKey>
        insert into question_board
-       (QUESTIONS_NUM, MEM_ID, QUESTIONS_CATEGORY, QUESTIONS_SUBJECT,
-        QUESTIONS_CONTENT, QUESTIONS_ANSWER, QUESTIONS_ORIGINAL, QUESTIONS_FILE,
-        QUESTIONS_READCOUNT, QUESTIONS_DATE)
-        values
-        (#{QUESTIONS_NUM}, #{MEM_ID}, #{QUESTIONS_CATEGORY}, #{QUESTIONS_SUBJECT},
-         #{QUESTIONS_CONTENT}, #{QUESTIONS_ANSWER}, #{QUESTIONS_ORIGINAL, jdbcType=VARCHAR}, #{QUESTIONS_FILE, jdbcType=VARCHAR},
-         #{QUESTIONS_READCOUNT}, sysdate)
+       values
+       (#{QUESTIONS_NUM}, #{MEM_ID}, #{QUESTIONS_CATEGORY}, #{QUESTIONS_SUBJECT},
+        #{QUESTIONS_CONTENT}, #{QUESTIONS_ANSWER}, #{QUESTIONS_ORIGINAL, jdbcType=VARCHAR}, #{QUESTIONS_FILE, jdbcType=VARCHAR},
+        #{QUESTIONS_READCOUNT}, sysdate)
     </insert>
     
     <select id="getDetail" parameterType="int" resultType="question">

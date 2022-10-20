@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>  
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -131,15 +132,14 @@
 	  <font size=5>등록된 글이 없습니다.</font>
     </c:if>
  
-    <%-- 글쓰기 (세션의 아이디값이 admin일 경우만 활성화되도록 변경 예정)
-    <c:if test="${id == 'admin'}">
+    <sec:authorize access="isAuthenticated()">
+    			   <sec:authentication property="principal" var="pinfo"/>
+    <c:if test="${pinfo.username == 'admin'}">
       <div class="button-group-area mt-40" style="height:100px">
         <a href="writeform" class="genric-btn primary circle float-right">글쓰기</a>
       </div>
-    </c:if>--%>
-    <div class="button-group-area mt-40" style="height:100px">
-        <a href="writeform" class="genric-btn primary circle float-right">글쓰기</a>
-        </div>
+    </c:if>
+    </sec:authorize>
 </div>
 <jsp:include page="../main/footer.jsp"/>
 </body>

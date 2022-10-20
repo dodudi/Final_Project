@@ -21,7 +21,7 @@
         values
         (#{NOTICE_NUM},#{NOTICE_SUBJECT},
          #{NOTICE_CONTENT}, #{NOTICE_ORIGINAL, jdbcType=VARCHAR}, #{NOTICE_FILE, jdbcType=VARCHAR},
-         #{NOTICE_READCOUNT}, sysdate)
+         0, sysdate)
     </insert>
     
     
