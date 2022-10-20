@@ -52,11 +52,7 @@ public class ReservationController {
 	private CouponService couponService;
 	
 	
-	@RequestMapping("/testRez")
-	public String testRoomList(HttpSession session) {
-		
-		return "reservation/testRez";
-	}
+
 	
 	
 	@RequestMapping(value="/reservationCheck", method = RequestMethod.POST)
