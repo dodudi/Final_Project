@@ -129,12 +129,11 @@ $(function(){
 	        		<tr>
 	        			<th>최종 결제금액</th>
 	        			<td colspan="3">
-	        				<fmt:formatNumber value="${paymentInfo.PAYMENT_PRICE - paymentInfo.POINT_DISCOUNT}" pattern="#,###"/>원
+	        				<fmt:formatNumber value="${paymentInfo.PAYMENT_PRICE}" pattern="#,###"/>원
 	        			</td>
 	        		</tr>
         		</tbody>
         	</table>
-        	<!-- <button type="submit" id="cancelBtn">환불테스트</button> -->
         </div>
     </section>
     <!--================Contact Area =================-->
