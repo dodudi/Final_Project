@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.hotel.asia.dto.CouponVO;
 import com.hotel.asia.dto.Member;
 import com.hotel.asia.dto.OptionReservation;
 import com.hotel.asia.dto.Payment;
@@ -140,6 +141,10 @@ public class ReservationController {
 			// 총금액 (객실 + 옵션)
 			int totalPrice = Integer.parseInt(request.getParameter("total").replaceAll(",", ""));
 			
+			// 회원 쿠폰 정보
+		      List<CouponVO> couponList = new ArrayList<CouponVO>();
+		      couponList = couponService.getCouponList(loginId);
+			
 			
 			mv.addObject("rez", rez); // 객실 예약 정보
 			mv.addObject("nights", nights); // 숙박일수
@@ -147,10 +152,103 @@ public class ReservationController {
 			mv.addObject("member", member); // 회원 정보
 			mv.addObject("totalPrice", totalPrice); // 총금액 (객실 + 옵션(옵션은 체크x)) 
 			
+			mv.addObject("couponList", couponList); // 회원 쿠폰 정보
 			mv.setViewName("option/memberCheckForm");
 			return mv;
 		}
 	
+		
+		
+		// 객실 예약,결제
+		@RequestMapping("/reservationroomOption0")
+		public ModelAndView reservationRoomOption0(Rez rez, Payment pm,
+												  ModelAndView mv, Principal userPrincipal, HttpServletRequest request, HttpServletResponse response) throws ParseException {
+			String loginId = userPrincipal.getName();
+			logger.info("***** [reservationRoomOption] 넘어온 정보 *****");
+			logger.info("* 객실아이디 : " + rez.getROOM_ID());
+			logger.info("* 회원아이디 : " + loginId);
+			logger.info("* 체크인 날짜 : " + rez.getREZ_CHECKIN());
+			logger.info("* 체크아웃 날짜 : " + rez.getREZ_CHECKOUT());
+			logger.info("* 성인 수 : " + rez.getREZ_ADULT());
+			logger.info("* 아동 수 : " + rez.getREZ_CHILD());
+			logger.info("==========================================");
+			
+			// 넘어온 옵션 예약 인원수
+			String dateList = request.getParameter("dateList"); // 체크인 날짜 ~ 체크아웃 날짜
+			String[] dateList2 = dateList.split(",");
+			
+			logger.info("* 체크인 날짜 ~ 체크아웃 날짜 : " + dateList);
+			
+			
+			// 1. 객실 예약
+			rez.setMEM_ID(loginId); // 세션에 있는 아이디를 예약자 이름으로 설정
+			int result = rezService.reservation(rez); // 객실 예약 추가
+			
+			// 객실 예약 실패
+			if(result == 0) {
+				logger.info("[객실 예약 실패] result=" + result);
+				mv.setViewName("에러페이지 설정하기~~");
+				return mv;
+			} else { // 객실 예약 성공
+				logger.info("[객실 예약 성공] result=" + result + " / 추가옵션 예약 시작");
+				logger.info("[객실 예약 번호] REZ_ID=" + rez.getREZ_ID());
+				logger.info("[예약된 객실 상태 변경 여부] " + roomService.updateRezState(rez.getROOM_ID()));
+				
+				
+			} // 객실, 옵션 예약 end
+			
+			// 3. 결제정보 DB저장
+			logger.info("***** [payment] 넘어온 정보 *****");
+			logger.info("*결제번호 : " + pm.getPAYMENT_ID());
+			logger.info("*결제금액 : " + pm.getPAYMENT_PRICE());
+			pm.setREZ_ID(rez.getREZ_ID());
+			int paymentResult = paymentService.payment(pm);
+			logger.info("[결제 성공 여부] paymentResult=" + paymentResult);
+			
+			// 4. 쿠폰 사용
+			int useCouponNum = Integer.parseInt(request.getParameter("COUPON_NUMBER")); // 사용 쿠폰번호
+			logger.info("쿠폰발급번호: " + useCouponNum);
+			if(useCouponNum != 0) {
+				int useCouponResult = couponService.useCoupon(useCouponNum); // 사용된 쿠폰 삭제
+				logger.info("[쿠폰 사용 여부] " + useCouponResult);
+			}
+			
+			// 5. 기존포인트에서 사용포인트 차감
+			int usePoint = Integer.parseInt(request.getParameter("usePoint")); // 사용 포인트
+			if(usePoint != 0) {
+				int usePointResult = memberService.usePoint(loginId, usePoint);
+				logger.info("[포인트 사용 여부] " + usePointResult + " (" + usePoint + "point 사용)");
+			}
+			
+			
+			// 숙박일수 계산
+			String date1 = rez.getREZ_CHECKOUT(); // 체크아웃 날짜
+			String date2 = rez.getREZ_CHECKIN(); // 체크인 날짜
+			Date format1 = new SimpleDateFormat("yyyy-MM-dd").parse(date1);
+	        Date format2 = new SimpleDateFormat("yyyy-MM-dd").parse(date2);
+	        long diffSec = (format1.getTime() - format2.getTime()) / 1000; // 초 차이
+	        long nights = diffSec / (24*60*60); // 일자 수 차이
+			logger.info("*** 숙박일수 : " + nights);
+			// 체크인 날짜 ~ 체크아웃 날짜
+			List<String> dateList3 = new ArrayList<String>();
+			for(int i = 0; i < dateList2.length; i++) {
+				logger.info("***[체크인 날짜 ~ 체크아웃 날짜] " + dateList2[i].replaceAll("[\\[\\] ]", ""));
+				dateList3.add(dateList2[i].replaceAll("[\\[\\] ]", ""));
+			}
+			
+			
+			Room room = roomService.getRoomDetail(rez.getROOM_ID()); // 객실 정보
+			Member member = memberService.member_info(rez.getMEM_ID()); // 예약자 정보
+			
+			mv.addObject("member", member); // 예약자 정보
+			mv.addObject("rez", rez); // 객실 예약 정보
+			mv.addObject("room", room); // 객실 정보
+			mv.addObject("paymentInfo", pm); // 결제 정보
+			mv.addObject("nights", nights); // 숙박일수
+			mv.addObject("dateList", dateList3); // 체크인 날짜 ~ 체크아웃 날짜 (list)
+			mv.setViewName("reservation/reservationComplete");
+			return mv;
+		}
 	
 	
 	

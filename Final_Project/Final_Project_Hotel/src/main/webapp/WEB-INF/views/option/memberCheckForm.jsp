@@ -180,6 +180,27 @@ $(function(){
 			return false;
 		}
         payment(); // 결제 함수 호출
+        
+        
+        // 옵션 정보 없을 때 폼 액션 주소
+        if($("#optionBtn").text() != "") {
+            $("form").attr("action", "reservationroomOption0");
+            
+            
+         } else {
+            // 휴대폰 중복검사 확인 
+            var submit_phone_value = $.trim($("input[name='MEM_PHONE']").val());
+            if (phoneAuthChk == false) {
+               alert("변경된 휴대폰번호를 인증해주세요.");
+               return false;
+            }
+            // 취소정책 확인 - 체크박스 체크 여부
+            if ( !$("input[type='checkbox']").is(":checked")) {
+               alert("취소 정책을 확인해주세요.");
+               return false;
+            }
+              payment(); // 결제 함수 호출
+         }
     });
 }) // ready end
 
@@ -416,7 +437,7 @@ function payment() {
 	                        		<c:if test="${empty optionPrice}">
 	                        			<tr>
 		                        			<td>선택된 옵션이 없습니다.<br><br>
-		                        				<button type="button" class="genric-btn info circle opp">추가 옵션 선택하러 가기</button>
+		                        				<button type="button" class="genric-btn info circle opp" id="optionBtn">추가 옵션 선택하러 가기</button>
 		                        			</td>
 	                        			</tr>
 	                        		</c:if>
