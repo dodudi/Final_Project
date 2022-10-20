@@ -74,3 +74,4 @@ where TABLE_MEMBER_COUPON.MEM_ID = 'A1234'
 
 update TABLE_COUPON set COUPON_COMMENT = '전체금액 20% 할인 쿠폰' where COUPON_PRICE = 20;
 update TABLE_COUPON set COUPON_COMMENT = '전체금액 50% 할인 쿠폰' where COUPON_PRICE = 50;
+>>>>>>> d567b097ce717e1ac5b2524ca6e6e028dc1bdc4f
