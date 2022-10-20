@@ -37,7 +37,7 @@ public class MyPageServiceImpl implements MyPageService {
 		Rez rez = myPageMapper.getRezData(mem_id);
 		return rez;
 	}
-
+	
 	// 옵션선택정보 가져오기
 	public List<OptionReservation> getOptRezData(String mem_id) {
 		// 객실예약정보의 id를 이용한 옵션선택정보 가져오기
@@ -177,6 +177,8 @@ public class MyPageServiceImpl implements MyPageService {
 	public List<Integer> getQuestionBoard(HashMap<String, Object> data) {
 		return myPageMapper.getQuestionBoard(data);
 	}
+
+
 	
 
 }

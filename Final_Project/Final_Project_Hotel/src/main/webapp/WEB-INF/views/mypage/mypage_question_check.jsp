@@ -60,10 +60,6 @@
 							<img src="/hotel/static/project_image/mypage_icon/MemberCheck2.png" width="25px" alt="" />
 							회원정보
 						</a>
-						<a href="/hotel/mypage/wishBoard" class="list-group-item list-group-item-action">
-							<img src="/hotel/static/project_image/mypage_icon/CheckList.png" width="25px" alt="" />
-							즐겨찾기 게시물 확인
-						</a>
 					</div>
 				</div>
 				<!--My Page Select Nav End-->
