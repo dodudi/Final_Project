@@ -404,7 +404,7 @@ $(function(){
 						    				<input type="hidden" name="REZ_ADULT">
 						    				<input type="hidden" name="REZ_CHILD">
 						        			<button type="submit" class="btn float-center submit_next booking-button" id="rezBtn">예약하기</button><br>
-						        			<a class="btn float-center submit_next booking-button" href="../notice/list">문의하기</a> <!-- 문의 게시판으로 이동 경로 바꾸기 -->
+						        			<a class="btn float-center submit_next booking-button" href="../question/list">문의하기</a> <!-- 문의 게시판으로 이동 경로 바꾸기 -->
 						        			
 						        			<!-- 403에러 방지 토큰 -->
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
