@@ -39,6 +39,7 @@
              <!-- Collect the nav links, forms, and other content for toggling -->
              <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                  <ul class="nav navbar-nav menu_nav ml-auto">
+                     <li class="nav-item active"><a class="nav-link" href="${pageContext.request.contextPath}/">Home</a></li>
                      <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/intro/intro">소  개</a></li>
                      <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/room/roomList">객  실</a></li>
                      <li class="nav-item submenu dropdown">
