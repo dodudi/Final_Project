@@ -19,7 +19,7 @@ create table question_board(
 
 select * from question_board;
 create sequence QUESTION_SEQ start with 1 increment by 1;
-drop sequence QUESTION_SEQ
+drop sequence QUESTION_SEQ;
 
 
 
