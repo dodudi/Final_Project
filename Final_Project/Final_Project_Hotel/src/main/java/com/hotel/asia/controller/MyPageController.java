@@ -57,12 +57,10 @@ public class MyPageController {
 		String mem_id = princiPal.getName();
 		session.setAttribute("id", mem_id);
 
-		Rez rez = myPageService.getRezData(mem_id);
+		List<Rez> rez = myPageService.getRezDatas(mem_id);
 		
-		if(rez == null)
+		if(rez == null || rez.size()==0)
 			return "mypage/mypage_reserve_check";
-		long day = myPageService.getDateSub(rez.getREZ_CHECKOUT(), rez.getREZ_CHECKIN());
-		log.info(day + "");
 		// Option Data -> 조식, 디너, 수영
 		List<OptionReservation> breakFast = myPageService.getOptRezData(mem_id, OptionId.BREAKFAST);
 		List<OptionReservation> dinner = myPageService.getOptRezData(mem_id, OptionId.DINNER);

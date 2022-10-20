@@ -16,7 +16,7 @@ import com.hotel.asia.module.PageCalc;
 @Mapper
 public interface MyPageMapper {
 	//객실정보 가져오기
-	public Rez getRezData(String mem_id);
+	public  List<Rez> getRezDatas(String mem_id);
 	//옵션선택정보 가져오기
 	public List<OptionReservation> getOptRezData(String mem_id);
 	//결제정보 가져오기
