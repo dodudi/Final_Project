@@ -4,7 +4,6 @@ create table PAYMENT(
 	REZ_ID 			   NUMBER references REZ(REZ_ID) on delete cascade, -- on delete cascade 추가
 	PAYMENT_PRICE 	   NUMBER,
 	PAYMENT_DATE       DATE   default sysdate,
-	COUPON_HISTORY_ID  NUMBER references COUPON_LIST(COUPON_HISTORY_ID),
 	POINT_DISCOUNT 	   NUMBER
 );
 
@@ -13,6 +12,8 @@ delete from rez
 where REZ_ID = 1;
 
 drop table PAYMENT;
+drop table OPTION_RESERVATION;
+drop table REZ;
 
 
 create table MEMBER(
