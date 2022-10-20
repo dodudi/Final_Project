@@ -87,7 +87,7 @@ $(function(){
 		
 		people = adult + child;
 		console.log("성인: " + adult);
-		console.log("소아: " + child);
+		console.log("아동: " + child);
 		console.log("=>인원수: " + people);
 		console.log("===============");
 		
@@ -114,7 +114,7 @@ $(function(){
 		
 		people = adult + child;
 		console.log("성인: " + adult);
-		console.log("소아: " + child);
+		console.log("아동: " + child);
 		console.log("=>인원수: " + people);
 		console.log("===============");
 		
