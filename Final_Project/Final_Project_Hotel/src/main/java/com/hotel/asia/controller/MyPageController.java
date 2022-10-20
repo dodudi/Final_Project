@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,9 +49,10 @@ public class MyPageController {
 	private CouponService couponService;
 	@Autowired
 	private MemberServiceImpl memberService;
-
 	@Autowired
 	private QuestionboardService questService;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	// 객실예약확인 페이지
 	@GetMapping("/mypage/reserve")
@@ -117,7 +119,17 @@ public class MyPageController {
 		model.addAttribute("member", member);
 		return "mypage/mypage_member_check";
 	}
-
+	
+	@PostMapping("/mypage/member")
+	public String memberModify(Member member, Model model) {
+		log.info(member.getMEM_NAME());
+		String encPassword = passwordEncoder.encode(member.getMEM_PASS());
+		member.setMEM_PASS(encPassword);
+		memberService.update(member);
+		
+		return "mypage/mypage_member_check";
+	}
+	
 	// 쿠폰|마일리지 페이지
 	@GetMapping("/mypage/coupon")
 	public String coupon(Model model, HttpSession session) {
@@ -161,9 +173,4 @@ public class MyPageController {
 		return "mypage/mypage_coupon";
 	}
 
-	// 즐겨찾기 게시판 페이지
-	@GetMapping("/mypage/wishBoard")
-	public String wishBoard() {
-		return "mypage/mypage_wishboard";
-	}
 }

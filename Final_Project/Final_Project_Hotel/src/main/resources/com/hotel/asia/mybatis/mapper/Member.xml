@@ -36,6 +36,7 @@
 			MEM_BIRTH = #{MEM_BIRTH},
 			MEM_EMAIL = #{MEM_EMAIL},
 			MEM_PHONE = #{MEM_PHONE},
+			MEM_PASS = #{MEM_PASS}
 		where MEM_ID = #{MEM_ID}
 	</update>
 	

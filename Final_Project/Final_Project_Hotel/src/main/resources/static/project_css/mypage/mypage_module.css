@@ -1,3 +1,7 @@
+.mypage{
+    margin-top: 80px;
+}
+
 .title-font-l{
     color: #222222;
     font-weight: 500;
@@ -10,12 +14,7 @@
     top: 80px;
 }
 
-.header_area{
-    width: 100%;
-    position: sticky!important;
-    border-bottom:1px solid rgba(0, 0, 0, 0.125);
-    background-color: white!important;
-}
+
 .nav-background{
     padding-top: 20px;
     padding-bottom: 20px;
