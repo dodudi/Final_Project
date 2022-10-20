@@ -13,4 +13,5 @@ create table REZ (
 select * from rez;
 
 commit;
-delete from rez where REZ_ID = 1
+delete from rez where REZ_ID = 4;
+delete from OPTION_RESERVATION where REZ_ID = 4;

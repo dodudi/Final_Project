@@ -26,6 +26,7 @@ import com.hotel.asia.dto.OptionReservation;
 import com.hotel.asia.dto.Payment;
 import com.hotel.asia.dto.Rez;
 import com.hotel.asia.dto.Room;
+import com.hotel.asia.service.CouponService;
 import com.hotel.asia.service.MemberService;
 import com.hotel.asia.service.OptionRezService;
 import com.hotel.asia.service.PaymentService;
@@ -47,6 +48,9 @@ public class ReservationController {
 	private PaymentService paymentService;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private CouponService couponService;
+	
 	
 	@RequestMapping("/testRez")
 	public String testRoomList(HttpSession session) {
@@ -236,10 +240,21 @@ public class ReservationController {
 		int paymentResult = paymentService.payment(pm);
 		logger.info("[결제 성공 여부] paymentResult=" + paymentResult);
 		
-		// 4. 기존포인트에서 사용포인트 차감
+		// 4. 쿠폰 사용
+		int useCouponNum = Integer.parseInt(request.getParameter("COUPON_NUMBER")); // 사용 쿠폰번호
+		logger.info("쿠폰발급번호: " + useCouponNum);
+		if(useCouponNum != 0) {
+			int useCouponResult = couponService.useCoupon(useCouponNum); // 사용된 쿠폰 삭제
+			logger.info("[쿠폰 사용 여부] " + useCouponResult);
+		}
+		
+		// 5. 기존포인트에서 사용포인트 차감
 		int usePoint = Integer.parseInt(request.getParameter("usePoint")); // 사용 포인트
-		int usePointResult = memberService.usePoint(loginId, usePoint);
-		logger.info("[포인트 사용 여부] " + usePointResult + " (" + usePoint + "point 사용)");
+		if(usePoint != 0) {
+			int usePointResult = memberService.usePoint(loginId, usePoint);
+			logger.info("[포인트 사용 여부] " + usePointResult + " (" + usePoint + "point 사용)");
+		}
+		
 		
 		// 숙박일수 계산
 		String date1 = rez.getREZ_CHECKOUT(); // 체크아웃 날짜

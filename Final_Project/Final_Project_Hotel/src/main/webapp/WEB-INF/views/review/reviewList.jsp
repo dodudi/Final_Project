@@ -379,18 +379,6 @@ $(function(){
 	</div>
 </section>
 
-
-
-<!--========== 추가옵션예약 테스트버튼 ==========-->
-<button type="button" id="testBtn">객실예약테스트버튼</button>
-<script>
-	$(function(){
-		$("#testBtn").click(function(){
-			location.href="${pageContext.request.contextPath}/reservation/testRez"
-		})
-	})
-</script>
-
 <!-- 푸터 -->        
 <jsp:include page="../main/footer.jsp"/> 	
 </body>
