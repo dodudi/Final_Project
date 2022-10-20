@@ -1,5 +1,6 @@
 package com.hotel.asia.controller;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,9 +49,8 @@ public class MyPageController {
 	private MemberServiceImpl memberService;
 	// 객실예약확인 페이지
 	@GetMapping("/mypage/reserve")
-	public String reserve(Model model, HttpSession session) {
-
-		String mem_id = "user02";
+	public String reserve(Model model, Principal princiPal,  HttpSession session) {
+		String mem_id = princiPal.getName();
 		session.setAttribute("id", mem_id);
 
 		Rez rez = myPageService.getRezData(mem_id);
