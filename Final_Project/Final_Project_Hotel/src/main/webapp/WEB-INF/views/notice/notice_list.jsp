@@ -129,7 +129,9 @@
 	
     <%-- 게시글이 없는 경우--%>
     <c:if test="${listcount == 0 }">
-	  <font size=5>등록된 글이 없습니다.</font>
+	  <div id=container style=height:300px;text-align:center;line-height:200px;>
+	     <font size=5>등록된 글이 없습니다.</font>
+	  </div>
     </c:if>
  
     <sec:authorize access="isAuthenticated()">
