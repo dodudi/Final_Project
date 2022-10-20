@@ -479,7 +479,7 @@ function payment() {
 	                        			<td colspan="2">
 	                        				<input type="hidden" value="0">
                         					<input type="hidden" value="0">
-	                        				<input type="radio" name="couponName">&nbsp;사용하지 않음
+	                        				<input type="radio" name="couponName" checked>&nbsp;사용하지 않음
 	                        			</td>
 	                        		</tr>
 	                        		<c:forEach var="coupon" items="${couponList}">
