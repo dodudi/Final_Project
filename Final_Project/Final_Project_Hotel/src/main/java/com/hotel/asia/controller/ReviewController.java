@@ -168,7 +168,15 @@ public class ReviewController {
 	
 	// 리뷰 게시글 작성 폼
 	@RequestMapping(value="/reviewWriteForm")
-	public ModelAndView  reviewWriteForm(ModelAndView mv) {
+	public ModelAndView  reviewWriteForm(ModelAndView mv, Principal userPrincipal) {
+		// 로그인하지 않거나 만료된 경우 서비스 이용 불가
+		if(userPrincipal == null) {
+			logger.info("로그인 아이디 없음");
+			mv.addObject("state", "emptyId");
+			mv.setViewName("member/login");
+			return mv;
+		}
+		
 		logger.info("리뷰게시글 작성 폼 이동");
 		mv.setViewName("review/reviewWriteForm");
 		return mv;
