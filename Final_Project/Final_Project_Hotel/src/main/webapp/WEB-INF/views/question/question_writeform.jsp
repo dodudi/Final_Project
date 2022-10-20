@@ -1,10 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<jsp:include page="../main/header.jsp"/>
-<!-- include libraries(jQuery, bootstrap) -->
+    <jsp:include page="../main/header.jsp"/>
+    <meta charset="UTF-8">
+    <title>문의사항 게시판 - 글쓰기</title>
+    <!-- include libraries(jQuery, bootstrap) -->
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
@@ -12,7 +15,7 @@
     <!-- include summernote css/js-->
     <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">
     <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
-<script>
+    <script>
     $(function(){
 	// 메인화면 페이지 로드 함수
     $(document).ready(function () {
@@ -53,7 +56,7 @@
 		data.append("file", file);
 		$.ajax({
 			type : "POST",
-			url : "../notice/uploadImage",
+			url : "../question/uploadImage",
 			data : data,
 			beforeSend : function(xhr) { 
 	        	xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리
@@ -68,10 +71,10 @@
 			}
 		});
 	}
-</script>
-<style>
+	</script>
+	<style>
 	label{font-size:15px; font-weight:bold}
-</style>
+	</style>
 </head>
 <body>
 <!--================Breadcrumb Area =================-->
@@ -79,45 +82,57 @@
             <div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
             <div class="container">
                 <div class="page-cover text-center">
-                    <h2 class="page-cover-tittle">공지사항</h2>
+                    <h2 class="page-cover-tittle">문의사항</h2>
                     <ol class="breadcrumb">
                         <li class="active">커뮤니티</li>
-                        <li><a href="list">공지사항</a></li>
+                        <li><a href="list">문의사항</a></li>
                     </ol>
                 </div>
             </div>
         </section>
 <!--================Breadcrumb Area =================-->
-<div class="container">
-   <form action ="modify" method="post">
-      <input type="hidden" name="NOTICE_NUM"  value="${notice.NOTICE_NUM}">
-      <input type="hidden" name="NOTICE_FILE"  value="${notice.NOTICE_FILE}">
-     
-     <h1 class="title_color" style="margin-top:7rem; text-align:center">공지사항 게시판 - 수정</h1>
-     
-     <div class="form-group" style="margin-top:5rem;">
-        <label for="notice_name">글쓴이</label>
-        <input name="NOTICE_NAME" type="text"    class="form-control"
-               value="admin" readOnly> <%--admin 고정 --%>
-     </div>
-     <div class="form-group">
-        <label for="notice_subject">제목</label>
-        <textarea name="NOTICE_SUBJECT" id="notice_subject" rows="1"
-                maxlength="100"   class="form-control">${notice.NOTICE_SUBJECT}</textarea>
+<div class=container>
+  <form action ="write" method="post" enctype="multipart/form-data" name="writeform">
+   <h1 class="title_color" style="margin-top:7rem; text-align:center">문의사항 게시판 - 글쓰기</h1>
+   
+     <div class="form-group" style="margin-top:7rem">
+        <label for="QUESTIONS_NAME">글쓴이</label>
+        <input name="QUESTIONS_NAME" id="QUESTIONS_NAME" value="${MEM_ID}" readOnly <%--세션의 아이디값? --%>
+               type="text"    class="form-control"
+               placeholder="Enter notice_name">
      </div>
      
      <div class="form-group">
-        <label for="NOTICE_CONTENT">내용</label>
-        <textarea id="summernote" name="NOTICE_CONTENT" required>${notice.NOTICE_CONTENT}</textarea>
+        <label for="QUESTIONS_CATEGORY">카테고리</label>
+        <select name="QUESTIONS_CATEGORY" id="QUESTIONS_CATEGORY" class="form-control" style=height:30px; >
+           <option selected>로그인/계정</option>
+           <option>탈퇴/재가입</option>
+           <option>결제/환불</option>
+           <option>객실/부가시설 이용</option>
+        </select>
+        
+     </div>
+     
+     <div class="form-group">
+        <label for="QUESTIONS_SUBJECT">제목</label>
+        <input name="QUESTIONS_SUBJECT" id="QUESTIONS_SUBJECT"
+               type="text" maxlength="100"   class="form-control"
+               placeholder="Enter question_subject">
+     </div>
+     
+     <div class="form-group">
+        <label for="QUESTIONS_CONTENT">내용</label>
+        <textarea id="summernote" name="QUESTIONS_CONTENT" required></textarea>
      </div>
      
      <div class="form-group" style="text-align:right; margin-top:3rem">
-        <button type="submit" class="genric-btn info radius">수정</button>
+        <button type="submit" class="genric-btn success radius">등록</button>
         <button type="reset" class="genric-btn danger radius" onClick="history.go(-1)">취소</button>
      </div>
-     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+   
+   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
    </form>
-</div>
+ </div>
 <script>
     // 메인화면 페이지 로드 함수
     $(document).ready(function () {

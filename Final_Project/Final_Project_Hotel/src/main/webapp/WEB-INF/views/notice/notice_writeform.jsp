@@ -116,7 +116,7 @@
      
      <div class="form-group" style="text-align:right; margin-top:3rem">
         <button type="submit" class="genric-btn success radius">등록</button>
-        <button type="reset" class="genric-btn danger radius">취소</button>
+        <button type="reset" class="genric-btn danger radius" onClick="history.go(-1)">취소</button>
      </div>
    
    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
