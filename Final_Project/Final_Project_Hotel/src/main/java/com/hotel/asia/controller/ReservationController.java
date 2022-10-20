@@ -4,11 +4,8 @@ import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,8 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.hotel.asia.dto.CouponVO;
@@ -374,6 +369,7 @@ public class ReservationController {
 		logger.info("***** [payment] 넘어온 정보 *****");
 		logger.info("*결제번호 : " + pm.getPAYMENT_ID());
 		logger.info("*결제금액 : " + pm.getPAYMENT_PRICE());
+		logger.info("*할인금액 (사용포인트) : " + pm.getPOINT_DISCOUNT());
 		pm.setREZ_ID(rez.getREZ_ID());
 		int paymentResult = paymentService.payment(pm);
 		logger.info("[결제 성공 여부] paymentResult=" + paymentResult);
@@ -387,7 +383,7 @@ public class ReservationController {
 		}
 		
 		// 5. 기존포인트에서 사용포인트 차감
-		int usePoint = Integer.parseInt(request.getParameter("usePoint")); // 사용 포인트
+		int usePoint = Integer.parseInt(request.getParameter("POINT_DISCOUNT")); // 사용 포인트
 		if(usePoint != 0) {
 			int usePointResult = memberService.usePoint(loginId, usePoint);
 			logger.info("[포인트 사용 여부] " + usePointResult + " (" + usePoint + "point 사용)");
@@ -427,26 +423,4 @@ public class ReservationController {
 	}
 	
 	
-	// 객실 예약 취소, 추가옵션 예약 취소, 결제 취소
-	@ResponseBody
-	@RequestMapping("/reservationCancle")
-	public ModelAndView reservationCancle(@RequestParam(value="merchant_uid") String merchant_uid,
-										  ModelAndView mv, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws ParseException {
-		logger.info("==========[reservationCancle]==========");
-		logger.info("결제번호: " + merchant_uid);
-		int REZ_ID = paymentService.getRezId(merchant_uid); // 예약번호 구하기
-		logger.info("객실예약번호: " + REZ_ID);
-		
-		
-		
-		
-		
-		
-		// DB 삭제
-		int rezResult = rezService.deleteRez(REZ_ID); // 객실 예약 취소 - on delete cascade로 결제 DB, 옵션 예약 DB 한 번에 삭제됨
-		logger.info("*객실 DB 삭제 여부 rezResult=" + rezResult);
-		
-		
-		return null;
-	}
 }

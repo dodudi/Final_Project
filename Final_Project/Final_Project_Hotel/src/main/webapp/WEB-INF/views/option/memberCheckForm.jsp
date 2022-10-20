@@ -121,41 +121,64 @@ $(function(){
 	// 포인트 사용
 	var originalPrice = $("#totalPrice").val().replaceAll(',', '');
 	var discountPrice;
-	$("input[name='usePoint']").change(function(){
+	$("input[name='POINT_DISCOUNT']").change(function(){
 		var usePoint = $(this).val();
-		if( usePoint > ${member.MEM_POINT} ){ // 가용 포인트보다 많은 포인트 입력한 경우
-			alert("가용포인트보다 많은 포인트를 입력할 수 없습니다.");
-			$(this).val(${member.MEM_POINT});
-			discountPrice = originalPrice - ${member.MEM_POINT};
-			$("#totalPrice").val(discountPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
-		} else if(usePoint < 1000 && usePoint != 0){ // 1000point 이하 이력한 경우
-			alert("포인트는 1000point 이상부터 사용 가능합니다.");
-			$(this).val("0");
-			$(this).focus;
-			$("#totalPrice").val("${totalPrice}".replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+		if(couponAfterPrice == 0) {
+			if( usePoint > ${member.MEM_POINT} ){ // 가용 포인트보다 많은 포인트 입력한 경우
+				alert("가용포인트보다 많은 포인트를 입력할 수 없습니다.");
+				$(this).val(${member.MEM_POINT});
+				discountPrice = originalPrice - ${member.MEM_POINT};
+				$("#totalPrice").val(discountPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+			} else if(usePoint < 1000 && usePoint != 0){ // 1000point 이하 입력한 경우
+				alert("포인트는 1000point 이상부터 사용 가능합니다.");
+				$(this).val("0");
+				$(this).focus;
+				$("#totalPrice").val("${totalPrice}".replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+			} else {
+				discountPrice = originalPrice - usePoint;
+				console.log("기존금액 = " + originalPrice);
+				console.log("차감금액 = " + usePoint);
+				console.log("최종금액 = " + discountPrice);
+				console.log("====================");
+				$("#totalPrice").val(discountPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+			}
 		} else {
-			discountPrice = originalPrice - usePoint;
-			console.log("기존금액 = " + originalPrice);
-			console.log("차감금액 = " + usePoint);
-			console.log("최종금액 = " + discountPrice);
-			console.log("====================");
-			$("#totalPrice").val(discountPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+			if( usePoint > ${member.MEM_POINT} ){ // 가용 포인트보다 많은 포인트 입력한 경우
+				alert("가용포인트보다 많은 포인트를 입력할 수 없습니다.");
+				$(this).val(${member.MEM_POINT});
+				discountPrice = couponAfterPrice - ${member.MEM_POINT};
+				$("#totalPrice").val(discountPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+			} else if(usePoint < 1000 && usePoint != 0){ // 1000point 이하 입력한 경우
+				alert("포인트는 1000point 이상부터 사용 가능합니다.");
+				$(this).val("0");
+				$(this).focus;
+				$("#totalPrice").val("${totalPrice}".replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+			} else {
+				discountPrice = couponAfterPrice - usePoint;
+				console.log("기존금액 = " + couponAfterPrice);
+				console.log("차감금액 = " + usePoint);
+				console.log("최종금액 = " + discountPrice);
+				console.log("====================");
+				$("#totalPrice").val(discountPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+			}
 		}
-	})
+	}) // 포인트 사용 end
 	
 	// 쿠폰 사용
+	var couponAfterPrice = 0;
 	$("input[name='couponName']").click(function(){
 		var couponNum = $(this).prev().prev().val();
 		var couponDiscountPercent = $(this).prev().val();
 		console.log("쿠폰번호: " + couponNum);
 		console.log("쿠폰할인: " + couponDiscountPercent);
 		console.log("============");
-		$("input[name='usePoint']").val('0'); // 마일리지 먼저 사용했었다면 0 된다
+		$("input[name='POINT_DISCOUNT']").val('0'); // 마일리지 먼저 사용했었다면 0 된다
 		
 		discountPrice = originalPrice * (100 - couponDiscountPercent) / 100;
+		couponAfterPrice = discountPrice;
 		$("#totalPrice").val(discountPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
 		$("input[name='COUPON_NUMBER']").val(couponNum);
-	})
+	}) // 쿠폰 사용 end
 	
 	
 	// 추가옵션 예약 클릭
@@ -472,7 +495,7 @@ function payment() {
 	                        		<tr>	
 	                        			<th>마일리지</th>
 	                        			<td>
-	                        				<input type="text" class="glowing-border" name="usePoint" value="0" style="width:50px;">
+	                        				<input type="text" class="glowing-border" name="POINT_DISCOUNT" value="0" style="width:50px;">
 	                        				&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;${member.MEM_POINT} point
 	                        			</td>
 	                        		</tr>
