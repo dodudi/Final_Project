@@ -124,7 +124,9 @@ $(function(){
 	        			</td>
 	        		</tr>
 	        		<tr>
-	        			<th>할인금액</th><td colspan="3">${paymentInfo.POINT_DISCOUNT}원</td>
+	        			<th>할인금액</th><td colspan="3">
+	        			<fmt:formatNumber value="${paymentInfo.POINT_DISCOUNT}" pattern="#,###"/>원
+	        			</td>
 	        		</tr>
 	        		<tr>
 	        			<th>최종 결제금액</th>

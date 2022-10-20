@@ -193,27 +193,28 @@ public class ReservationController {
 			} // 객실, 옵션 예약 end
 			
 			// 3. 결제정보 DB저장
-			logger.info("***** [payment] 넘어온 정보 *****");
-			logger.info("*결제번호 : " + pm.getPAYMENT_ID());
-			logger.info("*결제금액 : " + pm.getPAYMENT_PRICE());
-			pm.setREZ_ID(rez.getREZ_ID());
-			int paymentResult = paymentService.payment(pm);
-			logger.info("[결제 성공 여부] paymentResult=" + paymentResult);
-			
-			// 4. 쿠폰 사용
-			int useCouponNum = Integer.parseInt(request.getParameter("COUPON_NUMBER")); // 사용 쿠폰번호
-			logger.info("쿠폰발급번호: " + useCouponNum);
-			if(useCouponNum != 0) {
-				int useCouponResult = couponService.useCoupon(useCouponNum); // 사용된 쿠폰 삭제
-				logger.info("[쿠폰 사용 여부] " + useCouponResult);
-			}
-			
-			// 5. 기존포인트에서 사용포인트 차감
-			int usePoint = Integer.parseInt(request.getParameter("usePoint")); // 사용 포인트
-			if(usePoint != 0) {
-				int usePointResult = memberService.usePoint(loginId, usePoint);
-				logger.info("[포인트 사용 여부] " + usePointResult + " (" + usePoint + "point 사용)");
-			}
+		      logger.info("***** [payment] 넘어온 정보 *****");
+		      logger.info("*결제번호 : " + pm.getPAYMENT_ID());
+		      logger.info("*결제금액 : " + pm.getPAYMENT_PRICE());
+		      logger.info("*할인금액 (사용포인트) : " + pm.getPOINT_DISCOUNT());
+		      pm.setREZ_ID(rez.getREZ_ID());
+		      int paymentResult = paymentService.payment(pm);
+		      logger.info("[결제 성공 여부] paymentResult=" + paymentResult);
+		      
+		      // 4. 쿠폰 사용
+		      int useCouponNum = Integer.parseInt(request.getParameter("COUPON_NUMBER")); // 사용 쿠폰번호
+		      logger.info("쿠폰발급번호: " + useCouponNum);
+		      if(useCouponNum != 0) {
+		         int useCouponResult = couponService.useCoupon(useCouponNum); // 사용된 쿠폰 삭제
+		         logger.info("[쿠폰 사용 여부] " + useCouponResult);
+		      }
+		      
+		      // 5. 기존포인트에서 사용포인트 차감
+		      int usePoint = Integer.parseInt(request.getParameter("POINT_DISCOUNT")); // 사용 포인트
+		      if(usePoint != 0) {
+		         int usePointResult = memberService.usePoint(loginId, usePoint);
+		         logger.info("[포인트 사용 여부] " + usePointResult + " (" + usePoint + "point 사용)");
+		      }
 			
 			
 			// 숙박일수 계산
