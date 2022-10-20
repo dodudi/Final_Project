@@ -66,7 +66,16 @@
 		<td><div>${q.MEM_ID}</div></td>
 		<td><div>${q.QUESTIONS_DATE}</div></td>	
 		<td><div>${q.QUESTIONS_READCOUNT}</div></td>
-		<td><div></div></td> <%--detail 답변여부에 따라 result값 설정후 처리중, 처리완료 --%>
+		<c:if test="${!empty q.QUESTIONS_ANSWER}">
+               <td>
+                  <div>처리완료</div>
+               </td>
+        </c:if>
+        <c:if test="${empty q.QUESTIONS_ANSWER}">
+               <td>
+                  <div>처리중</div>
+               </td>
+        </c:if>
 	   </tr>
 	  </c:forEach>
 	 </tbody>
