@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--  SQL 맵퍼 파일은 xml이기 때문에 제일 먼저 xml 선언이 옵니다. -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hotel.asia.mybatis.mapper.QuestionMapper">
+
+   <select id="getListCount" resultType="int">
+       select count(*) from question_board
+   </select>
+     
+    <select id="getQuestionList" parameterType="java.util.Map" resultType="question">
+		select * from 
+		  ( select rownum rnum, b.*
+		    from 
+		         (select * from question_board
+		          order by QUESTIONS_NUM  desc 
+		         ) b
+		    where rownum &lt;=  #{endrow}      
+		   ) 
+	     where rnum &gt;= #{startrow} and rnum  &lt;=  #{endrow}
+	</select>
+
+
+
+    <update id="setReadCountUpdate" parameterType="int">
+       update question_board
+       set    QUESTIONS_READCOUNT=QUESTIONS_READCOUNT+1
+       where  QUESTIONS_NUM=#{number}
+    </update>
+    
+    <insert id = "write" parameterType="question">
+       <selectKey resultType="int"    order="BEFORE"
+                  keyProperty="QUESTIONS_NUM">
+          select nvl(max(QUESTIONS_NUM),0)+1 from question_board        
+       </selectKey>
+       insert into question_board
+       (QUESTIONS_NUM, MEM_ID, QUESTIONS_CATEGORY, QUESTIONS_SUBJECT,
+        QUESTIONS_CONTENT, QUESTIONS_ANSWER, QUESTIONS_ORIGINAL, QUESTIONS_FILE,
+        QUESTIONS_READCOUNT, QUESTIONS_DATE)
+        values
+        (#{QUESTIONS_NUM}, #{MEM_ID}, #{QUESTIONS_CATEGORY}, #{QUESTIONS_SUBJECT},
+         #{QUESTIONS_CONTENT}, #{QUESTIONS_ANSWER}, #{QUESTIONS_ORIGINAL, jdbcType=VARCHAR}, #{QUESTIONS_FILE, jdbcType=VARCHAR},
+         #{QUESTIONS_READCOUNT}, sysdate)
+    </insert>
+    
+    <select id="getDetail" parameterType="int" resultType="question">
+       select *
+       from   question_board
+       where  QUESTIONS_NUM=#{number}
+    </select>
+    
+    
+    
+    <delete id="delete" parameterType="int">
+		delete from question_board
+		where  QUESTIONS_NUM = #{QUESTIONS_NUM}
+	</delete>
+	
+	
+	
+	<update id="modify" parameterType="question">
+		update question_board
+	    set    QUESTIONS_CATEGORY = #{QUESTIONS_CATEGORY},
+	           QUESTIONS_SUBJECT = #{QUESTIONS_SUBJECT},
+		       QUESTIONS_CONTENT = #{QUESTIONS_CONTENT}
+	    where  QUESTIONS_NUM = #{QUESTIONS_NUM}
+	</update>
+	
+	<update id="answer" parameterType="question">
+		update question_board
+	    set    QUESTIONS_ANSWER = #{QUESTIONS_ANSWER}
+	    where  QUESTIONS_NUM = #{QUESTIONS_NUM}
+	</update>
+    
+    
+    
+    
+</mapper>

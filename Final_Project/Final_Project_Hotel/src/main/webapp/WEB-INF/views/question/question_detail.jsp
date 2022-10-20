@@ -7,7 +7,7 @@
 <jsp:include page="../main/header.jsp"/> 
 <script src="http://code.jquery.com/jquery-latest.js"></script>	
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
-<title>공지사항 게시판 - 상세보기</title>
+<title>문의사항 게시판 - 상세보기</title>
 <style>
 .subject{width:15%; font-weight:bold}
 </style>
@@ -18,59 +18,70 @@
             <div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
             <div class="container">
                 <div class="page-cover text-center">
-                    <h2 class="page-cover-tittle">공지사항</h2>
+                    <h2 class="page-cover-tittle">문의사항</h2>
                     <ol class="breadcrumb">
                         <li class="active">커뮤니티</li>
-                        <li><a href="list">공지사항</a></li>
+                        <li><a href="list">문의사항</a></li>
                     </ol>
                 </div>
             </div>
         </section>
 <!--================Breadcrumb Area =================-->
-<h1 class="title_color" style="margin-top:7rem; text-align:center">공지사항 게시판 - 디테일</h1>
-<input type="hidden" id="loginid" value="admin" name="loginid"> <%-- admin으로 고정 --%>
+<h1 class="title_color" style="margin-top:7rem; text-align:center">문의사항 게시판 - 디테일</h1>
+<input type="hidden" id="loginid" value="${question.MEM_ID}" name="loginid">
      <div class="container" style="margin-top:5rem">
          <table class="table table-stripted" >
          
              <tr>
                  <td class="subject"><div>제목</div></td>
-                 <td colspan="3"><c:out value="${notice.NOTICE_SUBJECT}" /></td>
+                 <td><c:out value="${question.QUESTIONS_SUBJECT}" /></td>
+                 <td class="subject"><div>카테고리</div></td>
+                 <td><c:out value="${question.QUESTIONS_CATEGORY}" /></td>
              </tr>
              <tr>
                  <td class="subject"><div>글쓴이</div></td>
-                 <td colspan="3"><div>admin</div></td> <%--admin으로 고정 --%>
+                 <td><c:out value="${question.MEM_ID}" /></td>
+                 <td class="subject"><div>문의상태</div></td>
+                 <c:if test="${!empty question.QUESTIONS_ANSWER}">
+                     <td>
+                       <div>처리완료</div>
+                     </td>
+                  </c:if>
+                  <c:if test="${empty question.QUESTIONS_ANSWER}">
+                     <td>
+                        <div>처리중</div>
+                     </td>
+                  </c:if>
              </tr>
              <tr>
                  <td class="subject"><div>등록일</div></td>
-                 <td><c:out value="${notice.NOTICE_DATE}" /></td>
+                 <td><c:out value="${question.QUESTIONS_DATE}" /></td>
                  <td class="subject"><div>조회수</div></td>
-                 <td><c:out value="${notice.NOTICE_READCOUNT}" /></td>
+                 <td><c:out value="${question.QUESTIONS_READCOUNT}" /></td>
              </tr>
              <tr>
-                 <td class="subject"><div style=line-height:200px>내용</div></td>
+                 <td class="subject" style=line-height:200px><div>문의내용</div></td>
                  <td colspan="3">
-                    <div>${notice.NOTICE_CONTENT}</div></td>
+                    <div>${question.QUESTIONS_CONTENT}</div></td>
              </tr>    
-             <tr>
              
-                  <td class="subject"><div>첨부파일</div></td>
-                  <c:if test="${!empty notice.NOTICE_FILE}">
-                     <td colspan="3"><img src="${pageContext.request.contextPath}/resources/static/image/attch.jpg" alt="">
-                         <form method="post" action="down" style="height:0px">
-                           <input type="hidden" value="${notice.NOTICE_FILE }" name="filename">
-                           <input type="hidden" value="${notice.NOTICE_ORIGINAL }" name="original">
-                           <input type="submit" value="${notice.NOTICE_ORIGINAL }">
-                         </form>
+             <tr>
+                  <td class="subject" style=line-height:200px><div>답변내용</div></td>
+                  <c:if test="${!empty question.QUESTIONS_ANSWER}">
+                     <td colspan="3">
+                       <div>${question.QUESTIONS_ANSWER}</div>
+                     </td>
                   </c:if>
-                  <c:if test="${empty notice.NOTICE_FILE}">
-                              <td colspan="3"><div></div></td>
+                  <c:if test="${empty question.QUESTIONS_ANSWER}">
+                     <td colspan="3">
+                       <div style=text-align:center;><h4 style=line-height:200px;>문의 처리중입니다. 잠시만 기다려주세요.</h4></div></td>
                   </c:if>    
              </tr>
 
-             <tr>   <%-- 수정 삭제는 admin일 때만 나타나도록 변경 예정 --%>
+             <tr>   
                 <td colspan="4" class="center" style="text-align:right">
-                    <%-- <c:if test="${MEM_ID == 'admin'}"> --%> 
-                      <a href="modifyview?num=${notice.NOTICE_NUM}" class="genric-btn info radius">
+                    <%-- <c:if test="${MEM_ID == '세션과 일치하는 아이디값'}">  일반 회원 : 디테일 아이디와 세션 아이디값이 같을 때 수정 삭제 가능--%> 
+                      <a href="modifyview?num=${question.QUESTIONS_NUM}" class="genric-btn info radius">
                       수정
                       </a>
                       <a href="#" class="genric-btn danger radius" data-toggle="modal"
@@ -78,6 +89,17 @@
                       삭제
                       </a>
                     <%-- </c:if> --%> 
+                    
+                    <%-- <c:if test="${MEM_ID == 'admin'"> 관리자 : 삭제 또는 답변 가능--%> 
+                      <a href="answerview?num=${question.QUESTIONS_NUM}" class="genric-btn info radius">
+                      답변
+                      </a>
+                      <a href="#" class="genric-btn danger radius" data-toggle="modal"
+                      data-target="#removeModal${vs.index }">
+                      삭제
+                      </a>
+                    <%-- </c:if> --%>
+                    
                     <a href="list" class="genric-btn primary radius">
                     목록
                     </a>
@@ -94,7 +116,7 @@
                             <div class="modal-content">
                             
                                     <div class="modal-header">
-                                      <h5 class="modal-title" id="exampleModalLabel" style="text-align:center">공지사항 삭제</h5>
+                                      <h5 class="modal-title" id="exampleModalLabel" style="text-align:center">문의사항 삭제</h5>
                                     </div>
                                     
                                     <div class="modal-body" style="text-align:center">

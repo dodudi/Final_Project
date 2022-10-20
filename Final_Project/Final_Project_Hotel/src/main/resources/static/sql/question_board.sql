@@ -4,7 +4,6 @@ create table question_board(
   MEM_ID               VARCHAR2(30)   REFERENCES MEMBER(MEM_ID) ON DELETE CASCADE,
   
   QUESTIONS_CATEGORY   VARCHAR2(30)   NOT NULL,
-  QUESTIONS_PASS       NUMBER         NOT NULL,
   
   QUESTIONS_SUBJECT    VARCHAR2(100)  NOT NULL,
   QUESTIONS_CONTENT    VARCHAR2(1000) NOT NULL,
@@ -19,14 +18,14 @@ create table question_board(
 
 select * from question_board;
 create sequence QUESTION_SEQ start with 1 increment by 1;
+drop sequence QUESTION_SEQ
 
 
 
 INSERT INTO QUESTION_BOARD VALUES(
 QUESTION_SEQ.NEXTVAL, 
-'user01', 
-'Test Category', 
-1234, 
+'admin', 
+'결제', 
 'Test Subject', 
 'Test Content', 
 'Test Answer', 

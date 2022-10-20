@@ -27,7 +27,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.JsonObject;
 import com.hotel.asia.dto.Notice;
-import com.hotel.asia.dto.ReviewBoard;
 import com.hotel.asia.service.NoticeboardService;
 
 @Controller
@@ -129,7 +128,7 @@ public class NoticeController {
 	
 	//글쓰기
 	@RequestMapping(value="/write")
-	public String reviewWrite(Notice notice, ModelAndView mv,
+	public String NoticeWrite(Notice notice, ModelAndView mv,
 			 HttpSession session, RedirectAttributes rattr) {
 			
 			int result = noticeboardservice.write(notice); // 글 작성
@@ -144,7 +143,7 @@ public class NoticeController {
 			return "redirect:detail";
 		}
 	
-	// 이미지 처리 - c드라이브에 hotelAsiaReviewImage 폴더 만들기 (C:\hotelAsiaReviewImage)
+	// 이미지 처리 - c드라이브에 hotelAsiaNoticeImage 폴더 만들기 (C:\hotelAsiaNoticeImage)
 		@RequestMapping(value="/uploadImage", produces="application/json")
 		@ResponseBody
 		public JsonObject uploadImage(@RequestParam("file") MultipartFile multipartFile) {
