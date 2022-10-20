@@ -50,9 +50,64 @@ public class CouponMapperTDD {
 	}
 	
 	@Test
-	public void delCouponMember() {
+	public void useCouponMember() {
 		List<CouponMemberVO> data = mapper.getCouponMember("user01");
 		int result = mapper.useCouponMember(data.get(0).getCOUPON_NUMBER());
 		log.info("삭제된 컬럼 수 : " + result);
+	}
+	
+	@Test
+	public void saveUseCoupon() {
+		List<CouponMemberVO> data = mapper.getCouponMember("user01");
+		
+		int result = mapper.saveUseCoupon(data.get(0).getCOUPON_NUMBER());
+		int result2 = mapper.useCouponMember(data.get(0).getCOUPON_NUMBER());
+		log.info(data.get(0).getCOUPON_NUMBER() + "");
+	}
+	
+	@Test
+	public void autoDelCouponMember() {
+		mapper.autoDelCouponMember();
+	}
+	
+	@Test
+	public void saveDelCoupon() {
+		mapper.saveDelCoupon();
+	}
+	
+	
+	@Test
+	public void getUseCoupon(){
+		List<CouponMemberVO> data = mapper.getUseCoupon("user01");
+		
+		for (CouponMemberVO couponMemberVO : data) {
+			log.info("" + couponMemberVO.getCOUPON_NUMBER());
+			log.info("" + couponMemberVO.getCOUPON_TYPE_NUMBER());
+			log.info("" + couponMemberVO.getMEM_ID());
+			log.info("" + couponMemberVO.getCOUPON_GET_DATE());
+			log.info("" + couponMemberVO.getCOUPON_END_DATE());
+		}
+	}
+	@Test
+	public void getUseCouponCount() {
+		int result = mapper.getUseCouponCount("user01");
+		log.info(result + "");
+	}
+	
+	@Test
+	public void getDelCoupon(){
+		List<CouponMemberVO> data =mapper.getDelCoupon("user01");
+		for (CouponMemberVO couponMemberVO : data) {
+			log.info("" + couponMemberVO.getCOUPON_NUMBER());
+			log.info("" + couponMemberVO.getCOUPON_TYPE_NUMBER());
+			log.info("" + couponMemberVO.getMEM_ID());
+			log.info("" + couponMemberVO.getCOUPON_GET_DATE());
+			log.info("" + couponMemberVO.getCOUPON_END_DATE());
+		}
+	}
+	@Test
+	public void getDelCouponCount() {
+		int result = mapper.getDelCouponCount("user01");
+		log.info(result + "");
 	}
 }

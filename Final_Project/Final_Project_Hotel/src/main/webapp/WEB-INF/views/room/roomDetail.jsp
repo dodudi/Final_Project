@@ -174,22 +174,31 @@ $(function(){
 							</div>
 							<div id="rooms-sync1" class="owl-carousel">
 								<div class="item">
-									<img src="${pageContext.request.contextPath}/resources/room/img/gallery/2.jpg" alt="">
+									<img src="${room.ROOM_IMG}" alt="">
 								</div>
+								<c:if test="${room.ROOM_TYPE=='싱글룸'}">
 								<div class="item">
-									<img src="${pageContext.request.contextPath}/resources/room/img/gallery/3.jpg" alt="">
+									<img src="${pageContext.request.contextPath}/resources/room/img/singleroom2.jpg" alt="">
 								</div>
+								</c:if>
+								<c:if test="${room.ROOM_TYPE=='더블룸'}">
+								<div class="item">
+									<img src="${pageContext.request.contextPath}/resources/room/img/doubleroom2.jpg" alt="">
+								</div>
+								</c:if>
+								<c:if test="${room.ROOM_TYPE=='트리플룸'}">
+								<div class="item">
+									<img src="${pageContext.request.contextPath}/resources/room/img/tripleroom2.jpg" alt="">
+								</div>
+								</c:if>
+								<c:if test="${room.ROOM_TYPE=='패밀리룸'}">
+								<div class="item">
+									<img src="${pageContext.request.contextPath}/resources/room/img/familyroom2.jpg" alt="">
+								</div>
+								</c:if>
+								
 								<div class="item">
 									<img src="${pageContext.request.contextPath}/resources/room/img/gallery/4.jpg" alt="">
-								</div>
-								<div class="item">
-									<img src="${pageContext.request.contextPath}/resources/room/img/gallery/5.jpg" alt="">
-								</div>
-								<div class="item">
-									<img src="${pageContext.request.contextPath}/resources/room/img/gallery/6.jpg" alt="">
-								</div>
-								<div class="item">
-									<img src="${pageContext.request.contextPath}/resources/room/img/gallery/7.jpg" alt="">
 								</div>
 								<div class="item">
 									<img src="${pageContext.request.contextPath}/resources/room/img/gallery/8.jpg" alt="">
@@ -197,27 +206,42 @@ $(function(){
 								<div class="item">
 									<img src="${pageContext.request.contextPath}/resources/room/img/gallery/9.jpg" alt="">
 								</div>
+								<div class="item">
+									<img src="${pageContext.request.contextPath}/resources/room/img/rest-1.jpg" alt="">
+								</div>
+								<div class="item">
+									<img src="${pageContext.request.contextPath}/resources/room/img/rest-2.jpg" alt="">
+								</div>
 							</div>
 						</div>
 						<div class="section">
 							<div id="rooms-sync2" class="owl-carousel">
 								<div class="item">
-									<img src="${pageContext.request.contextPath}/resources/room/img/gallery/2-s.jpg" alt="">
+									<img src="${room.ROOM_IMG}" alt="">
 								</div>
+								<c:if test="${room.ROOM_TYPE=='싱글룸'}">
 								<div class="item">
-									<img src="${pageContext.request.contextPath}/resources/room/img/gallery/3-s.jpg" alt="">
+									<img src="${pageContext.request.contextPath}/resources/room/img/singleroom2.jpg" alt="">
 								</div>
+								</c:if>
+								<c:if test="${room.ROOM_TYPE=='더블룸'}">
+								<div class="item">
+									<img src="${pageContext.request.contextPath}/resources/room/img/doubleroom2.jpg" alt="">
+								</div>
+								</c:if>
+								<c:if test="${room.ROOM_TYPE=='트리플룸'}">
+								<div class="item">
+									<img src="${pageContext.request.contextPath}/resources/room/img/tripleroom2.jpg" alt="">
+								</div>
+								</c:if>
+								<c:if test="${room.ROOM_TYPE=='패밀리룸'}">
+								<div class="item">
+									<img src="${pageContext.request.contextPath}/resources/room/img/familyroom2.jpg" alt="">
+								</div>
+								</c:if>
+								
 								<div class="item">
 									<img src="${pageContext.request.contextPath}/resources/room/img/gallery/4-s.jpg" alt="">
-								</div>
-								<div class="item">
-									<img src="${pageContext.request.contextPath}/resources/room/img/gallery/5-s.jpg" alt="">
-								</div>
-								<div class="item">
-									<img src="${pageContext.request.contextPath}/resources/room/img/gallery/6-s.jpg" alt="">
-								</div>
-								<div class="item">
-									<img src="${pageContext.request.contextPath}/resources/room/img/gallery/7-s.jpg" alt="">
 								</div>
 								<div class="item">
 									<img src="${pageContext.request.contextPath}/resources/room/img/gallery/8-s.jpg" alt="">
@@ -225,61 +249,101 @@ $(function(){
 								<div class="item">
 									<img src="${pageContext.request.contextPath}/resources/room/img/gallery/9-s.jpg" alt="">
 								</div>
+								<div class="item">
+									<img src="${pageContext.request.contextPath}/resources/room/img/rest-1.jpg" alt="">
+								</div>
+								<div class="item">
+									<img src="${pageContext.request.contextPath}/resources/room/img/rest-2.jpg" alt="">
+								</div>
 							</div>
 						</div>
 						<div class="section pt-5">
 							<h5>${room.ROOM_TYPE}</h5>
-							<p class="mt-3">Neque porro quisquam est, qui dolorem ipsum
-								quia dolor sit amet, consectetur, adipisci velit, sed quia non
-								numquam eius modi tempora incidunt ut labore et dolore magnam
-								aliquam quaerat voluptatem. Ut enim ad minima veniam, quis
-								nostrum exercitationem ullam corporis suscipit laboriosam, nisi
-								ut aliquid ex ea commodi consequatur.</p>
+							<p class="mt-3">"${room.ROOM_DETAIL}"</p>
+							<p class="mt-3">비즈니스 고객, 관광객을 포함한 다양한 고객층이 만족할 수 있는 맞춤형 공간을 제공합니다.
+							 각 객실에서 도심의 환상적인 야경과 자연 모두를 감상,
+							 최신 시설과 고객 서비스 중심의 시스템,
+							 최상의 평온함을 유지하는 객실 구성을 자랑하는 HOTEL ASIA만의 편안한 안식처를 경험하세요.
+							
+							
+							</p>
 						</div>
 						<div class="section pt-4">
 							<div class="row">
 								<div class="col-12">
-									<h5 class="mb-3">Overview</h5>
+									<p class="mb-3"><strong class="color-black" style="font-size:17px">어메니티</strong></p>
 								</div>
 								<div class="col-lg-6">
 									<p>
-										<strong class="color-black">Room size:</strong>47 - 54 sq m
+										<strong class="color-grey2">&bull;&nbsp;평면LCD TV</strong>
 									</p>
 									<p>
-										<strong class="color-black">Occupancy:</strong>Up to 4 adulds
+										<strong class="color-grey2">&bull;&nbsp;데이터포트</strong>
 									</p>
 									<p>
-										<strong class="color-black">View:</strong>Sea view
+										<strong class="color-grey2">&bull;&nbsp;블루투스 스피커</strong>
 									</p>
 									<p>
-										<strong class="color-black">Smoking:</strong>No smoking
+										<strong class="color-grey2">&bull;&nbsp;개별 냉난방시스템</strong>
 									</p>
+									
 								</div>
 								<div class="col-lg-6">
 									<p>
-										<strong class="color-black">Bed size:</strong>King and regular
+										<strong class="color-grey2">&bull;&nbsp;전화기</strong>
 									</p>
 									<p>
-										<strong class="color-black">Location:</strong>Big room 2nd
-										floor
+										<strong class="color-grey2">&bull;&nbsp;의자 및 램프</strong>
 									</p>
 									<p>
-										<strong class="color-black">Room service:</strong>Yes
+										<strong class="color-grey2">&bull;&nbsp;멀티콘센트</strong>
 									</p>
 									<p>
-										<strong class="color-black">Swimming pool:</strong>Yes
+										<strong class="color-grey2">&bull;&nbsp;알람시계</strong>
 									</p>
+									
 								</div>
+								<div class="col-lg-6">
+									<p>
+										<strong class="color-grey2">&bull;&nbsp;옷장</strong>
+									</p>
+									<p>
+										<strong class="color-grey2">&bull;&nbsp;휴대폰 충전기(안드로이드/아이폰)</strong>
+									</p>
+									<p>
+										<strong class="color-grey2">&bull;&nbsp;헤어 드라이기</strong>
+									</p>
+									<p>
+										<strong class="color-grey2">&bull;&nbsp;샤워부스,비데,치약&칫솔 등 무료제공</strong>
+									</p>
+									
+								</div>
+								<div class="col-lg-6">
+									<p>
+										<strong class="color-grey2">&bull;&nbsp;모닝콜 서비스</strong>
+									</p>
+									<p>
+										<strong class="color-grey2">&bull;&nbsp;24시간 컨시어지 서비스(안드로이드/아이폰)</strong>
+									</p>
+									<p>
+										<strong class="color-grey2">&bull;&nbsp;초고속 무료 인터넷</strong>
+									</p>
+									<p>
+										<strong class="color-grey2">&bull;&nbsp;요청 시 대여 서비스(다리미판, 변압기, 선풍기)</strong>
+									</p>
+									
+								</div>
+								
 							</div>
 						</div>
 						<div class="section pt-4">
-							<h5>Features</h5>
-							<p class="mt-3">Neque porro quisquam est, qui dolorem ipsum
-								quia dolor sit amet, consectetur, adipisci velit, sed quia non
-								numquam eius modi tempora incidunt ut labore et dolore magnam
-								aliquam quaerat voluptatem. Ut enim ad minima veniam, quis
-								nostrum exercitationem ullam corporis suscipit laboriosam, nisi
-								ut aliquid ex ea commodi consequatur.</p>
+							<p class="mb-3"><strong class="color-black" style="font-size:17px">추가정보</strong></p>
+							<p class="mt-3">※ 모든 고객의 편안한 휴식을 위하여 전 객실 금연입니다.</p>
+							<p class="mt-3">※ 객실에서 흡연 시(IQOS담배, 전자담배 포함) 10만원의 과태료가 부과됩니다.</p>
+							<p class="mt-3">※ 객실내 애완동물의 출입 및 동반 투숙이 불가 합니다.</p>
+							<p class="mt-3">※ 화재 예방을 위하여 객실 내에서는 촛불, 가스, 유류 등의 인화성 물질과 난방/취사를 위한 화기 및 전열기구에 대한 일체 사용을 엄격히 금지합니다.</p>
+							<p class="mt-3">※ 고객님 편의를 위해 생수 1병을 추가로 무료 제공합니다.</p>
+							<p class="mt-3">※ 그 외 궁금한 사항은 '문의사항'을 이용해 주세요.</p>
 						</div>
 					</div>
 					<div class="col-lg-4 order-first order-lg-last">
@@ -315,7 +379,7 @@ $(function(){
 										</div>
 										<div class="col-12 pt-4">
 											<select name="child" class="wide">
-												<option data-display="소아">소아</option>
+												<option data-display="아동">아동</option>
 												<c:forEach var="child" begin="0" end="${room.ROOM_MAX - 1}" step="1">
 													<option value="${child}">${child}</option>
 												</c:forEach>

@@ -4,21 +4,93 @@
 
 <mapper namespace="com.hotel.asia.mybatis.mapper.CouponMapper">
 
+	<!-- 멤버 아이디에 대한 지급된 쿠폰 가져오기 -->
 	<select id="getCouponMember" parameterType="string"
 		resultType="CouponMemberVO">
 		SELECT * FROM TABLE_MEMBER_COUPON WHERE MEM_ID=#{MEM_ID}
 	</select>
 
+	<!-- 멤버 아이디에 대한 지급된 쿠폰 개수 가져오기 -->
 	<select id="getCouponMemberCount" parameterType="string"
 		resultType="_int">
-		SELECT COUNT(*) FROM TABLE_MEMBER_COUPON WHERE MEM_ID=#{MEM_ID}
+		SELECT COUNT(*) FROM TABLE_MEMBER_COUPON WHERE
+		MEM_ID=#{MEM_ID}
 	</select>
 
-	<select id="getCoupon" parameterType="_int" resultType="CouponVO">
-		SELECT * FROM TABLE_COUPON WHERE  COUPON_TYPE_NUMBER =#{COUPON_TYPE_NUMBER}
+	<!-- 사용자의 쿠폰에 대한 정보 가져오기(효과, 쿠폰이름 등) -->
+	<select id="getCoupon" parameterType="_int"
+		resultType="CouponVO">
+		SELECT * FROM TABLE_COUPON WHERE COUPON_TYPE_NUMBER
+		=#{COUPON_TYPE_NUMBER}
+	</select>
+
+	<!-- 쿠폰 제거() -->
+	<delete id="useCouponMember" parameterType="_int">
+		DELETE FROM
+		TABLE_MEMBER_COUPON WHERE COUPON_NUMBER = #{COUPON_NUMBER}
+	</delete>
+
+	<!-- 쿠폰 사용 내역 저장 -->
+	<insert id="saveUseCoupon" parameterType="_int">
+		INSERT INTO
+		TABLE_COUPON_USE (SELECT * FROM TABLE_MEMBER_COUPON WHERE
+		COUPON_NUMBER = #{COUPON_NUMBER})
+	</insert>
+
+
+	<delete id="autoDelCouponMember">
+	<![CDATA[
+		DELETE FROM TABLE_MEMBER_COUPON
+		WHERE TABLE_MEMBER_COUPON.COUPON_END_DATE <= SYSDATE+9
+	]]>
+	</delete>
+
+	<insert id="saveDelCoupon">
+		<![CDATA[
+		INSERT INTO TABLE_COUPON_DEL 
+		(SELECT * FROM TABLE_MEMBER_COUPON 
+			WHERE TABLE_MEMBER_COUPON.COUPON_END_DATE <= SYSDATE+9)
+		]]>
+	</insert>
+
+
+	<select id="getUseCoupon" parameterType="string" resultType="CouponMemberVO">
+		SELECT * FROM TABLE_COUPON_USE 
+		WHERE MEM_ID = #{MEM_ID}
+	</select>
+	<select id="getUseCouponCount" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_COUPON_USE 
+		WHERE MEM_ID = #{MEM_ID}
+	</select>
+
+	<select id="getDelCoupon" parameterType="string" resultType="CouponMemberVO">
+		SELECT * FROM TABLE_COUPON_DEL 
+		WHERE MEM_ID = #{MEM_ID}
+	</select>
+	<select id="getDelCouponCount" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_COUPON_DEL
+		WHERE MEM_ID = #{MEM_ID}
 	</select>
 	
 	<delete id="useCouponMember"  parameterType="_int" >
 		DELETE FROM TABLE_MEMBER_COUPON WHERE COUPON_NUMBER = #{COUPON_NUMBER}
 	</delete>	
+	
+	
+	<!-- ==========[현능] 22-10-19 추가========== -->
+	<select id="getCouponList" resultType="couponVO">
+		<!-- select *
+		from TABLE_COUPON
+		where COUPON_TYPE_NUMBER in (select COUPON_TYPE_NUMBER
+									 from TABLE_MEMBER_COUPON
+									 where MEM_ID = #{MEM_ID}) -->
+		select TABLE_MEMBER_COUPON.COUPON_NUMBER, TABLE_COUPON.COUPON_TYPE_NUMBER, TABLE_COUPON.COUPON_NAME, TABLE_COUPON.COUPON_PRICE, TABLE_COUPON.COUPON_COMMENT
+		from   TABLE_MEMBER_COUPON join TABLE_COUPON
+		on     TABLE_MEMBER_COUPON.COUPON_TYPE_NUMBER = TABLE_COUPON.COUPON_TYPE_NUMBER
+		where  TABLE_MEMBER_COUPON.MEM_ID = #{MEM_ID}
+	</select>
+	<delete id="useCoupon" parameterType="map">
+		delete from TABLE_MEMBER_COUPON
+		where COUPON_NUMBER = #{COUPON_NUMBER}
+	</delete>
 </mapper>

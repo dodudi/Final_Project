@@ -31,6 +31,9 @@ $(function(){
 	// 총금액 계산	
 	var price = $(".price").text().replace(/,/g, '').split('원');
 	var total = ${nights} * parseInt(price);
+	if(total=="0"){
+		total=${nights}+1 * parseInt(price);
+	}
 	console.log( total );
 	$("input[name='total']").val(total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
 	
@@ -54,27 +57,7 @@ $(function(){
         </div>
     </section>
     <!--================Breadcrumb Area =================-->
-             <%-- <div class="row mb_30">
-            	<div class="accomodation_item text-center">
-                   	<!-- 임시 폼 -->
-				    <form action="${pageContext.request.contextPath}/reservation/reservationfinish" method="POST">
-				    	객실 번호 : <input type="text" name="ROOM_ID" value="${room.ROOM_ID}"><br>
-				    	객실 이미지: 
-				    	<img src="${room.ROOM_IMG}"><br>
-				    	객실 명: <input type="text" name="REZ_ROOM_TYPE" value="${room.ROOM_TYPE}"><br>
-				    	체크인 날짜 : <input type="text" name="REZ_CHECKIN" value="${param.checkin}"><br>
-				    	체크아웃 날짜 : <input type="text" name="REZ_CHECKOUT" value="${param.checkout}"><br>
-				    	성인 : <input type="text" name="REZ_ADULT" value="${param.adult}"><br>
-				    	아동 : <input type="text" name="REZ_CHILD" value="${param.child}"><br>
-				    	가격 : <input type="text" name="ROOM_PRICE" value="${room.ROOM_PRICE}">
-				    	<button class="btn btn-warning" type="submit">예약하기</button>
-				    	<button class="btn btn-primary" type="button" id="optionBtn"> 추가옵션 예약 </button>
-				    	
-				    	<!-- 403에러 방지 토큰 -->
-						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-				    </form>
-                </div>
-            </div>  --%>
+            
       <section class="contact_area section_gap">
         <div class="container">
             <div class="row">
@@ -103,7 +86,7 @@ $(function(){
         </div>
         <br><br>
            	<div class="container">
-	        <form action="${pageContext.request.contextPath}/option/memberCheck" method="post">
+	        <form action="${pageContext.request.contextPath}/reservation/memberCheck0" method="post">
 	            <div class="row">
 	                <div class="col-md-12">
 	                    <div class="contact_info">
@@ -131,7 +114,7 @@ $(function(){
 		                            		</tr>
 		                            		<tr>
 		                            			<th>인원</th>
-		                            				<td>성인 : ${rez.REZ_ADULT} / 소아 : ${rez.REZ_CHILD} 
+		                            				<td>성인 : ${rez.REZ_ADULT} 명&nbsp;&nbsp;&nbsp;아동 : ${rez.REZ_CHILD}명 
 		                            				<input type="hidden" name="REZ_ADULT" value="${rez.REZ_ADULT}">
 		                            				<input type="hidden" name="REZ_CHILD" value="${rez.REZ_CHILD}"></td>
 		                            				<td></td>
@@ -159,8 +142,8 @@ $(function(){
 	                    </div>
 	                </div>
 	                <div class="col-md-12 text-right">
-	                    <button class="btn btn-warning circle" id="reservationBtn" type="submit" value="submit">회원예약</button>
-	                	<button class="btn btn-primary circle" type="button" id="optionBtn"> 추가옵션 예약 </button>
+	                    <button class="genric-btn primary circle" id="reservationBtn" type="submit" value="submit">회원예약</button>
+	                	<button class="genric-btn info circle" type="button" id="optionBtn"> 추가옵션 예약 </button>
 	                </div>
 	                
 	            </div>

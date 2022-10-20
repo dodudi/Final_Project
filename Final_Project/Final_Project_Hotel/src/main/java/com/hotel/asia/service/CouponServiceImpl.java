@@ -1,5 +1,6 @@
 package com.hotel.asia.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,84 @@ public class CouponServiceImpl implements CouponService{
 	public int useCouponMember(int COUPON_NUMBER) {
 		// TODO Auto-generated method stub
 		return mapper.useCouponMember(COUPON_NUMBER);
+	}
+	
+	
+	
+	
+	// ==========[현능] 22-10-19 추가==========
+	// 특정회원이 가진 쿠폰 리스트
+	@Override
+	public List<CouponVO> getCouponList(String loginId) {
+		return mapper.getCouponList(loginId);
+	}
+	// 사용된 쿠폰 삭제
+	@Override
+	public int useCoupon(int useCouponNum) {
+		return mapper.useCoupon(useCouponNum);
+	}
+
+	@Override
+	public int saveUseCoupon(int COUPON_NUMBER) {
+		return mapper.saveUseCoupon(COUPON_NUMBER);
+	}
+
+	@Override
+	public boolean useAndSaveCoupon(int COUPON_NUMBER) {
+		int result = mapper.saveUseCoupon(COUPON_NUMBER);
+		int result1 = mapper.useCouponMember(COUPON_NUMBER);
+		return (result>=1 && result1>=1);
+	}
+
+	@Override
+	public void autoDelCouponMember() {
+		mapper.autoDelCouponMember();
+	}
+
+	@Override
+	public void saveDelCoupon() {
+		mapper.saveDelCoupon();
+	}
+
+	@Override
+	public void delAndSaveCoupon() {
+		mapper.saveDelCoupon();
+		mapper.autoDelCouponMember();
+	}
+
+	@Override
+	public List<CouponMemberVO> getUseCoupon(String mem_id) {
+		// TODO Auto-generated method stub
+		return mapper.getUseCoupon(mem_id);
+	}
+
+	@Override
+	public int getUseCouponCount(String mem_id) {
+		// TODO Auto-generated method stub
+		return mapper.getUseCouponCount(mem_id);
+	}
+
+	@Override
+	public List<CouponMemberVO> getDelCoupon(String mem_id) {
+		// TODO Auto-generated method stub
+		return mapper.getDelCoupon(mem_id);
+	}
+
+	@Override
+	public int getDelCouponCount(String mem_id) {
+		// TODO Auto-generated method stub
+		return mapper.getDelCouponCount(mem_id);
+	}
+
+	@Override
+	public List<CouponVO> getCouponAboutId(List<CouponMemberVO> memberCoupons) {
+		List<CouponVO> coupons = new ArrayList<>();
+		
+		for (CouponMemberVO couponMemberVO : memberCoupons) {
+			CouponVO getCoupon = mapper.getCoupon(couponMemberVO.getCOUPON_TYPE_NUMBER());
+			coupons.add(getCoupon);
+		}
+		return coupons;
 	}
 
 }
