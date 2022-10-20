@@ -48,9 +48,10 @@ public class MyPageController {
 	private CouponService couponService;
 	@Autowired
 	private MemberServiceImpl memberService;
-	
+
 	@Autowired
 	private QuestionboardService questService;
+
 	// 객실예약확인 페이지
 	@GetMapping("/mypage/reserve")
 	public String reserve(Model model, Principal princiPal, HttpSession session) {
@@ -59,7 +60,7 @@ public class MyPageController {
 		log.info(mem_id);
 		List<Rez> rezs = myPageService.getRezDatas(mem_id);
 		log.info(rezs.size() + "");
-		
+
 		model.addAttribute("rezData", rezs);
 		return "mypage/mypage_reserve_check";
 	}
@@ -67,7 +68,7 @@ public class MyPageController {
 	// 질문게시판 페이지
 	@GetMapping("/mypage/question")
 	public String question(Model model, PageData pageData, HttpSession session) {
-		
+
 		String mem_id = session.getAttribute("id").toString();
 		Object itemLimitObject = session.getAttribute("itemLimit");
 		int itemLimit;
@@ -78,38 +79,42 @@ public class MyPageController {
 
 		pageData.setItemLimit(itemLimit);
 
-		//int total = myPageService.getQuestionBoardCount(mem_id);
-		
+		int total = myPageService.getQuestionBoardCount(mem_id);
+		PageCalc pageCalc = new PageCalc(total, 10, pageData);
+
 		List<Question> questions = questService.getQuestionList(pageData.getPageNum(), pageData.getItemLimit());
-		PageCalc pageCalc = new PageCalc(questions.size(), 10, pageData);
 		model.addAttribute("pageCalc", pageCalc);
 		model.addAttribute("itemLimit", pageData.getItemLimit());
 		model.addAttribute("questions", questions);
-		
-		log.info(questions.size() +"");
-		log.info(pageCalc.getEndPage()+"");
-		log.info(pageCalc.getPageLimit()+ "");
+		model.addAttribute("total", total);
+		log.info(questions.size() + "개수");
+		log.info(pageCalc.getEndPage() + "");
+		log.info(pageCalc.getPageLimit() + "");
 		return "mypage/mypage_question_check";
 	}
 
 	@ResponseBody
 	@PostMapping(value = "/mypage/listCountSet")
-	public PageCalc listCountSet(HttpSession session, @RequestBody PageData pageData) {
+	public HashMap<String, Object> listCountSet(HttpSession session, @RequestBody PageData pageData) {
 		String mem_id = session.getAttribute("id").toString();
 
+		List<Question> questions = questService.getQuestionList(pageData.getPageNum(), pageData.getItemLimit());
 		int total = myPageService.getQuestionBoardCount(mem_id);
 		PageCalc pageCalc = new PageCalc(total, 10, pageData);
 
 		session.setAttribute("itemLimit", pageData.getItemLimit());
-		return pageCalc;
+		HashMap<String, Object> data = new HashMap<String, Object>();
+		data.put("pageCalc", pageCalc);
+		data.put("questions",questions);
+		return data;
 	}
 
 	// 회원정보 페이지
 	@GetMapping("/mypage/member")
 	public String member(Model model, HttpSession session) {
-		String mem_id= session.getAttribute("id").toString();
+		String mem_id = session.getAttribute("id").toString();
 		Member member = memberService.member_info(mem_id);
-		model.addAttribute("member",member);
+		model.addAttribute("member", member);
 		return "mypage/mypage_member_check";
 	}
 
@@ -127,12 +132,15 @@ public class MyPageController {
 		// 발급받았던 쿠폰 개수
 		int allCouponCount = memberCouponCount + useCouponCount + delCouponCount;
 
+		Member pointMember = memberService.member_info(mem_id);
+		int point = pointMember.getMEM_POINT();
+
 		List<CouponMemberVO> memberCoupons = couponService.getCouponMember(mem_id);
 		List<CouponVO> memberCouponOpt = couponService.getCouponAboutId(memberCoupons);
-		
+
 		List<CouponMemberVO> useCoupons = couponService.getUseCoupon(mem_id);
 		List<CouponVO> useCouponOpt = couponService.getCouponAboutId(useCoupons);
-		
+
 		List<CouponMemberVO> delCoupons = couponService.getDelCoupon(mem_id);
 		List<CouponVO> delCouponOpt = couponService.getCouponAboutId(delCoupons);
 
@@ -144,11 +152,12 @@ public class MyPageController {
 		model.addAttribute("memberCoupons", memberCoupons);
 		model.addAttribute("useCoupons", useCoupons);
 		model.addAttribute("delCoupons", delCoupons);
-		
+
 		model.addAttribute("memberCouponOpt", memberCouponOpt);
 		model.addAttribute("useCouponOpt", useCouponOpt);
 		model.addAttribute("delCouponOpt", delCouponOpt);
-		
+
+		model.addAttribute("point", point);
 		return "mypage/mypage_coupon";
 	}
 

@@ -78,7 +78,7 @@
 						<div class="content-table mb-5">
 							<table class="table table-bordered">
 								<tbody>
-									<tr>
+									<tr class="table-active">
 										<td>예약자명</td>
 										<td>체크인 날짜</td>
 										<td>체크아웃 날짜</td>

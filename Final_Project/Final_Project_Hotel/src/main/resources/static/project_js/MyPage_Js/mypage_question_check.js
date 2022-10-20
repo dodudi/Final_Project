@@ -1,8 +1,18 @@
-function drawItem(itemLimit){
-	let data =  "<tr><td>글번호</td><td>글제목</td><td>작성자</td><td>작성일</td><td>답변상태</td></tr>";
+function drawItem(quest){
+	let calc = quest["pageCalc"];
+	let question = quest["questions"];
+	let itemLimit = calc["pageData"].itemLimit;
+	let data =  "<tr class='table-active'><td>글 번호</td><td>카테고리</td><td>제목</td><td>작성자</td><td>날짜</td><td>조회수</td><td>문의상태</td></tr>";
 
-	for(let d = 1; d<=itemLimit; d++){
-			data +=	"<tr><td>" + d + "</td><td>글제목</td><td>작성자</td><td>작성일</td><td>답변상태</td></tr>";			
+	for(let d = 1; d<=question.length; d++){
+			data +=	"<tr><td>" + question[d-1]['QUESTIONS_NUM']+ "</td><td>" +question[d-1]['QUESTIONS_CATEGORY']+
+					"</td><td>"+question[d-1]['QUESTIONS_SUBJECT']+"</td><td>"+question[d-1]['MEM_ID']+
+					"</td><td>"+question[d-1]['QUESTIONS_DATE']+"</td><td>"+question[d-1]['QUESTIONS_READCOUNT'];
+					
+			if(question[d-1].QUESTIONS_ANSWER == null ||question[d-1].QUESTIONS_ANSWER == "" )
+					data += "<td>처리중</td></tr>";
+			else
+					data += "<td>처리완료</td></tr>";
 	}
  
 	 document.getElementById("itemBox").innerHTML = data;
@@ -53,13 +63,10 @@ $(document).ready(function(){
             },
             success: function (data) {
            		console.log(data);
-           		let itemLimit = data["pageData"]["itemLimit"];
-           		 drawItem(itemLimit);
-           		 drawPage(data);
+           		 drawItem(data);
+           		 drawPage(data['pageCalc']);
             }
-	    }).done(function (data) {
-            alert(data);
-        });
+	    });
     });
 });
 

@@ -23,63 +23,22 @@
 		MEM_ID = #{MEM_ID}
 	</select>
 
-	<delete id="delOptRez">
-		DELETE FROM OPTION_RESERVATION WHERE REZ_ID
-		=#{REZ_ID}
-	</delete>
-	<delete id="delRez">
-		DELETE FROM REZ WHERE MEM_ID =#{MEM_ID}
-	</delete>
-	<delete id="delPayment">
-		DELETE FROM PAYMENT WHERE REZ_ID = #{REZ_ID}
-	</delete>
 
-	<insert id="addRez" parameterType="rez">
-		<selectKey resultType="int" order="BEFORE"
-			keyProperty="REZ_ID">
-			select nvl(max(REZ_ID),0)+1 from REZ
-		</selectKey>
-		INSERT INTO REZ VALUES(#{REZ_ID}, #{ROOM_ID}, #{MEM_ID},
-		#{REZ_CHECKIN}, #{REZ_CHECKOUT}, #{REZ_ADULT} ,#{REZ_CHILD})
-	</insert>
-	<insert id="addOptRez" parameterType="optionReservation">
-		insert into
-		OPTION_RESERVATION
-		values
-		((select nvl(max(OPTION_RESERVATION_ID),0)+1
-		from OPTION_RESERVATION),
-		(select REZ_ID from REZ where ROOM_ID =
-		#{ROOM_ID} and MEM_ID = #{MEM_ID}),
-		#{OPTION_ID},
-		#{OPTION_RESERVATION_DATE},
-		#{ADULT}, #{CHILD})
-	</insert>
+	
 
-	<!-- 결제 -->
-	<insert id="payment" parameterType="payment">
-		insert into payment
-		(PAYMENT_ID,
-		REZ_ID,
-		PAYMENT_PRICE, PAYMENT_DATE)
-		values
-		(#{PAYMENT_ID},
-		(select REZ_ID from REZ where ROOM_ID = #{ROOM_ID} and MEM_ID =
-		#{MEM_ID}),
-		#{PAYMENT_PRICE}, sysdate)
-	</insert>
-
-
+	<!-- 게시판 쿼리 -->
 	<select id="getQuestionBoardCount" parameterType="string" resultType="_int">
 		SELECT COUNT(*) FROM QUESTION_BOARD WHERE MEM_ID = #{MEM_ID}
 	</select>
 
-	<!--SELECT ROWNUM RN2, T2.* FROM 
-		(SELECT ROWNUM RN, T1.* FROM (SELECT * FROM QUESTION_BOARD WHERE MEM_ID = 'user01') T1 ) T2 
-		WHERE RN BETWEEN 1 AND 10;  문의 게시판 쿼리-->
 	<select id="getQuestionBoard" parameterType="map" resultType="_int">
 		SELECT ROWNUM RN2 FROM 
 		(SELECT ROWNUM RN, T1.* FROM (SELECT * FROM QUESTION_BOARD WHERE MEM_ID = 'user01') T1 ) T2 
 		WHERE RN BETWEEN #{pageCalc.startItem} AND #{pageCalc.endItem}
 	</select>
-	 
+
+	<!-- 회원정보 쿼리 -->
+	 <update id="updateMember" parameterType="map">
+	 	UPDATE MEMBER WHERE 
+	 </update>
 </mapper>
