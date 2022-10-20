@@ -2,8 +2,6 @@ package com.hotel.asia.service;
 
 import java.util.List;
 import com.hotel.asia.dto.Notice;
-import com.hotel.asia.dto.ReviewBoard;
-
 
 public interface NoticeboardService {
 
