@@ -105,7 +105,7 @@ $(function(){
 	$('input[name=MEM_EMAIL]').on('keyup', function(){
 		$("#emailConfirm").empty();
 		
-		var pattern = /^\w+@\w+[.]\w{3}$/;
+		var pattern = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 		var email = $("input[name=MEM_EMAIL]").val();
 		if (!pattern.test(email)) {
 			$("#emailCk").css('color', 'red').html("이메일 형식이 맞지 않습니다.");
