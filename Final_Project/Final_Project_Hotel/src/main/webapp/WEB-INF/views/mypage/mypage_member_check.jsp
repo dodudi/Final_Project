@@ -99,7 +99,11 @@
 	</div>
 	<jsp:include page="../main/footer.jsp" />
 </body>
-<script type="text/javascript">
-	
+<script src="/hotel/static/js/jquery-3.2.1.min.js"></script>
+<script>
+	$("#modify").click(function(){
+
+	});
+
 </script>
 </html>
