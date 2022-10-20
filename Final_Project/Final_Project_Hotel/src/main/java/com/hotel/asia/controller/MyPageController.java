@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hotel.asia.dto.CouponMemberVO;
 import com.hotel.asia.dto.CouponVO;
+import com.hotel.asia.dto.Member;
 import com.hotel.asia.dto.Option;
 import com.hotel.asia.dto.OptionId;
 import com.hotel.asia.dto.OptionReservation;
