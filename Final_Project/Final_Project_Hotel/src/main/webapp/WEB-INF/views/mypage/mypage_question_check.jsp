@@ -24,11 +24,6 @@
 
 <!--mypage_question_check.css-->
 <link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_module.css">
-<style type="text/css">
-.tst {
-	margin-left: 90%;
-}
-</style>
 </head>
 
 <body>
@@ -65,23 +60,26 @@
 				<!--My Page Select Nav End-->
 
 				<div class="col-9 content-background">
-					<div class="content-title row">문의내역확인</div>
 					<c:if test="${total == 0 }">
+						<div class="content-title row">문의내역확인</div>
 						<div>작성하신 글이 존재하지 않습니다.</div>
 					</c:if>
 					<c:if test="${total!=0 }">
-						<div class="tst">
-							filter :
-							<select id="itemLimitSelect">
-								<c:forEach var="i" begin="1" end="3" step="1">
-									<c:if test="${itemLimit == (2*i-1)*10 }">
-										<option selected="selected" value="${ (2*i-1)*10 }">${ (2*i-1)*10 }</option>
-									</c:if>
-									<c:if test="${itemLimit != (2*i-1)*10 }">
-										<option value="${ (2*i-1)*10 }">${ (2*i-1)*10 }</option>
-									</c:if>
-								</c:forEach>
-							</select>
+						<div class="content-title row">
+							<div class="col ml-auto">문의내역확인</div>
+							<div class="tst">
+								filter :
+								<select id="itemLimitSelect">
+									<c:forEach var="i" begin="1" end="3" step="1">
+										<c:if test="${itemLimit == (2*i-1)*10 }">
+											<option selected="selected" value="${ (2*i-1)*10 }">${ (2*i-1)*10 }</option>
+										</c:if>
+										<c:if test="${itemLimit != (2*i-1)*10 }">
+											<option value="${ (2*i-1)*10 }">${ (2*i-1)*10 }</option>
+										</c:if>
+									</c:forEach>
+								</select>
+							</div>
 						</div>
 						<div class="content-table mb-5">
 							<table class="table">
