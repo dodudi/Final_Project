@@ -4,7 +4,7 @@
 
 <mapper namespace="com.hotel.asia.mybatis.mapper.MyPageMapper">
 
-	<select id="getRezData" resultType="rez">
+	<select id="getRezDatas" resultType="rez">
 		SELECT * FROM REZ WHERE
 		MEM_ID = #{MEM_ID}
 	</select>

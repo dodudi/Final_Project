@@ -24,6 +24,7 @@ import com.hotel.asia.dto.Option;
 import com.hotel.asia.dto.OptionId;
 import com.hotel.asia.dto.OptionReservation;
 import com.hotel.asia.dto.Payment;
+import com.hotel.asia.dto.Question;
 import com.hotel.asia.dto.Rez;
 import com.hotel.asia.module.PageCalc;
 import com.hotel.asia.module.PageData;
@@ -31,6 +32,7 @@ import com.hotel.asia.service.CouponService;
 import com.hotel.asia.service.MemberServiceImpl;
 import com.hotel.asia.service.MyPageServiceImpl;
 import com.hotel.asia.service.OptionService;
+import com.hotel.asia.service.QuestionboardService;
 
 /*
  * MyPage에 관한 Controller입니다.
@@ -44,20 +46,21 @@ public class MyPageController {
 	private OptionService optionService;
 	@Autowired
 	private CouponService couponService;
-
 	@Autowired
 	private MemberServiceImpl memberService;
+	
+	@Autowired
+	private QuestionboardService questService;
 	// 객실예약확인 페이지
 	@GetMapping("/mypage/reserve")
 	public String reserve(Model model, Principal princiPal,  HttpSession session) {
 		String mem_id = princiPal.getName();
 		session.setAttribute("id", mem_id);
 
-		Rez rez = myPageService.getRezData(mem_id);
-		if(rez == null)
+		List<Rez> rez = myPageService.getRezDatas(mem_id);
+		
+		if(rez == null || rez.size()==0)
 			return "mypage/mypage_reserve_check";
-		long day = myPageService.getDateSub(rez.getREZ_CHECKOUT(), rez.getREZ_CHECKIN());
-		log.info(day + "");
 		// Option Data -> 조식, 디너, 수영
 		List<OptionReservation> breakFast = myPageService.getOptRezData(mem_id, OptionId.BREAKFAST);
 		List<OptionReservation> dinner = myPageService.getOptRezData(mem_id, OptionId.DINNER);
@@ -130,6 +133,8 @@ public class MyPageController {
 	// 질문게시판 페이지
 	@GetMapping("/mypage/question")
 	public String question(Model model, PageData pageData, HttpSession session) {
+		List<Question> questions = questService.getQuestionList(0, 0);
+		
 		String mem_id = session.getAttribute("id").toString();
 		Object itemLimitObject = session.getAttribute("itemLimit");
 		int itemLimit;
@@ -142,10 +147,13 @@ public class MyPageController {
 
 		int total = myPageService.getQuestionBoardCount(mem_id);
 
-		PageCalc pageCalc = new PageCalc(total, 10, pageData);
+		PageCalc pageCalc = new PageCalc(questions.size(), 10, pageData);
 		model.addAttribute("pageCalc", pageCalc);
 		model.addAttribute("itemLimit", pageData.getItemLimit());
-		// 질문정보 가져오기~
+		model.addAttribute("questions", questions);
+		
+		log.info(pageCalc.getEndPage()+"");
+		log.info(pageCalc.getPageLimit()+ "");
 		return "mypage/mypage_question_check";
 	}
 

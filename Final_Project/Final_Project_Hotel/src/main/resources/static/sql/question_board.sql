@@ -24,7 +24,7 @@ drop sequence QUESTION_SEQ;
 
 INSERT INTO QUESTION_BOARD VALUES(
 QUESTION_SEQ.NEXTVAL, 
-'admin', 
+'user01', 
 '결제', 
 'Test Subject', 
 'Test Content', 

@@ -24,16 +24,19 @@ public class MyPageMapperTDD {
 	@Test
 	public void getRezData() {
 		// 사용자 아이디에 대한 객실예약 정보 가져오기
-		Rez rez = myPageMapper.getRezData("user01");
-		log.info("=============================");
-		log.info("객실예약번호 : " + rez.getREZ_ID());
-		log.info("방번호 : " + rez.getROOM_ID());
-		log.info("사용자 아이디 : " + rez.getMEM_ID());
-		log.info("체크인 날짜 : " + rez.getREZ_CHECKIN());
-		log.info("체크아웃 날짜 : " + rez.getREZ_CHECKOUT());
-		log.info("성인 : " + rez.getREZ_ADULT() + "");
-		log.info("아동 : " + rez.getREZ_CHILD() + "");
-		log.info("=============================");
+		List<Rez> rez2 = myPageMapper.getRezDatas("user01");
+		
+		for (Rez rez : rez2) {
+			log.info("=============================");
+			log.info("객실예약번호 : " + rez.getREZ_ID());
+			log.info("방번호 : " + rez.getROOM_ID());
+			log.info("사용자 아이디 : " + rez.getMEM_ID());
+			log.info("체크인 날짜 : " + rez.getREZ_CHECKIN());
+			log.info("체크아웃 날짜 : " + rez.getREZ_CHECKOUT());
+			log.info("성인 : " + rez.getREZ_ADULT() + "");
+			log.info("아동 : " + rez.getREZ_CHILD() + "");
+			log.info("=============================");
+		}
 	}
 
 	@Test

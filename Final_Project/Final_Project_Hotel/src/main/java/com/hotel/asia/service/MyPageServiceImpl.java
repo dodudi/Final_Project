@@ -32,12 +32,12 @@ public class MyPageServiceImpl implements MyPageService {
 	private static final Logger log = LoggerFactory.getLogger(MyPageController.class);
 
 	// 객실정보 가져오기
-	public Rez getRezData(String mem_id) {
+	public  List<Rez> getRezDatas(String mem_id) {
 		// 사용자 아이디에 대한 객실예약 정보 가져오기
-		Rez rez = myPageMapper.getRezData(mem_id);
+		List<Rez> rez = myPageMapper.getRezDatas(mem_id);
 		return rez;
 	}
-
+	
 	// 옵션선택정보 가져오기
 	public List<OptionReservation> getOptRezData(String mem_id) {
 		// 객실예약정보의 id를 이용한 옵션선택정보 가져오기
@@ -177,6 +177,8 @@ public class MyPageServiceImpl implements MyPageService {
 	public List<Integer> getQuestionBoard(HashMap<String, Object> data) {
 		return myPageMapper.getQuestionBoard(data);
 	}
+
+
 	
 
 }
