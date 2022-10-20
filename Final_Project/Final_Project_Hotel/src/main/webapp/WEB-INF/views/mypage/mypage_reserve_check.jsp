@@ -63,70 +63,44 @@
 
 				<!--Main Content-->
 				<div class="col-9 content-background ">
-					
+
 					<c:if test="${empty rezData }">
-											<div class="content-title">Reservation information</div>
-											<div>객실 예약 정보가 없습니다.</div>
-									
+						<div class="content-title">Reservation information</div>
+						<div>객실 예약 정보가 없습니다.</div>
+
 					</c:if>
 					<c:if test="${not empty rezData }">
-					<!--Filter-->
-					<div>
-						filter
-						<select name="checkFilter" id="checkFilter">
-							<option name="optCheck" value="all">All</option>
-							<c:forEach var="allDate" items="${allDates}">
-								<option name="optCheck" value="${allDate}">${allDate}
-							</c:forEach>
-						</select>
-					</div>
-					<!--Filter End-->
-					<div class="content-title">Reservation information</div>
+						<div class="content-title">Reservation information</div>
 
-				
 
-					<!-- Table content Reservation-->
-					<div class="content-table mb-5">
-						<table class="table table-bordered">
-							<tbody>
-								<tr>
-									<td>객실등급</td>
-									<td>r</td>
-								</tr>
-								<tr>
-									<td>예약자명</td>
-									<td>${rezData.MEM_ID }</td>
-								</tr>
-								<tr>
-									<td>체크인 날짜</td>
-									<td>${rezData.REZ_CHECKIN }</td>
-								</tr>
-								<tr>
-									<td>체크아웃 날짜</td>
-									<td>${rezData.REZ_CHECKOUT }</td>
-								</tr>
-								<tr>
-									<td>총 숙박일</td>
-									<td>${subDate}</td>
-								</tr>
-								<tr>
-									<td>성인</td>
-									<td>${rezData.REZ_ADULT }명</td>
-								</tr>
-								<tr>
-									<td>아동</td>
-									<td>${rezData.REZ_CHILD }명</td>
-								</tr>
-								<tr>
-									<td>총 금액</td>
-									<td>${payMentData.PAYMENT_PRICE }원</td>
-								</tr>
-							</tbody>
-						</table>
 
-					</div>
-					<!-- Table content Reservation End-->
+						<!-- Table content Reservation -->
+						<div class="content-table mb-5">
+							<table class="table table-bordered">
+								<tbody>
+									<tr>
+										<td>예약자명</td>
+										<td>체크인 날짜</td>
+										<td>체크아웃 날짜</td>
+										<td>성인</td>
+										<td>아동</td>
+									</tr>
+									<c:forEach var="rez" items="${rezData}">
+										<tr>
+											<td>${rez.MEM_ID }</td>
+											<td>${rez.REZ_CHECKIN }</td>
+											<td>${rez.REZ_CHECKOUT }</td>
+											<td>${rez.REZ_ADULT }</td>
+											<td>${rez.REZ_CHILD }</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
 
+						</div>
+						<!--Table content Reservation End-->
+
+						<!-- 
 					<div class="content-title">Breakfast | Dinner Information</div>
 					<div class="content-table mb-4">
 						<table id="optBreakFast" class="table table-bordered table-hover">
@@ -246,16 +220,17 @@
 						</table>
 
 					</div>
+					 -->
 					</c:if>
 				</div>
 
 			</div>
-
+			<!-- 403에러 방지 토큰 -->
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 		</div>
 	</div>
 
 	<jsp:include page="../main/footer.jsp" />
 </body>
-<script src="/hotel/static/project_js/MyPage_Js/mypage_reserve_check.js"></script>
 
 </html>

@@ -53,87 +53,20 @@ public class MyPageController {
 	private QuestionboardService questService;
 	// 객실예약확인 페이지
 	@GetMapping("/mypage/reserve")
-	public String reserve(Model model, Principal princiPal,  HttpSession session) {
+	public String reserve(Model model, Principal princiPal, HttpSession session) {
 		String mem_id = princiPal.getName();
 		session.setAttribute("id", mem_id);
-
-		List<Rez> rez = myPageService.getRezDatas(mem_id);
+		log.info(mem_id);
+		List<Rez> rezs = myPageService.getRezDatas(mem_id);
+		log.info(rezs.size() + "");
 		
-		if(rez == null || rez.size()==0)
-			return "mypage/mypage_reserve_check";
-		// Option Data -> 조식, 디너, 수영
-		List<OptionReservation> breakFast = myPageService.getOptRezData(mem_id, OptionId.BREAKFAST);
-		List<OptionReservation> dinner = myPageService.getOptRezData(mem_id, OptionId.DINNER);
-		List<OptionReservation> swimming = myPageService.getOptRezData(mem_id, OptionId.SWIMMING);
-		Payment payment = myPageService.getPayment(mem_id);
-
-		List<String> allDates = myPageService.calcBreakFastDate(rez.getREZ_CHECKIN(), day + 1);
-
-		// 옵션 리스트 - 옵션별 가격 구하기
-		List<Option> optionInfo = optionService.getOptionList();
-		for (Option oi : optionInfo) {
-			log.info("* " + oi.getOPTION_NAME());
-			log.info("성인가격 : " + oi.getOPTION_DEFAULT_PRICE());
-			log.info("아동가격 : " + oi.getOPTION_CHILD_PRICE());
-		}
-
-		Map<String, Map<String, Integer>> ori_break_prices = myPageService.getOptPrice(breakFast, optionInfo,
-				OptionId.BREAKFAST);
-		Map<String, Map<String, Integer>> ori_dinner_prices = myPageService.getOptPrice(dinner, optionInfo,
-				OptionId.DINNER);
-		Map<String, Map<String, Integer>> ori_swim_prices = myPageService.getOptPrice(swimming, optionInfo,
-				OptionId.SWIMMING);
-
-		model.addAttribute("rezData", rez);
-		model.addAttribute("optBreakFast", breakFast);
-		model.addAttribute("optDinner", dinner);
-		model.addAttribute("optSwimming", swimming);
-		model.addAttribute("payMentData", payment);
-		model.addAttribute("subDate", day);
-		model.addAttribute("allDates", allDates);
-		model.addAttribute("break_price", ori_break_prices);
-		model.addAttribute("dinner_price", ori_dinner_prices);
-		model.addAttribute("swim_price", ori_swim_prices);
-		
-		log.info("성공");
-		// 객실정보 가져오기~
+		model.addAttribute("rezData", rezs);
 		return "mypage/mypage_reserve_check";
-	}
-
-	// 날짜 별로 객실정보 가져오기 Ajax
-	@ResponseBody
-	@PostMapping(value = "/mypage/dateCheck")
-	public HashMap<String, OptionReservation> rezCheckDate(Model model, @RequestBody HashMap<String, Object> date, HttpSession session) {
-
-		String mem_id = session.getAttribute("id").toString();
-		String getDate = date.get("date").toString();
-
-		OptionReservation breakFast = null;
-		OptionReservation dinner = null;
-		OptionReservation swimming = null;
-
-		// 아침
-		if (myPageService.getOptRezData(mem_id, getDate, OptionId.BREAKFAST) != null)
-			breakFast = myPageService.getOptRezData(mem_id, getDate, OptionId.BREAKFAST).get(0);
-		// 저녁
-		if (myPageService.getOptRezData(mem_id, getDate, OptionId.DINNER) != null)
-			dinner = myPageService.getOptRezData(mem_id, getDate, OptionId.DINNER).get(0);
-		// 수영
-		if (myPageService.getOptRezData(mem_id, getDate, OptionId.SWIMMING) != null)
-			swimming = myPageService.getOptRezData(mem_id, getDate, OptionId.SWIMMING).get(0);
-
-		HashMap<String, OptionReservation> resultData = new HashMap<String, OptionReservation>();
-
-		resultData.put("optBreakFast", breakFast);
-		resultData.put("optDinner", dinner);
-		resultData.put("optSwimming", swimming);
-		return resultData;
 	}
 
 	// 질문게시판 페이지
 	@GetMapping("/mypage/question")
 	public String question(Model model, PageData pageData, HttpSession session) {
-		List<Question> questions = questService.getQuestionList(0, 0);
 		
 		String mem_id = session.getAttribute("id").toString();
 		Object itemLimitObject = session.getAttribute("itemLimit");
@@ -145,13 +78,15 @@ public class MyPageController {
 
 		pageData.setItemLimit(itemLimit);
 
-		int total = myPageService.getQuestionBoardCount(mem_id);
-
+		//int total = myPageService.getQuestionBoardCount(mem_id);
+		
+		List<Question> questions = questService.getQuestionList(pageData.getPageNum(), pageData.getItemLimit());
 		PageCalc pageCalc = new PageCalc(questions.size(), 10, pageData);
 		model.addAttribute("pageCalc", pageCalc);
 		model.addAttribute("itemLimit", pageData.getItemLimit());
 		model.addAttribute("questions", questions);
 		
+		log.info(questions.size() +"");
 		log.info(pageCalc.getEndPage()+"");
 		log.info(pageCalc.getPageLimit()+ "");
 		return "mypage/mypage_question_check";

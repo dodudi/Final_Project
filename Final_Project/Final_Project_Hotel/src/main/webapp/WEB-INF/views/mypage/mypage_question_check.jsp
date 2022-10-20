@@ -83,19 +83,24 @@
 						<table class="table">
 							<tbody id="itemBox">
 								<tr>
-									<td>글번호</td>
-									<td>글제목</td>
+									<td>글 번호</td>
+									<td>카테고리</td>
+									<td>제목</td>
 									<td>작성자</td>
-									<td>작성일</td>
-									<td>답변상태</td>
+									<td>날짜</td>
+									<td>조회수</td>
+									<td>문의상태</td>
 								</tr>
-								<c:forEach var="i" begin="1" end="${pageCalc.pageData.itemLimit }" step="1">
+								<c:forEach var="i" begin="1" end="${questions.size()}" step="1">
 									<tr>
-										<td>${i }</td>
-										<td>글제목</td>
-										<td>작성자</td>
-										<td>작성일</td>
-										<td>답변상태</td>
+										<td>${i}</td>
+										<td>${ questions[i-1].QUESTIONS_CATEGORY}</td>
+										<td>${questions[i-1].QUESTIONS_SUBJECT}</td>
+										<td>${questions[i-1].MEM_ID}</td>
+										<td>${questions[i-1].QUESTIONS_DATE}</td>
+										<td>${questions[i-1].QUESTIONS_READCOUNT}</td>
+										<c:if test="${empty questions[i-1].QUESTIONS_ANSWER}"><td>처리중</td></c:if>
+										<c:if test="${not empty questions[i-1].QUESTIONS_ANSWER}"><td>처리완료</td></c:if>
 									</tr>
 								</c:forEach>
 
@@ -103,7 +108,7 @@
 						</table>
 
 						<nav aria-label="Page navigation example">
-							<ul id= "pagination" class="pagination justify-content-center">
+							<ul id="pagination" class="pagination justify-content-center">
 								<!--disable-->
 								<c:if test="${pageCalc.prev == true}">
 									<fmt:parseNumber var="test" value="${((pageCalc.startPage-1)/pageCalc.pageLimit)  }"></fmt:parseNumber>
