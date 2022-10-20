@@ -73,12 +73,19 @@
 		</if>
 	</sql>
 
-	<!-- ==========[현능] 22-09-30 추가========== -->
-	<select id="getMemberInfo" parameterType="String" resultType="member">
-		select * from member where MEM_ID = #{id}
- 	</select>
- 	
+	<!-- ==========[현능] 22-09-30 추가========== --> 	
  	<select id="phoneCheck" parameterType="int" resultType="member">
 		select * from member where MEM_PHONE = #{phone}
  	</select>
+ 	<!-- ==========[현능] 22-10-19 추가========== -->
+ 	<update id="rewardPoint" parameterType="map">
+ 		update MEMBER
+ 		set    MEM_POINT = MEM_POINT + #{MEM_POINT}
+ 		where  MEM_ID = #{MEM_ID}
+ 	</update>
+ 	<update id="usePoint" parameterType="map">
+ 		update MEMBER
+ 		set    MEM_POINT = MEM_POINT - #{MEM_POINT}
+ 		where  MEM_ID = #{MEM_ID}
+ 	</update>
 </mapper>

@@ -21,6 +21,13 @@
         <link rel="icon" href="${pageContext.request.contextPath}/static/image/favicon.png" type="image/png">
     	<title>Hotel Asia</title>
     	
+    	<script>
+	    	// 로그인하지 않거나 만료된 경우
+	        if('${state}' == 'emptyId'){
+	          alert("본 서비스는 회원만 가능합니다.");
+	       }
+    	</script>
+    	
     </head>
     <body>
         <div class="panel shadow1">

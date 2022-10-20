@@ -38,6 +38,21 @@ public class CouponServiceImpl implements CouponService{
 		// TODO Auto-generated method stub
 		return mapper.useCouponMember(COUPON_NUMBER);
 	}
+	
+	
+	
+	
+	// ==========[현능] 22-10-19 추가==========
+	// 특정회원이 가진 쿠폰 리스트
+	@Override
+	public List<CouponVO> getCouponList(String loginId) {
+		return mapper.getCouponList(loginId);
+	}
+	// 사용된 쿠폰 삭제
+	@Override
+	public int useCoupon(int useCouponNum) {
+		return mapper.useCoupon(useCouponNum);
+	}
 
 	@Override
 	public int saveUseCoupon(int COUPON_NUMBER) {

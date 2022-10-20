@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.hotel.asia.dto.CouponVO;
 import com.hotel.asia.dto.Member;
 import com.hotel.asia.dto.Option;
 import com.hotel.asia.dto.Rez;
 import com.hotel.asia.dto.Room;
+import com.hotel.asia.service.CouponService;
 import com.hotel.asia.service.MemberService;
 import com.hotel.asia.service.OptionService;
 import com.hotel.asia.service.RoomService;
@@ -39,6 +41,8 @@ public class OptionController {
 	private RoomService roomService;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private CouponService couponService;
 	
 	// 옵션 선택 폼
 	@PostMapping("/optionForm")
@@ -269,7 +273,12 @@ public class OptionController {
 		logger.info("** 선택된 객실 가격 =>" + room.getROOM_PRICE());
 		
 		// 회원정보
-		Member member = memberService.getMemberInfo(loginId); // 회원 정보 구하기
+		Member member = memberService.member_info(loginId);
+		
+		// 회원 쿠폰 정보
+		List<CouponVO> couponList = new ArrayList<CouponVO>();
+		couponList = couponService.getCouponList(loginId);
+		
 		
 		// 옵션별 총금액
 		Map<String, Integer> optionPrice = new HashMap<String, Integer>();
@@ -280,14 +289,14 @@ public class OptionController {
 		// 총금액 (객실 + 옵션)
 		int totalPrice = Integer.parseInt(request.getParameter("total").replaceAll(",", ""));
 		
-		
+		// 객실, 회원 정보
 		mv.addObject("rez", rez); // 객실 예약 정보
 		mv.addObject("nights", nights); // 숙박일수
 		mv.addObject("optionPrice", optionPrice); // 옵션별 총금액
 		mv.addObject("room", room); // 객실 정보
 		mv.addObject("member", member); // 회원 정보
+		mv.addObject("couponList", couponList); // 회원 쿠폰 정보
 		mv.addObject("totalPrice", totalPrice); // 총금액 (객실 + 옵션)
-		
 		
 		// 옵션 예약 인원
 		mv.addObject("dateList", Arrays.toString(dateList)); // 체크인 날짜 ~ 체크아웃 날짜

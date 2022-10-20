@@ -53,6 +53,7 @@
 	href="apple-touch-icon-114x114.png">
 
 
+
 <script>
 $(function(){
 	$("#searchBtn").click(function(){
@@ -112,7 +113,7 @@ $(function(){
 	        	var output = '<form class="row roomListParent" action="reservationCheck" method="POST">';
 	        	$(data.roomList).each(function(index, item) {
 	        		output +='<div class="col-lg-6 roomList">'
-	        			    + '		<div class="room-box background-grey">'
+	        			    + '		<div class="room-box background-grey" style="margin:20px">'
 	        		        + '			<div class="room-name">' + item.ROOM_TYPE + '</div>';
 	        		
 	        		// 이미지
@@ -154,7 +155,7 @@ $(function(){
 	        			}
 	        		}
 	  	        	output += '>'
-          				    + '		book from ' + item.ROOM_PRICE + '원'
+          				    + '	<div style=font-size:15px>	예약하기 ' + item.ROOM_PRICE.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + '원</div>'
        		                + '</button>';
 	  	        	
 	        		output += '		<div class="room-icons mt-4 pt-4">'
@@ -174,15 +175,14 @@ $(function(){
 </script>
 </head>
 <body>
-
+ 
  <section class="banner_area">
 	 <div class="booking_table d_flex align-items-center">
 	     <div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0"
 	         data-background=""></div>
 	     <div class="container">
 	         <div class="banner_content text-center">
-	             <h6>Inspiring Senses & Touching place </h6>
-	             <h2>Relax Your Mind</h2>
+	             <h2>객실 리스트</h2>
 	         </div>
 	     </div>
 	 </div>
@@ -199,7 +199,7 @@ $(function(){
 							<form class="row roomListParent">
 								<c:forEach var="roomList" items="${roomList}">
 									<div class="col-lg-6 roomList">
-										<div class="room-box background-grey">
+										<div class="room-box background-grey" style="margin:20px;">
 											<div class="room-name">${roomList.ROOM_TYPE}</div>
 											<img src="${roomList.ROOM_IMG}">
 											<div class="room-box-in">
@@ -207,7 +207,7 @@ $(function(){
 												<p class="mt-3">${roomList.ROOM_DETAIL}</p>
 										
 													<button type="submit" class="mt-1 btn btn-warning basicbutton">
-														book from <fmt:formatNumber value="${roomList.ROOM_PRICE}" pattern="#,###"/>원
+														<div style="font-size:15px">예약하기 <fmt:formatNumber value="${roomList.ROOM_PRICE}" pattern="#,###"/>원</div>
 													</button>
 												
 												<div class="room-icons mt-4 pt-4">
@@ -229,7 +229,7 @@ $(function(){
 					
 					<!-- 날짜선택 네비 -->
 					<div class="col-lg-4 order-first order-lg-last">
-						<div class="section background-dark p-4">
+						<div class="section background-dark p-4" style="margin:20px;">
 							<div class="row">
 								<div class="col-12">
 									<div class="input-daterange input-group" id="flight-datepicker">
@@ -263,7 +263,7 @@ $(function(){
 										</div>
 										<div class="col-12 pt-4">
 											<select name="children" id="child" class="wide">
-												<option data-display="소아">소아</option>
+												<option data-display="아동">아동</option>
 												<option value="0">0</option>
 												<option value="1">1</option>
 												<option value="2">2</option>
@@ -273,18 +273,6 @@ $(function(){
 										</div>
 									</div>
 								</div>
-								<!-- <div class="col-12 pt-5">
-									<h6 class="color-white mb-3">Max night price:</h6>
-									<div class="selecteurPrix">
-										<div class="range-slider">
-											<input class="input-range" type="range" value="100" min="1"
-												max="500">
-											<div class="valeurPrix">
-												<span class="range-value"></span>
-											</div>
-										</div>
-									</div>
-								</div> -->
 								<div class="col-12 col-md-6 col-lg-12 pt-5">
 									<h6 class="color-white mb-3">객실 타입</h6>
 									<ul class="list">
@@ -319,7 +307,10 @@ $(function(){
 <jsp:include page="../main/footer.jsp"/> 
 
 
-<!-- JAVASCRIPT    ================================================== -->
+	<script src="${pageContext.request.contextPath}/resources/room/js/plugins.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/room/js/custom.js"></script>
+	
+
 <script>
 <!-- 체크박스 옵션 -->
 
@@ -416,10 +407,10 @@ $('.checkbox').click(function(){
     	 form.method = 'POST';
 
     	 form.innerHTML = '<input name="room_id" value=' + $(this).parent().find("input[type='hidden']").val() + '>'
-    	 form.innerHTML += '<input name="checkin" value=' + $('#sdate').val() + '>'
-    	 form.innerHTML += '<input name="checkout" value=' + $('#edate').val() + '>'
-    	 form.innerHTML += '<input name="adult" value=' + $('#adult').val() + '>'
-    	 form.innerHTML += '<input name="child" value=' + $('#child').val() + '>'
+    	 form.innerHTML += '<input name="REZ_CHECKIN" value=' + $('#sdate').val() + '>'
+    	 form.innerHTML += '<input name="REZ_CHECKOUT" value=' + $('#edate').val() + '>'
+    	 form.innerHTML += '<input name="REZ_ADULT" value=' + $('#adult').val() + '>'
+    	 form.innerHTML += '<input name="REZ_CHILD" value=' + $('#child').val() + '>'
     	 form.innerHTML += '<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">'
     	 
 
@@ -429,7 +420,7 @@ $('.checkbox').click(function(){
      })
      
      
-    
+    	//조
     	 $('.basicbutton').click(function(){
     		 alert('예약 가능한 날짜와 객실을 먼저 조회해주세요.');
     		 return false;
@@ -440,7 +431,6 @@ $('.checkbox').click(function(){
     
 	</script>
 	<!-- JAVASCRIPT    ================================================== -->
-	
 	<!-- End Document================================================== -->
 
 </body>
