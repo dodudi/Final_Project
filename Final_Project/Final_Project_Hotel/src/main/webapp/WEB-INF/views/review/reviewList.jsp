@@ -169,8 +169,6 @@ $(function(){
 		})
 	}) // 인기검색어 삭제 end
 	
-	
-	
 }) // ready end
 </script>
 </head>
@@ -263,53 +261,55 @@ $(function(){
 					
 					<!-- 페이지네이션 -->
 					<div class="center-block">
-						<ul class="pagination justify-content-center">
-							<c:if test="${page <= 1}">  <!-- page는 현재 페이지 -->
-								<li class="page-item">
-									<a class="page-link gray">이전&nbsp;</a> <!-- page(현재 페이지)가 1페이지보다 작은 경우 이동할 이전 페이지가 없다 -->
-								</li>
-							</c:if>
-							<c:if test="${page > 1}"> 
-								<li class="page-item">
-									<a href="reviewList?page=${page-1}&search_field=${search_field}&search_word=${search_word}" class="page-link">이전&nbsp;</a> <!-- page(현재 페이지)가 1페이지보다 크면 이동할 이전 페이지가 생긴다 -->
-								</li>
-							</c:if>
-							
-							<c:forEach var="a" begin="${startpage}" end="${endpage}">
-								<c:if test="${a == page}">
-									<li class="page-item active">
-										<a class="page-link">${a}</a>
-									</li>
-								</c:if>
-								<c:if test="${a != page}">
+						<nav class="blog-pagination justify-content-center d-flex">
+							<ul class="pagination">
+								<c:if test="${page <= 1}">  <!-- page는 현재 페이지 -->
 									<li class="page-item">
-										<a href="reviewList?page=${a}&search_field=${search_field}&search_word=${search_word}" class="page-link">${a}</a>
+										<a class="page-link gray">이전&nbsp;</a> <!-- page(현재 페이지)가 1페이지보다 작은 경우 이동할 이전 페이지가 없다 -->
 									</li>
 								</c:if>
-							</c:forEach>
-							
-							<c:if test="${page >= maxpage}">
-								<li class="page-item">
-									<a class="page-link gray">&nbsp;다음</a>
-								</li>
-							</c:if>	
-							<c:if test="${page < maxpage}">
-								<li class="page-item">
-									<a href="reviewList?page=${page+1}&search_field=${search_field}&search_word=${search_word}" class="page-link">&nbsp;다음</a>
-								</li>
-							</c:if>						
-						</ul>
+								<c:if test="${page > 1}"> 
+									<li class="page-item">
+										<a href="reviewList?page=${page-1}&search_field=${search_field}&search_word=${search_word}" class="page-link">이전&nbsp;</a> <!-- page(현재 페이지)가 1페이지보다 크면 이동할 이전 페이지가 생긴다 -->
+									</li>
+								</c:if>
+								
+								<c:forEach var="a" begin="${startpage}" end="${endpage}">
+									<c:if test="${a == page}">
+										<li class="page-item active">
+											<a class="page-link">${a}</a>
+										</li>
+									</c:if>
+									<c:if test="${a != page}">
+										<li class="page-item">
+											<a href="reviewList?page=${a}&search_field=${search_field}&search_word=${search_word}" class="page-link">${a}</a>
+										</li>
+									</c:if>
+								</c:forEach>
+								
+								<c:if test="${page >= maxpage}">
+									<li class="page-item">
+										<a class="page-link gray">&nbsp;다음</a>
+									</li>
+								</c:if>	
+								<c:if test="${page < maxpage}">
+									<li class="page-item">
+										<a href="reviewList?page=${page+1}&search_field=${search_field}&search_word=${search_word}" class="page-link">&nbsp;다음</a>
+									</li>
+								</c:if>						
+							</ul>
+						</nav>
 					</div>
 				</c:if>
 				
 				<!-- 게시글이 없는 경우 -->
 				<c:if test="${empty reviewList}">
-				<%-- <c:if test="${listcount == 0}"> --%>
 					<div class="container" style="margin-top:80px; margin-bottom:80px; text-align:center">
 						<font size=5>등록된 글이 없습니다.</font>
 					</div>
 				</c:if>
 			</div>
+			
 			
 			<!-- 인기 검색어 -->
 			<div class="col-lg-2">
