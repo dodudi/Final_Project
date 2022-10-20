@@ -3,12 +3,7 @@
 	<html lang="en">
 
 	<head>
-		<title>회원정보</title>
-
-	</head>
-
-	<head>
-		<title>객실예약확인페이지</title>
+		<title>회원 정보 수정</title>
 
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="/hotel/static/css/bootstrap.css">
@@ -72,10 +67,10 @@
 
 
 					<div class="col content-background">
-						<div class="title-font-l mt-3 mb-3 bottom-border p-2">회원가입</div>
+						<div class="title-font-l mt-3 mb-3 bottom-border p-2">회원 정보 수정</div>
 						<form>
 							<div class="mb-3">
-								<label for="email" class="form-label">이메일</label>
+								<label for="email" class="form-label">이름</label>
 								<input type="email" class="form-control" id="email" aria-describedby="emailHelp">
 								<div id="emailHelp" class="form-text">We'll never share your email with anyone else.
 								</div>
@@ -89,8 +84,12 @@
 								<input type="password" class="form-control" id="password_check">
 							</div>
 							<div class="mb-3">
-								<label for="name" class="form-label">이름</label>
+								<label for="name" class="form-label">생일</label>
 								<input type="text" class="form-control" id="name">
+							</div>
+							<div class="mb-3">
+								<label for="phone" class="form-label">이메일</label>
+								<input type="text" class="form-control" id="phone">
 							</div>
 							<div class="mb-3">
 								<label for="phone" class="form-label">전화번호</label>
