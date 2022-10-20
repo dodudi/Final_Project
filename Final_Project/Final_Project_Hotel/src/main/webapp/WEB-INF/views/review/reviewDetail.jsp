@@ -135,12 +135,12 @@ $(function(){
 						// XSS(Cross-Site Scripting) : 권한이 없는 사용자가 웹사이트에 스크립트를 삽입하는 공격기법으로,
 						// 이것을 방지하기 위한 방법으로 2번처럼 <td></td> 영역을 만든 뒤
 						// 3번에서 text() 안에 this.context를 넣어 스크립트를 문자열로 만듭니다.								
-						output += "			<textarea disabled rows='1' cols='100' style='border:none;background-color:#f9f9ff'>" + this.REVIEW_COMMENT_CONTENT + "</textarea>"
+						output += "			<textarea disabled rows='1' cols='100' style='border:none;background-color:#f9f9ff; position:relative; top:8px'>&nbsp;&nbsp;" + this.REVIEW_COMMENT_CONTENT + "</textarea>"
 						       +  "			<input type='hidden' value=" + this.REVIEW_COMMENT_NUM + ">" // 수정, 삭제 시 필요한 댓글 번호 hidden
 						       +  "			<span style='display:none'>"+ this.REVIEW_COMMENT_RE_LEV+"</span></td>" // 수정, 삭제 시 필요한 댓글 번호 hidden
 						output += '		<td></td>';
 						output += "		<td><a href='#' data-toggle='dropdown'>"
-						       +  '				<img src="${pageContext.request.contextPath}/resources/project_image/review/commMenu.png" style="width:30px; height:30px">' // 아이콘 모양 바꿀 수 있으면 바꾸기!!
+						       +  '				<img src="${pageContext.request.contextPath}/resources/project_image/review/commMenu.png" style="width:30px; height:30px">'
 						       +  "			</a>"
 						       +  "			<ul class='dropdown-menu'>"		
 						       +  "				<li class='nav-item'><button class='genric-btn default-border' id='commReply'>답댓글</button></li>";
