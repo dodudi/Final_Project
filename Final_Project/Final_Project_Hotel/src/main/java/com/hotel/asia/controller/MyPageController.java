@@ -76,13 +76,17 @@ public class MyPageController {
 		Map<Integer, List<String>> dates = new HashMap<>();
 		for(int i = 0 ; i < rezs.size(); i++) {
 			List<OptionReservation> optRezData =optRezService.getOptRezList(rezs.get(i).getREZ_ID());
+			
+			//총날짜
 			int totalDate = (int)myPageService.getDateSub(rezs.get(i).getREZ_CHECKIN(), rezs.get(i).getREZ_CHECKOUT());
 			List<String> date = myPageService.calcBreakFastDate(rezs.get(i).getREZ_CHECKIN(), totalDate+1);
-			for (String date1 : date) {
-				log.info(date1);
-				
-			}
 			dates.put(rezs.get(i).getREZ_ID(), date);
+			
+			
+			for (OptionReservation optRezData2 : optRezData) {
+				log.info(optRezData2.getOPTION_RESERVATION_DATE());
+			}
+			options.put(rezs.get(i).getREZ_ID(), optRezData);
 		}
 		
 		
