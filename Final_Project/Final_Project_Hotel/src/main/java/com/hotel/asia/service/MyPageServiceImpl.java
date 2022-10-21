@@ -89,7 +89,7 @@ public class MyPageServiceImpl implements MyPageService {
 			Date date1 = (Date) format.parse(end);
 			Date date2 = (Date) format.parse(start);
 
-			long sec = (date2.getTime() - date1.getTime()) / 1000;
+			long sec = (date1.getTime() - date2.getTime()) / 1000;
 			day = sec / (24 * 60 * 60);
 
 		} catch (ParseException e) {

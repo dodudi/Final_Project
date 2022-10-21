@@ -34,6 +34,7 @@ import com.hotel.asia.module.PageData;
 import com.hotel.asia.service.CouponService;
 import com.hotel.asia.service.MemberServiceImpl;
 import com.hotel.asia.service.MyPageServiceImpl;
+import com.hotel.asia.service.OptionRezService;
 import com.hotel.asia.service.OptionService;
 import com.hotel.asia.service.QuestionboardService;
 import com.hotel.asia.service.RoomServiceImpl;
@@ -58,6 +59,8 @@ public class MyPageController {
 	private RoomServiceImpl roomService;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private OptionRezService optRezService;
 	// 객실예약확인 페이지
 	@GetMapping("/mypage/reserve")
 	public String reserve(Model model, Principal princiPal, HttpSession session) {
@@ -65,10 +68,32 @@ public class MyPageController {
 		session.setAttribute("id", mem_id);
 
 		List<Rez> rezs = myPageService.getRezDatas(mem_id);
+		//객실예약에 따른 방 정보
 		List<Room> rooms = roomService.getRoomDetails(rezs);
+		//옵션목록
+		List<Option> optList = optionService.getOptionList();
+		Map<Integer, List<OptionReservation>> options = new HashMap<>();
+		Map<Integer, List<String>> dates = new HashMap<>();
+		for(int i = 0 ; i < rezs.size(); i++) {
+			List<OptionReservation> optRezData =optRezService.getOptRezList(rezs.get(i).getREZ_ID());
+			int totalDate = (int)myPageService.getDateSub(rezs.get(i).getREZ_CHECKIN(), rezs.get(i).getREZ_CHECKOUT());
+			List<String> date = myPageService.calcBreakFastDate(rezs.get(i).getREZ_CHECKIN(), totalDate+1);
+			for (String date1 : date) {
+				log.info(date1);
+				
+			}
+			dates.put(rezs.get(i).getREZ_ID(), date);
+		}
+		
+		
+		
 		
 		model.addAttribute("rezData", rezs);
 		model.addAttribute("roomData", rooms);
+		model.addAttribute("options", options);
+		model.addAttribute("optList", optList);
+		//요일 리스트.
+		model.addAttribute("dates", dates);
 		return "mypage/mypage_reserve_check";
 	}
 
