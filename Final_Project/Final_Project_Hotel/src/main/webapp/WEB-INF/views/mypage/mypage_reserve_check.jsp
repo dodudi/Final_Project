@@ -119,20 +119,19 @@
 										<tbody>
 											<tr class="table-active">
 												<td>날짜</td>
-												<td>옵션이름</td>
+												<td>옵션 날짜</td>
 												<td>체크인 날짜</td>
 												<td>체크아웃 날짜</td>
 												<td>성인</td>
 												<td>아동</td>
 											</tr>
-											<c:forEach var="rez2" items="${rezData}" varStatus="status">
-											<c:set var="date" value="${dates[rez.REZ_ID]}" />
+											<c:forEach var="date" items="${dates[rez.REZ_ID]}" varStatus="status">
 											<c:set var="option" value="${options[rez.REZ_ID][status.index] }"></c:set>
 												<tr>
-													<td>${date[status.index]}</td>
-													
+													<td>${date}</td>
+													<c:forEach var="option" items="${options[rez.REZ_ID]}"></c:forEach>
+													<td>${option.OPTION_RESERVATION_DATE }</td>
 													<td>${option.ADULT }</td>
-													<td>${rez.REZ_CHECKIN }</td>
 													<td>${rez.REZ_CHECKOUT }</td>
 													<td>${rez.REZ_ADULT }</td>
 													<td>${rez.REZ_CHILD }</td>
