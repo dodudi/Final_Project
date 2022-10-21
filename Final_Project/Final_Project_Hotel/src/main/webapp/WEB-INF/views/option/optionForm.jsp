@@ -11,6 +11,8 @@
 	#bfHide, #dnHide, #spHide { width:20px; height:20px; float:right }
 	input[readonly] {border:none; background-color:#f9f9ff; width:95px}
 	input[name="REZ_CHECKIN"], input[name="REZ_CHECKOUT"], input[name="ROOM_ID"] {float:left}
+	input[name='bfTotal'], input[name='dnTotal'], input[name='spTotal'], #total {text-align:right;}
+	.option {position:relative; right:40px}
 	
 	*{color:black}
 	
@@ -428,25 +430,25 @@ $(function(){
 	                        		<tr>	
 	                        			<th style="width:30%">조식</th>
 	                        			<td>
-	                        				<input type="text" name="bfTotal" id="bfTotal" value="0" onfocus="this.blur();">원
+	                        				<span class="option"><input type="text" name="bfTotal" id="bfTotal" value="0" onfocus="this.blur();">원</span>
 	                        			</td> 
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>디너</th>
 	                        			<td>
-	                        				<input type="text" name="dnTotal" id="dnTotal" value="0" onfocus="this.blur();">원
+	                        				<span class="option"><input type="text" name="dnTotal" id="dnTotal" value="0" onfocus="this.blur();">원</span>
 	                        			</td>
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>수영장</th>
 	                        			<td>
-	                        				<input type="text" name="spTotal" id="spTotal" value="0" onfocus="this.blur();">원
+	                        				<span class="option"><input type="text" name="spTotal" id="spTotal" value="0" onfocus="this.blur();">원</span>
 	                        			</td> 
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>총 금액</th>
 	                        			<td>
-	                        				<input type="text" id="total" value="0" onfocus="this.blur();">원
+	                        				<span class="option"><input type="text" id="total" value="0" onfocus="this.blur();">원</span>
 	                        			</td>
 	                        		</tr>
 	                        	</table>

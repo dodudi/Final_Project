@@ -82,12 +82,10 @@ public class ReviewController {
 			int addResult = 0;
 			
 			logger.info("==================== 검색어 갱신 결과 ====================");
-			//List<String> searchWords = new ArrayList<String>(); // 명사만 추출된 검색어 리스트
 			for(String searchWord : searchWordList) {
 				addResult = reviewBoardService.addSearchWord(searchWord); // 검색어 리스트 추가 or 갱신
 				logger.info(searchWord + "=> addResult=" + addResult + "(추가 or 갱신되면 1)" );
 				searchReviewList.addAll(reviewBoardService.getReviewList(page, limit, sortBy, index, searchWord)) ; // 단어별 검색된 글 리스트 추가
-				//searchWords.add("%" + searchWord + "%"); // 명사만 추출된 검색어 리스트
 			}
 			
 			reviewList = new ArrayList<ReviewBoard>(new HashSet<ReviewBoard>(searchReviewList)); // 검색된 리스트 중복 제거

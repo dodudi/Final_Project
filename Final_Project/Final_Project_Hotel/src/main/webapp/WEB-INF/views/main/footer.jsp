@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
  <!--================ start footer Area  =================-->	
- <footer class="footer-area section_gap">
+ <footer class="footer-area section_gap" style="padding: 100px 0px">
      <div class="container">
          <div class="row">
            <div class="col-lg-4 col-md-6 col-sm-6">

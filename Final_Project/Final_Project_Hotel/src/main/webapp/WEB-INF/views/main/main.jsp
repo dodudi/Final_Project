@@ -82,10 +82,12 @@
 
         <!-- Footer -->
         <jsp:include page="footer.jsp"></jsp:include>
+        
+        
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="${pageContext.request.contextPath}/resources/js/jquery-3.2.1.min.js"></script>
         <script src="${pageContext.request.contextPath}/resources/js/popper.js"></script>
-        //<script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+        <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
         <script src="${pageContext.request.contextPath}/resources/vendors/owl-carousel/owl.carousel.min.js"></script>
         <script src="${pageContext.request.contextPath}/resources/js/jquery.ajaxchimp.min.js"></script>
         <script src="${pageContext.request.contextPath}/resources/js/mail-script.js"></script>

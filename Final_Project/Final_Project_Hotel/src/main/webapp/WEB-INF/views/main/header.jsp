@@ -47,7 +47,7 @@
                          <ul class="dropdown-menu">
                              <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/notice/list">공지사항</a></li>
                              <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/question/list">문의사항</a></li>
-                             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/review/reviewList">리뷰보드</a></li> <!-- 현능: 리뷰게시판 경로 수정 -->
+                             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/review/reviewList">후기게시판</a></li> <!-- 현능: 리뷰게시판 경로 수정 -->
                          </ul>
                      </li> 
                  </ul>
@@ -78,7 +78,6 @@
 	                             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/notice/list">공지사항</a></li>
 	                             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/question/list">문의사항</a></li>
 	                             <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/userlist">회원리스트</a></li>
-	                             <li class="nav-item"><a class="nav-link" href="member/update">정보수정</a></li>
 	                         </ul>
 	                     </li> 
 			     	  </c:if>

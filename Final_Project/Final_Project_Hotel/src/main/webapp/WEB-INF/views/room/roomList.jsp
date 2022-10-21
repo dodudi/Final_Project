@@ -173,6 +173,15 @@ $(function(){
 	
 }) // ready end
 </script>
+<style>
+.header_area>.container{
+	height: 80px !important;
+}
+.navbar.navbar-expand-lg{	
+	height: 80px !important;
+	padding: 0px 25px;
+}
+</style>
 </head>
 <body>
  
