@@ -110,4 +110,11 @@
 		delete from MEMBER
 		where  MEM_ID = #{MEM_ID}
 	</delete>
+	
+	<select id="RezCheck" resultType="int">
+	    select count(*) from rez
+	    where MEM_ID = #{MEM_ID}
+	    and REZ_CHECKOUT >= sysdate
+	</select>
+	
 </mapper>

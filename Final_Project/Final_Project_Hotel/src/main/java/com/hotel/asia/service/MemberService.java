@@ -47,4 +47,6 @@ public interface MemberService {
 
 	public int Userdelete(String id);
 	
+	public int RezCheck(String id);
+	
 }

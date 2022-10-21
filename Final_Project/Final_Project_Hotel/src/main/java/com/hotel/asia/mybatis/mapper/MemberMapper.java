@@ -52,6 +52,8 @@ public interface MemberMapper {
 	public List<Member> getUserList(HashMap<String, Object> map);
 
 	public int UserDelete(String id);
+	
+	public int RezCheck(String id);
 
 	
 

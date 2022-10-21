@@ -101,7 +101,7 @@
                       답변
                       </a>                   
                       <a href="#" class="genric-btn danger radius" data-toggle="modal"
-                      data-target="#removeModal${vs.index }">
+                      data-target="#removeModal">
                       삭제
                       </a>               
                       </c:if>
@@ -119,7 +119,7 @@
     </div>
      <%--modal 시작 --%>
      <form name="deleteForm" action="delete" method="post">
-     <div class="modal fade" id="removeModal${vs.index}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal fade" id="removeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                      <div class="modal-dialog">
                             <div class="modal-content">
                             

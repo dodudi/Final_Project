@@ -399,20 +399,35 @@ public class MemberController {
 	   
 	   @PostMapping("/userdelete")
 		public String UserDelete(
-				String id, Model mv, HttpServletRequest request,
+				@RequestParam(value = "MEM_ID", required = false)String id, 
+				Model mv, HttpServletRequest request,
 				RedirectAttributes rattr)	{
-		    
-			int result = memberservice.Userdelete(id);
-			
-			if (result == 0) {
-				logger.info("회원 정보 삭제 실패");
-				mv.addAttribute("url", request.getRequestURL());
-				mv.addAttribute("message", "삭제 실패");
-				return "error/error";
-			}
-			
-			logger.info("회원 정보 삭제 성공");
-			rattr.addFlashAttribute("result", "deleteSuccess");
+		   
+		   
+		    //예약사항 조회
+		   // 예약사항이 있으면 삭제가 되지 않도록 한다
+		   int check = memberservice.RezCheck(id);
+		   
+		   if(check>=1) {
+			   
+			   rattr.addFlashAttribute("result", "deleteFail");
+			   
+		   } else {
+			   
+			   logger.info("삭제할 회원 아이디" + id);
+			    
+			   int result = memberservice.Userdelete(id);
+				
+			      if (result == 0) {
+			        logger.info("회원 정보 삭제 실패");
+				    mv.addAttribute("url", request.getRequestURL());
+				    mv.addAttribute("message", "삭제 실패");
+				    return "error/error";
+				  }
+				
+			   logger.info("회원 정보 삭제 성공");
+			   rattr.addFlashAttribute("result", "deleteSuccess"); 
+		   }
 			return "redirect:userlist";
 		}
 }
