@@ -14,10 +14,10 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
 <script>
     $(function(){
-	// 메인화면 페이지 로드 함수
+   // 메인화면 페이지 로드 함수
     $(document).ready(function () {
         $('#summernote').summernote({
-        	placeholder: '내용을 작성하세요',
+           placeholder: '내용을 작성하세요',
             height: 400,
             lang: "ko-KR", // 에디터 한글 설정
             //focus : true, // 에디터에 커서 이동
@@ -27,8 +27,8 @@
                 //['style', ['bold', 'italic', 'underline','strikethrough', 'clear']], // 굵기, 기울임꼴, 밑줄,취소 선, 서식지우기
                 ['color', ['forecolor','color']], // 글자색
                 ['para', ['ul', 'ol', 'paragraph']], // 글머리 기호, 번호매기기, 문단정렬
-    		    ['table', ['table']], // 표만들기
-    		    ['insert',['picture','link','video']], // 그림첨부, 링크만들기, 동영상첨부
+              ['table', ['table']], // 표만들기
+              ['insert',['picture','link','video']], // 그림첨부, 링크만들기, 동영상첨부
                 ['height', ['height']], // 줄간격
                 ['view', ['codeview','fullscreen']] // 코드보기, 확대해서보기, 도움말
             ],
@@ -36,41 +36,55 @@
             //airMode:true // 글보기 모드
             
             // 이미지 첨부 콜백함수
-            callbacks: {	
-				onImageUpload : function(files) {
-					uploadSummernoteImageFile(files[0],this);
-				},
-			}
+            callbacks: {   
+            onImageUpload : function(files) {
+               uploadSummernoteImageFile(files[0],this);
+            },
+         }
         });
     });
-	
-	
+   
+   
     // 이미지 파일 업로드
     function uploadSummernoteImageFile(file, editor) {
-    	var token = $("meta[name='_csrf']").attr("content");
-		var header = $("meta[name='_csrf_header']").attr("content");
-		data = new FormData();
-		data.append("file", file);
-		$.ajax({
-			type : "POST",
-			url : "../notice/uploadImage",
-			data : data,
-			beforeSend : function(xhr) { 
-	        	xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리
-	        },
-			contentType : false,
-			processData : false,
-			success : function(data) {
-				$(editor).summernote('insertImage', data.url); //항상 업로드된 파일의 url이 있어야 한다
-			},
-			error:function(request, status, error){
-				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-			}
-		});
-	}
+       var token = $("meta[name='_csrf']").attr("content");
+      var header = $("meta[name='_csrf_header']").attr("content");
+      data = new FormData();
+      data.append("file", file);
+      $.ajax({
+         type : "POST",
+         url : "../notice/uploadImage",
+         data : data,
+         beforeSend : function(xhr) { 
+              xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리
+           },
+         contentType : false,
+         processData : false,
+         success : function(data) {
+            $(editor).summernote('insertImage', data.url); //항상 업로드된 파일의 url이 있어야 한다
+         },
+         error:function(request, status, error){
+            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+         }
+      });
+   }
 </script>
 <style>
-	label{font-size:15px; font-weight:bold}
+   label{font-size:15px; font-weight:bold}
+   .navbar-collapse.collapse { display: flex !important; } .navbar{ margin-bottom: 0px }
+   .breadcrumb {
+    padding: 8px 15px;
+    margin-bottom: 20px;
+    list-style: none;
+    background-color: transparent !important; 
+    border-radius: 4px;
+    }
+    
+    .breadcrumb > li + li:before {
+    padding: 0 5px;
+    color: #ccc;
+    content: "\e87a" !important;
+    }
 </style>
 </head>
 <body>
@@ -81,7 +95,7 @@
                 <div class="page-cover text-center">
                     <h2 class="page-cover-tittle">공지사항</h2>
                     <ol class="breadcrumb">
-                        <li class="active">커뮤니티</li>
+                        <li class="active" style="color: white;">커뮤니티</li>
                         <li><a href="list">공지사항</a></li>
                     </ol>
                 </div>
@@ -96,9 +110,9 @@
      <h1 class="title_color" style="margin-top:7rem; text-align:center">공지사항 게시판 - 수정</h1>
      
      <div class="form-group" style="margin-top:5rem;">
-        <label for="notice_name">글쓴이</label>
+        <label for="notice_name">작성자</label>
         <input name="NOTICE_NAME" type="text"    class="form-control"
-               value="admin" readOnly> <%--admin 고정 --%>
+               value="admin" readOnly>
      </div>
      <div class="form-group">
         <label for="notice_subject">제목</label>
@@ -122,7 +136,7 @@
     // 메인화면 페이지 로드 함수
     $(document).ready(function () {
         $('#summernote').summernote({
-            placeholder: '내용을 작성하세요',
+            placeholder: '내용을 작성하세요.',
             height: 400,
             maxHeight: 400
         });
