@@ -15,8 +15,13 @@
       alert("회원 삭제 성공입니다.")
    } else if(result == 'updateSuccess'){
 	alert("회원정보가 수정되었습니다.")
+   } else if(result == 'deleteFail'){
+	  alert("예약이 있어서 탈퇴불가합니다.")
    }
+   
+   
 </script>
+
 </head>
 <body>
 <!--================Breadcrumb Area =================-->
@@ -68,9 +73,35 @@
 		<%--수정/탈퇴 --%>
 		<td>
            <a href="#" class="genric-btn danger radius" data-toggle="modal"
-                      data-target="#removeModal${vs.index }">
+                      data-target="#${U.MEM_ID }">
                       탈퇴
                       </a>
+                      
+        <%--modal 시작 --%>
+        <form name="deleteForm" action="userdelete" method="post">
+        <div class="modal fade" id="${U.MEM_ID}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div class="modal-dialog">
+                            <div class="modal-content">
+                            
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLabel" style="text-align:center">회원 탈퇴</h5>
+                                    </div>
+                                    
+                                    <div class="modal-body" style="text-align:center">
+                                      정말로 탈퇴시키겠습니까?
+                                    </div>
+                                                                   
+                                    <div class="modal-footer">
+                                       <button type="submit" class="genric-btn info radius">확인</button>
+                                       <button type="button" class="genric-btn danger radius" data-dismiss="modal">취소</button> 
+                                       <input type="hidden" name="MEM_ID" value="${U.MEM_ID }">
+                                       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                                    </div>                                                    
+                            </div>
+                     </div>
+       </div>
+       </form>
+       <%--modal 끝 --%>
 		</td>
 		
 	   </tr>
@@ -149,37 +180,13 @@
        alert('admin만 이용할 수 있습니다.');
       </script>
     </c:if>
-    
-    <%--modal 시작 --%>
-     <form name="deleteForm" action="userdelete" method="post">
-     <div class="modal fade" id="removeModal${vs.index}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                     <div class="modal-dialog">
-                            <div class="modal-content">
-                            
-                                    <div class="modal-header">
-                                      <h5 class="modal-title" id="exampleModalLabel" style="text-align:center">회원 탈퇴</h5>
-                                    </div>
-                                    
-                                    <div class="modal-body" style="text-align:center">
-                                      정말로 탈퇴시키겠습니까?
-                                    </div>
-                                                                   
-                                    <div class="modal-footer">
-                                       <button type="submit" class="genric-btn info radius">확인</button>
-                                       <button type="button" class="genric-btn danger radius" data-dismiss="modal">취소</button>  
-                                       <input type="hidden" name="num" value="${param.num }">
-                                       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-                                    </div>                                                    
-                            </div>
-                     </div>
-     </div>
-     </form>
-    <%--modal 끝 --%>
     </sec:authorize>
  
 </div>
      
 <jsp:include page="../main/footer.jsp"/>
-
+<script>
+  console.log(${param.num})
+</script>
 </body>
 </html>

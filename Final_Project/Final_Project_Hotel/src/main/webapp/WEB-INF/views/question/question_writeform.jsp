@@ -76,6 +76,19 @@
 	<style>
 	label{font-size:15px; font-weight:bold}
 	.navbar-collapse.collapse { display: flex !important; } .navbar{ margin-bottom: 0px }
+	.breadcrumb {
+      padding: 8px 15px;
+      margin-bottom: 20px;
+      list-style: none;
+      background-color: transparent !important; 
+      border-radius: 4px;
+    }
+    
+    .breadcrumb > li + li:before {
+      padding: 0 5px;
+      color: #ccc;
+      content: "\e87a" !important;
+    }
 	</style>
 </head>
 <body>
@@ -86,7 +99,7 @@
                 <div class="page-cover text-center">
                     <h2 class="page-cover-tittle">문의사항</h2>
                     <ol class="breadcrumb">
-                        <li class="active">커뮤니티</li>
+                        <li class="active" style="color: white;">커뮤니티</li>
                         <li><a href="list">문의사항</a></li>
                     </ol>
                 </div>

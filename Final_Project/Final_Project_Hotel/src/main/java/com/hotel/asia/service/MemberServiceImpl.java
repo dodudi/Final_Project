@@ -178,5 +178,10 @@ public class MemberServiceImpl implements MemberService {
 		return dao.UserDelete(id);
 	}
 
+	@Override
+	public int RezCheck(String id) {
+		return dao.RezCheck(id);
+	}
+
 	
 }
