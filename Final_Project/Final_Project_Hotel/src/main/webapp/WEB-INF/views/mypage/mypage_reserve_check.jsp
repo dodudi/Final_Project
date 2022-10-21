@@ -129,7 +129,9 @@
 											<c:set var="option" value="${options[rez.REZ_ID][status.index] }"></c:set>
 												<tr>
 													<td>${date}</td>
-													<c:forEach var="option" items="${options[rez.REZ_ID]}"></c:forEach>
+													<c:forEach var="option" items="${options[rez.REZ_ID]}">
+														<c:if test=""></c:if>
+													</c:forEach>
 													<td>${option.OPTION_RESERVATION_DATE }</td>
 													<td>${option.ADULT }</td>
 													<td>${rez.REZ_CHECKOUT }</td>
