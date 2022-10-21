@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!-- core 라이브러리 -->
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,6 +23,15 @@
 
 <link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_module.css">
 <!--<link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_reserve_check.css">-->
+<style type="text/css">
+	.price{
+		width:20%;
+	}
+	.date{
+		border-bottom: 2px solid black;
+		
+	}
+</style>
 </head>
 
 <body>
@@ -105,131 +114,58 @@
 									</c:forEach>
 								</tbody>
 							</table>
-
 						</div>
 						<!--Table content Reservation End-->
 
-						<!-- 
-					<div class="content-title">Breakfast | Dinner Information</div>
-					<div class="content-table mb-4">
-						<table id="optBreakFast" class="table table-bordered table-hover">
-							<tbody>
-								<tr>
-									<td colspan="5" class="content-sub-title">Breakfast</td>
-								</tr>
-								<c:forEach var="allDate" items="${allDates}">
-									<c:set var="flag" value="false"></c:set>
-									<c:forEach var="breakFast" items="${optBreakFast}">
-										<c:if test="${breakFast.OPTION_RESERVATION_DATE == allDate && flag==false}">
-											<tr>
-												<td rowspan="2">${allDate}</td>
-												<td>성인 : ${breakFast.ADULT}</td>
-												<td>가격 : ${break_price[allDate]["adultPrice"]}</td>
-											</tr>
-											<tr>
-												<td>아동 : ${breakFast.CHILD}</td>
-												<td>가격 : ${break_price[allDate]["childPrice"]}</td>
-											</tr>
-											<c:set var="flag" value="true"></c:set>
-										</c:if>
-									</c:forEach>
-									<c:if test="${flag == false}">
-										<tr>
-											<td rowspan="2">${allDate}</td>
-											<td>성인 : 0</td>
-											<td>가격 : 0</td>
-										</tr>
-										<tr>
+						<!-- Table content Reservation -->
+						<c:forEach var="rez" items="${rezData}" varStatus="status">
+							<div class="content-table mb-5">
+								<div class="content-title date">${dates[rez.REZ_ID][0]}~${dates[rez.REZ_ID][(dates[rez.REZ_ID].size()-1)]}</div>
 
-											<td>아동 : 0</td>
-											<td>가격 : 0</td>
-										</tr>
-									</c:if>
-								</c:forEach>
-							</tbody>
-						</table>
-					</div>
-					<div class="content-table mb-4">
-						<table id="optDinner" class=" table table-bordered">
-							<tbody>
-								<tr>
-									<td colspan="5" class="content-sub-title">Dinner</td>
-								</tr>
-								<c:forEach var="allDate" items="${allDates}">
-									<c:set var="flag" value="false"></c:set>
-									<c:forEach var="dinner" items="${optDinner}">
-										<c:if test="${dinner.OPTION_RESERVATION_DATE == allDate && flag==false}">
-											<tr>
-												<td rowspan="2">${allDate}</td>
-												<td>성인 : ${dinner.ADULT}</td>
-												<td>가격 : ${dinner_price[allDate]["adultPrice"]}</td>
+								<c:forEach var="optionList" items="${optList}" varStatus="optStatus">
+									<div class="content-title">${optionList.OPTION_NAME}</div>
+									<table class="table table-bordered">
+										<tbody>
+											<tr class="table-active">
+												<td class="price">날짜</td>
+												<td class="price">성인</td>
+												<td class="price">아동</td>
+												<td class="price">인원 수</td>
+												<td class="price">가격</td>
 											</tr>
-											<tr>
-												<td>아동 : ${dinner.CHILD}</td>
-												<td>가격 : ${dinner_price[allDate]["childPrice"]}</td>
-											</tr>
-											<c:set var="flag" value="true"></c:set>
-										</c:if>
-									</c:forEach>
-									<c:if test="${flag == false}">
-										<tr>
-											<td rowspan="2">${allDate}</td>
-											<td>성인 : 0</td>
-											<td>가격 : 0</td>
-										</tr>
-										<tr>
+											<c:forEach var="date" items="${dates[rez.REZ_ID]}" varStatus="status">
+												<tr>
+													<td>${date}</td>
+													<c:set var="flag" value="false"></c:set>
+													<c:set var="optMapR" value="${optionMap[rez.REZ_ID][optionList.OPTION_ID]}"></c:set>
 
-											<td>아동 : 0</td>
-											<td>가격 : 0</td>
-										</tr>
-									</c:if>
+													<c:forEach var="optMap" items="${optionMap[rez.REZ_ID][optionList.OPTION_ID]}">
+														<c:if test="${flag==false && optMap.OPTION_RESERVATION_DATE == date}">
+															<c:set var="optMapR" value="${optMap}"></c:set>
+															<c:set var="flag" value="true"></c:set>
+														</c:if>
+													</c:forEach>
+													<c:if test="${flag==true }">
+														<td>${optMapR.ADULT}명</td>
+														<td>${optMapR.CHILD}명</td>
+														<td>${optMapR.CHILD + optMapR.ADULT}명</td>
+														<td><fmt:formatNumber value="${(optMapR.CHILD * optionList.OPTION_CHILD_PRICE) + (optMapR.ADULT * optionList.OPTION_DEFAULT_PRICE)}" pattern="#,###"/>원</td>
+													</c:if>
+													<c:if test="${flag==false }">
+														<td>0명</td>
+														<td>0명</td>
+														<td>0명</td>
+														<td>0원</td>
+													</c:if>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
 								</c:forEach>
 
-
-							</tbody>
-						</table>
-
-					</div>
-					<div class="content-table mb-4">
-						<table id="optDinner" class=" table table-bordered">
-							<tbody>
-								<tr>
-									<td colspan="5" class="content-sub-title">Swim</td>
-								</tr>
-								<c:forEach var="allDate" items="${allDates}">
-									<c:set var="flag" value="false"></c:set>
-									<c:forEach var="swim" items="${optSwimming}">
-										<c:if test="${swim.OPTION_RESERVATION_DATE == allDate && flag==false}">
-											<tr>
-												<td rowspan="2">${allDate}</td>
-												<td>성인 : ${swim.ADULT}</td>
-												<td>가격 : ${swim_price[allDate]["adultPrice"]}</td>
-											</tr>
-											<tr>
-												<td>아동 : ${swim.CHILD}</td>
-												<td>가격 : ${swim_price[allDate]["childPrice"]}</td>
-											</tr>
-											<c:set var="flag" value="true"></c:set>
-										</c:if>
-									</c:forEach>
-									<c:if test="${flag == false}">
-										<tr>
-											<td rowspan="2">${allDate}</td>
-											<td>성인 : 0</td>
-											<td>가격 : 0</td>
-										</tr>
-										<tr>
-
-											<td>아동 : 0</td>
-											<td>가격 : 0</td>
-										</tr>
-									</c:if>
-								</c:forEach>
-							</tbody>
-						</table>
-
-					</div>
-					 -->
+							</div>
+						</c:forEach>
+						<!--Table content Reservation End-->
 					</c:if>
 				</div>
 
