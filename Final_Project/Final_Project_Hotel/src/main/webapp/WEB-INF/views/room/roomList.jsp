@@ -181,6 +181,9 @@ $(function(){
 	height: 80px !important;
 	padding: 0px 25px;
 }
+.nav,.navbar-nav,.menu_var{
+	height:80px;
+}
 </style>
 </head>
 <body>

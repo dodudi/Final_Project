@@ -147,19 +147,27 @@ $(function(){
 	
 }) // ready end
 </script>
+
+<style>
+.header_area>.container{
+	height: 80px !important;
+}
+.navbar.navbar-expand-lg{	
+	height: 80px !important;
+	padding: 0px 25px;
+}
+</style>
+
 </head>
 <body>
-	<section class="banner_area">
-	 <div class="booking_table d_flex align-items-center">
-	     <div class="overlay bg-parallax" data-stellar-ratio="0.9" data-stellar-vertical-offset="0"
-	         data-background=""></div>
-	     <div class="container">
-	         <div class="banner_content text-center">
-	             <h2>객실 상세 정보</h2>
-	         </div>
-	     </div>
-	 </div>
-  </section>
+	<section class="breadcrumb_area">
+        <div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
+        <div class="container">
+            <div class="page-cover text-center">
+                <h2 class="page-cover-tittle">객실 상세 정보</h2>
+            </div>
+        </div>
+    </section>
 	
 	
 	
