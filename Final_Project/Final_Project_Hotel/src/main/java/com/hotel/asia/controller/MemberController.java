@@ -234,101 +234,6 @@ public class MemberController {
 	}
 
 	
-	//개인 정보수정 폼 
-	@RequestMapping(value="/update", method=RequestMethod.GET)
-	public ModelAndView member_update(Principal principal,
-										ModelAndView mv) {
-		String id = principal.getName();
-		
-		if(id==null) {
-			mv.setViewName("redirect:login");
-			logger.info("id is null");
-		} else {
-			Member m = memberservice.member_info(id);
-			mv.setViewName("member/member_updateForm");
-			mv.addObject("memberinfo", m);
-		}
-		return mv;
-	}
-	
-	//개인 정보수정 결과 
-	@PostMapping("/updateProcess")
-	public String updateProcess(Member member, Model model, 
-									HttpServletRequest request,
-									RedirectAttributes rattr) {
-		
-		int result = memberservice.update(member);
-		
-		if(result == 1) {
-			rattr.addFlashAttribute("result", "updateSuccess");
-			return "redirect:/board/list";
-		} else {
-			model.addAttribute("url", request.getRequestURL());
-			model.addAttribute("message", "정보 수정 실패");
-			return "error/error";
-		}
-	}
-	
-	//회원정보 수정 폼 
-	@RequestMapping(value="/list")
-	public ModelAndView memberList (@RequestParam(value="page",defaultValue="1", required=false) int page,
-									@RequestParam(value="limit",defaultValue="3", required=false) int limit,
-									ModelAndView mv,
-									@RequestParam(value="search_field",defaultValue="-1", required=false) int index,
-									@RequestParam(value="search_word",defaultValue="", required=false)
-									String search_word) {
-		
-		int listcount = memberservice.getSearchListCount(index, search_word);	//총 리스트 수 받아옴 
-		
-		List<Member> list = memberservice.getSearchList(index, search_word, page, limit);
-		
-		int maxpage = (listcount + limit -1) /limit;
-		
-		int startpage = ((page -1)/10) * 10 + 1;
-		
-		int endpage = startpage +10 -1;
-		
-		if(endpage > maxpage)
-			endpage = maxpage;
-		
-		mv.setViewName("member/member_list");
-		mv.addObject("page", page);
-		mv.addObject("maxpage", maxpage);
-		mv.addObject("startpage", startpage);
-		mv.addObject("endpage", endpage);
-		mv.addObject("listcount", listcount);
-		mv.addObject("memberlist", list);
-		mv.addObject("search_field", index);
-		mv.addObject("search_word", search_word);
-		return mv;
-		
-	}
-	
-	//회원정보 상세 
-	@RequestMapping(value="/info", method=RequestMethod.GET)
-	public ModelAndView member_info(@RequestParam("MEM_ID") String id,
-									ModelAndView mv,
-									HttpServletRequest request) {
-		
-		Member m = memberservice.member_info(id);
-		
-		if(m!=null) {
-			mv.setViewName("member/member_info");
-			mv.addObject("memberinfo", m);
-		} else {
-			mv.addObject("url", request.getRequestURL());
-			mv.addObject("message", "해당 정보가 없습니다.");
-			mv.setViewName("error/error");
-		}
-		return mv;
-	}
-	
-	//삭제 
-	@RequestMapping(value="/delete", method=RequestMethod.GET)
-	public String member_delete(String id) {
-		memberservice.delete(id);
-		return "redirect:list";
-	}
 	
 	// ================================= 현능씨 부분! ================================
 	   // 휴대폰 번호 중복 검사 - ajax
@@ -359,6 +264,8 @@ public class MemberController {
 	      
 	      return random;
 	   }
+	   
+	// ================================= 정훈씨 부분! ================================
 	   
 	   @RequestMapping(value="/userlist")
 		public ModelAndView MemberList(
@@ -396,7 +303,7 @@ public class MemberController {
 			mv.addObject("limit", limit);
 			return mv;
 	   }
-	   
+	
 	   @PostMapping("/userdelete")
 		public String UserDelete(
 				@RequestParam(value = "MEM_ID", required = false)String id, 
