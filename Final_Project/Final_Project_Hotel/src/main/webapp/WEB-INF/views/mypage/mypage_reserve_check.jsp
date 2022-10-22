@@ -31,6 +31,12 @@
 		border-bottom: 2px solid black;
 		
 	}
+
+	.nothing{
+		margin-top: 200px;
+		text-align: center;
+		height: 400px;
+	}
 </style>
 </head>
 
@@ -85,8 +91,14 @@
 
 					<div class="content-title">객실예약확인</div>
 					<c:if test="${empty rezData }">
-						<div>객실 예약 정보가 없습니다.</div>
+						<form action="/hotel/room/roomList">
+							<div class="nothing">
+								<h4>객실 예약 정보가 없습니다.</h4>
+								<h4>객실 예약을 먼저 해주세요</h4>
+								<button type="submit" class="btn btn-primary">예약하로 가기</button>					
+							</div>
 
+						</form>
 					</c:if>
 					<c:if test="${not empty rezData }">
 

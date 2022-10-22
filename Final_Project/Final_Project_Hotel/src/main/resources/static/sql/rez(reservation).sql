@@ -22,3 +22,7 @@ where MEM_ID = 'S1234'
 select * from question_board
 
 delete from OPTION_RESERVATION where REZ_ID = 4;
+
+
+
+delete from rez;
