@@ -190,7 +190,7 @@ $(function(){
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-10">
-				<h3 class="text-heading title_color">커뮤니티 > 후기게시판</h3>
+				<h3 class="text-heading title_color">커뮤니티 > <a href="/hotel/review/reviewList" style="text-decoration:none; color:black;">후기게시판</a></h3>
 				
 				<a href="reviewWriteForm" class="genric-btn primary circle">글쓰기</a>
 				
@@ -369,7 +369,7 @@ $(function(){
 	                        
 	                        <!-- 인기검색어 없을 때 (한 번도 검색하지 않은 경우) -->
 	                    	<c:if test="${empty topSearchWordList}">
-	                    		<span>인기 검색어 없음</span>
+	                    		<span>인기 검색어가 없습니다</span>
 	                    	</c:if>
 	                    </ol>   
 	                </aside>

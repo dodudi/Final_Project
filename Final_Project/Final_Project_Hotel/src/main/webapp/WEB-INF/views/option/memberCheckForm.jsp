@@ -88,7 +88,7 @@ $(function(){
 					        	xhr.setRequestHeader(header, token); // 403 Access deny 오류 처리(Spring Security CSRF)		
 					        },
 							success : function(rdata){
-								alert("인증번호가 발송되었습니다. => " + rdata);
+								alert("인증번호가 발송되었습니다.");
 								$("input[name='phoneAuthNum']").val(rdata); // 인증번호 저장되는 곳
 								$("input[name='phoneAuth']").attr('type', 'text').attr('readonly', false); // 인증번호 입력란
 								$("input[name='phoneAuthBtn']").attr('type', 'button').attr('disabled', false).attr('class','genric-btn success circle'); // 인증번호 입력 후 일치여부 확인 버튼
@@ -123,7 +123,7 @@ $(function(){
 	var discountPrice;
 	$("input[name='POINT_DISCOUNT']").change(function(){
 		var usePoint = $(this).val();
-		if(couponAfterPrice == 0) {
+		if(couponAfterPrice == 0) { // 쿠폰 사용 금액 없는 경우
 			if( usePoint > ${member.MEM_POINT} ){ // 가용 포인트보다 많은 포인트 입력한 경우
 				alert("가용포인트보다 많은 포인트를 입력할 수 없습니다.");
 				$(this).val(${member.MEM_POINT});
@@ -142,7 +142,7 @@ $(function(){
 				console.log("====================");
 				$("#totalPrice").val(discountPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
 			}
-		} else {
+		} else { // 쿠폰 사용 금액 있는 경우
 			if( usePoint > ${member.MEM_POINT} ){ // 가용 포인트보다 많은 포인트 입력한 경우
 				alert("가용포인트보다 많은 포인트를 입력할 수 없습니다.");
 				$(this).val(${member.MEM_POINT});
@@ -172,11 +172,12 @@ $(function(){
 		console.log("쿠폰번호: " + couponNum);
 		console.log("쿠폰할인: " + couponDiscountPercent);
 		console.log("============");
-		$("input[name='POINT_DISCOUNT']").val('0'); // 마일리지 먼저 사용했었다면 0 된다
+		$("input[name='POINT_DISCOUNT']").val('0'); // 포인트 먼저 사용했었다면 0 된다
 		
 		discountPrice = originalPrice * (100 - couponDiscountPercent) / 100;
 		couponAfterPrice = discountPrice;
 		$("#totalPrice").val(discountPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+		$("input[name='couponPrice']").val( originalPrice * couponDiscountPercent / 100 ); // 쿠폰할인금액
 		$("input[name='COUPON_NUMBER']").val(couponNum);
 	}) // 쿠폰 사용 end
 	
@@ -237,7 +238,8 @@ function payment() {
         pay_method: "card",
         //merchant_uid : new Date().getTime(), // 가맹점에서 생성/관리하는 고유 주문번호 (중복 불가)
         name: "${room.ROOM_TYPE}", // "${room.ROOM_TYPE}" 또는 "${rez.ROOM_ID}" // 아이템 이름
-        amount: 100, // $("#totalPrice").val().replaceAll(",", ""), // 실제 결제 금액
+        amount: 100, // 임시 결제금액
+        //amount: $("#totalPrice").val().replaceAll(",", ""), // 실제 결제금액
         buyer_email: "${member.MEM_EMAIL}",
         buyer_name: "${member.MEM_NAME}", // 결제자 이름
         buyer_tel: "${member.MEM_PHONE}",
@@ -449,7 +451,7 @@ function payment() {
 		                        			</td> 
 		                        		</tr>
 		                        		<tr>	
-		                        			<th>총 금액</th>
+		                        			<th>총금액</th>
 		                        			<td>
 		                        				<fmt:formatNumber value="${optionPrice.bfTotal + optionPrice.dnTotal + optionPrice.spTotal}" pattern="#,###"/>원
 		                        			</td>
@@ -491,9 +493,10 @@ function payment() {
                         					</td>
                         				</tr>
                         			</c:forEach>
-	                        		
 	                        		<tr>	
-	                        			<th>마일리지</th>
+	                        			<th>포인트</th>
+	                        		</tr>
+	                        		<tr>
 	                        			<td>
 	                        				<input type="text" class="glowing-border" name="POINT_DISCOUNT" value="0" style="width:50px;">
 	                        				&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;${member.MEM_POINT} point
@@ -505,7 +508,7 @@ function payment() {
 	                        <aside class="single_sidebar_widget author_widget">
 	                        	<table class="table" style="text-align:left;">
 	                        		<tr>
-	                        			<th colspan="2" class="table-secondary">04 최종 결제 금액</th>
+	                        			<th colspan="2" class="table-secondary">04 최종 결제금액</th>
 	                        		</tr>
 	                        		<tr>	
 	                        			<td>
@@ -531,6 +534,8 @@ function payment() {
 				<input type="hidden" name="spAdult" value="${spAdult}">   <!-- 수영장 성인 -->
 				<input type="hidden" name="spChild" value="${spChild}">   <!-- 수영장 아동 -->
 				<input type="hidden" name="COUPON_NUMBER" value="0">    <!-- 사용한 쿠폰 번호 -->
+				<input type="hidden" name="originalPrice" value="${totalPrice}"> <!-- 기존 결제 금액 -->
+				<input type="hidden" name="couponPrice">   <!-- 쿠폰 할인 금액-->
 				<input type="hidden" name="PAYMENT_ID">    <!-- 결제 번호 -->
 				<input type="hidden" name="PAYMENT_PRICE"> <!-- 결제 금액 -->
             </form>

@@ -9,7 +9,7 @@
 <title>옵션 신청 페이지</title>
 <style>
 	#bfHide, #dnHide, #spHide { width:20px; height:20px; float:right }
-	input[readonly] {border:none; background-color:#f9f9ff; width:95px}
+	input[readonly] {border:none; background-color:#f9f9ff; width:95px; text-align:center}
 	input[name="REZ_CHECKIN"], input[name="REZ_CHECKOUT"], input[name="ROOM_ID"] {float:left}
 	input[name='bfTotal'], input[name='dnTotal'], input[name='spTotal'], #total {text-align:right;}
 	.option {position:relative; right:40px}
@@ -395,11 +395,11 @@ $(function(){
 	                        		</tr>
 	                        		<tr>	
 	                        			<th style="width:30%">체크인</th>
-	                        			<td><input type="text" name="REZ_CHECKIN" value="${rez.REZ_CHECKIN}" onfocus="this.blur();"></td>
+	                        			<td><input type="text" name="REZ_CHECKIN" value="${rez.REZ_CHECKIN}" onfocus="this.blur();" style="text-align:left"></td>
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>체크아웃</th>
-	                        			<td><input type="text" name="REZ_CHECKOUT" value="${rez.REZ_CHECKOUT}" onfocus="this.blur();"></td>
+	                        			<td><input type="text" name="REZ_CHECKOUT" value="${rez.REZ_CHECKOUT}" onfocus="this.blur();" style="text-align:left"></td>
 	                        		</tr>
 	                        		<tr>	
 	                        			<th>숙박일수</th>
