@@ -304,12 +304,10 @@ public class ReservationController {
 				if( !(bfAdult2[i].replaceAll("[^0-9]", "").equals("0") && bfChild2[i].replaceAll("[^0-9]", "").equals("0")) ) {
 					OptionReservation orz = new OptionReservation();
 					orz.setOPTION_ID(1);
-					orz.setOPTION_RESERVATION_DATE(dateList2[i+1].replaceAll("[\\[\\] ]", ""));
+					orz.setOPTION_RESERVATION_DATE(dateList2[i+1].replaceAll("\\[", "").replaceAll("\\]", "").replaceAll(",", ""));
 					orz.setADULT(Integer.parseInt(bfAdult2[i].replaceAll("[^0-9]", "")));
 					orz.setCHILD(Integer.parseInt(bfChild2[i].replaceAll("[^0-9]", "")));
 					orz.setREZ_ID(rez.getREZ_ID());
-					//orz.setROOM_ID(rez.getROOM_ID());
-					//orz.setMEM_ID(loginId);
 					int res = optionRezService.optReservation(orz);
 					if(res == 0) { // 옵션 예약 실패
 						logger.info("[" + dateList2[i+1] + " | 조식 옵션 예약 실패] res=" + res);
@@ -324,12 +322,10 @@ public class ReservationController {
 				if( !(dnAdult2[i].replaceAll("[^0-9]", "").equals("0") && dnChild2[i].replaceAll("[^0-9]", "").equals("0")) ) {
 					OptionReservation orz = new OptionReservation();
 					orz.setOPTION_ID(2);
-					orz.setOPTION_RESERVATION_DATE(dateList2[i].replaceAll("[\\[\\] ]", ""));
+					orz.setOPTION_RESERVATION_DATE(dateList2[i].replaceAll("\\[", "").replaceAll("\\]", "").replaceAll(",", ""));
 					orz.setADULT(Integer.parseInt(dnAdult2[i].replaceAll("[^0-9]", "")));
 					orz.setCHILD(Integer.parseInt(dnChild2[i].replaceAll("[^0-9]", "")));
 					orz.setREZ_ID(rez.getREZ_ID());
-					//orz.setROOM_ID(rez.getROOM_ID());
-					//orz.setMEM_ID(loginId);
 					int res = optionRezService.optReservation(orz);
 					if(res == 0) { // 옵션 예약 실패
 						logger.info("[" + dateList2[i] + " | 디너 옵션 예약 실패] res=" + res);
@@ -344,7 +340,7 @@ public class ReservationController {
 				if( !(spAdult2[i].replaceAll("[^0-9]", "").equals("0") && spChild2[i].replaceAll("[^0-9]", "").equals("0")) ) {
 					OptionReservation orz = new OptionReservation();
 					orz.setOPTION_ID(3);
-					orz.setOPTION_RESERVATION_DATE(dateList2[i].replaceAll("[\\[\\] ]", ""));
+					orz.setOPTION_RESERVATION_DATE(dateList2[i].replaceAll("\\[", "").replaceAll("\\]", "").replaceAll(",", ""));
 					orz.setADULT(Integer.parseInt(spAdult2[i].replaceAll("[^0-9]", "")));
 					orz.setCHILD(Integer.parseInt(spChild2[i].replaceAll("[^0-9]", "")));
 					orz.setREZ_ID(rez.getREZ_ID());
@@ -398,8 +394,8 @@ public class ReservationController {
 		// 체크인 날짜 ~ 체크아웃 날짜
 		List<String> dateList3 = new ArrayList<String>();
 		for(int i = 0; i < dateList2.length; i++) {
-			logger.info("***[체크인 날짜 ~ 체크아웃 날짜] " + dateList2[i].replaceAll("[\\[\\] ]", ""));
-			dateList3.add(dateList2[i].replaceAll("[\\[\\] ]", ""));
+			logger.info("***[체크인 날짜 ~ 체크아웃 날짜] " + dateList2[i]);
+			dateList3.add(dateList2[i].replaceAll("\\[", "").replaceAll("\\]", "").replaceAll(",", ""));
 		}
 		
 		int optRezListCount = optionRezService.getOptRezListCount(rez.getREZ_ID()); // 옵션 예약 리스트 갯수
@@ -408,6 +404,8 @@ public class ReservationController {
 		Member member = memberService.member_info(rez.getMEM_ID()); // 예약자 정보
 		
 		mv.addObject("member", member); // 예약자 정보
+		mv.addObject("originalPrice", request.getParameter("originalPrice")); // 할인 전 긍액
+		mv.addObject("couponPrice", request.getParameter("couponPrice")); // 쿠폰 할인 긍액
 		mv.addObject("optRezListCount", optRezListCount); // 옵션 예약 리스트 갯수
 		mv.addObject("optRezList", optRezList); // 옵션 예약 리스트
 		mv.addObject("rez", rez); // 객실 예약 정보

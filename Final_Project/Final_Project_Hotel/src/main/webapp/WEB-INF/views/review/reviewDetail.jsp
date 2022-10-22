@@ -264,8 +264,8 @@ $(function(){
 		content.attr('disabled', false).addClass('form-control'); 
 		content.focus();
 		
-		var modifyBtn = '<button type="button" class="btn btn-danger float-right" id="commModifyCancelBtn">취소</button>'
-					  + '<button type="button" class="btn btn-info float-right" id="commModifyBtn">등록</button>';
+		var modifyBtn = '<button type="button" class="btn btn-danger float-right" id="commModifyCancelBtn" style="position:relative; top:8px">취소</button>'
+					  + '<button type="button" class="btn btn-info float-right" id="commModifyBtn" style="position:relative; top:8px">등록</button>';
 		content.parent().append(modifyBtn);
 	})
 	// 댓글 수정
@@ -298,8 +298,7 @@ $(function(){
 	// 댓글 수정 취소
 	$("body").on('click', '#commModifyCancelBtn', function(){
 		$(this).parent().find('textarea').removeClass('form-control').attr('disabled', true).attr('cols', '100').css('border','none');
-		$(this).parent().find('button:nth-child(5)').remove();
-		$(this).parent().find('button:nth-child(4)').remove();
+		$(this).parent().find('button.btn.btn-info.float-right').remove();
 		$(this).remove();
 	}) // 댓글 수정 end
 	

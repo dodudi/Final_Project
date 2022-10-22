@@ -85,22 +85,10 @@ $(function(){
 			        			<c:forEach var="orl" items="${optRezList}">
 			        				<c:if test="${dl eq orl.OPTION_RESERVATION_DATE}"> <!-- 해당 날짜에 해당하는 옵션예약정보만 출력 -->
 								     	<c:if test="${orl.OPTION_ID == 1}"> <!-- 조식 -->
-								     		<c:if test="${dl ne rez.REZ_CHECKOUT}">
 					        					<td>조식 | 성인 ${orl.ADULT}명 / 아동 ${orl.CHILD}명</td>
-					        				</c:if>
-					        				<c:if test="${dl eq rez.REZ_CHECKOUT}"> <!-- 체크아웃 날짜의 디너 예약은 없으므로 조식 출력 후 디너 0명 출력 -->
-					        					<td>조식 | 성인 ${orl.ADULT}명 / 아동 ${orl.CHILD}명</td>
-					        					<td>디너 | 성인 0명 / 아동 0명</td>
-					        				</c:if>
 					        			</c:if>
 					        			<c:if test="${orl.OPTION_ID == 2}">
-					        				<c:if test="${dl ne rez.REZ_CHECKIN}">
 					        					<td>디너 | 성인 ${orl.ADULT}명 / 아동 ${orl.CHILD}명</td>
-					        				</c:if>
-					        				<c:if test="${dl eq rez.REZ_CHECKIN}"> <!-- 체크인 날짜의 조식 예약은 없으므로 디너 출력 전 조식 0명 출력 -->
-					        					<td>조식 | 성인 0명 / 아동 0명</td>
-					        					<td>디너 | 성인 ${orl.ADULT}명 / 아동 ${orl.CHILD}명</td>
-					        				</c:if>
 					        			</c:if>
 					        			<c:if test="${orl.OPTION_ID == 3}">
 					        				<td>수영장 | 성인 ${orl.ADULT}명 / 아동 ${orl.CHILD}명</td>
@@ -120,12 +108,12 @@ $(function(){
 	        		</tr>
 	        		<tr>
 	        			<th>총금액</th><td colspan="3">
-	        				<fmt:formatNumber value="${paymentInfo.PAYMENT_PRICE}" pattern="#,###"/>원
+	        				<fmt:formatNumber value="${originalPrice}" pattern="#,###"/>원
 	        			</td>
 	        		</tr>
 	        		<tr>
 	        			<th>할인금액</th><td colspan="3">
-	        			<fmt:formatNumber value="${paymentInfo.POINT_DISCOUNT}" pattern="#,###"/>원
+	        			<fmt:formatNumber value="${paymentInfo.POINT_DISCOUNT + couponPrice}" pattern="#,###"/>원
 	        			</td>
 	        		</tr>
 	        		<tr>

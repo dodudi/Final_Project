@@ -88,6 +88,7 @@ $(function(){
 	                            		</tr>
 	                            	</thead>
 	                            	<tbody>
+	                            		<c:set var="i" value="1"/>
 	                            		<c:forEach var="dl" items="${dateList}">
 		                            		<tr style="background-color:#dee2e6">
 		                            			<th><input type="text" name="dateList" value="${dl}" onfocus="this.blur();" style="background-color:#dee2e6; font-weight:bold"></th>
@@ -97,12 +98,13 @@ $(function(){
 		                            			</th>
 		                            			<td>
 		                            				<!-- 체크아웃 날짜는 숙박하지 않으므로 객실 금액이 부과되지 않는다 (0원) -->
-		                            				<c:if test="${dl != rez.REZ_CHECKOUT}">
-		                            					<span><fmt:formatNumber value="${room.ROOM_PRICE}" pattern="#,###"/>원</span>
-		                            				</c:if>
-		                            				<c:if test="${dl == rez.REZ_CHECKOUT}">
-		                            					<span><fmt:formatNumber value="0" pattern="#,###"/>원</span>
-		                            				</c:if>
+	                            					<c:if test="${i <= nights}">
+	                            						<span><fmt:formatNumber value="${room.ROOM_PRICE}" pattern="#,###"/>원</span>
+	                            					</c:if>
+	                            					<c:if test="${i > nights}">
+	                            						<span><fmt:formatNumber value="0" pattern="#,###"/>원</span>
+	                            					</c:if>
+	                            					<c:set var="i" value="${i+1}"/>
 		                            			</td>
 		                            		</tr>
 	                            			<c:forEach var="optDate" items="${optList}"> <!-- List -->
