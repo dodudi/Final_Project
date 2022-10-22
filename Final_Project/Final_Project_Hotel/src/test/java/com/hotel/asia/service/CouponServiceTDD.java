@@ -67,7 +67,7 @@ public class CouponServiceTDD {
 	// 쿠폰을 사용하면 삭제함과 동시에 사용내역으로 저장 테스트
 	@Test
 	public void useAndSaveCoupon() {
-		List<CouponMemberVO> data = service.getCouponMember("user01");
+		List<CouponMemberVO> data = service.getCouponMember("user02");
 		boolean result = service.useAndSaveCoupon(data.get(0).getCOUPON_NUMBER());
 		log.info("성공? : " + result);
 	}

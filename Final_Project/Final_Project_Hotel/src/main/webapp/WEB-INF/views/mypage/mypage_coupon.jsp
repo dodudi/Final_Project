@@ -183,7 +183,6 @@
 										</div>
 									</c:if>
 									<c:if test="${not empty useCoupons }">
-										<div class="content-title mb-3">쿠폰 사용 내역 확인</div>
 										<table class="table table-bordered  text-center">
 											<thead>
 												<tr class="table-active">

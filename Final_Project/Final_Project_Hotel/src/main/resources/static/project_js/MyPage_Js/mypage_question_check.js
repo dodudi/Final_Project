@@ -6,7 +6,7 @@ function drawItem(quest){
 
 	for(let d = 1; d<=question.length; d++){
 			data +=	"<tr><td>" + question[d-1]['QUESTIONS_NUM']+ "</td><td>" +question[d-1]['QUESTIONS_CATEGORY']+
-					"</td><td>"+question[d-1]['QUESTIONS_SUBJECT']+"</td><td>"+question[d-1]['MEM_ID']+
+					"</td><td><a href='/hotel/question/detail?num=" +question[d-1]['QUESTIONS_NUM'] +"'>" + question[d-1]['QUESTIONS_SUBJECT']+"</a></td><td>"+question[d-1]['MEM_ID']+
 					"</td><td>"+question[d-1]['QUESTIONS_DATE']+"</td><td>"+question[d-1]['QUESTIONS_READCOUNT'];
 					
 			if(question[d-1].QUESTIONS_ANSWER == null ||question[d-1].QUESTIONS_ANSWER == "" )
