@@ -238,6 +238,8 @@ public class ReservationController {
 			mv.addObject("paymentInfo", pm); // 결제 정보
 			mv.addObject("nights", nights); // 숙박일수
 			mv.addObject("dateList", dateList3); // 체크인 날짜 ~ 체크아웃 날짜 (list)
+			mv.addObject("originalPrice", request.getParameter("originalPrice")); // 할인 전 긍액
+			mv.addObject("couponPrice", request.getParameter("couponPrice")); // 쿠폰 할인 긍액
 			mv.setViewName("reservation/reservationComplete");
 			return mv;
 		}
