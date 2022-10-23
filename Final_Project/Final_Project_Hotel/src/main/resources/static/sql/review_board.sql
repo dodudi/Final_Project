@@ -6,7 +6,7 @@ create table REVIEW_BOARD ( -- 파일 관련 컬럼 삭제
 	REVIEW_CONTENT   VARCHAR2(3000), -- 크기 변경
 	REVIEW_DATE 	 DATE default sysdate,
 	REVIEW_READCOUNT NUMBER,
-	REVIEW_RECOMM 	 NUMBER--없어도 될듯? 해보고지우기
+	REVIEW_RECOMM 	 NUMBER
 )
 
 select * from REVIEW_BOARD

@@ -39,13 +39,13 @@ $(function(){
  			success: function(data){
  				if(data.recomm == 1) { // 추천
  					alert("추천되었습니다.");
- 					$("#recomm").attr('class','genric-btn primary circle');
+ 					$("#recomm").attr('class','genric-btn primary circle float-right');
  					$("#recomm").text("추천해제");
  					$("table > tbody > tr:nth-child(3) > td:nth-child(4)").text(data.recommCount);
  				}
  				if(data.recommDel == 1) { // 추천 해제
  					alert("추천 해제되었습니다.");
- 					$("#recomm").attr('class','genric-btn primary-border circle');
+ 					$("#recomm").attr('class','genric-btn primary-border circle float-right');
  					$("#recomm").text("추천");
  					$("table > tbody > tr:nth-child(3) > td:nth-child(4)").text(data.recommCount);
  				}
@@ -386,10 +386,10 @@ $(function(){
 					<c:if test="${loginId != review.MEM_ID}">
 						<!-- 기존 추천 여부에 따라 버튼 변경 -->
 						<c:if test="${already == 0}">
-							<button type="button" class="genric-btn primary-border circle" id="recomm">추천</button>
+							<button type="button" class="genric-btn primary-border circle float-right" id="recomm">추천</button>
 						</c:if>
 						<c:if test="${already == 1}">
-							<button type="button" class="genric-btn primary circle" id="recomm">추천해제</button>
+							<button type="button" class="genric-btn primary circle float-right" id="recomm">추천해제</button>
 						</c:if>
 					</c:if>
 					

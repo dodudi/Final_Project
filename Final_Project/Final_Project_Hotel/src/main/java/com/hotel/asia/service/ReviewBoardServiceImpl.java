@@ -27,7 +27,7 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
 		HashMap<String, String> map = new HashMap<String, String>();
 		// index == -1 : search_field가 넘어오지 않은 상태로, defaultValue="-1"
 		if(index != -1) {
-			String[] search_field= new String[] {"REVIEW_SUBJECT", "MEM_ID"};
+			String[] search_field= new String[] {"REVIEW_SUBJECT", "REVIEW_CONTENT"};
 			map.put("search_field", search_field[index]);
 			map.put("search_word", "%" + search_word + "%");
 		}
@@ -43,7 +43,7 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
 		
 		// index == -1 : search_field가 넘어오지 않은 상태로, defaultValue="-1"
 		if(index != -1) {
-			String[] search_field= new String[] {"REVIEW_SUBJECT", "MEM_ID"};
+			String[] search_field= new String[] {"REVIEW_SUBJECT", "REVIEW_CONTENT"};
 			map.put("search_field", search_field[index]);
 			map.put("search_word", "%" + search_word + "%");
 		}
