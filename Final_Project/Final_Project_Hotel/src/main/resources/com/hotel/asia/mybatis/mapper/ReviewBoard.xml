@@ -42,7 +42,7 @@
 	    	where	           
 	        <choose>
 	        	<when test="search_field=='REVIEW_SUBJECT'">REVIEW_SUBJECT</when>
-	            <when test="search_field=='MEM_ID'">MEM_ID</when>
+	            <when test="search_field=='REVIEW_CONTENT'">REVIEW_CONTENT</when>
 	        </choose>	  
 	        like #{search_word}
     	</if>

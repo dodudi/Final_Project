@@ -73,7 +73,7 @@ public class ReviewController {
 		}
 		
         // 2. 검색어 있을 때
-        if(index == 0) { // 검색 기준이 제목일 때 검색어 리스트에 들어간다
+        if(index != -1) { // 검색 기준이 제목일 때 검색어 리스트에 들어간다
         	List<ReviewBoard> searchReviewList = new ArrayList<ReviewBoard>(); // 검색된 글 리스트
         	listcount = 0; // 검색된 리스트 수 초기화
 			Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
