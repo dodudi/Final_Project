@@ -3,7 +3,7 @@ create table OPTION_RESERVATION(
 	OPTION_RESERVATION_ID   NUMBER primary key,
 	REZ_ID 				    NUMBER references REZ(REZ_ID) on delete cascade, -- on delete cascade 추가
 	OPTION_ID 			    NUMBER references OPTIONS(OPTION_ID),
-	OPTION_RESERVATION_DATE date,
+	OPTION_RESERVATION_DATE VARCHAR2(30),
 	ADULT 					NUMBER,
 	CHILD 					NUMBER
 );

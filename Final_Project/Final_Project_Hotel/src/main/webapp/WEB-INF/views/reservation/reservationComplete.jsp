@@ -37,8 +37,8 @@ $(function(){
     <section class="contact_area section_gap">
         <div class="container">
         	<table class="table table-bordered">
-        		<thead>
-	        		<tr style="background-color:lightgray">
+        		<thead style="background-color:#f5f2a3">
+	        		<tr>
 	        			<th>예약상태</th>
 	        			<th colspan="3">예약완료 - 예약번호 ${rez.REZ_ID}
 	        			</th>
