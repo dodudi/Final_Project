@@ -238,8 +238,8 @@ function payment() {
         pay_method: "card",
         //merchant_uid : new Date().getTime(), // 가맹점에서 생성/관리하는 고유 주문번호 (중복 불가)
         name: "${room.ROOM_TYPE}", // "${room.ROOM_TYPE}" 또는 "${rez.ROOM_ID}" // 아이템 이름
-        amount: 100, // 임시 결제금액
-        //amount: $("#totalPrice").val().replaceAll(",", ""), // 실제 결제금액
+        //amount: 100, // 임시 결제금액
+        amount: $("#totalPrice").val().replaceAll(",", ""), // 실제 결제금액
         buyer_email: "${member.MEM_EMAIL}",
         buyer_name: "${member.MEM_NAME}", // 결제자 이름
         buyer_tel: "${member.MEM_PHONE}",

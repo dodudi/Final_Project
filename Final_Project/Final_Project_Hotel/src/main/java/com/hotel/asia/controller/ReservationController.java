@@ -1,9 +1,11 @@
 package com.hotel.asia.controller;
 
 import java.security.Principal;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -289,6 +291,29 @@ public class ReservationController {
 		// 1. 객실 예약
 		rez.setMEM_ID(loginId); // 세션에 있는 아이디를 예약자 이름으로 설정
 		int result = rezService.reservation(rez); // 객실 예약 추가
+		//=========================
+		// 숙박일수 계산
+		Calendar checkInCal = Calendar.getInstance();
+		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // 날짜 형식 지정
+		Date checkInFormat = new SimpleDateFormat("yyyy-MM-dd").parse(rez.getREZ_CHECKIN());// 체크인 날짜
+		Date checkOutFormat = new SimpleDateFormat("yyyy-MM-dd").parse(rez.getREZ_CHECKOUT()); // 체크아웃 날짜
+		long diffSec; // 초 차이
+		long nights; // 일자 수 차이
+		diffSec = (checkOutFormat.getTime() - checkInFormat.getTime()) / 1000;
+		nights = diffSec / (24 * 60 * 60);
+		logger.info("숙박일수 : " + nights + "일");
+		String dateList3[] = new String[(int)nights +1];
+		checkInCal.setTime(checkInFormat);
+		int temp = 0;
+		for(int i = 0; i <= nights; i++) {
+			checkInCal.add(Calendar.DATE, temp);
+			dateList3[i] = sdf.format(checkInCal.getTime());
+			logger.info("숙박날짜 => " + dateList3[i]);
+			temp = 1;
+		}
+
+		
+		//=============================
 		
 		// 객실 예약 실패
 		if(result == 0) {
@@ -306,7 +331,7 @@ public class ReservationController {
 				if( !(bfAdult2[i].replaceAll("[^0-9]", "").equals("0") && bfChild2[i].replaceAll("[^0-9]", "").equals("0")) ) {
 					OptionReservation orz = new OptionReservation();
 					orz.setOPTION_ID(1);
-					orz.setOPTION_RESERVATION_DATE(dateList2[i+1].replaceAll("\\[", "").replaceAll("\\]", "").replaceAll(",", ""));
+					orz.setOPTION_RESERVATION_DATE(dateList3[i+1]);
 					orz.setADULT(Integer.parseInt(bfAdult2[i].replaceAll("[^0-9]", "")));
 					orz.setCHILD(Integer.parseInt(bfChild2[i].replaceAll("[^0-9]", "")));
 					orz.setREZ_ID(rez.getREZ_ID());
@@ -316,7 +341,7 @@ public class ReservationController {
 						mv.setViewName("에러페이지 설정하기~~");
 						return mv;
 					}
-					logger.info("[" + dateList2[i+1] + " | 조식 옵션 예약 성공] res=" + res);
+					logger.info("[" + dateList3[i+1] + " | 조식 옵션 예약 성공] res=" + res);
 				}
 			}
 			// 디너
@@ -324,7 +349,7 @@ public class ReservationController {
 				if( !(dnAdult2[i].replaceAll("[^0-9]", "").equals("0") && dnChild2[i].replaceAll("[^0-9]", "").equals("0")) ) {
 					OptionReservation orz = new OptionReservation();
 					orz.setOPTION_ID(2);
-					orz.setOPTION_RESERVATION_DATE(dateList2[i].replaceAll("\\[", "").replaceAll("\\]", "").replaceAll(",", ""));
+					orz.setOPTION_RESERVATION_DATE(dateList3[i]);
 					orz.setADULT(Integer.parseInt(dnAdult2[i].replaceAll("[^0-9]", "")));
 					orz.setCHILD(Integer.parseInt(dnChild2[i].replaceAll("[^0-9]", "")));
 					orz.setREZ_ID(rez.getREZ_ID());
@@ -334,7 +359,7 @@ public class ReservationController {
 						mv.setViewName("에러페이지 설정하기~~");
 						return mv;
 					}
-					logger.info("[" + dateList2[i] + " | 디너 옵션 예약 성공] res=" + res);
+					logger.info("[" + dateList3[i] + " | 디너 옵션 예약 성공] res=" + res);
 				}
 			}
 			// 수영장
@@ -342,19 +367,17 @@ public class ReservationController {
 				if( !(spAdult2[i].replaceAll("[^0-9]", "").equals("0") && spChild2[i].replaceAll("[^0-9]", "").equals("0")) ) {
 					OptionReservation orz = new OptionReservation();
 					orz.setOPTION_ID(3);
-					orz.setOPTION_RESERVATION_DATE(dateList2[i].replaceAll("\\[", "").replaceAll("\\]", "").replaceAll(",", ""));
+					orz.setOPTION_RESERVATION_DATE(dateList3[i]);
 					orz.setADULT(Integer.parseInt(spAdult2[i].replaceAll("[^0-9]", "")));
 					orz.setCHILD(Integer.parseInt(spChild2[i].replaceAll("[^0-9]", "")));
 					orz.setREZ_ID(rez.getREZ_ID());
-					//orz.setROOM_ID(rez.getROOM_ID());
-					//orz.setMEM_ID(loginId);
 					int res = optionRezService.optReservation(orz);
 					if(res == 0) { // 옵션 예약 실패
 						logger.info("[" + dateList2[i] + " | 수영장 옵션 예약 실패] res=" + res);
 						mv.setViewName("에러페이지 설정하기~~");
 						return mv;
 					}
-					logger.info("[" + dateList2[i] + " | 수영장 옵션 예약 성공] res=" + res);
+					logger.info("[" + dateList3[i] + " | 수영장 옵션 예약 성공] res=" + res);
 				}
 			}
 			logger.info("=====[옵션 예약 끝]=====");
@@ -385,20 +408,15 @@ public class ReservationController {
 		}
 		
 		
-		// 숙박일수 계산
-		String date1 = rez.getREZ_CHECKOUT(); // 체크아웃 날짜
-		String date2 = rez.getREZ_CHECKIN(); // 체크인 날짜
-		Date format1 = new SimpleDateFormat("yyyy-MM-dd").parse(date1);
-        Date format2 = new SimpleDateFormat("yyyy-MM-dd").parse(date2);
-        long diffSec = (format1.getTime() - format2.getTime()) / 1000; // 초 차이
-        long nights = diffSec / (24*60*60); // 일자 수 차이
-		logger.info("*** 숙박일수 : " + nights);
+		
 		// 체크인 날짜 ~ 체크아웃 날짜
+		/*
 		List<String> dateList3 = new ArrayList<String>();
 		for(int i = 0; i < dateList2.length; i++) {
-			logger.info("***[체크인 날짜 ~ 체크아웃 날짜] " + dateList2[i]);
 			dateList3.add(dateList2[i].replaceAll("\\[", "").replaceAll("\\]", "").replaceAll(",", ""));
-		}
+			logger.info("***[체크인 날짜 ~ 체크아웃 날짜] " + dateList2[i]);
+		}*/
+		
 		
 		int optRezListCount = optionRezService.getOptRezListCount(rez.getREZ_ID()); // 옵션 예약 리스트 갯수
 		List<OptionReservation> optRezList = optionRezService.getOptRezList(rez.getREZ_ID()); // 옵션 예약 리스트

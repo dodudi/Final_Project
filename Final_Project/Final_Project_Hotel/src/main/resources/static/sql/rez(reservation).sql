@@ -13,8 +13,7 @@ drop table REZ
 select * from rez;
 
 commit;
-delete from rez
-where MEM_ID = 'S1234'
+delete from rez where MEM_ID = 'B1234'
 
 delete from member
 where MEM_ID = 'S1234'
