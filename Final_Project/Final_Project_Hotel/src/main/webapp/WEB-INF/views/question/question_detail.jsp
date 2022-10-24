@@ -11,6 +11,7 @@
 <title>문의사항 게시판 - 상세보기</title>
 <style>
 .subject{width:15%; font-weight:bold}
+.container{color:black;}
 </style>
 </head>
 <body>
@@ -127,7 +128,7 @@
                                       <h5 class="modal-title" id="exampleModalLabel" style="text-align:center">문의사항 삭제</h5>
                                     </div>
                                     
-                                    <div class="modal-body" style="text-align:center">
+                                    <div class="modal-body" style="text-align:center; color:black;">
                                       정말로 삭제하시겠습니까?
                                     </div>
                                                                    
