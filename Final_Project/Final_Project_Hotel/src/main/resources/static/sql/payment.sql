@@ -16,3 +16,4 @@ drop table OPTION_RESERVATION;
 drop table REZ;
 
 delete from payment;
+commit;
