@@ -25,7 +25,10 @@
 	    	// 로그인하지 않거나 만료된 경우
 	        if('${state}' == 'emptyId'){
 	          alert("본 서비스는 회원만 가능합니다.");
-	       }
+	       } 
+	    	if("${result}" == 'updatePwSuccess'){
+	    		alert("로그인 화면으로 이동합니다.");
+	    	}
     	</script>
     	
     </head>
