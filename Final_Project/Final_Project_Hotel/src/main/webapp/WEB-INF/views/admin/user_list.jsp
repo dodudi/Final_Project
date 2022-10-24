@@ -5,7 +5,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>공지사항 게시판</title>
+<title>회원리스트</title>
+<!-- 로고 -->
+<link rel="icon" href="${pageContext.request.contextPath}/resources/image/favicon.png" type="image/png">
 <jsp:include page="../main/header.jsp"/>
 <script src="http://code.jquery.com/jquery-latest.js"></script>	
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
