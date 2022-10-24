@@ -67,7 +67,7 @@ $(function(){
             					</tr>
             					<tr>
             						<td>
-            							<a class="btn theme_btn button_hover" href="../room/roomDetail?num=${rez.ROOM_ID}" target='_blank'><strong>객실 상세보기</strong></a>
+            							<a class="btn theme_btn button_hover" href="../room/roomDetail?num=${rez.ROOM_ID}" target='_blank'><strong style="color:white">객실 상세보기</strong></a>
             						</td>
             					</tr>
             				</table>
