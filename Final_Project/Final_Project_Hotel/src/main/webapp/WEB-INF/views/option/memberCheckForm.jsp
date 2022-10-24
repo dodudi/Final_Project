@@ -287,9 +287,10 @@ function payment() {
 	                    <div class="single-post row">
 	                       <div class="col-lg-12">
 	                       		<table class="table">
-	                       			<tr style="background-color:#f5f2a3;">
-	                       				<th colspan="3">
-	                       					<span style="font-size:20pt; font-weight:bold">고객정보 (필수)</span>
+	                       			<tr>
+	                       				<th colspan="3" style="background-color:#f5f2a3;">
+	                       					<!-- <span style="font-size:20pt; font-weight:bold">고객정보 (필수)</span> -->
+	                       					<h3>고객정보 (필수)</h3>
 	                       				</th>
 	                       			</tr>
 	                       			<tr>
@@ -313,7 +314,7 @@ function payment() {
 	                       		</table>
 	                       </div>
 	                       <div class="col-lg-12" style="margin-top:40px">
-	                       		<h3 style="background-color:#f5f2a3; padding:9px">취소 정책 (필수 확인)</h3>
+	                       		<h3 style="background-color:#f5f2a3; padding:15px">취소 정책 (필수 확인)</h3>
 	                       		<p class="cancel_stxt">예약취소 및 미입실(No Show)에 관한 위약금 규정에 관하여 <span class="pTxt">공정거래위 산하 소비자 보호원 기준에 따라 아래와 같이 위약금 부과 처리에 관해 안내</span> 하오니, 이용에 유의 하시기 바랍니다.</p>
 					            <!-- 예약취소/환불 규정 참고: https://www.nesthotel.co.kr/privacy/cancellation_policy.asp -->
 					            <div class="cancel">
