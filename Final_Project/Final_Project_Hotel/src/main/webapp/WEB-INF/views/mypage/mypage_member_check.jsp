@@ -34,7 +34,7 @@
 					<h2 class="page-cover-tittle">회원정보</h2>
 					<ol class="breadcrumb">
 						<li class="active">마이페이지</li>
-						<li><a href="list">회원정보</a></li>
+						<li><a href="/hotel/mypage/member">회원정보</a></li>
 					</ol>
 				</div>
 			</div>

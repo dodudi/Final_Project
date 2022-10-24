@@ -45,7 +45,7 @@
 							<h2 class="page-cover-tittle">문의사항</h2>
 							<ol class="breadcrumb">
 								<li class="active">마이페이지</li>
-								<li><a href="list">문의사항</a></li>
+								<li><a href="/hotel/mypage/question">문의사항</a></li>
 							</ol>
 						</div>
 					</div>

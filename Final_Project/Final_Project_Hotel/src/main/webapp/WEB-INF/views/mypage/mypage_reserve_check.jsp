@@ -24,19 +24,19 @@
 <link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_module.css">
 <!--<link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_reserve_check.css">-->
 <style type="text/css">
-	.price{
-		width:20%;
-	}
-	.date{
-		border-bottom: 2px solid black;
-		
-	}
+.price {
+	width: 20%;
+}
 
-	.nothing{
-		margin-top: 200px;
-		text-align: center;
-		height: 400px;
-	}
+.date {
+	border-bottom: 2px solid black;
+}
+
+.nothing {
+	margin-top: 200px;
+	text-align: center;
+	height: 400px;
+}
 </style>
 </head>
 
@@ -49,7 +49,7 @@
 				<h2 class="page-cover-tittle">객실예약확인</h2>
 				<ol class="breadcrumb">
 					<li class="active">마이페이지</li>
-					<li><a href="list">객실예약확인</a></li>
+					<li><a href="/hotel/mypage/reserve">객실예약확인</a></li>
 				</ol>
 			</div>
 		</div>
@@ -95,7 +95,7 @@
 							<div class="nothing">
 								<h4>객실 예약 정보가 없습니다.</h4>
 								<h4>객실 예약을 먼저 해주세요</h4>
-								<button type="submit" class="btn btn-primary">예약하로 가기</button>					
+								<button type="submit" class="btn btn-primary">예약하로 가기</button>
 							</div>
 
 						</form>
@@ -139,6 +139,7 @@
 									<table class="table table-bordered">
 										<tbody>
 											<tr class="table-active">
+												<td class="price">예약번호</td>
 												<td class="price">날짜</td>
 												<td class="price">성인</td>
 												<td class="price">아동</td>
@@ -147,6 +148,7 @@
 											</tr>
 											<c:forEach var="date" items="${dates[rez.REZ_ID]}" varStatus="status">
 												<tr>
+													<td>${rez.REZ_ID}</td>
 													<td>${date}</td>
 													<c:set var="flag" value="false"></c:set>
 													<c:set var="optMapR" value="${optionMap[rez.REZ_ID][optionList.OPTION_ID]}"></c:set>
@@ -161,7 +163,10 @@
 														<td>${optMapR.ADULT}명</td>
 														<td>${optMapR.CHILD}명</td>
 														<td>${optMapR.CHILD + optMapR.ADULT}명</td>
-														<td><fmt:formatNumber value="${(optMapR.CHILD * optionList.OPTION_CHILD_PRICE) + (optMapR.ADULT * optionList.OPTION_DEFAULT_PRICE)}" pattern="#,###"/>원</td>
+														<td>
+															<fmt:formatNumber value="${(optMapR.CHILD * optionList.OPTION_CHILD_PRICE) + (optMapR.ADULT * optionList.OPTION_DEFAULT_PRICE)}" pattern="#,###" />
+															원
+														</td>
 													</c:if>
 													<c:if test="${flag==false }">
 														<td>0명</td>
