@@ -41,7 +41,11 @@
 .dateTitle{
 		text-align: center;
 		margin-top: 30px;
-			line-height: 0px;
+		line-height: 0px;
+}
+table{
+	text-align :center;
+	color:black;
 }
 </style>
 </head>
@@ -68,7 +72,7 @@
 					<div class="list-group">
 						<div class="nav-title">마이페이지</div>
 						<!--reserve-->
-						<a href="/hotel/mypage/reserve" class="list-group-item list-group-item-action active">
+						<a href="/hotel/mypage/reserve" class="list-group-item list-group-item-action" style="background-color:#f8b600">
 							<img src="/hotel/static/project_image/mypage_icon/ReservationCheckIcon.png" width="25px" alt="" />
 							객실예약확인
 						</a>
