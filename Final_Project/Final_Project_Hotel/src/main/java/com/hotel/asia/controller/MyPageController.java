@@ -212,7 +212,7 @@ public class MyPageController {
 
 		List<CouponMemberVO> delCoupons = couponService.getDelCoupon(mem_id);
 		List<CouponVO> delCouponOpt = couponService.getCouponAboutId(delCoupons);
-
+		
 		model.addAttribute("memberCouponCount", memberCouponCount);
 		model.addAttribute("useCouponCount", useCouponCount);
 		model.addAttribute("delCouponCount", delCouponCount);

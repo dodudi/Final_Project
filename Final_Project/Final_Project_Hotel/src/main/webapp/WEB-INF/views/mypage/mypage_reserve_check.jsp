@@ -36,6 +36,12 @@
 	margin-top: 200px;
 	text-align: center;
 	height: 400px;
+	line-height: 0px;
+}
+.dateTitle{
+		text-align: center;
+		margin-top: 30px;
+			line-height: 0px;
 }
 </style>
 </head>
@@ -107,6 +113,8 @@
 							<table class="table table-bordered">
 								<tbody>
 									<tr class="table-active">
+
+										<td>예약번호</td>
 										<td>등급</td>
 										<td>예약자명</td>
 										<td>체크인 날짜</td>
@@ -116,6 +124,7 @@
 									</tr>
 									<c:forEach var="rez" items="${rezData}" varStatus="status">
 										<tr>
+											<td>${rez.REZ_ID}</td>
 											<td>${roomData[status.index].ROOM_TYPE}</td>
 											<td>${rez.MEM_ID }</td>
 											<td>${rez.REZ_CHECKIN }</td>
@@ -132,14 +141,17 @@
 						<!-- Table content Reservation -->
 						<c:forEach var="rez" items="${rezData}" varStatus="status">
 							<div class="content-table mb-5">
-								<div class="content-title date">${dates[rez.REZ_ID][0]}~${dates[rez.REZ_ID][(dates[rez.REZ_ID].size()-1)]}</div>
+								<div class="date row">
+									<div class="content-title">[객실예약번호 : ${rez.REZ_ID}]</div>
+									<div class="dateTitle"> <h4> &nbsp;&nbsp; ${dates[rez.REZ_ID][0]}~${dates[rez.REZ_ID][(dates[rez.REZ_ID].size()-1)]}</h4></div>
+								</div>
+
 
 								<c:forEach var="optionList" items="${optList}" varStatus="optStatus">
 									<div class="content-title">${optionList.OPTION_NAME}</div>
 									<table class="table table-bordered">
 										<tbody>
 											<tr class="table-active">
-												<td class="price">예약번호</td>
 												<td class="price">날짜</td>
 												<td class="price">성인</td>
 												<td class="price">아동</td>
@@ -148,7 +160,6 @@
 											</tr>
 											<c:forEach var="date" items="${dates[rez.REZ_ID]}" varStatus="status">
 												<tr>
-													<td>${rez.REZ_ID}</td>
 													<td>${date}</td>
 													<c:set var="flag" value="false"></c:set>
 													<c:set var="optMapR" value="${optionMap[rez.REZ_ID][optionList.OPTION_ID]}"></c:set>
