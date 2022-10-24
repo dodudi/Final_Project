@@ -60,7 +60,7 @@
 	        			<th>인원수</th><td colspan="3">${rez.REZ_ADULT + rez.REZ_CHILD}명 (성인 ${rez.REZ_ADULT}명 / 아동 ${rez.REZ_CHILD}명)</td>
 	        		</tr>
 	        		
-	        		<!-- 옵션 예약 리스트 -->
+	        		<%-- 옵션 예약 리스트 --%>
 	        		<c:if test="${optRezListCount > 0}">
 		        		<tr style="background-color:lightgray">
 		        			<th colspan="5">
@@ -75,7 +75,7 @@
 			        				
 			        			<c:forEach var="orl" items="${optRezList}">
 			        				<%-- <c:if test = "${fn:contains(dl, orl.OPTION_RESERVATION_DATE)}"> --%>
-			        				<<c:if test="${dl eq orl.OPTION_RESERVATION_DATE}"> <!-- 해당 날짜에 해당하는 옵션예약정보만 출력 -->
+			        				<c:if test="${dl eq orl.OPTION_RESERVATION_DATE}"> <!-- 해당 날짜에 해당하는 옵션예약정보만 출력 -->
 								     	<c:if test="${orl.OPTION_ID == 1}"> <!-- 조식 -->
 					        					<td>조식 | 성인 ${orl.ADULT}명 / 아동 ${orl.CHILD}명</td>
 					        			</c:if>
