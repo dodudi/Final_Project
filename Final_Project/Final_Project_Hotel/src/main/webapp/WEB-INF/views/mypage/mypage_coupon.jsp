@@ -61,7 +61,7 @@
 							<h2 class="page-cover-tittle">쿠폰확인</h2>
 							<ol class="breadcrumb">
 								<li class="active">마이페이지</li>
-								<li><a href="list">쿠폰확인</a></li>
+								<li><a href="/hotel/mypage/coupon">쿠폰확인</a></li>
 							</ol>
 						</div>
 					</div>
