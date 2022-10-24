@@ -7,7 +7,7 @@
 <head>
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}">
-<title>객실예약확인페이지</title>
+<title>객실예약확인</title>
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="/hotel/static/css/bootstrap.css">
@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="/hotel/static/css/responsive.css">
 
 <link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_module.css">
+<link rel="icon" href="${pageContext.request.contextPath}/resources/image/favicon.png" type="image/png">
 <!--<link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_reserve_check.css">-->
 <style type="text/css">
 .price {
@@ -121,14 +122,13 @@ table{
 							<table class="table table-bordered">
 								<tbody>
 									<tr class="table-active">
-
-										<td>예약번호</td>
-										<td>등급</td>
-										<td>예약자명</td>
-										<td>체크인 날짜</td>
-										<td>체크아웃 날짜</td>
-										<td>성인</td>
-										<td>아동</td>
+										<th>예약번호</th>
+										<th>등급</th>
+										<th>예약자명</th>
+										<th>체크인 날짜</th>
+										<th>체크아웃 날짜</th>
+										<th>성인</th>
+										<th>아동</th>
 									</tr>
 									<c:forEach var="rez" items="${rezData}" varStatus="status">
 										<tr>
@@ -160,11 +160,11 @@ table{
 									<table class="table table-bordered">
 										<tbody>
 											<tr class="table-active">
-												<td class="price">날짜</td>
-												<td class="price">성인</td>
-												<td class="price">아동</td>
-												<td class="price">인원 수</td>
-												<td class="price">가격</td>
+												<th class="price">날짜</th>
+												<th class="price">성인</th>
+												<th class="price">아동</th>
+												<th class="price">인원 수</th>
+												<th class="price">가격</th>
 											</tr>
 											<c:forEach var="date" items="${dates[rez.REZ_ID]}" varStatus="status">
 												<tr>

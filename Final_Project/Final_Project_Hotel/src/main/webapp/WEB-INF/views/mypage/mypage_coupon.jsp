@@ -37,7 +37,7 @@ table {
 </head>
 
 <head>
-<title>객실예약확인페이지</title>
+<title>쿠폰 확인</title>
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="/hotel/static/css/bootstrap.css">
@@ -54,6 +54,7 @@ table {
 
 <!--mypage_member_check.css-->
 <link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_module.css">
+<link rel="icon" href="${pageContext.request.contextPath}/resources/image/favicon.png" type="image/png">
 </head>
 
 <body>
@@ -62,10 +63,10 @@ table {
 		<div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
 		<div class="container">
 			<div class="page-cover text-center">
-				<h2 class="page-cover-tittle">쿠폰확인</h2>
+				<h2 class="page-cover-tittle">마일리지/쿠폰</h2>
 				<ol class="breadcrumb">
 					<li class="active">마이페이지</li>
-					<li><a href="/hotel/mypage/coupon">쿠폰확인</a></li>
+					<li><a href="/hotel/mypage/coupon">마일리지/쿠폰</a></li>
 				</ol>
 			</div>
 		</div>
@@ -170,7 +171,7 @@ table {
 					<!-- 쿠폰 내역 끝 -->
 
 					<!-- 사용 내역 -->
-					<div class="mb-5">
+					<div class="mb-5" style="margin-bottom:150px!important;">
 						<div class="content-title mb-3">쿠폰 사용 내역 확인</div>
 						<c:if test="${empty useCoupons }">
 							<div class="nothing">

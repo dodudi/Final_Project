@@ -24,6 +24,7 @@
 
 <!--mypage_question_check.css-->
 <link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_module.css">
+<link rel="icon" href="${pageContext.request.contextPath}/resources/image/favicon.png" type="image/png">
 <style>
 .nothing {
 	margin-top: 200px;
@@ -56,6 +57,7 @@ table {
 	background-color:#f3c300!important;
 	border-color : #f3c300!important;
 }
+
 </style>
 </head>
 
@@ -66,10 +68,10 @@ table {
 		<div class="overlay bg-parallax" data-stellar-ratio="0.8" data-stellar-vertical-offset="0" data-background=""></div>
 		<div class="container">
 			<div class="page-cover text-center">
-				<h2 class="page-cover-tittle">문의사항</h2>
+				<h2 class="page-cover-tittle">문의내역확인</h2>
 				<ol class="breadcrumb">
 					<li class="active">마이페이지</li>
-					<li><a href="/hotel/mypage/question">문의사항</a></li>
+					<li><a href="/hotel/mypage/question">문의내역확인</a></li>
 				</ol>
 			</div>
 		</div>
@@ -141,13 +143,13 @@ table {
 							<table class="table">
 								<tbody id="itemBox">
 									<tr class="table-active">
-										<td>글 번호</td>
-										<td>카테고리</td>
-										<td>제목</td>
-										<td>작성자</td>
-										<td>날짜</td>
-										<td>조회수</td>
-										<td>문의상태</td>
+										<th>글 번호</th>
+										<th>카테고리</th>
+										<th>제목</th>
+										<th>작성자</th>
+										<th>날짜</th>
+										<th>조회수</th>
+										<th>문의상태</th>
 									</tr>
 									<c:forEach var="i" begin="1" end="${questions.size()}" step="1">
 										<tr>

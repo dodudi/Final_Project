@@ -5,7 +5,7 @@
 <head>
 <meta name="_csrf_header" th:content="${_csrf.headerName}">
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}">
-<title>회원 정보 수정</title>
+<title>회원 정보 확인</title>
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="/hotel/static/css/bootstrap.css">
@@ -21,6 +21,7 @@
 
 <!--mypage_member_check.css-->
 <link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_module.css">
+<link rel="icon" href="${pageContext.request.contextPath}/resources/image/favicon.png" type="image/png">
 <!--<link rel="stylesheet" href="/hotel/static/project_css/mypage/mypage_member_check.css">-->
 <style type="text/css">
 table {
