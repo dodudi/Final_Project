@@ -47,6 +47,9 @@ table{
 	text-align :center;
 	color:black;
 }
+.btn-primary{
+	background-color:#f3c300;
+}
 </style>
 </head>
 
@@ -105,7 +108,7 @@ table{
 							<div class="nothing">
 								<h4>객실 예약 정보가 없습니다.</h4>
 								<h4>객실 예약을 먼저 해주세요</h4>
-								<button type="submit" class="btn btn-primary">예약하로 가기</button>
+								<button type="submit" class="btn btn-primary">예약하기</button>
 							</div>
 
 						</form>
