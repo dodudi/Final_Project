@@ -5,6 +5,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+<!-- 로고 -->
+<link rel="icon" href="${pageContext.request.contextPath}/resources/image/favicon.png" type="image/png">
 <title>문의사항 게시판</title>
 <jsp:include page="../main/header.jsp"/>
 <script>
