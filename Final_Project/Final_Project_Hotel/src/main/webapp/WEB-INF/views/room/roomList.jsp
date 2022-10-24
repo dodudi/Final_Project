@@ -8,7 +8,8 @@
 <meta name="HandheldFriendly" content="true">
 <meta name="format-detection" content="telephone=no">
 <title>객실예약</title>
-
+<!-- 로고 -->
+<link rel="icon" href="${pageContext.request.contextPath}/resources/image/favicon.png" type="image/png">
 <jsp:include page="../main/header.jsp"/>
 
 <!-- 필수 JS/CSS { -->

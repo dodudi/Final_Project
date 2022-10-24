@@ -2,6 +2,8 @@
 <!doctype html>
 <html lang="en">
 <head>
+<!-- 로고 -->
+<link rel="icon" href="${pageContext.request.contextPath}/resources/image/favicon.png" type="image/png">
 <jsp:include page="../main/header.jsp"/> <!-- 헤더 -->
 
 <!-- include libraries(jQuery, bootstrap) -->
