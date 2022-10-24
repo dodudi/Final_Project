@@ -113,9 +113,9 @@
       <input type="hidden" name="QUESTIONS_NUM"  value="${question.QUESTIONS_NUM}">
       <input type="hidden" name="QUESTIONS_FILE"  value="${question.QUESTIONS_FILE}">
      
-     <h1 class="title_color" style="margin-top:7rem; text-align:center">문의사항 게시판 - 답변</h1>
+     <h1 class="title_color" style="margin-top:10rem; text-align:center">문의사항 게시판 - 답변</h1>
      
-     <div class="form-group" style="margin-top:5rem;">
+     <div class="form-group" style="margin-top:10rem;">
         <label for="QUESTIONS_NAME">작성자</label>
         <input name="QUESTIONS_NAME" type="text"    class="form-control"
                value="${question.MEM_ID}" readOnly>

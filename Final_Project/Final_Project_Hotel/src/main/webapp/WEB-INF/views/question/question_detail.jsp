@@ -29,9 +29,9 @@
             </div>
         </section>
 <!--================Breadcrumb Area =================-->
-<h1 class="title_color" style="margin-top:7rem; text-align:center">문의사항 게시판 - 디테일</h1>
+<h1 class="title_color" style="margin-top:10rem; text-align:center">문의사항 게시판 - 디테일</h1>
 <input type="hidden" id="loginid" value="${question.MEM_ID}" name="loginid">
-     <div class="container" style="margin-top:5rem">
+     <div class="container" style="margin-top:10rem">
          <table class="table table-stripted" >
          
              <tr>
@@ -81,7 +81,7 @@
              </tr>
 
              <tr>   
-                <td colspan="4" class="center" style="text-align:right">
+                <td colspan="4" class="center" style="text-align:right; height:200px; line-height:150px" >
                     <sec:authorize access="isAuthenticated()">
     			      <sec:authentication property="principal" var="pinfo"/>
     			      

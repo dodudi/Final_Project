@@ -113,9 +113,9 @@
 <!--================Breadcrumb Area =================-->
 <div class=container>
   <form action ="write" method="post" enctype="multipart/form-data" name="writeform">
-   <h1 class="title_color" style="margin-top:7rem; text-align:center">공지사항 게시판 - 글쓰기</h1>
+   <h1 class="title_color" style="margin-top:10rem; text-align:center">공지사항 게시판 - 글쓰기</h1>
    
-     <div class="form-group" style="margin-top:7rem">
+     <div class="form-group" style="margin-top:10rem">
         <label for="NOTICE_NAME">작성자</label>
         <input name="NOTICE_NAME" id="NOTICE_NAME" value="admin" readOnly
                type="text"    class="form-control"
@@ -134,7 +134,7 @@
         <textarea id="summernote" name="NOTICE_CONTENT" required></textarea>
      </div>
      
-     <div class="form-group" style="text-align:right; margin-top:3rem">
+     <div class="form-group" style="text-align:right; height:200px; line-height:150px">
         <button type="submit" class="genric-btn success radius">등록</button>
         <button type="reset" class="genric-btn danger radius" onClick="history.go(-1)">취소</button>
      </div>
