@@ -6,6 +6,7 @@
 <head>
 <!-- 로고 -->
 <link rel="icon" href="${pageContext.request.contextPath}/resources/image/favicon.png" type="image/png">
+<title>예약정보 확인_1</title>
 <style>
 	input[readonly] {border:none; width:100px;}
 	*{color:black}
@@ -77,7 +78,7 @@ $(function(){
             					</tr>
             					<tr>
             						<td>
-            							<a class="btn theme_btn button_hover" href="../room/roomDetail?num=${room.ROOM_ID}" target='_blank'><strong>객실 상세보기</strong></a>
+            							<a class="btn theme_btn button_hover" href="../room/roomDetail?num=${room.ROOM_ID}" target='_blank'><strong style="color:white">객실 상세보기</strong></a>
             						</td>
             					</tr>
             				</table>
