@@ -10,9 +10,9 @@
                  </div>
              </div>		
              <div class="col-lg-4  col-md-6 col-sm-6">
-                 <div class="single-footer-widget">
+                 <div class="single-footer-widget" >
                      <h6 class="footer_title">Hotel Asia</h6>
-                     <p>호텔 소재지 : 서울특별시 종로구 율곡로10길 105<br>
+                     <p style="color: #777">호텔 소재지 : 서울특별시 종로구 율곡로10길 105<br>
                      	이메일 : info@hotelasia.com<br>
                      	상호명 : (주)호텔 아시아<br>
                      	사업자등록번호 : 000-00-00000 
@@ -25,7 +25,8 @@
                      <div class="row">
                          <div class="col-4">
                              <ul class="list_style">
-                                 <li><a href="${pageContext.request.contextPath}/intro/intro">Home</a></li>
+                                 <li ><a href="${pageContext.request.contextPath}/">Home</a></li>
+                                 <li><a href="${pageContext.request.contextPath}/intro/intro">Intro</a></li>
                                  <li><a href="${pageContext.request.contextPath}/room/roomList">Accomodation</a></li>
                                  <li><a href="${pageContext.request.contextPath}/notice/list">Community</a></li>
                              </ul>
