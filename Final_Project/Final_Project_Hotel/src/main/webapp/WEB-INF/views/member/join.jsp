@@ -42,7 +42,7 @@
                 <form name="joinform" action="joinProcess" method="post">
                 	<div class="panel-switch animated">
                         <button type="button" id="step1" class="button1" >STEP1 <br>정보입력</button> 
-                        <div class="icon">--- <i class="fa-solid fa-person-walking-dashed-line-arrow-right"></i> ---</div>
+                        <div class="icon" style="position:relative; top:10px">--- <i class="fa-solid fa-person-walking-dashed-line-arrow-right"></i> ---</div>
                         <button type="button" id="step2" class="button2">STEP2 <br>가입완료</button>
                     </div>
                     
@@ -301,7 +301,7 @@
 		                    </div>
 		                    <div class="reg-form" style="align-items:center">
 		                      	<span class="regist">연락처<sup>*</sup></span>
-		                        <input name="MEM_PHONE" type="text" required placeholder=" 연락처를 입력하세요">
+		                        <input name="MEM_PHONE" type="text" required placeholder=" 연락처를 입력하세요" maxlength="11">
 		                        <button class="email_btn" type="button" id="phoneCkNum">인증번호</button>
 		                        <div id="phoneCk" class="error3"></div>
 		                    </div>

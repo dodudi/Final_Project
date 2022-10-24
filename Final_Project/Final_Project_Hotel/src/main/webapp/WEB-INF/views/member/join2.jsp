@@ -36,7 +36,7 @@
           	 <form>
               	<div class="panel-switch animated">
                       <button type="button" id="step1" class="button1" >STEP1 <br>정보입력</button> 
-                      <div class="icon">--- <i class="fa-solid fa-handshake-simple"></i> ---</div>
+                      <div class="icon" style="position:relative; top:10px">--- <i class="fa-solid fa-handshake-simple"></i> ---</div>
                       <button type="button" id="step2" class="button2">STEP2 <br>가입완료</button>
                  </div>
                  <h1 class="animated fadeInUp animate1" id="title-login">환영합니다!</h1>

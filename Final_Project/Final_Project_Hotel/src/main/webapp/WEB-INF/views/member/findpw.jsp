@@ -24,9 +24,7 @@
     	<title>Hotel Asia</title>
     	
     	<script>
-    	if("${result}" == 'updatePwSuccess'){
-    		alert("로그인 화면으로 이동합니다.");
-    	}else if("${message}" == 'passwordUpdateFail'){
+    	 if("${message}" == 'passwordUpdateFail'){
     		alert("회원정보를 다시 확인해주세요.");
     	}
     	</script>
