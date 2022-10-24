@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> <!-- core 라이브러리 -->
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> <!-- fmt 라이브러리 -->
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,18 +9,6 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script> <!-- 제이쿼리 -->
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script> <!-- 결제 시스템 - 아임포트API -->
 <title>예약완료 - 예약확인 페이지</title>
-<style>
-	* {color:black}
-</style>
-<script>
-$(function(){
-	$("#cancelBtn").click(function(){
-		cancelPay(); // 환불 함수 호출
-	})
-	
-}) // ready end
-
-</script>
 </head>
 <body>
 	<!--================Breadcrumb Area =================-->
@@ -36,7 +25,7 @@ $(function(){
     <!--================Contact Area =================-->
     <section class="contact_area section_gap">
         <div class="container">
-        	<table class="table table-bordered">
+        	<table class="table table-bordered" style="color:black">
         		<thead style="background-color:#f5f2a3">
 	        		<tr>
 	        			<th>예약상태</th>
@@ -79,11 +68,14 @@ $(function(){
 	    	    				<c:set var="num" value="${num+1}" />
 		        			</th>
 		        		</tr>
+		        		
 		        		<c:forEach var="dl" items="${dateList}">
-			        		<tr>
-			        			<td>${dl}</td> <!-- 날짜 -->
+			        		<tr><!-- 날짜 -->
+			        			<td>${dl}</td>
+			        				
 			        			<c:forEach var="orl" items="${optRezList}">
-			        				<c:if test="${dl eq orl.OPTION_RESERVATION_DATE}"> <!-- 해당 날짜에 해당하는 옵션예약정보만 출력 -->
+			        				<%-- <c:if test = "${fn:contains(dl, orl.OPTION_RESERVATION_DATE)}"> --%>
+			        				<<c:if test="${dl eq orl.OPTION_RESERVATION_DATE}"> <!-- 해당 날짜에 해당하는 옵션예약정보만 출력 -->
 								     	<c:if test="${orl.OPTION_ID == 1}"> <!-- 조식 -->
 					        					<td>조식 | 성인 ${orl.ADULT}명 / 아동 ${orl.CHILD}명</td>
 					        			</c:if>
@@ -128,6 +120,7 @@ $(function(){
     </section>
     <!--================Contact Area =================-->
 
-	
+<!-- 푸터 -->        
+<jsp:include page="../main/footer.jsp"/>   
 </body>
 </html>
