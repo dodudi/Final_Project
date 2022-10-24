@@ -5,7 +5,6 @@
 <html lang="en">
 
 <head>
-<title>회원정보</title>
 <style>
 .content-title {
 	font-family: 'Courier New', Courier, monospace;
@@ -37,7 +36,7 @@ table {
 </head>
 
 <head>
-<title>쿠폰 확인</title>
+<title>마일리지/쿠폰</title>
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="/hotel/static/css/bootstrap.css">
