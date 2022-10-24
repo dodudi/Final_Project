@@ -48,7 +48,8 @@ table{
 	color:black;
 }
 .btn-primary{
-	background-color:#f3c300;
+	background-color:#f3c300!important;
+	border-color : #f3c300!important;
 }
 </style>
 </head>

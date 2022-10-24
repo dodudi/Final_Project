@@ -51,6 +51,11 @@ table {
 .tst{
 	font-size: 1.0rem;
 }
+
+.btn-primary{
+	background-color:#f3c300!important;
+	border-color : #f3c300!important;
+}
 </style>
 </head>
 
