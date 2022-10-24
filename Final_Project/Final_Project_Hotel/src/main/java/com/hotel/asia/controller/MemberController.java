@@ -225,7 +225,7 @@ public class MemberController {
 			memberservice.updatePw(m);
 			
 			rattr.addFlashAttribute("result", "updatePwSuccess");
-			return "member/login";
+			return "redirect:login"; 
 		} else {
 			model.addAttribute("url", request.getRequestURL());
 			model.addAttribute("message", "passwordUpdateFail");

@@ -18,7 +18,7 @@
         
         <!-- 로고 -->
         <link rel="icon" href="${pageContext.request.contextPath}/static/image/favicon.png" type="image/png">
-    	<title>Hotel Asia</title>
+    	<title>회원가입 완료</title>
     	<script>
     	$(function(){
     		$('#login-form-login').click(function(){
