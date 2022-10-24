@@ -55,6 +55,7 @@
 <link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon-114x114.png">
 <style>
 	#flight-datepicker > div.ui-datepicker-inline.ui-datepicker.ui-widget.ui-widget-content.ui-helper-clearfix.ui-corner-all{display:none !important}
+	.page-cover-tittle{font-weight: 600 !important;}
 </style>
 <script>
 $(function(){

@@ -53,6 +53,9 @@
 <link rel="apple-touch-icon" sizes="114x114"
 	href="apple-touch-icon-114x114.png">
 
+<style>
+.page-cover-tittle{font-weight: 600 !important;}
+</style>
 
 
 <script>
