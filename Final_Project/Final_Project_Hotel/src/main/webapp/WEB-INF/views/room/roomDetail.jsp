@@ -128,7 +128,6 @@ $(function(){
 		}
 	})
 	
-	
 	// 예약하기 버튼
 	$("#rezBtn").click(function(){
 		if($("#sdate").val() == '' || $("#edate").val() == ''){
@@ -146,6 +145,74 @@ $(function(){
 			return false;
 		}
 	})
+	
+	
+	
+	// 체크인~체크아웃 날짜 사이 기예약건 있을 때
+	// 1. 체크아웃 날짜 선택했을 때
+	$("#edate").change(function(){
+		if($("#sdate").val() != ''){
+			var checkInArr = $("#sdate").val().split('-');
+			var checkIn = new Date(checkInArr[0], checkInArr[1]-1, checkInArr[2]);
+			var checkOutArr = $("#edate").val().split('-');
+			var checkOut = new Date(checkOutArr[0], checkOutArr[1]-1, checkOutArr[2]);
+			var nights = ( checkOut.getTime() - checkIn.getTime() ) / (1000*60*60*24);
+			console.log("체크인 날짜 : " + checkIn.toLocaleString());
+			console.log("체크아웃 날짜 : " + checkOut.toLocaleString());
+			console.log("숙박일수 : " + nights);
+			
+			for(var i = 0; i < nights; i++) {
+				ableDate = checkIn.getFullYear() + "-" + (checkIn.getMonth()+1) + "-" + checkIn.getDate();
+				console.log("숙박 날짜 => " + ableDate);
+				checkIn.setDate(checkIn.getDate() + 1);
+				
+				// 기예약 날짜
+				var rezDate = "${rezDateList}".split(",");
+				for(var t = 0; t<rezDate.length ;t++){
+					console.log("예약날짜: " + rezDate[t]);
+					
+					if(ableDate == rezDate[t]){
+						alert('숙박 불가 날짜 사이 안됨');
+						$("#edate").val('');
+						return;
+					}
+				}
+			}
+		}
+	})
+	// 2. 체크인 날짜 선택했을 때
+	$("#sdate").change(function(){
+		if($("#edate").val() != ''){
+			var checkInArr = $("#sdate").val().split('-');
+			var checkIn = new Date(checkInArr[0], checkInArr[1]-1, checkInArr[2]);
+			var checkOutArr = $("#edate").val().split('-');
+			var checkOut = new Date(checkOutArr[0], checkOutArr[1]-1, checkOutArr[2]);
+			var nights = ( checkOut.getTime() - checkIn.getTime() ) / (1000*60*60*24);
+			console.log("체크인 날짜 : " + checkIn.toLocaleString());
+			console.log("체크아웃 날짜 : " + checkOut.toLocaleString());
+			console.log("숙박일수 : " + nights);
+			
+			for(var i = 0; i < nights; i++) {
+				ableDate = checkIn.getFullYear() + "-" + (checkIn.getMonth()+1) + "-" + checkIn.getDate();
+				console.log("숙박 날짜 => " + ableDate);
+				checkIn.setDate(checkIn.getDate() + 1);
+				
+				// 기예약 날짜
+				var rezDate = "${rezDateList}".split(",");
+				for(var t = 0; t<rezDate.length ;t++){
+					console.log("예약날짜: " + rezDate[t]);
+					
+					if(ableDate == rezDate[t]){
+						alert('숙박 불가 날짜 사이 안됨');
+						$("#sdate").val('');
+						return;
+					}
+				}
+			}
+		}
+	})
+	
+	
 	
 }) // ready end
 </script>
