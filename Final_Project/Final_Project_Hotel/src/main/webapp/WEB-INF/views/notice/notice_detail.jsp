@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +11,7 @@
 <title>공지사항 게시판 - 상세보기</title>
 <style>
 .subject{width:15%; font-weight:bold}
+.container{color:black;}
 </style>
 </head>
 <body>
@@ -37,7 +39,7 @@
                  <td colspan="3"><c:out value="${notice.NOTICE_SUBJECT}" /></td>
              </tr>
              <tr>
-                 <td class="subject"><div>글쓴이</div></td>
+                 <td class="subject"><div>작성자</div></td>
                  <td colspan="3"><div>admin</div></td> <%--admin으로 고정 --%>
              </tr>
              <tr>
@@ -69,7 +71,10 @@
 
              <tr>   <%-- 수정 삭제는 admin일 때만 나타나도록 변경 예정 --%>
                 <td colspan="4" class="center" style="text-align:right">
-                    <%-- <c:if test="${MEM_ID == 'admin'}"> --%> 
+                    <sec:authorize access="isAuthenticated()">
+    			      <sec:authentication property="principal" var="pinfo"/>
+    			      <c:if test="${pinfo.username == 'admin'}">
+    			      
                       <a href="modifyview?num=${notice.NOTICE_NUM}" class="genric-btn info radius">
                       수정
                       </a>
@@ -77,7 +82,10 @@
                       data-target="#removeModal${vs.index }">
                       삭제
                       </a>
-                    <%-- </c:if> --%> 
+                      
+                      </c:if>
+                    </sec:authorize> 
+                    
                     <a href="list" class="genric-btn primary radius">
                     목록
                     </a>
@@ -97,7 +105,7 @@
                                       <h5 class="modal-title" id="exampleModalLabel" style="text-align:center">공지사항 삭제</h5>
                                     </div>
                                     
-                                    <div class="modal-body" style="text-align:center">
+                                    <div class="modal-body" style="text-align:center; color:black;">
                                       정말로 삭제하시겠습니까?
                                     </div>
                                                                    

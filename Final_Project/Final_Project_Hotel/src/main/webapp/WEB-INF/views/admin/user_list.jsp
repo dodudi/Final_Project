@@ -21,7 +21,9 @@
    
    
 </script>
-
+<style>
+.container{color:black;}
+</style>
 </head>
 <body>
 <!--================Breadcrumb Area =================-->
@@ -39,7 +41,7 @@
         </section>
 <!--================Breadcrumb Area =================-->
 <h1 class="title_color" style="margin-top:7rem; text-align:center">회원리스트</h1>
-<div class="container" style="margin-top:5rem">
+<div class="container" style="margin-top:7rem">
  <%-- 게시글이 있는 경우--%> 
  <sec:authorize access="isAuthenticated()">
  <sec:authentication property="principal" var="pinfo"/>
@@ -108,8 +110,7 @@
 	  </c:forEach>
 	 </tbody>
 	</table>
-		
-	<nav class="blog-pagination justify-content-center d-flex">
+	<nav class="blog-pagination justify-content-center d-flex" style=margin-top:100px>
 		  <ul class="pagination justify-content-center">		
 			 <c:if test="${page <= 1 }">
 				<li class="page-item">
@@ -164,12 +165,12 @@
 		</nav>	
 		
 		
-		
+	<div style="height:100px"></div>
     </c:if><%-- <c:if test="${listcount > 0 }"> end --%>
 	
     <%-- 게시글이 없는 경우--%>
     <c:if test="${listcount == 0 && pinfo.username == 'admin'}">
-	  <div id=container style=height:300px;text-align:center;line-height:200px;>
+	  <div id=container style=height:400px;text-align:center;line-height:200px;>
 	     <font size=5>등록된 회원이 없습니다.</font>
 	  </div>
     </c:if>
