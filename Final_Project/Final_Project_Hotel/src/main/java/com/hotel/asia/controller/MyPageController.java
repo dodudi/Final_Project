@@ -88,7 +88,7 @@ public class MyPageController {
 			
 			
 			for (OptionReservation optRezData2 : optRezData) {
-				log.info(optRezData2.getOPTION_RESERVATION_DATE());
+				log.info("날짜 : " + optRezData2.getOPTION_RESERVATION_DATE());
 			}
 			options.put(rezs.get(i).getREZ_ID(), optRezData);
 			
