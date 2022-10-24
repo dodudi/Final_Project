@@ -4,6 +4,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+<!-- 로고 -->
+<link rel="icon" href="${pageContext.request.contextPath}/resources/image/favicon.png" type="image/png">
 <style>
 	input[readonly] {border:none; width:100px;}
 	*{color:black}
