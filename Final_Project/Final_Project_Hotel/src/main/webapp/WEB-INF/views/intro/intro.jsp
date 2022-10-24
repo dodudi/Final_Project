@@ -18,7 +18,7 @@
     
     <!-- 로고 -->
     <link rel="icon" href="${pageContext.request.contextPath}/resources/image/favicon.png" type="image/png">
-    <title>Hotel Asia</title>
+    <title>호텔 소개</title>
     
 	</head>
 	<body>
