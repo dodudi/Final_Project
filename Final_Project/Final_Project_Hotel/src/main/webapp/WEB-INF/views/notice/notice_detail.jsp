@@ -29,9 +29,9 @@
             </div>
         </section>
 <!--================Breadcrumb Area =================-->
-<h1 class="title_color" style="margin-top:7rem; text-align:center">공지사항 게시판 - 디테일</h1>
+<h1 class="title_color" style="margin-top:10rem; text-align:center">공지사항 게시판 - 디테일</h1>
 <input type="hidden" id="loginid" value="admin" name="loginid"> <%-- admin으로 고정 --%>
-     <div class="container" style="margin-top:5rem">
+     <div class="container" style="margin-top:10rem !important">
          <table class="table table-stripted" >
          
              <tr>
@@ -70,7 +70,7 @@
              </tr>
 
              <tr>   <%-- 수정 삭제는 admin일 때만 나타나도록 변경 예정 --%>
-                <td colspan="4" class="center" style="text-align:right">
+                <td colspan="4" class="center" style="text-align:right; height:200px; line-height:150px" >
                     <sec:authorize access="isAuthenticated()">
     			      <sec:authentication property="principal" var="pinfo"/>
     			      <c:if test="${pinfo.username == 'admin'}">

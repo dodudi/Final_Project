@@ -40,8 +40,8 @@
             </div>
         </section>
 <!--================Breadcrumb Area =================-->
-<h1 class="title_color" style="margin-top:7rem; text-align:center">회원리스트</h1>
-<div class="container" style="margin-top:7rem">
+<h1 class="title_color" style="margin-top:10rem; text-align:center">회원리스트</h1>
+<div class="container" style="margin-top:10rem">
  <%-- 게시글이 있는 경우--%> 
  <sec:authorize access="isAuthenticated()">
  <sec:authentication property="principal" var="pinfo"/>

@@ -113,9 +113,9 @@
       <input type="hidden" name="QUESTIONS_NUM"  value="${question.QUESTIONS_NUM}">
       <input type="hidden" name="QUESTIONS_FILE"  value="${question.QUESTIONS_FILE}">
      
-     <h1 class="title_color" style="margin-top:7rem; text-align:center">문의사항 게시판 - 수정</h1>
+     <h1 class="title_color" style="margin-top:10rem; text-align:center">문의사항 게시판 - 수정</h1>
      
-     <div class="form-group" style="margin-top:5rem;">
+     <div class="form-group" style="margin-top:10rem;">
         <label for="question_name">작성자</label>
         <input name="QUESTIONS_NAME" type="text"    class="form-control"
                value="${question.MEM_ID}" readOnly>
@@ -143,7 +143,7 @@
         <textarea id="summernote" name="QUESTIONS_CONTENT" required>${question.QUESTIONS_CONTENT}</textarea>
      </div>
      
-     <div class="form-group" style="text-align:right; margin-top:3rem">
+     <div class="form-group" style="text-align:right; height:200px; line-height:150px">
         <button type="submit" class="genric-btn info radius">수정</button>
         <button type="reset" class="genric-btn danger radius" onClick="history.go(-1)">취소</button>
      </div>

@@ -34,8 +34,8 @@
             </div>
         </section>
 <!--================Breadcrumb Area =================-->
-<h1 class="title_color" style="margin-top:7rem; text-align:center">문의사항 게시판</h1>
-<div class="container" style="margin-top:7rem"> 
+<h1 class="title_color" style="margin-top:10rem; text-align:center">문의사항 게시판</h1>
+<div class="container" style="margin-top:10rem"> 
  <%-- 게시글이 있는 경우--%> 
  <c:if test="${listcount > 0 }">
   <table class="table">

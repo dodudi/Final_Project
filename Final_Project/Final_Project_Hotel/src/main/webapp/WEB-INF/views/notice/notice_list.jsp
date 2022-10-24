@@ -34,8 +34,8 @@
             </div>
         </section>
 <!--================Breadcrumb Area =================-->
-<h1 class="title_color" style="margin-top:7rem; text-align:center">공지사항 게시판</h1>
-<div class="container" style="margin-top:7rem"> 
+<h1 class="title_color" style="margin-top:10rem; text-align:center">공지사항 게시판</h1>
+<div class="container" style="margin-top:10rem"> 
  <%-- 게시글이 있는 경우--%> 
  <c:if test="${listcount > 0 }">
   <table class="table">
@@ -72,7 +72,7 @@
 	 </tbody>
 	</table>
 		
-	<nav class="blog-pagination justify-content-center d-flex" style=margin-top:100px>
+	<nav class="blog-pagination justify-content-center d-flex" style=margin-top:150px>
 		  <ul class="pagination justify-content-center">		
 			 <c:if test="${page <= 1 }">
 				<li class="page-item">

@@ -113,9 +113,9 @@
       <input type="hidden" name="NOTICE_NUM"  value="${notice.NOTICE_NUM}">
       <input type="hidden" name="NOTICE_FILE"  value="${notice.NOTICE_FILE}">
      
-     <h1 class="title_color" style="margin-top:7rem; text-align:center">공지사항 게시판 - 수정</h1>
+     <h1 class="title_color" style="margin-top:10rem; text-align:center">공지사항 게시판 - 수정</h1>
      
-     <div class="form-group" style="margin-top:5rem;">
+     <div class="form-group" style="margin-top:10rem;">
         <label for="notice_name">작성자</label>
         <input name="NOTICE_NAME" type="text"    class="form-control"
                value="admin" readOnly>
@@ -131,7 +131,7 @@
         <textarea id="summernote" name="NOTICE_CONTENT" required>${notice.NOTICE_CONTENT}</textarea>
      </div>
      
-     <div class="form-group" style="text-align:right; margin-top:3rem">
+     <div class="form-group" style="text-align:right; height:200px; line-height:150px">
         <button type="submit" class="genric-btn info radius">수정</button>
         <button type="reset" class="genric-btn danger radius" onClick="history.go(-1)">취소</button>
      </div>
