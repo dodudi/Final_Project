@@ -85,6 +85,12 @@
     color: #ccc;
     content: "\e87a" !important;
     }
+    
+    .container{color:black;}
+    
+    .page-cover-tittle{font-weight: 600 !important;}
+    
+    .title_color{font-weight: 600 !important;}
 </style>
 </head>
 <body>

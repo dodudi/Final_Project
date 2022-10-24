@@ -15,6 +15,9 @@
 	alert("글이 수정되었습니다.")
    }
 </script>
+<style>
+.container{color:black;}
+</style>
 </head>
 <body>
 <!--================Breadcrumb Area =================-->
@@ -32,7 +35,7 @@
         </section>
 <!--================Breadcrumb Area =================-->
 <h1 class="title_color" style="margin-top:7rem; text-align:center">문의사항 게시판</h1>
-<div class="container" style="margin-top:5rem"> 
+<div class="container" style="margin-top:7rem"> 
  <%-- 게시글이 있는 경우--%> 
  <c:if test="${listcount > 0 }">
   <table class="table">
@@ -82,7 +85,7 @@
 	 </tbody>
 	</table>
 		
-	<nav class="blog-pagination justify-content-center d-flex">
+	<nav class="blog-pagination justify-content-center d-flex" style=margin-top:100px>
 		  <ul class="pagination justify-content-center">		
 			 <c:if test="${page <= 1 }">
 				<li class="page-item">
@@ -135,13 +138,10 @@
 			</c:if>
 		 </ul>
 		</nav>	
-		
-		
-		
     </c:if>
     
     <c:if test="${listcount == 0 }">
-	  <div id=container style=height:300px;text-align:center;line-height:200px;>
+	  <div id=container style=height:400px;text-align:center;line-height:200px;>
 	     <font size=5>등록된 글이 없습니다.</font>
 	  </div>
     </c:if>
@@ -152,6 +152,9 @@
       <div class="button-group-area mt-40" style="height:100px">
         <a href="writeform" class="genric-btn primary circle float-right">글쓰기</a>
       </div>
+    </c:if>
+    <c:if test="${pinfo.username == 'admin'}">
+      <div style="height:100px"></div>
     </c:if>
     </sec:authorize>
 </div>
