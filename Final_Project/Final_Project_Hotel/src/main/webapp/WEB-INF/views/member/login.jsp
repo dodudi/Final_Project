@@ -19,7 +19,7 @@
         
         <!-- 로고 -->
         <link rel="icon" href="${pageContext.request.contextPath}/static/image/favicon.png" type="image/png">
-    	<title>Hotel Asia</title>
+    	<title>로그인</title>
     	
     	<script>
 	    	// 로그인하지 않거나 만료된 경우
