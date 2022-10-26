@@ -42,7 +42,7 @@ public class NaverMessageAuth {
 	    bodyJson.put("type","sms");	// 메시지 Type (sms | lms)
 	    bodyJson.put("contentType","COMM");
 	    bodyJson.put("countryCode","82");
-	    bodyJson.put("from","");	// 발신번호
+	    bodyJson.put("from","");	// 발신번호 
 	    bodyJson.put("content", "[HotelAsia] 인증번호 ["+randomNum+"]를 입력해주세요.");
 	    bodyJson.put("messages", toArr);		
 	    
